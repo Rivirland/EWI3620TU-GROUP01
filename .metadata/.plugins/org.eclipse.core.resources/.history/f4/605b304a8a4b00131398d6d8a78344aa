@@ -1,0 +1,6 @@
+
+public class LevelEditorMain {
+	public void main(String[] args){
+		new LevelEditor();
+	}
+}
