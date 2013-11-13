@@ -14,24 +14,10 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-
-
 import com.sun.opengl.util.Animator;
 
-/** 
- * MazeRunner is the base class of the game, functioning as the view controller and game logic manager.
- * <p>	
- * Functioning as the window containing everything, it initializes both JOGL, the 
- * game objects and the game logic needed for MazeRunner.
- * <p>
- * For more information on JOGL, visit <a href="http://jogamp.org/wiki/index.php/Main_Page">this page</a>
- * for general information, and <a href="https://jogamp.org/deployment/jogamp-next/javadoc/jogl/javadoc/">this page</a>
- * for the specification of the API.
- * 
- * @author Bruno Scheele, revised by Mattijs Driel
- * 
- */
-public class MazeRunner extends Frame implements GLEventListener {
+
+public class Starter extends Frame implements GLEventListener {
 	static final long serialVersionUID = 7526471155622776147L;
 
 	/*
@@ -47,6 +33,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Camera camera;									// The camera object.
 	private UserInput input;								// The user input object that controls the player.
 	private Maze maze; 										// The maze.
+	private GameStateManager gsm;
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	public static int orangeCount = 3;
 
@@ -66,9 +53,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	
 	
-	public MazeRunner() {
+	public Starter() {
 		// Make a new window.
-		super("MazeRunner");
+		super("game");
 		
 		// Let's change the window to our liking.
 		setSize( screenWidth, screenHeight);
@@ -121,7 +108,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Animator anim = new Animator( canvas );
 		anim.start();
 	}
-	
 	/**
 	 * initializeObjects() creates all the objects needed for the game to start normally.
 	 * <p>
@@ -159,53 +145,64 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.mouseDy = 0;
 		player.setControl(input);
 	}
-
-/*
- * **********************************************
- * *		OpenGL event handlers				*
- * **********************************************
- */
+	/*
+	 * **********************************************
+	 * *		OpenGL event handlers				*
+	 * **********************************************
+	 */
 
 	/**
-	 * init(GLAutodrawable) is called to initialize the OpenGL context, giving it the proper parameters for viewing.
+	 * init(GLAutodrawable) is called to initialize the OpenGL context, giving
+	 * it the proper parameters for viewing.
 	 * <p>
-	 * Implemented through GLEventListener. 
-	 * It sets up most of the OpenGL settings for the viewing, as well as the general lighting.
-	 * <p> 
-	 * It is <b>very important</b> to realize that there should be no drawing at all in this method.
+	 * Implemented through GLEventListener. It sets up most of the OpenGL
+	 * settings for the viewing, as well as the general lighting.
+	 * <p>
+	 * It is <b>very important</b> to realize that there should be no drawing at
+	 * all in this method.
 	 */
 	public void init(GLAutoDrawable drawable) {
-		drawable.setGL( new DebugGL(drawable.getGL() )); // We set the OpenGL pipeline to Debugging mode.
-        GL gl = drawable.getGL();
-        GLU glu = new GLU();
-        
-        gl.glClearColor(0, 0, 0, 0);								// Set the background color.
-        
-        // Now we set up our viewpoint.
-        gl.glMatrixMode( GL.GL_PROJECTION );						// We'll use orthogonal projection.
-        gl.glLoadIdentity();										// Reset the current matrix.
-        glu.gluPerspective( 60, screenWidth, screenHeight, 200);	// Set up the parameters for perspective viewing.
-        gl.glMatrixMode( GL.GL_MODELVIEW );
-        
-        // Enable back-face culling.
-        gl.glCullFace( GL.GL_BACK );
-        gl.glEnable( GL.GL_CULL_FACE );
-        
-        // Enable Z-buffering.
-        gl.glEnable( GL.GL_DEPTH_TEST );
-        
-        // Set and enable the lighting.
-        float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 			// High up in the sky!
-        float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
-        gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
-        gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-        gl.glEnable( GL.GL_LIGHTING );
-        gl.glEnable( GL.GL_LIGHT0 );
-        
-        // Set the shading model.
-        gl.glShadeModel( GL.GL_SMOOTH );
+		drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
+														// pipeline to Debugging
+														// mode.
+		GL gl = drawable.getGL();
+		GLU glu = new GLU();
+
+		gl.glClearColor(0, 0, 0, 0); // Set the background color.
+
+		// Now we set up our viewpoint.
+		gl.glMatrixMode(GL.GL_PROJECTION); // We'll use orthogonal projection.
+		gl.glLoadIdentity(); // Reset the current matrix.
+		glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
+																// parameters
+																// for
+																// perspective
+																// viewing.
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		// Enable back-face culling.
+		gl.glCullFace(GL.GL_BACK);
+		gl.glEnable(GL.GL_CULL_FACE);
+
+		// Enable Z-buffering.
+		gl.glEnable(GL.GL_DEPTH_TEST);
+
+		// Set and enable the lighting.
+		float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; // High up in the
+																// sky!
+		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
+																		// that
+																		// we're
+																		// setting
+																		// Light0.
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT0);
+
+		// Set the shading model.
+		gl.glShadeModel(GL.GL_SMOOTH);
 	}
-	
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a new frame and handles all of the drawing.
 	 * <p>
@@ -314,7 +311,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 			orangeCount=3;
 		}
 	}
-
+	private void updateGSM(){
+		System.out.println(gsm.getState().toString());
+		
+	}
 	/**
 	 * updateCamera() updates the camera position and orientation.
 	 * <p>
@@ -329,21 +329,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 		camera.calculateVRP();
 	}
 	
-
-/*
- * **********************************************
- * *				  Main						*
- * **********************************************
- */
-	/**
-	 * Program entry point
-	 * 
-	 * @param args
-	 */
 	
-	
-	public static void main(String[] args) {
-		// Create and run MazeRunner.
-		new MazeRunner();
+	public static void main(String args[]){
+		GameState pause = new GameStatePause();
+		GameState play  = new GameStatePlay();
+		GameState startmenu  = new GameStateStartMenu();
+		
+		new Starter();
 	}
 }

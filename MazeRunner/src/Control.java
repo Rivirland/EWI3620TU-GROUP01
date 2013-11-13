@@ -16,7 +16,7 @@
  * @author Mattijs Driel
  * 
  */
-public abstract class Control
+public abstract class Control extends GameStateManager
 {
 	protected boolean forward = false;
 	protected boolean back = false;
@@ -24,10 +24,14 @@ public abstract class Control
 	protected boolean right = false;
 	protected boolean up = false;
 	protected boolean down= false;
-	
+	protected boolean pause = false;
+	protected GameState gamestate;
 	protected int dX = 0;
 	protected int dY = 0;
 	
+	public GameState getGameState(){
+		return gamestate;
+	}
 	/**
 	 * @return Returns true if forward motion is desired.
 	 */
@@ -77,6 +81,9 @@ public abstract class Control
 	public int getdY()
 	{
 		return dY;
+	}
+	public boolean getPause(){
+		return pause;
 	}
 	
 	/**
