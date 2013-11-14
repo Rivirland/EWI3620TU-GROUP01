@@ -17,6 +17,10 @@ public class GameStateManager implements GameState {
 	public String getStringOfState() {
 		return status.getStringOfState();
 	}
+	public void update() {
+		status.doAction();
+		
+	}
 	
 	
 }

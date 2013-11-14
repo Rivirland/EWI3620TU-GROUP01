@@ -1,5 +1,12 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.media.opengl.GL;
 
@@ -28,198 +35,107 @@ import com.sun.opengl.util.GLUT;
  */
 public class Maze implements VisibleObject {
 
-	public double MAZE_SIZE = 40;
+	public int MAZE_SIZE_X=0;
+	public int MAZE_SIZE_Z=0;
 	public final double SQUARE_SIZE = 5;
 
-	private int[][] maze = {
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-					1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0,
-					1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1 },
-			{ 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0,
-					1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0,
-					0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0,
-					1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1 },
-			{ 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0,
-					1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1 },
-			{ 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0,
-					0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1,
-					0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1 },
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0,
-					0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1 },
-			{ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1,
-					0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-					0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 },
-			{ 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1,
-					1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1,
-					1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1,
-					1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0,
-					1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1 },
-			{ 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1,
-					1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
-			{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
-			{ 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
-			{ 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1,
-					1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1 },
-			{ 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1,
-					1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1,
-					1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1,
-					1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-					0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1,
-					0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
-					0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1,
-					0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1,
-					0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0,
-					0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1,
-					1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1,
-					1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1,
-					1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1,
-					1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1,
-					1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1,
-					1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-					1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 } };
+	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(double n) {
-		if (n % 2 == 0) {
-			MAZE_SIZE = n + 1;
-		} else {
-			MAZE_SIZE = n;
+		try {
+			loadMaze();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		buildMaze();
-	}
-
-	public void buildMaze() {
-		ArrayList<String> cells = new ArrayList<String>();
-		ArrayList<String> walls = new ArrayList<String>();
-		Random rn = new Random();
-		
-		int beginCellx = rn.nextInt((int) (MAZE_SIZE-1));
-		int beginCellz = rn.nextInt((int) (MAZE_SIZE-1));
-		
-		if (beginCellx%2 == 0) {
-			beginCellx++;
-		}
-		if (beginCellz%2 == 0) {
-			beginCellz++;
-		}
-		
-		cells.add(coordsToString(beginCellx, beginCellz));
-		if (beginCellx > 1) {
-			walls.add(coordsToString(beginCellx-1, beginCellz));
-		}
-		if (beginCellz > 1) {
-			walls.add(coordsToString(beginCellx, beginCellz-1));
-		}
-		if (beginCellx < MAZE_SIZE-2) {
-			walls.add(coordsToString(beginCellx+1, beginCellz));
-		}
-		if (beginCellz < MAZE_SIZE-2) {
-			walls.add(coordsToString(beginCellx, beginCellz+1));
-		}
-		
-		while (!walls.isEmpty()) {
-			int wallIndex = rn.nextInt(walls.size());
-			String wall = walls.get(wallIndex);
-			walls.remove(wallIndex);
-			int[] coords = stringToCoords(wall);
-			if (coords[0] < 1 || coords[1] < 1 || coords[0] > MAZE_SIZE-2 || coords[1] > MAZE_SIZE-2) {
-				continue;
-			}
-			if(coords[0] %2 == 0) {
-				if (!(cells.contains(coordsToString(coords[0]-1, coords[1]))
-						&& cells.contains(coordsToString(coords[0]+1, coords[1])))){
-					cells.add(wall);
-					if (!cells.contains(coordsToString(coords[0]-1, coords[1]))) {
-						cells.add(coordsToString(coords[0]-1, coords[1]));
-						walls.add(coordsToString(coords[0]-1, coords[1]+1));
-						walls.add(coordsToString(coords[0]-1, coords[1]-1));
-						walls.add(coordsToString(coords[0]-2, coords[1]));
-					}
-					if (!cells.contains(coordsToString(coords[0]+1, coords[1]))) {
-						cells.add(coordsToString(coords[0]+1, coords[1]));
-						walls.add(coordsToString(coords[0]+1, coords[1]+1));
-						walls.add(coordsToString(coords[0]+1, coords[1]-1));
-						walls.add(coordsToString(coords[0]+2, coords[1]));
-					}
-				}
-			} 
-			else {
-				if (!(cells.contains(coordsToString(coords[0], coords[1]-1))
-						&& cells.contains(coordsToString(coords[0], coords[1]+1)))) {
-					cells.add(wall);
-					if (!cells.contains(coordsToString(coords[0], coords[1]-1))) {
-						cells.add(coordsToString(coords[0], coords[1]-1));
-						walls.add(coordsToString(coords[0]+1, coords[1]-1));
-						walls.add(coordsToString(coords[0]-1, coords[1]-1));
-						walls.add(coordsToString(coords[0], coords[1]-2));
-					}
-					if (!cells.contains(coordsToString(coords[0], coords[1]+1))) {
-						cells.add(coordsToString(coords[0], coords[1]+1));
-						walls.add(coordsToString(coords[0]+1, coords[1]+1));
-						walls.add(coordsToString(coords[0]-1, coords[1]+1));
-						walls.add(coordsToString(coords[0], coords[1]+2));
-					}
-				}
-			}
-		}
-		
-		maze = new int[(int) MAZE_SIZE][(int) MAZE_SIZE];
-		
-		for (int i = 0; i < MAZE_SIZE; i++) {
-			for (int j = 0; j < MAZE_SIZE; j++) {
-				if (cells.contains(coordsToString(i, j))) {
-					maze[i][j] = 0;
-				}
-				else {
-					maze[i][j] = 1;
-				}
-			}
-		}
-	}
 	
-	private String coordsToString(int x, int z) {
-		return Integer.toString(x) + "," + Integer.toString(z);
 	}
-	
-	private int[] stringToCoords(String coords) {
-		String[] xz = coords.split(",");
-		return new int[] {Integer.parseInt(xz[0]), Integer.parseInt(xz[1])};
+	public void loadMaze() throws FileNotFoundException{
+		String currentdir = System.getProperty("user.dir");
+		String filename = "\\levels\\level1.txt";
+		
+		filename = currentdir+filename;
+		System.out.println(filename);
+		File infile = new File(filename);
+		InputStream is = new FileInputStream(infile);
+		
+		try {
+			loadMazeSize(is);
+			is.close();
+			
+		} catch (IOException | NumberFormatException e) {
+			
+			System.out.println("Fout in loadMazeSize");
+		}
+		is = new FileInputStream(infile);
+		try {
+			buildMaze(is);
+		} catch (IOException e) {
+			System.out.println("Fout in buildMaze");
+		}
+		
 	}
-
+	private void loadMazeSize(InputStream is) throws NumberFormatException, IOException{
+		int x=0;
+		int z=1;
+		int i;
+		char c;
+		while((i=is.read())!=-1){
+			c = (char)i;
+			if((c=='\n')){
+				x=0;
+				z+=1;
+			}
+			else if ((c=='1' || c=='0' || c=='2' || c=='3' || c=='4')){
+				x+=1;
+			}
+		}
+//		System.out.println("x= " + x + "z= " + z);
+		maze=new int[x][z];
+		MAZE_SIZE_X=x;
+		MAZE_SIZE_Z=z;
+	}
+	private void buildMaze(InputStream is) throws IOException{
+		int i;
+		char c;
+		int x=0;
+		int y=0;
+		while((i=is.read())!=-1){
+			c = (char)i;
+			if((c=='\n')){
+//				System.out.println("y=" + y);
+				x=0;
+				y+=1;
+//				System.out.print(c);
+			}
+			else if ((c=='1' || c=='0') || c=='2' || c=='3' || c=='4'){
+//				System.out.println("x=" + x);
+				String res = Character.toString(c);
+				int d = Integer.parseInt(res);
+				maze[x][y] = d;
+				x+=1;
+//				System.out.print(d);
+			}
+			else if((c==',')){
+//				System.out.print(",");
+			}
+		}
+//		System.out.println();
+	}
+	public void printMatrix(){
+		System.out.println("maze.length= " + maze.length);
+		System.out.println("maze.[0]length= " + maze[0].length);
+		String res="";
+		for(int i=0; i<maze.length; i++){
+//			System.out.println("i= " + i);
+			for(int j=0; j<maze[0].length; j++){
+//				System.out.println("j= " + j);
+				res=res + maze[i][j] + ",";
+			}
+			res = res + "\n";
+		}
+		System.out.println(res);
+	}
 	/**
 	 * isWall(int x, int z) checks for a wall.
 	 * <p>
@@ -232,14 +148,14 @@ public class Maze implements VisibleObject {
 	 * @return whether there is a wall at maze[x][z]
 	 */
 	public boolean isWall(int x, int z) {
-		if (x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE)
-			return maze[x][z] == 1;
+		if (x >= 0 && x < MAZE_SIZE_X && z >= 0 && z < MAZE_SIZE_Z)
+			return maze[x][z] != 0;
 		else
 			return false;
 	}
 	
 	public boolean isExit(int x, int z) {
-		if (x == MAZE_SIZE-2 && z == MAZE_SIZE-2)
+		if (x == MAZE_SIZE_X-2 && z == MAZE_SIZE_Z-2)
 			return true;
 		else
 			return false;
@@ -305,9 +221,10 @@ public class Maze implements VisibleObject {
 																	// the wall.
 
 		// draw the grid with the current material
-		for (int i = 0; i < MAZE_SIZE; i++) {
-			for (int j = 0; j < MAZE_SIZE; j++) {
+		for (int i = 0; i < MAZE_SIZE_X; i++) {
+			for (int j = 0; j < MAZE_SIZE_Z; j++) {
 				gl.glPushMatrix();
+				gl.glScaled(1, maze[i][j], 1);
 				gl.glTranslated(i * SQUARE_SIZE + SQUARE_SIZE / 2,
 						SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2);
 				if (isWall(i, j))
@@ -315,7 +232,7 @@ public class Maze implements VisibleObject {
 				gl.glPopMatrix();
 			}
 		}
-		paintSingleFloorTile(gl, MAZE_SIZE * SQUARE_SIZE); // Paint the floor.
+		paintSingleFloorTile(gl, MAZE_SIZE_X * SQUARE_SIZE, MAZE_SIZE_Z * SQUARE_SIZE); // Paint the floor.
 		paintExit(gl);
 	}
 
@@ -325,12 +242,12 @@ public class Maze implements VisibleObject {
 	 * 
 	 * @param gl
 	 *            the GL context in which should be drawn
-	 * @param size
+	 * @param size_x
 	 *            the size of the tile
 	 */
-	private void paintSingleFloorTile(GL gl, double size) {
+	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
 		// Setting the floor color and material.
-		float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // The floor is blue.
+		float wallColour[] = { 0.05f, 0.05f, 0.05f, 1.0f }; // The floor is blue.
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
 																	// materials
 																	// used by
@@ -340,10 +257,15 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3d(0, 0, 0);
-		gl.glVertex3d(0, 0, size);
-		gl.glVertex3d(size, 0, size);
-		gl.glVertex3d(size, 0, 0);
+		gl.glVertex3d(0, 0, size_z);
+		gl.glVertex3d(size_x, 0, size_z);
+		gl.glVertex3d(size_x, 0, 0);
 		gl.glEnd();
+		
+		paintFloorTexture(gl, size_x, size_z);
+	}
+	private void paintFloorTexture(GL gl, double size_x, double size_z){
+		
 	}
 	
 	private void paintExit(GL gl) {
@@ -352,10 +274,10 @@ public class Maze implements VisibleObject {
 
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3d((MAZE_SIZE-2)*SQUARE_SIZE, 0.01, (MAZE_SIZE-2)*SQUARE_SIZE);
-		gl.glVertex3d((MAZE_SIZE-2)*SQUARE_SIZE, 0.01, MAZE_SIZE*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE*SQUARE_SIZE, 0.01, MAZE_SIZE*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE*SQUARE_SIZE, 0.01, (MAZE_SIZE-2)*SQUARE_SIZE);
+		gl.glVertex3d((MAZE_SIZE_X-2)*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-2)*SQUARE_SIZE);
+		gl.glVertex3d((MAZE_SIZE_X-2)*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
+		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
+		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-2)*SQUARE_SIZE);
 		gl.glEnd();
 	}
 }
