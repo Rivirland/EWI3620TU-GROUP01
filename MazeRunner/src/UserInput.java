@@ -21,7 +21,7 @@ import javax.media.opengl.GLCanvas;
  */
 public class UserInput extends Control implements MouseListener,
 		MouseMotionListener, KeyListener {
-	int mouseX, mouseY, mouseDx, mouseDy, olddX, olddY;
+	int x1, x2, y1, y2;
 	GameState gamestatePause = new GameStatePause();
 	GameState gamestatePlay = new GameStatePlay();
 
@@ -49,8 +49,11 @@ public class UserInput extends Control implements MouseListener,
 
 	@Override
 	public void update() {
-		dX = mouseDx;
-		dY = mouseDy;
+		dX = x1 - x2;
+		dY = y1 - y2;
+		
+		x1 = x2;
+		y1 = y2;
 		gamestate.doAction();
 
 	}
@@ -62,16 +65,17 @@ public class UserInput extends Control implements MouseListener,
 
 	@Override
 	public void mousePressed(MouseEvent event) {
-		mouseX = event.getX();
-		mouseY = event.getY();
-		olddX = mouseDx;
-		olddY = mouseDy;
+		
+		x1 = event.getX();
+		y1 = event.getY();
+		x2 = x1;
+		y2 = y1;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent event) {
-		mouseDx = mouseX - event.getX() + olddX;
-		mouseDy = mouseY - event.getY() + olddY;
+		x2 = event.getX();
+		y2 = event.getY();
 	}
 
 	@Override

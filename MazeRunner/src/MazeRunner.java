@@ -175,8 +175,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getVerAngle());
 
 		input = new UserInput(canvas);
-		input.mouseDx = -135;
-		input.mouseDy = 0;
 		player.setControl(input);
 	}
 

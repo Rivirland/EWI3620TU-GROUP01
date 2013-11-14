@@ -63,8 +63,7 @@ public class Maze implements VisibleObject {
 			loadMazeSize(is);
 			is.close();
 			
-		} catch (IOException | NumberFormatException e) {
-			
+		} catch (IOException e) {
 			System.out.println("Fout in loadMazeSize");
 		}
 		is = new FileInputStream(infile);
