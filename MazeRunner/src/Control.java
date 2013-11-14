@@ -25,7 +25,7 @@ public abstract class Control extends GameStateManager
 	protected boolean up = false;
 	protected boolean down= false;
 	protected boolean pause = false;
-	protected GameState gamestate;
+	protected GameState gamestate = new GameStatePlay();
 	protected int dX = 0;
 	protected int dY = 0;
 	

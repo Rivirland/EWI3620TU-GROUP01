@@ -124,6 +124,7 @@ public class Player extends GameObject {
 			setVerAngle(control.getdY());
 			
 			
+			
 			if(control.forward){
 				locationX -= Math.sin(Math.toRadians(getHorAngle()))*speed*deltaTime;
 				locationZ -= Math.cos(Math.toRadians(getHorAngle()))*speed*deltaTime;
@@ -151,4 +152,5 @@ public class Player extends GameObject {
 			}
 		}
 	}
+	
 }

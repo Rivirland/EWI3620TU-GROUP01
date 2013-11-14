@@ -22,7 +22,8 @@ import javax.media.opengl.GLCanvas;
 public class UserInput extends Control implements MouseListener,
 		MouseMotionListener, KeyListener {
 	int mouseX, mouseY, mouseDx, mouseDy, olddX, olddY;
-	GameState gamestate = new GameStatePause();
+	GameState gamestatePause = new GameStatePause();
+	GameState gamestatePlay = new GameStatePlay();
 
 	// TODO: Add fields to help calculate mouse movement
 
@@ -121,19 +122,18 @@ public class UserInput extends Control implements MouseListener,
 				down = false;
 			}
 			if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-				gamestate = new GameStatePause();
+				gamestate = gamestatePause;
 				forward = false;
 				left = false;
 				back = false;
 				right = false;
 				up = false;
 				down = false;
-
 			}
 		}
 		else if (gamestate.getStringOfState().equals("pause")) {
 			if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-				gamestate = new GameStatePlay();
+				gamestate = gamestatePlay;
 			}
 		}
 

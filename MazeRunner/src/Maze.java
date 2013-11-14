@@ -213,13 +213,12 @@ public class Maze implements VisibleObject {
 		GLUT glut = new GLUT();
 
 		// Setting the wall colour and material.
-		float wallColour[] = { 0.0f, 1.0f, 0.0f, 1.0f }; // The walls are
+		float wallColour[] = { 1.0f, 0.0f, 1.0f, 1.0f }; // The walls are
 															// purple.
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
 																	// materials
 																	// used by
 																	// the wall.
-
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
@@ -247,13 +246,13 @@ public class Maze implements VisibleObject {
 	 */
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
 		// Setting the floor color and material.
-		float wallColour[] = { 0.05f, 0.05f, 0.05f, 1.0f }; // The floor is blue.
+		float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // The floor is blue.
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
 																	// materials
 																	// used by
 																	// the
 																	// floor.
-
+		
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3d(0, 0, 0);
@@ -271,7 +270,7 @@ public class Maze implements VisibleObject {
 	private void paintExit(GL gl) {
 		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); 
-
+		
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3d((MAZE_SIZE_X-2)*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-2)*SQUARE_SIZE);

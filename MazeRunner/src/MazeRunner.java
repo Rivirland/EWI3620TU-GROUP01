@@ -2,7 +2,10 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -14,8 +17,12 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUquadric;
 
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
@@ -55,7 +62,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// calculate
 																			// elapsed
 																			// time.
-	public static int orangeCount = 3;
 
 	/*
 	 * **********************************************
@@ -215,21 +221,52 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Enable Z-buffering.
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
-		// Set and enable the lighting.
-		float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; // High up in the
-																// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
-																		// that
-																		// we're
-																		// setting
-																		// Light0.
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-		gl.glEnable(GL.GL_LIGHTING);
-		gl.glEnable(GL.GL_LIGHT0);
+
+        // Set and enable the lighting.
+        float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 			// High up in the sky!
+        float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
+        gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
+        gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
+        gl.glEnable( GL.GL_LIGHTING );
+        gl.glEnable( GL.GL_LIGHT0 );
 
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
+		
+//		// Load earth texture.
+//        try {
+//        	String currentdir2 = System.getProperty("user.dir");
+//    		String filename2 = "\\textures\\texture.png";
+//    		filename2= currentdir2+filename2;
+//    		System.out.println(filename2);
+//            File file = new File(filename2);
+//            System.out.println( "lukt");
+//    		TextureData data = TextureIO.newTextureData(file, false, "png");
+//    		System.out.println( "lukt");
+//            Texture earthTexture = TextureIO.newTexture(data);
+//           
+//            // Set material properties.
+//            float[] rgba = {1f, 1f, 1f};
+//            gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
+//            gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
+//            gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
+//
+//            // Apply texture.
+//            earthTexture.enable();
+//            earthTexture.bind();
+//
+//            // Draw sphere.
+//            GLUquadric earth = glu.gluNewQuadric();
+//            glu.gluQuadricTexture(earth, true);
+//            
+//        }
+//        catch (IOException exc) {
+//            exc.printStackTrace();
+//            System.exit(1);
+//        }
+		
+        
+    
 	}
 
 	/**
@@ -339,18 +376,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		}
 
-		if (maze.isExit(player.locationX, player.locationZ)) {
-			Sound.applause.play();
-			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-			player.locationY = maze.SQUARE_SIZE / 2;
-			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-			try {
-				maze.loadMaze();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		if (maze.isExit(player.locationX, player.locationZ)) {
+//			Sound.applause.play();
+//			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+//			player.locationY = maze.SQUARE_SIZE / 2;
+//			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+//			try {
+//				maze.loadMaze();
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	/**
@@ -359,6 +396,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * This is done by copying the locations from the Player, since MazeRunner
 	 * runs on a first person view.
 	 */
+	
 	private void updateCamera() {
 		camera.setLocationX(player.getLocationX());
 		camera.setLocationY(player.getLocationY());
