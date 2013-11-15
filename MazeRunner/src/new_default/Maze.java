@@ -2,16 +2,15 @@ package new_default;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -245,19 +244,54 @@ public class Maze implements VisibleObject {
 	 *            the size of the tile
 	 */
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
+        gl.glEnable(GL.GL_TEXTURE_2D);
+		Texture earthTexture = null;
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\texture.jpg";
+			
+			filename = currentdir+filename;
+			File file = new File(filename);
+			System.out.println(filename);
+            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
+            TextureData data = TextureIO.newTextureData(file, false, "jpg");
+            earthTexture = TextureIO.newTexture(data);
+        }
+        catch (IOException exc) {
+        	System.out.println("niet gevonden");
+            exc.printStackTrace();
+            System.exit(1);
+        }
+		
+		
 		// Setting the floor color and material.
-		float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // The floor is blue.
+        float[] rgba = {1f, 1f, 1f};
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
+        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
+        gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
+
+        // Apply texture.
+        if(earthTexture != null){
+        	earthTexture.enable();
+        	earthTexture.bind();
+        }
+		
+		/*float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // The floor is blue.
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
 																	// materials
 																	// used by
 																	// the
 																	// floor.
-		
+	*/	
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3d(0, 0, 0);
+		gl.glTexCoord2d(0.0,0.0);
+		gl.glVertex3d(0, 0, 0); 
+		gl.glTexCoord2d(1.0,0.0);
 		gl.glVertex3d(0, 0, size_z);
+		gl.glTexCoord2d(0.0,1.0);
 		gl.glVertex3d(size_x, 0, size_z);
+		gl.glTexCoord2d(1.0,1.0);
 		gl.glVertex3d(size_x, 0, 0);
 		gl.glEnd();
 		
