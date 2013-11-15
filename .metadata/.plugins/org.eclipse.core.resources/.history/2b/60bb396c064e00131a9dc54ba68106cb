@@ -49,6 +49,22 @@ public class Maze implements VisibleObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\texture.jpg";
+			
+			filename = currentdir+filename;
+			File file = new File(filename);
+			System.out.println(filename);
+            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
+            TextureData data = TextureIO.newTextureData(file, false, "jpg");
+            earthTexture = TextureIO.newTexture(data);
+        }
+        catch (IOException exc) {
+        	System.out.println("niet gevonden");
+            exc.printStackTrace();
+            System.exit(1);
+        }
 	
 	}
 	public void loadMaze() throws FileNotFoundException{
@@ -245,8 +261,7 @@ public class Maze implements VisibleObject {
 	 *            the size of the tile
 	 */
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
-        
-		
+        gl.glEnable(GL.GL_TEXTURE_2D);		
 		
 		// Setting the floor color and material.
         float[] rgba = {1f, 1f, 1f};

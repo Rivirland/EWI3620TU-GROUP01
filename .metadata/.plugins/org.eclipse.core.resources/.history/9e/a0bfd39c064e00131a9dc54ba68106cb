@@ -39,6 +39,7 @@ public class Maze implements VisibleObject {
 	public int MAZE_SIZE_Z=0;
 	public final double SQUARE_SIZE = 5;
 	Texture earthTexture = null;
+	TextureData data;
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
@@ -49,6 +50,21 @@ public class Maze implements VisibleObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\texture.jpg";
+			
+			filename = currentdir+filename;
+			File file = new File(filename);
+			System.out.println(filename);
+            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
+            TextureData data = TextureIO.newTextureData(file, false, "jpg");
+        }
+        catch (IOException exc) {
+        	System.out.println("niet gevonden");
+            exc.printStackTrace();
+            System.exit(1);
+        }
 	
 	}
 	public void loadMaze() throws FileNotFoundException{
@@ -245,8 +261,7 @@ public class Maze implements VisibleObject {
 	 *            the size of the tile
 	 */
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
-        
-		
+        gl.glEnable(GL.GL_TEXTURE_2D);		
 		
 		// Setting the floor color and material.
         float[] rgba = {1f, 1f, 1f};
@@ -254,8 +269,10 @@ public class Maze implements VisibleObject {
         gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
         gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
 
+        earthTexture = TextureIO.newTexture(data);
         // Apply texture.
         if(earthTexture != null){
+        	
         	earthTexture.enable();
         	earthTexture.bind();
         }
