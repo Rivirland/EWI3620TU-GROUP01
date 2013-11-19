@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete element from project &apos;MazeRunner&apos;&#x0D;&#x0A;- Original project: &apos;MazeRunner&apos;&#x0D;&#x0A;- Original element: &apos;new_default.DrawCube.java&apos;" description="Delete element" element1="/src&lt;new_default{DrawCube.java" elements="1" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1384850975085" subPackages="false" version="1.0"/>
+</session>

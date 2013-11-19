@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,7 +65,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// calculate
 																			// elapsed
 																			// time.
-	public Texture earthTexture;
+	public static Texture earthTexture, wallTexture;
 
 	/*
 	 * **********************************************
@@ -218,16 +219,17 @@ public class MazeRunner extends Frame implements GLEventListener {
 																// viewing.
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
+		// TODO: back-face weer aanzetten
 		// Enable back-face culling.
-		gl.glCullFace(GL.GL_BACK);
-		gl.glEnable(GL.GL_CULL_FACE);
+//		gl.glCullFace(GL.GL_BACK);
+//		gl.glEnable(GL.GL_CULL_FACE);
 
 		// Enable Z-buffering.
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
 
         // Set and enable the lighting.
-        float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 			// High up in the sky!
+        float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; 			// High up in the sky!
         float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
@@ -236,26 +238,51 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
+		loadTextures(gl);
 		
+        
+    
+	}
+	
+	public void loadTextures(GL gl){
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = "\\textures\\texture.jpg";
 			
 			filename = currentdir+filename;
-			File file = new File(filename);
+			File file2 = new File(filename);
 			System.out.println(filename);
             //InputStream stream = getClass().getResourceAsStream("texture.jpg");
-            TextureData data = TextureIO.newTextureData(file, false, "jpg");
-            earthTexture = TextureIO.newTexture(data);
+            TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
+            earthTexture = TextureIO.newTexture(data2);
         }
         catch (IOException exc) {
         	System.out.println("niet gevonden");
             exc.printStackTrace();
             System.exit(1);
         }
-        
-    
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\walltexture.jpg";
+			
+			filename = currentdir+filename;
+			File file1 = new File(filename);
+			System.out.println(filename);
+            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
+            TextureData data1 = TextureIO.newTextureData(file1, false, "jpg");
+            wallTexture = TextureIO.newTexture(data1);
+        }
+        catch (IOException exc) {
+        	System.out.println("niet gevonden");
+            exc.printStackTrace();
+            System.exit(1);
+        }
+		
+		
+		
+		
 	}
 
 	/**
@@ -365,18 +392,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		}
 
-//		if (maze.isExit(player.locationX, player.locationZ)) {
-//			Sound.applause.play();
-//			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-//			player.locationY = maze.SQUARE_SIZE / 2;
-//			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-//			try {
-//				maze.loadMaze();
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+		if (maze.isExit(player.locationX, player.locationZ)) {
+			Sound.applause.play();
+			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+			player.locationY = maze.SQUARE_SIZE / 2;
+			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+			try {
+				maze.loadMaze();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**

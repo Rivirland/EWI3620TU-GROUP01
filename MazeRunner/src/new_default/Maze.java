@@ -38,7 +38,6 @@ public class Maze implements VisibleObject {
 	public int MAZE_SIZE_X=0;
 	public int MAZE_SIZE_Z=0;
 	public final double SQUARE_SIZE = 5;
-	Texture earthTexture = null;
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
@@ -182,9 +181,10 @@ public class Maze implements VisibleObject {
 	}
 	
 	public boolean isExit(double x, double z) {
-		int gX = convertToGridX(x);
-		int gZ = convertToGridZ(z);
-		return isExit(gX, gZ);
+		return false;
+//		int gX = convertToGridX(x);
+//		int gZ = convertToGridZ(z);
+//		return isExit(gX, gZ);
 	}
 
 	/**
@@ -223,11 +223,13 @@ public class Maze implements VisibleObject {
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
 				gl.glPushMatrix();
-				gl.glScaled(1, maze[i][j], 1);
-				gl.glTranslated(i * SQUARE_SIZE + SQUARE_SIZE / 2,
-						SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2);
-				if (isWall(i, j))
-					glut.glutSolidCube((float) SQUARE_SIZE);
+				//gl.glScaled(1, maze[i][j], 1);
+				gl.glTranslated(i * SQUARE_SIZE, 0.0, j * SQUARE_SIZE);
+				if (isWall(i, j)){
+					for (int heigth = 0; heigth < maze[i][j]; heigth++){				
+						paintWallFromQuad(gl, heigth*SQUARE_SIZE);
+					}
+				}
 				gl.glPopMatrix();
 			}
 		}
@@ -246,8 +248,6 @@ public class Maze implements VisibleObject {
 	 */
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
         
-		
-		
 		// Setting the floor color and material.
         float[] rgba = {1f, 1f, 1f};
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
@@ -255,18 +255,11 @@ public class Maze implements VisibleObject {
         gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
 
         // Apply texture.
-        if(earthTexture != null){
-        	earthTexture.enable();
-        	earthTexture.bind();
+        if(MazeRunner.earthTexture != null){       
+        	MazeRunner.earthTexture.enable();
+        	MazeRunner.earthTexture.bind();
         }
-		
-		/*float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // The floor is blue.
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
-																	// materials
-																	// used by
-																	// the
-																	// floor.
-	*/	
+       
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2d(0.0,0.0);
@@ -281,16 +274,57 @@ public class Maze implements VisibleObject {
 
 	}
 	
+	private void paintWallFromQuad(GL gl, double h){
+		GLUT glut = new GLUT();
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
+		gl.glBegin (GL.GL_QUAD_STRIP);
+		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		// TODO: light shading on walls
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0, h, 0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0, SQUARE_SIZE+h, 0.0);
+		
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (SQUARE_SIZE, h, 0.0);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (SQUARE_SIZE, SQUARE_SIZE+h, 0.0);
+		gl.glNormal3d(0, 0, -1);
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (SQUARE_SIZE,+h,SQUARE_SIZE);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (SQUARE_SIZE,SQUARE_SIZE+h,SQUARE_SIZE);
+		gl.glNormal3d(1, 0, 0);
+		
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (0.0,h,SQUARE_SIZE);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (0.0,SQUARE_SIZE+h,SQUARE_SIZE);
+		gl.glNormal3d(0, 0, 1);
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0,h,0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0,SQUARE_SIZE+h,0.0);
+		gl.glNormal3d(-1, 0, 0);
+		
+		gl.glEnd ();
+	}
+	
 	private void paintExit(GL gl) {
 		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); 
 		
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3d((MAZE_SIZE_X-2)*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-2)*SQUARE_SIZE);
-		gl.glVertex3d((MAZE_SIZE_X-2)*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
+		gl.glVertex3d((MAZE_SIZE_X-1)*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-1)*SQUARE_SIZE);
+		gl.glVertex3d((MAZE_SIZE_X-1)*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
 		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-2)*SQUARE_SIZE);
+		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-1)*SQUARE_SIZE);
 		gl.glEnd();
 	}
 }

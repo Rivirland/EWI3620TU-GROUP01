@@ -13,13 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="init" key="selection"/>
+		<item value="back" key="selection"/>
 		<list key="findhistory">
+			<item value="back"/>
+			<item value="solid"/>
+			<item value="GLF"/>
+			<item value="earth"/>
 			<item value="init"/>
 			<item value="current"/>
 			<item value="game"/>
 			<item value="no"/>
-			<item value="isWall"/>
 		</list>
 		<list key="replacehistory">
 		</list>
