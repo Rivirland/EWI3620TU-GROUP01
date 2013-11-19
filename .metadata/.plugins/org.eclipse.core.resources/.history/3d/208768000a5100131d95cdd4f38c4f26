@@ -1,0 +1,11 @@
+package enemy;
+
+public abstract class EnemyControl {
+
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+	public abstract void update();
+
+}

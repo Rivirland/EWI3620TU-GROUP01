@@ -1,0 +1,48 @@
+package enemy;
+
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.GLUT;
+
+import new_default.*;
+
+public class Enemy extends GameObject implements VisibleObject{
+	private EnemyControl enemyControl = null;
+	private double speed;
+	
+	public Enemy(double x, double y, double z, double speed) {
+		// TODO Auto-generated constructor stub
+		this.speed=speed;
+	}
+	public void setControl(EnemyControl enemyControl){
+		this.enemyControl=enemyControl;
+	}
+	public EnemyControl getControl(){
+		return this.enemyControl;
+	}
+	public void setSpeed(double speed){
+		this.speed=speed;
+	}
+	public double getSpeed(){
+		return this.speed;
+	}
+	public void update(int deltaTime){
+		
+	}
+	@Override
+	public void display(GL gl) {
+		
+		GLUT glut = new GLUT();
+		gl.glColor4d(1.0,1.0,0.0,1.0);
+		gl.glPushMatrix();
+		
+		gl.glTranslated(5.0,0.0,5.0);
+		glut.glutWireSphere(1,30,30);
+		
+		gl.glPopMatrix();
+		gl.glFlush();			      // Flush drawing routines
+		  
+		  		
+	}
+
+}

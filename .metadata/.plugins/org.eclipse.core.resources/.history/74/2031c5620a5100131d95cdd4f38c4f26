@@ -1,0 +1,13 @@
+package enemy;
+
+public abstract class EnemyControl {
+
+	protected boolean forward = false;
+	
+	public boolean getForward(){
+		return this.forward;
+	}
+	
+	public abstract void update();
+
+}

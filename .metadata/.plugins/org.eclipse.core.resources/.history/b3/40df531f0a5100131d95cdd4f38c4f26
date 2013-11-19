@@ -1,0 +1,9 @@
+package enemy;
+
+public abstract class EnemyControl {
+
+	protected boolean forward = false;
+	
+	public abstract void update();
+
+}

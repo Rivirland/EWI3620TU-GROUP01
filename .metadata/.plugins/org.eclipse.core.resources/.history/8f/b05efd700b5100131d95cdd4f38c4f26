@@ -1,0 +1,18 @@
+package enemy;
+
+public abstract class EnemyControl {
+
+	protected boolean up = true;
+	
+	public boolean getForward(){
+		return this.up;
+	}
+	
+	public void update() {
+		if(up){
+			enemy.setY(enemy.getY()+speed*deltatime);
+		}
+	}
+	
+
+}

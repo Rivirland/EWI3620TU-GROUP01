@@ -1,13 +1,10 @@
 package enemy;
 
-import new_default.Control;
+public abstract class EnemyControl {
 
-public class EnemyControl extends Control{
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected boolean up = true;
+	
+	public abstract void update(); 
+	
 
 }

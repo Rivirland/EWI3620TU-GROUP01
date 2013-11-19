@@ -1,0 +1,13 @@
+package enemy;
+
+import new_default.Control;
+
+public class EnemyInput extends Control{
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
