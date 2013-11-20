@@ -1,15 +1,16 @@
 package new_default;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
-
-import enemy.Enemy;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -37,92 +38,95 @@ public class Maze implements VisibleObject {
 	public int MAZE_SIZE_X=0;
 	public int MAZE_SIZE_Z=0;
 	public final double SQUARE_SIZE = 5;
+	public int mazeX, mazeY, mazeZ;
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(double n) {
 		try {
-			loadMaze();
+			loadMaze("level1");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
 	}
-	public void loadMaze() throws FileNotFoundException{
+	public void loadMaze(String mazeFileName) throws FileNotFoundException{
 		String currentdir = System.getProperty("user.dir");
-		String filename = "\\levels\\level1.txt";
+		String filename = "\\levels\\" + mazeFileName + ".txt";
 		
 		filename = currentdir+filename;
-		System.out.println(filename);
 		File infile = new File(filename);
-		InputStream is = new FileInputStream(infile);
 		
 		try {
-			loadMazeSize(is);
-			is.close();
+			loadMazeSize(infile);
 			
 		} catch (IOException e) {
 			System.out.println("Fout in loadMazeSize");
 		}
-		is = new FileInputStream(infile);
 		try {
-			buildMaze(is);
+			buildMaze(infile);
 		} catch (IOException e) {
 			System.out.println("Fout in buildMaze");
 		}
 		
 	}
-	private void loadMazeSize(InputStream is) throws NumberFormatException, IOException{
-		int x=0;
-		int z=1;
-		int i;
-		char c;
-		while((i=is.read())!=-1){
-			c = (char)i;
-			if((c=='\n')){
-				x=0;
-				z+=1;
-			}
-			else if ((c=='1' || c=='0' || c=='2' || c=='3' || c=='4')){
-				x+=1;
-			}
-		}
-//		System.out.println("x= " + x + "z= " + z);
-		maze=new int[x][z];
-		MAZE_SIZE_X=x;
-		MAZE_SIZE_Z=z;
+	private void loadMazeSize(File file) throws NumberFormatException, IOException{
+		
+		int row = -1;
+        int col = 0;
+        BufferedReader bufRdr  = new BufferedReader(new FileReader(file));
+        String line = null;
+        while((line = bufRdr.readLine()) != null){   
+        	col = 0;
+        	StringTokenizer st = new StringTokenizer(line,",");
+        	while (st.hasMoreTokens()){
+        		col++;
+        		st.nextToken();
+        	}
+        	row++;
+        }
+        bufRdr.close();
+        MAZE_SIZE_X = row;
+        MAZE_SIZE_Z = col;
+        System.out.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
+        maze=new int[MAZE_SIZE_X][MAZE_SIZE_Z]; 
 	}
-	private void buildMaze(InputStream is) throws IOException{
-		int i;
-		char c;
-		int x=0;
-		int y=0;
-		while((i=is.read())!=-1){
-			c = (char)i;
-			if((c=='\n')){
-//				System.out.println("y=" + y);
-				x=0;
-				y+=1;
-//				System.out.print(c);
-			}
-			else if ((c=='1' || c=='0') || c=='2' || c=='3' || c=='4'){
-//				System.out.println("x=" + x);
-				String res = Character.toString(c);
-				int d = Integer.parseInt(res);
-				maze[x][y] = d;
-				x+=1;
-//				System.out.print(d);
-			}
-			else if((c==',')){
-//				System.out.print(",");
-			}
-		}
-//		System.out.println();
-	}
+	
+	private void buildMaze(File file) throws IOException{
+        int row = -1;
+        int col = 0;
+        BufferedReader bufRdr  = new BufferedReader(new FileReader(file));
+        String line = null;
+        
+        while((line = bufRdr.readLine()) != null && row < MAZE_SIZE_Z){   
+        	StringTokenizer st = new StringTokenizer(line,",");
+        	if(row == -1){
+        		mazeX = Integer.parseInt(st.nextToken());
+            	mazeY = Integer.parseInt(st.nextToken());
+            	mazeZ = Integer.parseInt(st.nextToken());
+        	}
+        	while (st.hasMoreTokens()){
+        		//System.out.println(Integer.parseInt(st.nextToken()) + " en row: " + row + " en col: " + col);
+        		maze[row][col] = Integer.parseInt(st.nextToken());
+        		//System.out.println(maze[col][row]);
+        		col++;
+        	}
+        	col = 0;
+        	row++;
+        }
+        System.out.println(mazeX + ", " + mazeY + ", " + mazeZ);
+        bufRdr.close();
+        printMatrix();
+
+      }
+		
+		
+		
+		
 	public void printMatrix(){
-		System.out.println("maze.length= " + maze.length);
-		System.out.println("maze.[0]length= " + maze[0].length);
+		//System.out.println("maze.length= " + maze.length);
+		//System.out.println("maze.[0]length= " + maze[0].length);
 		String res="";
 		for(int i=0; i<maze.length; i++){
 //			System.out.println("i= " + i);
@@ -228,6 +232,7 @@ public class Maze implements VisibleObject {
 					for (int heigth = 0; heigth < maze[i][j]; heigth++){				
 						paintWallFromQuad(gl, heigth*SQUARE_SIZE);
 					}
+					paintRoof(gl, maze[i][j] * SQUARE_SIZE);
 				}
 				gl.glPopMatrix();
 			}
@@ -275,8 +280,26 @@ public class Maze implements VisibleObject {
 
 	}
 	
+	private void paintRoof(GL gl, double h){
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture (GL.GL_TEXTURE_2D, 3);
+		gl.glBegin (GL.GL_QUAD_STRIP);
+		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		// TODO: light shading on walls
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0, h, 0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0, h, SQUARE_SIZE);
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (SQUARE_SIZE, h, 0.0);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (SQUARE_SIZE, h, SQUARE_SIZE);
+		gl.glNormal3d(0, 1, 0);	
+		gl.glEnd();
+	}
 	private void paintWallFromQuad(GL gl, double h){
-		GLUT glut = new GLUT();
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
 		gl.glBegin (GL.GL_QUAD_STRIP);

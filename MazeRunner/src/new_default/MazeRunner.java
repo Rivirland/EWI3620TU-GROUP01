@@ -66,7 +66,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// calculate
 																			// elapsed
 																			// time.
-	public static Texture earthTexture, wallTexture;
+	public static Texture earthTexture, wallTexture, roofTexture;
+	public int mazeX, mazeY, mazeZ;
 
 	/*
 	 * **********************************************
@@ -266,7 +267,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\walltexture.jpg";
+			String filename = "\\textures\\walltexture2.jpg";
 			
 			filename = currentdir+filename;
 			File file1 = new File(filename);
@@ -274,6 +275,23 @@ public class MazeRunner extends Frame implements GLEventListener {
             //InputStream stream = getClass().getResourceAsStream("texture.jpg");
             TextureData data1 = TextureIO.newTextureData(file1, false, "jpg");
             wallTexture = TextureIO.newTexture(data1);
+        }
+        catch (IOException exc) {
+        	System.out.println("niet gevonden");
+            exc.printStackTrace();
+            System.exit(1);
+        }
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\rooftexture.jpg";
+			
+			filename = currentdir+filename;
+			File file3 = new File(filename);
+			System.out.println(filename);
+            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
+            TextureData data3 = TextureIO.newTextureData(file3, false, "jpg");
+            roofTexture = TextureIO.newTexture(data3);
         }
         catch (IOException exc) {
         	System.out.println("niet gevonden");
@@ -307,7 +325,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		previousTime = currentTime;
 
 		// Update any movement since last frame.
-		updateMovement(deltaTime);
+		updateMovement(deltaTime, drawable);
 		updateCamera();
 		
 		
@@ -378,11 +396,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
 
-	private void updateMovement(int deltaTime) {
+	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
 		double currentX = player.getLocationX();
 		double currentY = player.getLocationY();
 		double currentZ = player.getLocationZ();
-		player.update(deltaTime);
+		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
 		if (maze.isWall(player.locationX, player.locationZ + 0.2)
 				|| maze.isWall(player.locationX - 0.2, player.locationZ + 0.2)
@@ -402,7 +420,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			player.locationY = maze.SQUARE_SIZE / 2;
 			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			try {
-				maze.loadMaze();
+				maze.loadMaze("level1");
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

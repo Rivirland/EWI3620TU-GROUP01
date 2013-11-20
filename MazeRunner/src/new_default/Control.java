@@ -1,4 +1,7 @@
 package new_default;
+
+import javax.media.opengl.GLAutoDrawable;
+
 /**
  * The Control class is an abstract class containing only basic functionality such
  * as getters for all possible commands.
@@ -91,5 +94,5 @@ public abstract class Control extends GameStateManager
 	 * Updates the fields of the Control class to represent the
 	 * most up-to-date values. 
 	 */
-	public abstract void update();
+	public abstract void update(GLAutoDrawable drawable);
 }

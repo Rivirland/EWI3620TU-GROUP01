@@ -1,0 +1,24 @@
+package new_default;
+
+import javax.media.opengl.GL;
+
+public class GameStatePause implements GameState {
+
+	@Override
+	public void doAction() {
+		GL gl = new GL();
+		gl.glBegin (GL.GL_QUAD_STRIP);
+		gl.glVertex2d (0.0, 0);
+		gl.glVertex2d (0.0, 100);
+		gl.glVertex2d (100,100);
+		gl.glVertex2d (100, 0);
+		gl.glEnd();
+		
+		
+	}
+
+	@Override
+	public String getStringOfState() {
+		return "pause";
+	}
+}

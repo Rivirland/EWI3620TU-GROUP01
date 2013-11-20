@@ -1,6 +1,7 @@
 package new_default;
 import java.awt.event.*;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 
 /**
@@ -49,13 +50,15 @@ public class UserInput extends Control implements MouseListener,
 	 */
 
 	@Override
-	public void update() {
-		dX = x1 - x2;
-		dY = y1 - y2;
-		
+	public void update(GLAutoDrawable drawable) {
+		if (gamestate.getStringOfState().equals("play")){
+			dX = x1 - x2;
+			dY = y1 - y2;
+		}
 		x1 = x2;
 		y1 = y2;
-		gamestate.doAction();
+	
+		gamestate.doAction(drawable);
 
 	}
 

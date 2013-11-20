@@ -1,5 +1,7 @@
 package new_default;
 
+import javax.media.opengl.GLAutoDrawable;
+
 public class GameStateManager implements GameState {
 	private GameState status;
 	
@@ -11,15 +13,15 @@ public class GameStateManager implements GameState {
 	}
 	
 	@Override
-	public void doAction() {
-		this.status.doAction();
+	public void doAction(GLAutoDrawable drawable) {
+		this.status.doAction(drawable);
 	}
 	@Override
 	public String getStringOfState() {
 		return status.getStringOfState();
 	}
-	public void update() {
-		status.doAction();
+	public void update(GLAutoDrawable drawable) {
+		status.doAction(drawable);
 		
 	}
 	

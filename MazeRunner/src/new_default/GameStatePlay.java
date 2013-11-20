@@ -1,9 +1,11 @@
 package new_default;
 
+import javax.media.opengl.GLAutoDrawable;
+
 public class GameStatePlay implements GameState{
 
 	@Override
-	public void doAction() {
+	public void doAction(GLAutoDrawable drawable) {
 //		System.out.println("Op play gezet");
 	}
 

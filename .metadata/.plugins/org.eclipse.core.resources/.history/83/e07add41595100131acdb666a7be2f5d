@@ -1,0 +1,29 @@
+package new_default;
+
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+
+public class GameStatePause implements GameState {
+
+	@Override
+	public void doAction(GLAutoDrawable drawable) {
+	     
+    	MazeRunner.earthTexture.enable();
+    	MazeRunner.earthTexture.bind();
+    	
+		GL gl = drawable.getGL();
+		gl.glBegin (GL.GL_QUADS);
+		gl.glVertex2d (0.0, 10);
+		gl.glVertex2d (0.0, 20);
+		gl.glVertex2d (10, 10);
+		gl.glVertex2d (10, 20);
+		gl.glEnd();
+
+	}
+
+	@Override
+	public String getStringOfState() {
+		return "pause";
+	}
+}

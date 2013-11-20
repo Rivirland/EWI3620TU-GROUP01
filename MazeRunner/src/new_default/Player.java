@@ -1,4 +1,7 @@
 package new_default;
+
+import javax.media.opengl.GLAutoDrawable;
+
 /**
  * Player represents the actual player in MazeRunner.
  * <p>
@@ -117,10 +120,10 @@ public class Player extends GameObject {
 	 * Updates the physical location and orientation of the player
 	 * @param deltaTime The time in milliseconds since the last update.
 	 */
-	public void update(int deltaTime)
+	public void update(int deltaTime, GLAutoDrawable drawable)
 	{
 		if (control != null){
-			control.update();
+			control.update(drawable);
 
 			double i = -1;
 			this.horAngle = this.getHorAngle() - i*control.getdX();

@@ -13,18 +13,19 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Enemy" key="selection"/>
+		<item value="LINE" key="selection"/>
 		<list key="findhistory">
-			<item value="enemy"/>
-			<item value="setControl"/>
-			<item value="my.update"/>
-			<item value="update"/>
-			<item value="print"/>
-			<item value="System"/>
-			<item value="visibleObjects"/>
-			<item value="back"/>
+			<item value="Line"/>
+			<item value="LINES"/>
+			<item value="FILL"/>
+			<item value="drawable"/>
+			<item value="println"/>
+			<item value="printM"/>
+			<item value="system.out.p"/>
+			<item value="is"/>
 		</list>
 		<list key="replacehistory">
+			<item value="LINES"/>
 		</list>
 	</section>
 </section>
