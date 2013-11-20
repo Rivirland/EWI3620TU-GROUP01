@@ -61,6 +61,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private UserInput input; // The user input object that controls the player.
 	private EnemyControl enemyControl;
 	private Maze maze; // The maze.
+	private Level level;
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used
 																			// to
 																			// calculate
@@ -167,20 +168,25 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		// Add the maze that we will be using.
-		maze = new Maze(25);
-		visibleObjects.add(maze);
+		
+		level = new Level("level1");
 
+		for(int i=0; i<level.getAantal(); i++){
+			visibleObjects.add(level.getMaze(i));
+
+		}
+	//	maze = new Maze();
+	
+		
+		
 		// Initialize the player.
-		player = new Player(maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, // x-position
-				maze.SQUARE_SIZE / 2, // y-position
-				maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, // z-position
-				90, 0); // horizontal and vertical angle
+		player = new Player(2.5,2.5,2.5,90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(),
 				player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
 
-		enemy = new Enemy(maze.SQUARE_SIZE, maze.SQUARE_SIZE*2, maze.SQUARE_SIZE,0.01);
+		enemy = new Enemy(5,5,5,0.01);
 		enemy.setControl(enemyControl);
 		visibleObjects.add(enemy);
 		input = new UserInput(canvas);
@@ -339,7 +345,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
 				.hasNext();) {
-			
 			it.next().display(gl);
 		}
 
@@ -402,30 +407,30 @@ public class MazeRunner extends Frame implements GLEventListener {
 		double currentZ = player.getLocationZ();
 		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
-		if (maze.isWall(player.locationX, player.locationZ + 0.2)
-				|| maze.isWall(player.locationX - 0.2, player.locationZ + 0.2)
-				|| maze.isWall(player.locationX + 0.2, player.locationZ - 0.2)
-				|| maze.isWall(player.locationX - 0.2, player.locationZ - 0.2)) {
-			if (player.locationY < 8) {
-				player.locationX = currentX;
-				player.locationY = currentY;
-				player.locationZ = currentZ;
-			}
+//		if (maze.isWall(player.locationX, player.locationZ + 0.2)
+//				|| maze.isWall(player.locationX - 0.2, player.locationZ + 0.2)
+//				|| maze.isWall(player.locationX + 0.2, player.locationZ - 0.2)
+//				|| maze.isWall(player.locationX - 0.2, player.locationZ - 0.2)) {
+//			if (player.locationY < 8) {
+//				player.locationX = currentX;
+//				player.locationY = currentY;
+//				player.locationZ = currentZ;
+//			}
+//
+//		}
 
-		}
-
-		if (maze.isExit(player.locationX, player.locationZ)) {
-			Sound.applause.play();
-			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-			player.locationY = maze.SQUARE_SIZE / 2;
-			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-			try {
-				maze.loadMaze("level1");
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		if (maze.isExit(player.locationX, player.locationZ)) {
+//			Sound.applause.play();
+//			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+//			player.locationY = maze.SQUARE_SIZE / 2;
+//			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+//			try {
+//				maze.loadMaze("level1");
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	/**

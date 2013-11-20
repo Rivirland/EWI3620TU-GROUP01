@@ -45,7 +45,7 @@ public class Player extends GameObject {
 		super( x, y, z );
 		horAngle = h;
 		verAngle = v;
-		speed = 0.01;
+		speed = .01;
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class Player extends GameObject {
 	{
 		if (control != null){
 			control.update(drawable);
-
+			
 			double i = -1;
 			this.horAngle = this.getHorAngle() - i*control.getdX();
 			this.verAngle = this.getVerAngle() - i*control.getdY();
@@ -161,6 +161,8 @@ public class Player extends GameObject {
 					locationY=2.5;
 				}
 			}
+//			System.out.print("X: "+ locationX + "   ");
+//			System.out.println("Z: "+ locationZ);
 		}
 	}
 	

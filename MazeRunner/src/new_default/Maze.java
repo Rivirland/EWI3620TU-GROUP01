@@ -37,27 +37,26 @@ public class Maze implements VisibleObject {
 
 	public int MAZE_SIZE_X=0;
 	public int MAZE_SIZE_Z=0;
+
 	public final double SQUARE_SIZE = 5;
+	public final double WALL_LENGTH=6;
+	public final double WALL_WIDTH=1;
+	public final double COLUMN_WIDTH=1;
+	public final double ITEM_HEIGHT=5;
 	public int mazeX, mazeY, mazeZ;
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
-	public Maze(double n) {
+	public Maze(File filename) {
 		try {
-			loadMaze("level1");
+			loadMaze(filename);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
 	}
-	public void loadMaze(String mazeFileName) throws FileNotFoundException{
-		String currentdir = System.getProperty("user.dir");
-		String filename = "\\levels\\" + mazeFileName + ".txt";
-		
-		filename = currentdir+filename;
-		File infile = new File(filename);
-		
+	public void loadMaze(File infile) throws FileNotFoundException{
 		try {
 			loadMazeSize(infile);
 			
@@ -214,7 +213,8 @@ public class Maze implements VisibleObject {
 
 	public void display(GL gl) {
 		GLUT glut = new GLUT();
-
+		gl.glPushMatrix();
+		gl.glTranslated(mazeX, mazeY, mazeZ);
 		// Setting the wall colour and material.
 		float wallColour[] = { 1.0f, 0.0f, 1.0f, 1.0f }; // The walls are
 															// purple.
@@ -225,22 +225,34 @@ public class Maze implements VisibleObject {
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
-				gl.glPushMatrix();
-				//gl.glScaled(1, maze[i][j], 1);
-				gl.glTranslated(i * SQUARE_SIZE, 0.0, j * SQUARE_SIZE);
 				if (isWall(i, j)){
-					for (int heigth = 0; heigth < maze[i][j]; heigth++){				
-						paintWallFromQuad(gl, heigth*SQUARE_SIZE);
+					
+					for (int height = 0; height < maze[i][j]; height++){		
+						gl.glPushMatrix();
+						double xtrans = Math.floor(((double)i+1)/2)*COLUMN_WIDTH + Math.floor((double)i/2)*WALL_LENGTH;
+						double ztrans = Math.floor(((double)j+1)/2)*COLUMN_WIDTH + Math.floor((double)j/2)*WALL_LENGTH;
+						gl.glTranslated(xtrans, 0.0, ztrans);
+						if (i%2==0 && j%2==0){
+							paintColumnFromQuad(gl, height*ITEM_HEIGHT);
+						}
+						if (i%2!=0 && j%2==0){
+							paintWallZFromQuad(gl, height*ITEM_HEIGHT);
+						}
+						if (i%2==0 && j%2!=0){
+							paintWallXFromQuad(gl, height*ITEM_HEIGHT);
+						}
+						gl.glPopMatrix();
+						
 					}
-					paintRoof(gl, maze[i][j] * SQUARE_SIZE);
+					// paintRoof(gl, maze[i][j] * SQUARE_SIZE);
 				}
-				gl.glPopMatrix();
 			}
 		}
-		paintSingleFloorTile(gl, MAZE_SIZE_X * SQUARE_SIZE, MAZE_SIZE_Z * SQUARE_SIZE); // Paint the floor.
-		paintExit(gl);
 		
-		
+		double xsize=Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH;
+		double zsize=Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH;
+		paintSingleFloorTile(gl, xsize, zsize); // Paint the floor.
+		gl.glPopMatrix();
 	}
 
 	/**
@@ -299,7 +311,7 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(0, 1, 0);	
 		gl.glEnd();
 	}
-	private void paintWallFromQuad(GL gl, double h){
+	private void paintWallZFromQuad(GL gl, double h){
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
 		gl.glBegin (GL.GL_QUAD_STRIP);
@@ -310,30 +322,108 @@ public class Maze implements VisibleObject {
 		gl.glTexCoord2d (0.0, 0.0);
 		gl.glVertex3d (0.0, h, 0.0);
 		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0, SQUARE_SIZE+h, 0.0);
+		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
 		
 		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (SQUARE_SIZE, h, 0.0);
+		gl.glVertex3d (WALL_LENGTH, h, 0.0);
 		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (SQUARE_SIZE, SQUARE_SIZE+h, 0.0);
+		gl.glVertex3d (WALL_LENGTH, ITEM_HEIGHT+h, 0.0);
 		gl.glNormal3d(0, 0, -1);
 		
 		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (SQUARE_SIZE,+h,SQUARE_SIZE);
+		gl.glVertex3d (WALL_LENGTH,+h,WALL_WIDTH);
 		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (SQUARE_SIZE,SQUARE_SIZE+h,SQUARE_SIZE);
+		gl.glVertex3d (WALL_LENGTH,ITEM_HEIGHT+h,WALL_WIDTH);
 		gl.glNormal3d(1, 0, 0);
 		
 		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (0.0,h,SQUARE_SIZE);
+		gl.glVertex3d (0.0,h,WALL_WIDTH);
 		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (0.0,SQUARE_SIZE+h,SQUARE_SIZE);
+		gl.glVertex3d (0.0,ITEM_HEIGHT+h,WALL_WIDTH);
 		gl.glNormal3d(0, 0, 1);
 		
 		gl.glTexCoord2d (0.0, 0.0);
 		gl.glVertex3d (0.0,h,0.0);
 		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0,SQUARE_SIZE+h,0.0);
+		gl.glVertex3d (0.0,ITEM_HEIGHT+h,0.0);
+		gl.glNormal3d(-1, 0, 0);
+		
+		gl.glEnd ();
+	}
+	private void paintWallXFromQuad(GL gl, double h){
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
+		gl.glBegin (GL.GL_QUAD_STRIP);
+		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		// TODO: light shading on walls
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0, h, 0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
+		
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (WALL_WIDTH, h, 0.0);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (WALL_WIDTH, ITEM_HEIGHT+h, 0.0);
+		gl.glNormal3d(0, 0, -1);
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (WALL_WIDTH,+h,WALL_LENGTH);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (WALL_WIDTH,ITEM_HEIGHT+h,WALL_LENGTH);
+		gl.glNormal3d(1, 0, 0);
+		
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (0.0,h,WALL_LENGTH);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (0.0,ITEM_HEIGHT+h,WALL_LENGTH);
+		gl.glNormal3d(0, 0, 1);
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0,h,0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0,ITEM_HEIGHT+h,0.0);
+		gl.glNormal3d(-1, 0, 0);
+		
+		gl.glEnd ();
+	}
+	private void paintColumnFromQuad(GL gl, double h){
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
+		gl.glBegin (GL.GL_QUAD_STRIP);
+		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		// TODO: light shading on walls
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0, h, 0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
+		
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (COLUMN_WIDTH, h, 0.0);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (COLUMN_WIDTH, ITEM_HEIGHT+h, 0.0);
+		gl.glNormal3d(0, 0, -1);
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (COLUMN_WIDTH,+h,COLUMN_WIDTH);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (COLUMN_WIDTH,ITEM_HEIGHT+h,COLUMN_WIDTH);
+		gl.glNormal3d(1, 0, 0);
+		
+		gl.glTexCoord2d (1.0, 0.0);
+		gl.glVertex3d (0.0,h,COLUMN_WIDTH);
+		gl.glTexCoord2d (1.0, 1.0);
+		gl.glVertex3d (0.0,ITEM_HEIGHT+h,COLUMN_WIDTH);
+		gl.glNormal3d(0, 0, 1);
+		
+		gl.glTexCoord2d (0.0, 0.0);
+		gl.glVertex3d (0.0,h,0.0);
+		gl.glTexCoord2d (0.0, 1.0);
+		gl.glVertex3d (0.0,ITEM_HEIGHT+h,0.0);
 		gl.glNormal3d(-1, 0, 0);
 		
 		gl.glEnd ();
