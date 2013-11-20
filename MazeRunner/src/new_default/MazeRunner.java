@@ -51,7 +51,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private GLCanvas canvas;
 
-	private int screenWidth = 1600, screenHeight = 900; // Screen size.
+	private int screenWidth = 900, screenHeight = 900; // Screen size.
 	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
 														// will be displayed on
 														// screen.
@@ -407,6 +407,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 		double currentZ = player.getLocationZ();
 		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
+		
+		if(player.collides(level)){
+			player.update(-deltaTime, drawable);
+		}
+		
 //		if (maze.isWall(player.locationX, player.locationZ + 0.2)
 //				|| maze.isWall(player.locationX - 0.2, player.locationZ + 0.2)
 //				|| maze.isWall(player.locationX + 0.2, player.locationZ - 0.2)

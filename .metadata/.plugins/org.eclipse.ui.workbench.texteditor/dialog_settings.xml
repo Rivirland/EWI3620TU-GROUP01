@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="LINE" key="selection"/>
+		<item value="loadTe" key="selection"/>
 		<list key="findhistory">
+			<item value="loadTe"/>
+			<item value="level"/>
+			<item value="paintSingleFl"/>
 			<item value="Line"/>
 			<item value="LINES"/>
 			<item value="FILL"/>
 			<item value="drawable"/>
 			<item value="println"/>
-			<item value="printM"/>
-			<item value="system.out.p"/>
-			<item value="is"/>
 		</list>
 		<list key="replacehistory">
 			<item value="LINES"/>

@@ -44,17 +44,18 @@ public class Maze implements VisibleObject {
 	public final double COLUMN_WIDTH=1;
 	public final double ITEM_HEIGHT=5;
 	public int mazeX, mazeY, mazeZ;
+	public int maxX, maxZ, minX, minZ, mazeID;
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
-	public Maze(File filename) {
+	public Maze(File filename, int i) {
 		try {
 			loadMaze(filename);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+		mazeID = i;	
 	}
 	public void loadMaze(File infile) throws FileNotFoundException{
 		try {
@@ -89,7 +90,32 @@ public class Maze implements VisibleObject {
         MAZE_SIZE_X = row;
         MAZE_SIZE_Z = col;
         System.out.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
-        maze=new int[MAZE_SIZE_X][MAZE_SIZE_Z]; 
+        maze=new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	}
+	
+	public int getMaxX(){
+		return this.maxX;
+	}
+	public int getMinX(){
+		return this.minX;
+	}
+	public int getMaxZ(){
+		return this.maxZ;
+	}
+	public int getMinZ(){
+		return this.minZ;
+	}
+	public int getMazeID(){
+		return this.mazeID;
+	}
+	public int getMazeX(){
+		return this.mazeX;
+	}
+	public int getMazeY(){
+		return this.mazeY;
+	}
+	public int getMazeZ(){
+		return this.mazeZ;
 	}
 	
 	private void buildMaze(File file) throws IOException{
@@ -117,6 +143,10 @@ public class Maze implements VisibleObject {
         System.out.println(mazeX + ", " + mazeY + ", " + mazeZ);
         bufRdr.close();
         printMatrix();
+        minX = mazeX;
+        minZ = mazeZ;
+        maxX = (int) (minX + Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH);
+        maxZ = (int) (minZ + Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH);
 
       }
 		

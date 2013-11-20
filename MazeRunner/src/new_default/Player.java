@@ -165,5 +165,19 @@ public class Player extends GameObject {
 //			System.out.println("Z: "+ locationZ);
 		}
 	}
+
+	public boolean collides(Level level) {
+		for (int i = 0; i<level.getAantal(); i++){
+			Maze maze = level.getMaze(i);
+//			System.out.println("locX: "+ locationX + ", locZ: " + locationZ); 
+//			System.out.println("MinX: " + maze.getMinX());
+//			System.out.println("MaxX: " + maze.getMaxX());
+//			System.out.println("MinZ: " + maze.getMinZ());
+//			System.out.println("MaxZ: " + maze.getMaxZ());
+			if(locationX > maze.getMinX() && locationX < maze.getMaxX() && locationZ > maze.getMinZ() && locationZ < maze.getMaxZ())
+				System.out.println("Yo, je bent in maze " + maze.getMazeID());
+		}
+		return false;
+	}
 	
 }
