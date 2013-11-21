@@ -72,12 +72,16 @@ public class Enemy extends GameObject implements VisibleObject {
 	}
 
 	public void update(int deltaTime) {
-		if (patrol) {
-			updateMovementPatrol();
-		}
-		if (!patrol) {
-			updateMovementFollow();
-		}
+		Player player = new_default.MazeRunner.getPlayer();
+	
+		
+//		if (patrol) {
+//			updateMovementPatrol(player);
+//		}
+//		
+//		if (!patrol) {
+//			updateMovementFollow(player);
+//		}
 		// Player player = new_default.MazeRunner.getPlayer();
 		if (west) {
 			locationX -= speed * deltaTime;
@@ -95,7 +99,7 @@ public class Enemy extends GameObject implements VisibleObject {
 		// System.out.println(" " + getZ());
 	}
 
-	public void updateMovementPatrol() {
+	public void updateMovementPatrol(Player player) {
 		east = false;
 		west = false;
 		north = false;
@@ -111,12 +115,11 @@ public class Enemy extends GameObject implements VisibleObject {
 		}
 	}
 
-	public void updateMovementFollow() {
+	public void updateMovementFollow(Player player) {
 		east = false;
 		west = false;
 		north = false;
 		south = false;
-		Player player = new_default.MazeRunner.getPlayer();
 		double xdiff = player.getLocationX() - getX();
 		double zdiff = player.getLocationZ() - getZ();
 		// System.out.println(player.getLocationX() + " " +
@@ -138,9 +141,9 @@ public class Enemy extends GameObject implements VisibleObject {
 				north = true;
 			}
 		}
-		System.out.print(" " + east + " " + west + " " + north + " " + south
-				+ " ");
-		System.out.println(xdiff + " " + zdiff);
+//		System.out.print(" " + east + " " + west + " " + north + " " + south
+//				+ " ");
+//		System.out.println(xdiff + " " + zdiff);
 
 		double angle = Math.tan(xdiff / zdiff);
 		setHorAngle(angle);

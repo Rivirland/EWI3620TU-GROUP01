@@ -56,8 +56,17 @@ public class Level {
 			i++;
 		}
 	}
+	
 
-	public int whichMazeIsThisObjectIn(GameObject object) {
+	//Returns true if two objects are in the same maze, otherwise it returns false.
+	public int inSameMaze(GameObject object1, GameObject object2){
+		if (getCurrentMaze(object1) == getCurrentMaze(object2)){
+			return getCurrentMaze(object1);
+		}
+		return -1;
+	}	
+	
+	public int getCurrentMaze(GameObject object) {
 		for (int i = 0; i < this.getAantal(); i++) {
 			Maze maze = this.getMaze(i);
 			// You check if you are actually in the maze
@@ -66,7 +75,7 @@ public class Level {
 					&& object.locationZ > maze.getMinZ()
 					&& object.locationZ < maze.getMaxZ()
 					&& object.locationY >= maze.getMazeY()
-					&& object.locationY <= maze.getMazeY() + 5) {
+					&& object.locationY <= maze.getMazeY() + 500) {
 				return i;
 			}
 		}
@@ -78,7 +87,7 @@ public class Level {
 		// If you do not implement a margin (or set it to 0), you can still look
 		// through the walls
 		double margin = 0.2;
-		int i = whichMazeIsThisObjectIn(object);
+		int i = getCurrentMaze(object);
 		if (i != -1) {
 			Maze maze = mazelist.get(i);
 			// You check if there is a wall a non-zero entry on your position.

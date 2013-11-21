@@ -1,4 +1,5 @@
 package new_default;
+
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -51,19 +52,15 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private GLCanvas canvas;
 
-	private int screenWidth = 1900, screenHeight = 1000; // Screen size.
+	private int screenWidth = 900, screenHeight = 1000; // Screen size.
 	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
 														// will be displayed on
 														// screen.
 	public static Player player; // The player object.
 	private Enemy enemy;
-	private Enemy enemy2;
-	private Enemy enemy3;
-	private Enemy enemy4;
 	private Camera camera; // The camera object.
 	private UserInput input; // The user input object that controls the player.
 	private EnemyControl enemyControl;
-	private Maze maze; // The maze.
 	private Level level;
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used
 																			// to
@@ -171,26 +168,26 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		// Add the maze that we will be using.
-		
+
 		level = new Level("level1");
 
-		for(int i=0; i<level.getAantal(); i++){
+		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
 
-		}		
-		
+		}
+
 		// Initialize the player.
-		player = new Player(5,2.5,5,-90, 0);
+		player = new Player(5, 2.5, 5, -90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(),
 				player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
-		
-		//Initialize the enemies.
-		enemy = new Enemy(5,2.5,5,0.04,-90);
+
+		// Initialize the enemies.
+		enemy = new Enemy(5, 2.5, 5, 0.005, -90);
 		enemy.setControl(enemyControl);
 		visibleObjects.add(enemy);
-		
+
 		input = new UserInput(canvas);
 		player.setControl(input);
 	}
@@ -231,89 +228,88 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		// TODO: back-face weer aanzetten
 		// Enable back-face culling.
-//		gl.glCullFace(GL.GL_BACK);
-//		gl.glEnable(GL.GL_CULL_FACE);
+		// gl.glCullFace(GL.GL_BACK);
+		// gl.glEnable(GL.GL_CULL_FACE);
 
 		// Enable Z-buffering.
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
-
-        // Set and enable the lighting.
-        float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; 			// High up in the sky!
-        float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
-        gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
-        gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-        gl.glEnable( GL.GL_LIGHTING );
-        gl.glEnable( GL.GL_LIGHT0 );
+		// Set and enable the lighting.
+		float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; // High up in the
+																// sky!
+		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
+																		// that
+																		// we're
+																		// setting
+																		// Light0.
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT0);
 
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
-		
-        
-    
+
 	}
-	
-	//Loads all the texture and stores them into the memory. We have to keep track of the order ourselves. 
-	//Right now, it is stored like this:
-	//1: earthTexture
-	//2: wallTexture
-	//3: roofTexture
-	public void loadTextures(GL gl){
+
+	// Loads all the texture and stores them into the memory. We have to keep
+	// track of the order ourselves.
+	// Right now, it is stored like this:
+	// 1: earthTexture
+	// 2: wallTexture
+	// 3: roofTexture
+	public void loadTextures(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = "\\textures\\texture.jpg";
-			
-			filename = currentdir+filename;
+
+			filename = currentdir + filename;
 			File file2 = new File(filename);
 			System.out.println(filename);
-            TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
-            earthTexture = TextureIO.newTexture(data2);
-        }
-        catch (IOException exc) {
-        	System.out.println("niet gevonden");
-            exc.printStackTrace();
-            System.exit(1);
-        }
-		
+			TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
+			earthTexture = TextureIO.newTexture(data2);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = "\\textures\\walltexture2.jpg";
-			
-			filename = currentdir+filename;
+
+			filename = currentdir + filename;
 			File file1 = new File(filename);
 			System.out.println(filename);
-            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
-            TextureData data1 = TextureIO.newTextureData(file1, false, "jpg");
-            wallTexture = TextureIO.newTexture(data1);
-        }
-        catch (IOException exc) {
-        	System.out.println("niet gevonden");
-            exc.printStackTrace();
-            System.exit(1);
-        }
-		
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data1 = TextureIO.newTextureData(file1, false, "jpg");
+			wallTexture = TextureIO.newTexture(data1);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = "\\textures\\rooftexture.jpg";
-			
-			filename = currentdir+filename;
+
+			filename = currentdir + filename;
 			File file3 = new File(filename);
 			System.out.println(filename);
-            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
-            TextureData data3 = TextureIO.newTextureData(file3, false, "jpg");
-            roofTexture = TextureIO.newTexture(data3);
-        }
-        catch (IOException exc) {
-        	System.out.println("niet gevonden");
-            exc.printStackTrace();
-            System.exit(1);
-        }
-		
-		
-		
-		
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data3 = TextureIO.newTextureData(file3, false, "jpg");
+			roofTexture = TextureIO.newTexture(data3);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+
 	}
 
 	/**
@@ -339,8 +335,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
-		 
-		
+
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
@@ -406,36 +401,118 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * updateMovement(int) updates the position of all objects that need moving.
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
-	
-	//Updates the player and the enemy movement
+
+	// Updates the player and the enemy movement
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
 		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
-		
-		if(level.collides(player)){
-			player.update(-deltaTime, drawable);
+
+		if (level.collides(player)) {
+//			player.update(-deltaTime, drawable);
 		}
-		
-		if (level.collides(enemy)){
+
+		if (level.inSameMaze(enemy, player) !=0 -1) {
+			int mazeInt = level.getCurrentMaze(player);
+			Maze currentMaze = level.getMaze(mazeInt);
+			double enemyX = enemy.getX();
+			double enemyZ = enemy.getZ();
+			double playerX = player.getLocationX();
+			double playerZ = player.getLocationZ();
+			int enemyMatrixX = currentMaze.coordToMatrixElement(enemyX);
+			int enemyMatrixZ = currentMaze.coordToMatrixElement(enemyZ);
+			int playerMatrixX = currentMaze.coordToMatrixElement(playerX);
+			int playerMatrixZ = currentMaze.coordToMatrixElement(playerZ);
+			System.out.println(playerMatrixX + " " + playerMatrixZ + " " + enemyMatrixX + " " + enemyMatrixZ);
+			if (enemyMatrixX != playerMatrixX && enemyMatrixZ != playerMatrixZ) {
+//				System.out.println("patrol");
+				enemy.updateMovementPatrol(player);				
+			}
+			if (enemyMatrixX == playerMatrixX && enemyMatrixZ == playerMatrixZ) {
+				System.out.println("dood");
+			}
+			if (enemyMatrixX == playerMatrixX && enemyMatrixZ != playerMatrixZ) {
+				System.out.println("zelfde x");
+				int diffZ = enemyMatrixZ - playerMatrixZ;
+				if(diffZ>0){
+					boolean wallDetected = false;
+					for(int i = enemyMatrixZ; i>playerMatrixZ; i--){
+						if(currentMaze.getCoords(enemyMatrixX,i)!=0){
+							wallDetected = true;
+						}
+					}
+					if(wallDetected){
+						enemy.updateMovementPatrol(player);
+					}else{
+						enemy.updateMovementFollow(player);
+					}
+				}
+				else{
+					boolean wallDetected = false;
+					for(int i = enemyMatrixZ; i<playerMatrixZ; i++){
+						if(currentMaze.getCoords(enemyMatrixX,i)!=0){
+							wallDetected = true;
+						}
+					}
+					if(wallDetected){
+						enemy.updateMovementPatrol(player);
+					}else{
+						enemy.updateMovementFollow(player);
+					}
+				}
+			}
+			if (enemyMatrixX != playerMatrixX && enemyMatrixZ == playerMatrixZ) {
+				System.out.println("zelfde z");
+				int diffX = enemyMatrixX - playerMatrixX;
+				if(diffX>0){
+					boolean wallDetected = false;
+					for(int i = enemyMatrixX; i>playerMatrixX; i--){
+						if(currentMaze.getCoords(i,enemyMatrixZ)!=0){
+							wallDetected = true;
+						}
+					}
+					if(wallDetected){
+						enemy.updateMovementPatrol(player);
+					}else{
+						enemy.updateMovementFollow(player);
+					}
+				}
+				else{
+					boolean wallDetected = false;
+					for(int i = enemyMatrixX; i<playerMatrixX; i++){
+						if(currentMaze.getCoords(i,enemyMatrixZ)!=0){
+							wallDetected = true;
+						}
+					}
+					if(wallDetected){
+						enemy.updateMovementPatrol(player);
+					}else{
+						enemy.updateMovementFollow(player);
+					}
+				}
+			}
+			
+
+		}
+
+		if (level.collides(enemy)) {
 			enemy.update(-deltaTime);
-			//If an enemy collides, choose a new random direction for it to move in and then resume moving in that direction
+			// If an enemy collides, choose a new random direction for it to
+			// move in and then resume moving in that direction
 			enemy.setRandomizer((int) (4 * Math.random()));
-			enemy.updateMovementPatrol();
 		}
-		
-		
-//		if (maze.isExit(player.locationX, player.locationZ)) {
-//			Sound.applause.play();
-//			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-//			player.locationY = maze.SQUARE_SIZE / 2;
-//			player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-//			try {
-//				maze.loadMaze("level1");
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
+
+		// if (maze.isExit(player.locationX, player.locationZ)) {
+		// Sound.applause.play();
+		// player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+		// player.locationY = maze.SQUARE_SIZE / 2;
+		// player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+		// try {
+		// maze.loadMaze("level1");
+		// } catch (FileNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
 	}
 
 	/**
@@ -444,7 +521,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * This is done by copying the locations from the Player, since MazeRunner
 	 * runs on a first person view.
 	 */
-	
+
 	private void updateCamera() {
 		camera.setLocationX(player.getLocationX());
 		camera.setLocationY(player.getLocationY());
@@ -453,7 +530,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		camera.setVerAngle(player.getVerAngle());
 		camera.calculateVRP();
 	}
-	public static Player getPlayer(){
+
+	public static Player getPlayer() {
 		return player;
 	}
 
