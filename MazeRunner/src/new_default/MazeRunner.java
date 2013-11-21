@@ -51,11 +51,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private GLCanvas canvas;
 
-	private int screenWidth = 900, screenHeight = 900; // Screen size.
+	private int screenWidth = 1900, screenHeight = 1000; // Screen size.
 	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
 														// will be displayed on
 														// screen.
-	private Player player; // The player object.
+	public static Player player; // The player object.
 	private Enemy enemy;
 	private Camera camera; // The camera object.
 	private UserInput input; // The user input object that controls the player.
@@ -177,13 +177,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}		
 		
 		// Initialize the player.
-		player = new Player(2.5,2.5,2.5,90, 0);
+		player = new Player(5,2.5,5,-90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(),
 				player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
 
-		enemy = new Enemy(5,5,5,0.01);
+		enemy = new Enemy(5,2.5,5,0.004,-90);
 		enemy.setControl(enemyControl);
 		visibleObjects.add(enemy);
 		input = new UserInput(canvas);
@@ -399,28 +399,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
-		double currentX = player.getLocationX();
-		double currentY = player.getLocationY();
-		double currentZ = player.getLocationZ();
 		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
 		
 		if(player.collides(level)){
 			player.update(-deltaTime, drawable);
 		}
-		
-//		if (maze.isWall(player.locationX, player.locationZ + 0.2)
-//				|| maze.isWall(player.locationX - 0.2, player.locationZ + 0.2)
-//				|| maze.isWall(player.locationX + 0.2, player.locationZ - 0.2)
-//				|| maze.isWall(player.locationX - 0.2, player.locationZ - 0.2)) {
-//			if (player.locationY < 8) {
-//				player.locationX = currentX;
-//				player.locationY = currentY;
-//				player.locationZ = currentZ;
-//			}
-//
+//		if (enemy.collides(level)){
+//			enemy.update(-deltaTime);
 //		}
-
+		
 //		if (maze.isExit(player.locationX, player.locationZ)) {
 //			Sound.applause.play();
 //			player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
@@ -449,6 +437,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		camera.setHorAngle(player.getHorAngle());
 		camera.setVerAngle(player.getVerAngle());
 		camera.calculateVRP();
+	}
+	public static Player getPlayer(){
+		return player;
 	}
 
 	/*
