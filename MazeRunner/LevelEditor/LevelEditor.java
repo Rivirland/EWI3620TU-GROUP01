@@ -71,7 +71,7 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 	private boolean gridklik = false;
 	
 	private boolean catalogus = false;
-	
+	private Texture backTexture;
 	private int[][] wereld = {
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -185,6 +185,27 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 		// We have a simple 2D application, so we do not need to check for depth
 		// when rendering.
 		gl.glDisable(GL.GL_DEPTH_TEST);
+		loadTextures(gl, "\\LevelEditor\\EditorBackgroundSmall.png");
+	}
+	public void loadTextures(GL gl, String filename){
+		gl.glEnable(GL.GL_TEXTURE_1D);
+		Texture backTexture = null;
+		try {
+			String currentdir = System.getProperty("user.dir");
+			//String filename = "EditorBackground.png";
+			
+			filename = currentdir+filename;
+			File file = new File(filename);
+			System.out.println(filename);
+            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
+            TextureData data = TextureIO.newTextureData(file, false, "jpg");
+            backTexture = TextureIO.newTexture(data);
+        }
+        catch (IOException exc) {
+        	System.out.println("niet gevonden");
+            exc.printStackTrace();
+            System.exit(1);
+        }
 	}
 
 	@Override
@@ -203,7 +224,7 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		
 		//achtergrond texture
-			//plaatsTexture(gl, "\\LevelEditor\\EditorBackgroundSmall.png", 0, 0, 1920, 1080);
+//		plaatsTexture(gl, 0, 0, 1920, 1080);
 		
 	
 
@@ -1106,26 +1127,7 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 		bestand2.close();
 	}
 	
-	private void plaatsTexture(GL gl, String filename, double xmin, double ymin, double xmax, double ymax) {
-        gl.glEnable(GL.GL_TEXTURE_2D);
-		Texture earthTexture = null;
-		try {
-			String currentdir = System.getProperty("user.dir");
-			//String filename = "EditorBackground.png";
-			
-			filename = currentdir+filename;
-			File file = new File(filename);
-			System.out.println(filename);
-            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
-            TextureData data = TextureIO.newTextureData(file, false, "jpg");
-            earthTexture = TextureIO.newTexture(data);
-        }
-        catch (IOException exc) {
-        	System.out.println("niet gevonden");
-            exc.printStackTrace();
-            System.exit(1);
-        }
-		
+	private void plaatsTexture(GL gl, double xmin, double ymin, double xmax, double ymax) {
 		
 		// Setting the floor color and material.
         //float[] rgba = {1f, 1f, 1f};
@@ -1134,28 +1136,25 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
         //gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
 
         // Apply texture.
-        if(earthTexture != null){
-        	earthTexture.enable();
-        	earthTexture.bind();
+        if(backTexture != null){
+        	backTexture.enable();
+        	gl.glBindTexture (GL.GL_TEXTURE_1D, 1);
         }
 		
-		/*float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f }; // The floor is blue.
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
-																	// materials
-																	// used by
-																	// the
-																	// floor.
-	*/	
-		gl.glNormal3d(0, 1, 0);
+	//	gl.glNormal3d(0, 1, 0);
+//        float wallColour[] = { 0.0f, 1.0f, 1.0f, 1.0f };
+//    	gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);
+        
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2d(0.0,0.0);
 		gl.glVertex2d(xmin/1920*screenWidth, ymin/1080*screenHeight); 
 		gl.glTexCoord2d(1.0,0.0);
 		gl.glVertex2d(xmax/1920*screenWidth, ymin/1080*screenHeight);
-		gl.glTexCoord2d(0.0,1.0);
-		gl.glVertex2d(xmin/1920*screenWidth, ymax/1080*screenHeight);
 		gl.glTexCoord2d(1.0,1.0);
 		gl.glVertex2d(xmax/1920*screenWidth, ymax/1080*screenHeight);
+		gl.glTexCoord2d(0.0,1.0);
+		gl.glVertex2d(xmin/1920*screenWidth, ymax/1080*screenHeight);
+		
 		gl.glEnd();
 
 	}

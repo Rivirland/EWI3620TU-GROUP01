@@ -69,7 +69,6 @@ public class UserInput extends Control implements MouseListener,
 
 	@Override
 	public void mousePressed(MouseEvent event) {
-		
 		x1 = event.getX();
 		y1 = event.getY();
 		x2 = x1;

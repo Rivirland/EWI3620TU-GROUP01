@@ -174,10 +174,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		for(int i=0; i<level.getAantal(); i++){
 			visibleObjects.add(level.getMaze(i));
 
-		}
-	//	maze = new Maze();
-	
-		
+		}		
 		
 		// Initialize the player.
 		player = new Player(2.5,2.5,2.5,90, 0);
@@ -333,7 +330,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
-		
+		 
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();

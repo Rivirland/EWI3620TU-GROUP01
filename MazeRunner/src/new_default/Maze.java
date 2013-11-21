@@ -37,14 +37,15 @@ public class Maze implements VisibleObject {
 
 	public int MAZE_SIZE_X=0;
 	public int MAZE_SIZE_Z=0;
-
+	public final double CELL_SIZE=7;
 	public final double SQUARE_SIZE = 5;
-	public final double WALL_LENGTH=6;
-	public final double WALL_WIDTH=1;
-	public final double COLUMN_WIDTH=1;
+	public final double WALL_WIDTH=0.5;
+	public final double WALL_LENGTH=CELL_SIZE-WALL_WIDTH;
+	public final double COLUMN_WIDTH=WALL_WIDTH;
 	public final double ITEM_HEIGHT=5;
 	public int mazeX, mazeY, mazeZ;
-	public int maxX, maxZ, minX, minZ, mazeID;
+	public int minX, minZ, mazeID;
+	public double maxX, maxZ;
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
@@ -93,13 +94,13 @@ public class Maze implements VisibleObject {
         maze=new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	}
 	
-	public int getMaxX(){
+	public double getMaxX(){
 		return this.maxX;
 	}
 	public int getMinX(){
 		return this.minX;
 	}
-	public int getMaxZ(){
+	public double getMaxZ(){
 		return this.maxZ;
 	}
 	public int getMinZ(){
@@ -116,6 +117,23 @@ public class Maze implements VisibleObject {
 	}
 	public int getMazeZ(){
 		return this.mazeZ;
+	}
+	
+	public int coordToMatrixElement(double input){
+		int res = -1;
+		double sum = 0;
+		int columnWallSwitcher = 0;
+		while(sum < input){
+			if(columnWallSwitcher == 0){
+				sum += COLUMN_WIDTH;
+			}
+			if(columnWallSwitcher == 1){
+				sum += WALL_LENGTH;
+			}
+			columnWallSwitcher = 1 - columnWallSwitcher;
+			res++;
+		}
+		return res;
 	}
 	
 	private void buildMaze(File file) throws IOException{
@@ -145,12 +163,15 @@ public class Maze implements VisibleObject {
         printMatrix();
         minX = mazeX;
         minZ = mazeZ;
-        maxX = (int) (minX + Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH);
-        maxZ = (int) (minZ + Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH);
+        maxX = minX + Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH;//+ COLUMN_WIDTH??
+        maxZ = minZ + Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH;// + COLUMN_WIDTH??
 
       }
 		
 		
+	public int getCoords(int i, int j){
+		return maze[i][j];
+	}
 		
 		
 	public void printMatrix(){
@@ -271,6 +292,9 @@ public class Maze implements VisibleObject {
 						if (i%2==0 && j%2!=0){
 							paintWallXFromQuad(gl, height*ITEM_HEIGHT);
 						}
+						if (i%2!=0 && j%2!=0){
+							paintRoof(gl, ( height+1)*ITEM_HEIGHT );
+						}
 						gl.glPopMatrix();
 						
 					}
@@ -305,8 +329,9 @@ public class Maze implements VisibleObject {
         // Apply texture.
         if(MazeRunner.earthTexture != null){       
         	MazeRunner.earthTexture.enable();
-        	MazeRunner.earthTexture.bind();
+        	gl.glBindTexture (GL.GL_TEXTURE_2D, 1);
         }
+
        
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
@@ -325,19 +350,23 @@ public class Maze implements VisibleObject {
 	private void paintRoof(GL gl, double h){
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 3);
-		gl.glBegin (GL.GL_QUAD_STRIP);
+		gl.glBegin (GL.GL_TRIANGLE_FAN);
 		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
-		// TODO: light shading on walls
+		// TODO: light shading on roof
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
-		
-		gl.glTexCoord2d (0.0, 0.0);
+		gl.glTexCoord2d(0.5, 1.0);
+		gl.glVertex3d (WALL_LENGTH/2, h+2, WALL_LENGTH/2);	
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d (WALL_LENGTH, h, WALL_LENGTH);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d (0.0, h, WALL_LENGTH);
+		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d (0.0, h, 0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0, h, SQUARE_SIZE);
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (SQUARE_SIZE, h, 0.0);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (SQUARE_SIZE, h, SQUARE_SIZE);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d (WALL_LENGTH, h, 0.0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d (WALL_LENGTH, h, WALL_LENGTH);
+		gl.glTexCoord2d(1.0, 0.0);
 		gl.glNormal3d(0, 1, 0);	
 		gl.glEnd();
 	}
