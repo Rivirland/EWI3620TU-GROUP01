@@ -5,20 +5,26 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+//A level consists of several mazes. In this class, we can import mazes from a .txt file and store them into an ArrayList.
+//Because this class contains all the mazes, we also implemented the collision detection here.
 public class Level {
 	private ArrayList<Maze> mazelist;
+	//The amount of mazes.
 	private int aantal;
 
+	//The constructor.
 	public Level(String string) {
 		this.mazelist = new ArrayList<Maze>();
 		this.aantal = 0;
 		leesLevels(string);
 	}
-
+	
+	//Adds a maze toe the mazelist.
 	public void voegToe(Maze maze) {
 		mazelist.add(maze);
 		aantal = aantal + 1;
 	}
+	
 	public int getAantal(){
 		return this.aantal;
 	}
@@ -26,6 +32,8 @@ public class Level {
 		return this.mazelist.get(i);
 	}
 
+	//Reads all the mazes from .txt files. If the base name is level1, it adds level1_1.txt, level1_2.txt etc until
+	//such files do not exist anymore.
 	public void leesLevels(String filename) {
 		String currentdir = System.getProperty("user.dir");
 
@@ -46,16 +54,23 @@ public class Level {
 			i++;
 		}
 	}
+	
+	//This methods detects collision.
 	public boolean collides(GameObject object) {
+		//If you do not implement a margin (or set it to 0), you can still look through the walls
 		double margin = 0.2;
 		for (int i = 0; i < this.getAantal(); i++) {
 			Maze maze = this.getMaze(i);
+			//You check if you are actually in the maze
 			if (object.locationX > maze.getMinX() && object.locationX < maze.getMaxX()
 					&& object.locationZ > maze.getMinZ() && object.locationZ < maze.getMaxZ()
 					&& object.locationY >= maze.getMazeY()
 					&& object.locationY <= maze.getMazeY() + 5) {
 				// Let op dat je dus als je teleporteert naar maximaal mazeY + 5
 				// gaat!
+				//You check if there is a wall a non-zero entry on your position. We translate the 
+				//position into the corresponding matrix element in the maze and also make sure
+				//you do not collide with a roof, since you can walk under them.
 				double x = object.locationX - maze.getMinX();
 				double z = object.locationZ - maze.getMinZ();
 				int newX1 = maze.coordToMatrixElement(x + margin);

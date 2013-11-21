@@ -183,8 +183,6 @@ public class Player extends GameObject {
 					locationY = 2.5;
 				}
 			}
-			// System.out.print("X: "+ locationX + "   ");
-			// System.out.println("Z: "+ locationZ);
 		}
 	}
 

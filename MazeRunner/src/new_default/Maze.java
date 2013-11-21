@@ -58,6 +58,11 @@ public class Maze implements VisibleObject {
 		}
 		mazeID = i;	
 	}
+	
+	//Loads the maze into an int[][]: it goes through the file to determine the matrix size
+	//and then actually fills the matrix with the correct elements. It also stores several
+	//useful properties such as the mazeX,Y and Z to determine where it will be positioned
+	//in the 3D space.
 	public void loadMaze(File infile) throws FileNotFoundException{
 		try {
 			loadMazeSize(infile);
@@ -72,6 +77,8 @@ public class Maze implements VisibleObject {
 		}
 		
 	}
+	
+	//Loads the maze's dimensions.
 	private void loadMazeSize(File file) throws NumberFormatException, IOException{
 		
 		int row = -1;
@@ -119,6 +126,9 @@ public class Maze implements VisibleObject {
 		return this.mazeZ;
 	}
 	
+	//Translates a coordinate to the row/column this column will be found. This method is kind of confusing,
+	//because our matrix design is pretty weird: elements on (even,even) are smaller than elements on (even,odd)
+	//and (odd,even) and elements on (odd,odd) represent a roof.
 	public int coordToMatrixElement(double input){
 		int res = -1;
 		double sum = 0;
@@ -136,6 +146,7 @@ public class Maze implements VisibleObject {
 		return res;
 	}
 	
+	//Fills maze[][] with the right elements.
 	private void buildMaze(File file) throws IOException{
         int row = -1;
         int col = 0;
@@ -173,15 +184,11 @@ public class Maze implements VisibleObject {
 		return maze[i][j];
 	}
 		
-		
+	//Prints the maze.
 	public void printMatrix(){
-		//System.out.println("maze.length= " + maze.length);
-		//System.out.println("maze.[0]length= " + maze[0].length);
 		String res="";
 		for(int i=0; i<maze.length; i++){
-//			System.out.println("i= " + i);
 			for(int j=0; j<maze[0].length; j++){
-//				System.out.println("j= " + j);
 				res=res + maze[i][j] + ",";
 			}
 			res = res + "\n";
@@ -206,6 +213,7 @@ public class Maze implements VisibleObject {
 			return false;
 	}
 	
+	//Basically the same as isWall;
 	public boolean isExit(int x, int z) {
 		if (x == MAZE_SIZE_X-2 && z == MAZE_SIZE_Z-2)
 			return true;
@@ -263,7 +271,6 @@ public class Maze implements VisibleObject {
 	}
 
 	public void display(GL gl) {
-		GLUT glut = new GLUT();
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
 		// Setting the wall colour and material.
@@ -280,18 +287,23 @@ public class Maze implements VisibleObject {
 					
 					for (int height = 0; height < maze[i][j]; height++){		
 						gl.glPushMatrix();
+						//Here you calculate the coordinates for which the bottom left point of the element has to be drawn
 						double xtrans = Math.floor(((double)i+1)/2)*COLUMN_WIDTH + Math.floor((double)i/2)*WALL_LENGTH;
 						double ztrans = Math.floor(((double)j+1)/2)*COLUMN_WIDTH + Math.floor((double)j/2)*WALL_LENGTH;
 						gl.glTranslated(xtrans, 0.0, ztrans);
+						//If it's (even,even), you paint a column
 						if (i%2==0 && j%2==0){
 							paintColumnFromQuad(gl, height*ITEM_HEIGHT);
 						}
+						//(odd,even) paints a wall in the Z-direction
 						if (i%2!=0 && j%2==0){
 							paintWallZFromQuad(gl, height*ITEM_HEIGHT);
 						}
+						//(even,odd) paints a wall in the X-direction
 						if (i%2==0 && j%2!=0){
 							paintWallXFromQuad(gl, height*ITEM_HEIGHT);
 						}
+						//(odd,odd) paints a roof
 						if (i%2!=0 && j%2!=0){
 							paintRoof(gl, ( height+1)*ITEM_HEIGHT );
 						}
@@ -303,6 +315,7 @@ public class Maze implements VisibleObject {
 			}
 		}
 		
+		//Calculates the size of the maze and then draws the floor tile
 		double xsize=Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH;
 		double zsize=Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH;
 		paintSingleFloorTile(gl, xsize, zsize); // Paint the floor.
@@ -318,6 +331,8 @@ public class Maze implements VisibleObject {
 	 * @param size_x
 	 *            the size of the tile
 	 */
+	
+	//Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
         
 		// Setting the floor color and material.
@@ -332,7 +347,7 @@ public class Maze implements VisibleObject {
         	gl.glBindTexture (GL.GL_TEXTURE_2D, 1);
         }
 
-       
+        //Calculate coordinates and the corresponding texture coordinates.
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2d(0.0,0.0);
@@ -347,6 +362,7 @@ public class Maze implements VisibleObject {
 
 	}
 	
+	//Paints a roof using a trianglefan
 	private void paintRoof(GL gl, double h){
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 3);
@@ -370,6 +386,8 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(0, 1, 0);	
 		gl.glEnd();
 	}
+	
+	//Paints a wall in the z-direction
 	private void paintWallZFromQuad(GL gl, double h){
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
@@ -409,6 +427,8 @@ public class Maze implements VisibleObject {
 		
 		gl.glEnd ();
 	}
+
+	//Paints a wall in the X-direction
 	private void paintWallXFromQuad(GL gl, double h){
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
@@ -448,6 +468,8 @@ public class Maze implements VisibleObject {
 		
 		gl.glEnd ();
 	}
+	
+	//Paints a column
 	private void paintColumnFromQuad(GL gl, double h){
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
@@ -488,6 +510,7 @@ public class Maze implements VisibleObject {
 		gl.glEnd ();
 	}
 	
+	//Paints the finish!
 	private void paintExit(GL gl) {
 		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); 

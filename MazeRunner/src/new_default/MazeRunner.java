@@ -185,7 +185,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		camera = new Camera(player.getLocationX(), player.getLocationY(),
 				player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
-
+		
+		//Initialize the enemies.
 		enemy = new Enemy(5,2.5,5,0.04,-90);
 		enemy.setControl(enemyControl);
 		visibleObjects.add(enemy);
@@ -253,6 +254,11 @@ public class MazeRunner extends Frame implements GLEventListener {
     
 	}
 	
+	//Loads all the texture and stores them into the memory. We have to keep track of the order ourselves. 
+	//Right now, it is stored like this:
+	//1: earthTexture
+	//2: wallTexture
+	//3: roofTexture
 	public void loadTextures(GL gl){
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
@@ -262,7 +268,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 			filename = currentdir+filename;
 			File file2 = new File(filename);
 			System.out.println(filename);
-            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
             TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
             earthTexture = TextureIO.newTexture(data2);
         }
@@ -401,7 +406,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * updateMovement(int) updates the position of all objects that need moving.
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
-
+	
+	//Updates the player and the enemy movement
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
 		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
@@ -412,6 +418,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		if (level.collides(enemy)){
 			enemy.update(-deltaTime);
+			//If an enemy collides, choose a new random direction for it to move in and then resume moving in that direction
 			enemy.setRandomizer((int) (4 * Math.random()));
 			enemy.updateMovementPatrol();
 		}

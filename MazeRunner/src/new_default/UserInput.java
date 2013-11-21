@@ -21,6 +21,9 @@ import javax.media.opengl.GLCanvas;
  * @author Mattijs Driel
  * 
  */
+
+//This class implements GameStates. That means that some inputs may have different
+//results, depending on the State the game is currently in.
 public class UserInput extends Control implements MouseListener,
 		MouseMotionListener, KeyListener {
 	int x1, x2, y1, y2;
