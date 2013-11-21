@@ -45,11 +45,39 @@ public class Level {
 			}
 			i++;
 		}
-//		
-//		Maze maze1 = new Maze(file1);
-//		this.voegToe(maze1);
-//		File file2 = new File(filename+"_2.txt");
-//		Maze maze2 = new Maze(file2);
-//		this.voegToe(maze2);
+	}
+	public boolean collides(GameObject object) {
+		double margin = 0.2;
+		for (int i = 0; i < this.getAantal(); i++) {
+			Maze maze = this.getMaze(i);
+			if (object.locationX > maze.getMinX() && object.locationX < maze.getMaxX()
+					&& object.locationZ > maze.getMinZ() && object.locationZ < maze.getMaxZ()
+					&& object.locationY >= maze.getMazeY()
+					&& object.locationY <= maze.getMazeY() + 5) {
+				// Let op dat je dus als je teleporteert naar maximaal mazeY + 5
+				// gaat!
+				double x = object.locationX - maze.getMinX();
+				double z = object.locationZ - maze.getMinZ();
+				int newX1 = maze.coordToMatrixElement(x + margin);
+				int newZ1 = maze.coordToMatrixElement(z);
+				int newX2 = maze.coordToMatrixElement(x - margin);
+				int newZ2 = maze.coordToMatrixElement(z);
+				int newX3 = maze.coordToMatrixElement(x);
+				int newZ3 = maze.coordToMatrixElement(z + margin);
+				int newX4 = maze.coordToMatrixElement(x);
+				int newZ4 = maze.coordToMatrixElement(z - margin);
+				if ((!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getCoords(
+						newX1, newZ1) != 0))
+						|| (!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze
+								.getCoords(newX2, newZ2) != 0))
+						|| (!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze
+								.getCoords(newX3, newZ3) != 0))
+						|| (!(newX4 % 2 == 1 && newZ4 % 2 == 1) && (maze
+								.getCoords(newX4, newZ4) != 0))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

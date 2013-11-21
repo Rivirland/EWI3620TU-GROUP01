@@ -10,10 +10,12 @@ public class Enemy extends GameObject implements VisibleObject {
 	private EnemyControl enemyControl;
 	private double speed;
 	private double horAngle;
-	private boolean left = false;
-	private boolean right = false;
-	private boolean forward = false;
-	private boolean back = false;
+	private boolean west = false;
+	private boolean east = false;
+	private boolean north = false;
+	private boolean south = false;
+	private boolean patrol = true;
+	private int randomizer;
 
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
@@ -27,6 +29,14 @@ public class Enemy extends GameObject implements VisibleObject {
 
 	public EnemyControl getControl() {
 		return this.enemyControl;
+	}
+
+	public void setRandomizer(int r) {
+		this.randomizer = r;
+	}
+
+	public int getRandomizer() {
+		return this.randomizer;
 	}
 
 	public void setHorAngle(double horangle) {
@@ -62,41 +72,50 @@ public class Enemy extends GameObject implements VisibleObject {
 	}
 
 	public void update(int deltaTime) {
-		updateMovement();
-		Player player = new_default.MazeRunner.getPlayer();
-		if (left) {
-			locationX -= Math.sin(Math.toRadians(getHorAngle() + 90)) * speed
-					* deltaTime;
-			locationZ -= Math.cos(Math.toRadians(getHorAngle() + 90)) * speed
-					* deltaTime;
+		if (patrol) {
+			updateMovementPatrol();
 		}
-		if (right) {
-			locationX -= Math.sin(Math.toRadians(getHorAngle() + 270)) * speed
-					* deltaTime;
-			locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270)) * speed
-					* deltaTime;
+		if (!patrol) {
+			updateMovementFollow();
 		}
-		if (forward) {
-			locationX -= Math.sin(Math.toRadians(getHorAngle())) * speed
-					* deltaTime;
-			locationZ -= Math.cos(Math.toRadians(getHorAngle())) * speed
-					* deltaTime;
+		// Player player = new_default.MazeRunner.getPlayer();
+		if (west) {
+			locationX -= speed * deltaTime;
 		}
-		if (back) {
-			locationX -= Math.sin(Math.toRadians(getHorAngle() + 180)) * speed
-					* deltaTime;
-			locationZ -= Math.cos(Math.toRadians(getHorAngle() + 180)) * speed
-					* deltaTime;
+		if (east) {
+			locationX += speed * deltaTime;
+		}
+		if (north) {
+			locationZ -= speed * deltaTime;
+		}
+		if (south) {
+			locationZ += speed * deltaTime;
 		}
 		// System.out.print(getX());
 		// System.out.println(" " + getZ());
 	}
 
-	public void updateMovement() {
-		right = false;
-		left = false;
-		forward = false;
-		back = false;
+	public void updateMovementPatrol() {
+		east = false;
+		west = false;
+		north = false;
+		south = false;
+		if (randomizer == 1) {
+			north = true;
+		} else if (randomizer == 2) {
+			west = true;
+		} else if (randomizer == 3) {
+			south = true;
+		} else {
+			east = true;
+		}
+	}
+
+	public void updateMovementFollow() {
+		east = false;
+		west = false;
+		north = false;
+		south = false;
 		Player player = new_default.MazeRunner.getPlayer();
 		double xdiff = player.getLocationX() - getX();
 		double zdiff = player.getLocationZ() - getZ();
@@ -107,61 +126,26 @@ public class Enemy extends GameObject implements VisibleObject {
 
 		if (Math.abs(xdiff) > 0.2) {
 			if (xdiff > 0) {
-				right = true;
+				east = true;
 			} else if (xdiff < 0) {
-				left = true;
+				west = true;
 			}
 		}
 		if (Math.abs(zdiff) > 0.2) {
 			if (zdiff > 0) {
-				back = true;
+				south = true;
 			} else if (zdiff < 0) {
-				forward = true;
+				north = true;
 			}
 		}
-		System.out.print(" " + right + " " + left + " " + forward + " " + back
+		System.out.print(" " + east + " " + west + " " + north + " " + south
 				+ " ");
 		System.out.println(xdiff + " " + zdiff);
 
 		double angle = Math.tan(xdiff / zdiff);
 		setHorAngle(angle);
-
-		// else{
-		// right=false;
-		// left=false;
-		// forward=false;
-		// back=false;
-		// }
 	}
 
-	// public boolean collides(Level level) {
-	// double margin = 0.2;
-	// for (int i = 0; i<level.getAantal(); i++){
-	// Maze maze = level.getMaze(i);
-	// if(locationX > maze.getMinX() && locationX < maze.getMaxX() && locationZ
-	// > maze.getMinZ() && locationZ < maze.getMaxZ() && locationY >=
-	// maze.getMazeY() && locationY <= maze.getMazeY() + 5){
-	// //Let op dat je dus als je teleporteert naar maximaal mazeY + 5 gaat!
-	// double x = locationX - maze.getMinX();
-	// double z = locationZ - maze.getMinZ();
-	// int newX1 = maze.coordToMatrixElement(x+margin);
-	// int newZ1 = maze.coordToMatrixElement(z);
-	// int newX2 = maze.coordToMatrixElement(x-margin);
-	// int newZ2 = maze.coordToMatrixElement(z);
-	// int newX3 = maze.coordToMatrixElement(x);
-	// int newZ3 = maze.coordToMatrixElement(z+margin);
-	// int newX4 = maze.coordToMatrixElement(x);
-	// int newZ4 = maze.coordToMatrixElement(z-margin);
-	// if((!(newX1%2==1 && newZ1%2==1) && (maze.getCoords(newX1,newZ1)!=0)) ||
-	// (!(newX2%2==1 && newZ2%2==1) && (maze.getCoords(newX2,newZ2)!=0)) ||
-	// (!(newX3%2==1 && newZ3%2==1) && (maze.getCoords(newX3,newZ3)!=0)) ||
-	// (!(newX4%2==1 && newZ4%2==1) && (maze.getCoords(newX4,newZ4)!=0))){
-	// return true;
-	// }
-	// }
-	// }
-	// return false;
-	// }
 	@Override
 	public void display(GL gl) {
 

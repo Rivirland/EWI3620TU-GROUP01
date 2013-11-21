@@ -57,6 +57,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 														// screen.
 	public static Player player; // The player object.
 	private Enemy enemy;
+	private Enemy enemy2;
+	private Enemy enemy3;
+	private Enemy enemy4;
 	private Camera camera; // The camera object.
 	private UserInput input; // The user input object that controls the player.
 	private EnemyControl enemyControl;
@@ -183,9 +186,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
 
-		enemy = new Enemy(5,2.5,5,0.004,-90);
+		enemy = new Enemy(5,2.5,5,0.04,-90);
 		enemy.setControl(enemyControl);
 		visibleObjects.add(enemy);
+		
 		input = new UserInput(canvas);
 		player.setControl(input);
 	}
@@ -402,12 +406,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 		player.update(deltaTime, drawable);
 		enemy.update(deltaTime);
 		
-		if(player.collides(level)){
+		if(level.collides(player)){
 			player.update(-deltaTime, drawable);
 		}
-//		if (enemy.collides(level)){
-//			enemy.update(-deltaTime);
-//		}
+		
+		if (level.collides(enemy)){
+			enemy.update(-deltaTime);
+			enemy.setRandomizer((int) (4 * Math.random()));
+			enemy.updateMovementPatrol();
+		}
+		
 		
 //		if (maze.isExit(player.locationX, player.locationZ)) {
 //			Sound.applause.play();

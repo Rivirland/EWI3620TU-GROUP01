@@ -5,71 +5,77 @@ import javax.media.opengl.GLAutoDrawable;
 /**
  * Player represents the actual player in MazeRunner.
  * <p>
- * This class extends GameObject to take advantage of the already implemented location 
- * functionality. Furthermore, it also contains the orientation of the Player, ie. 
- * where it is looking at and the player's speed. 
+ * This class extends GameObject to take advantage of the already implemented
+ * location functionality. Furthermore, it also contains the orientation of the
+ * Player, ie. where it is looking at and the player's speed.
  * <p>
- * For the player to move, a reference to a Control object can be set, which can then
- * be polled directly for the most recent input. 
+ * For the player to move, a reference to a Control object can be set, which can
+ * then be polled directly for the most recent input.
  * <p>
- * All these variables can be adjusted freely by MazeRunner. They could be accessed
- * by other classes if you pass a reference to them, but this should be done with 
- * caution.
+ * All these variables can be adjusted freely by MazeRunner. They could be
+ * accessed by other classes if you pass a reference to them, but this should be
+ * done with caution.
  * 
  * @author Bruno Scheele
- *
+ * 
  */
-public class Player extends GameObject {	
+public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
-	
+
 	private Control control = null;
-	
+
 	/**
 	 * The Player constructor.
 	 * <p>
-	 * This is the constructor that should be used when creating a Player. It sets
-	 * the starting location and orientation.
+	 * This is the constructor that should be used when creating a Player. It
+	 * sets the starting location and orientation.
 	 * <p>
-	 * Note that the starting location should be somewhere within the maze of 
+	 * Note that the starting location should be somewhere within the maze of
 	 * MazeRunner, though this is not enforced by any means.
 	 * 
-	 * @param x		the x-coordinate of the location
-	 * @param y		the y-coordinate of the location
-	 * @param z		the z-coordinate of the location
-	 * @param h		the horizontal angle of the orientation in degrees
-	 * @param v		the vertical angle of the orientation in degrees
+	 * @param x
+	 *            the x-coordinate of the location
+	 * @param y
+	 *            the y-coordinate of the location
+	 * @param z
+	 *            the z-coordinate of the location
+	 * @param h
+	 *            the horizontal angle of the orientation in degrees
+	 * @param v
+	 *            the vertical angle of the orientation in degrees
 	 */
-	public Player( double x, double y, double z, double h, double v ) {
+	public Player(double x, double y, double z, double h, double v) {
 		// Set the initial position and viewing direction of the player.
-		super( x, y, z );
+		super(x, y, z);
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
 	}
-	
+
 	/**
 	 * Sets the Control object that will control the player's motion
 	 * <p>
 	 * The control must be set if the object should be moved.
+	 * 
 	 * @param input
 	 */
-	public void setControl(Control control)
-	{
+	public void setControl(Control control) {
 		this.control = control;
 	}
-	
+
 	/**
 	 * Gets the Control object currently controlling the player
+	 * 
 	 * @return
 	 */
-	public Control getControl()
-	{
+	public Control getControl() {
 		return control;
 	}
 
 	/**
 	 * Returns the horizontal angle of the orientation.
+	 * 
 	 * @return the horAngle
 	 */
 	public double getHorAngle() {
@@ -78,7 +84,9 @@ public class Player extends GameObject {
 
 	/**
 	 * Sets the horizontal angle of the orientation.
-	 * @param horAngle the horAngle to set
+	 * 
+	 * @param horAngle
+	 *            the horAngle to set
 	 */
 	public void setHorAngle(double horAngle) {
 		this.horAngle = horAngle;
@@ -86,6 +94,7 @@ public class Player extends GameObject {
 
 	/**
 	 * Returns the vertical angle of the orientation.
+	 * 
 	 * @return the verAngle
 	 */
 	public double getVerAngle() {
@@ -94,14 +103,17 @@ public class Player extends GameObject {
 
 	/**
 	 * Sets the vertical angle of the orientation.
-	 * @param verAngle the verAngle to set
+	 * 
+	 * @param verAngle
+	 *            the verAngle to set
 	 */
 	public void setVerAngle(double verAngle) {
 		this.verAngle = verAngle;
 	}
-	
+
 	/**
 	 * Returns the speed.
+	 * 
 	 * @return the speed
 	 */
 	public double getSpeed() {
@@ -110,7 +122,9 @@ public class Player extends GameObject {
 
 	/**
 	 * Sets the speed.
-	 * @param speed the speed to set
+	 * 
+	 * @param speed
+	 *            the speed to set
 	 */
 	public void setSpeed(double speed) {
 		this.speed = speed;
@@ -118,76 +132,61 @@ public class Player extends GameObject {
 
 	/**
 	 * Updates the physical location and orientation of the player
-	 * @param deltaTime The time in milliseconds since the last update.
+	 * 
+	 * @param deltaTime
+	 *            The time in milliseconds since the last update.
 	 */
-	public void update(int deltaTime, GLAutoDrawable drawable)
-	{
-		if (control != null){
+	public void update(int deltaTime, GLAutoDrawable drawable) {
+		if (control != null) {
 			control.update(drawable);
-			
+
 			double i = -1;
-			this.horAngle = this.getHorAngle() - i*control.getdX();
-			this.verAngle = this.getVerAngle() - i*control.getdY();
-			//make sure the camera doesn't turn
-			if (this.getVerAngle()>90){
-				this.verAngle=90;
+			this.horAngle = this.getHorAngle() - i * control.getdX();
+			this.verAngle = this.getVerAngle() - i * control.getdY();
+			// make sure the camera doesn't turn
+			if (this.getVerAngle() > 90) {
+				this.verAngle = 90;
+			} else if (this.getVerAngle() < -90) {
+				this.verAngle = -90;
 			}
-			else if (this.getVerAngle()<-90){
-				this.verAngle=-90;
+
+			if (control.forward) {
+				locationX -= Math.sin(Math.toRadians(getHorAngle())) * speed
+						* deltaTime;
+				locationZ -= Math.cos(Math.toRadians(getHorAngle())) * speed
+						* deltaTime;
 			}
-			
-			if(control.forward){
-				locationX -= Math.sin(Math.toRadians(getHorAngle()))*speed*deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle()))*speed*deltaTime;
+			if (control.back) {
+				locationX -= Math.sin(Math.toRadians(getHorAngle() + 180))
+						* speed * deltaTime;
+				locationZ -= Math.cos(Math.toRadians(getHorAngle() + 180))
+						* speed * deltaTime;
 			}
-			if(control.back){
-				locationX -= Math.sin(Math.toRadians(getHorAngle()+180))*speed*deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle()+180))*speed*deltaTime;
+			if (control.left) {
+				locationX -= Math.sin(Math.toRadians(getHorAngle() + 90))
+						* speed * deltaTime;
+				locationZ -= Math.cos(Math.toRadians(getHorAngle() + 90))
+						* speed * deltaTime;
 			}
-			if(control.left){
-				locationX -= Math.sin(Math.toRadians(getHorAngle()+90))*speed*deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle()+90))*speed*deltaTime;
+			if (control.right) {
+				locationX -= Math.sin(Math.toRadians(getHorAngle() + 270))
+						* speed * deltaTime;
+				locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270))
+						* speed * deltaTime;
 			}
-			if(control.right){
-				locationX -= Math.sin(Math.toRadians(getHorAngle()+270))*speed*deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle()+270))*speed*deltaTime;
+			if (control.up) {
+				locationY += speed * deltaTime;
 			}
-			if(control.up){
-				locationY += speed*deltaTime;
-			}
-			if(control.down){
-				locationY -= speed*deltaTime;
-				if(locationY<2.5){
-					locationY=2.5;
+			if (control.down) {
+				locationY -= speed * deltaTime;
+				if (locationY < 2.5) {
+					locationY = 2.5;
 				}
 			}
-//			System.out.print("X: "+ locationX + "   ");
-//			System.out.println("Z: "+ locationZ);
+			// System.out.print("X: "+ locationX + "   ");
+			// System.out.println("Z: "+ locationZ);
 		}
 	}
 
-	public boolean collides(Level level) {
-		double margin = 0.2;
-		for (int i = 0; i<level.getAantal(); i++){
-			Maze maze = level.getMaze(i);
-			if(locationX > maze.getMinX() && locationX < maze.getMaxX() && locationZ > maze.getMinZ() && locationZ < maze.getMaxZ() && locationY >= maze.getMazeY() && locationY <= maze.getMazeY() + 5){
-				//Let op dat je dus als je teleporteert naar maximaal mazeY + 5 gaat!
-				double x = locationX - maze.getMinX();
-				double z = locationZ - maze.getMinZ();
-				int newX1 = maze.coordToMatrixElement(x+margin);
-				int newZ1 = maze.coordToMatrixElement(z);
-				int newX2 = maze.coordToMatrixElement(x-margin);
-				int newZ2 = maze.coordToMatrixElement(z);
-				int newX3 = maze.coordToMatrixElement(x);
-				int newZ3 = maze.coordToMatrixElement(z+margin);
-				int newX4 = maze.coordToMatrixElement(x);
-				int newZ4 = maze.coordToMatrixElement(z-margin);
-				if((!(newX1%2==1 && newZ1%2==1) && (maze.getCoords(newX1,newZ1)!=0)) || (!(newX2%2==1 && newZ2%2==1) && (maze.getCoords(newX2,newZ2)!=0)) || (!(newX3%2==1 && newZ3%2==1) && (maze.getCoords(newX3,newZ3)!=0)) || (!(newX4%2==1 && newZ4%2==1) && (maze.getCoords(newX4,newZ4)!=0))){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
+
 }
