@@ -1,8 +1,0 @@
-package enemy;
-
-public abstract class EnemyControl {
-
-	
-	public abstract void update();
-
-}
