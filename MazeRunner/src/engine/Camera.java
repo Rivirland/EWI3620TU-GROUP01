@@ -1,4 +1,4 @@
-package new_default;
+package engine;
 /**
  * Camera represents the camera player in MazeRunner.
  * <p>

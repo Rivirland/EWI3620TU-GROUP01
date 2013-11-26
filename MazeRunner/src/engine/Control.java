@@ -1,4 +1,7 @@
-package new_default;
+package engine;
+
+import javax.media.opengl.GLAutoDrawable;
+
 /**
  * The Control class is an abstract class containing only basic functionality such
  * as getters for all possible commands.
@@ -17,7 +20,7 @@ package new_default;
  * @author Mattijs Driel
  * 
  */
-public abstract class Control extends GameStateManager
+public abstract class Control
 {
 	protected boolean forward = false;
 	protected boolean back = false;
@@ -26,13 +29,9 @@ public abstract class Control extends GameStateManager
 	protected boolean up = false;
 	protected boolean down= false;
 	protected boolean pause = false;
-	protected GameState gamestate = new GameStatePlay();
 	protected int dX = 0;
 	protected int dY = 0;
 	
-	public GameState getGameState(){
-		return gamestate;
-	}
 	/**
 	 * @return Returns true if forward motion is desired.
 	 */
@@ -75,16 +74,6 @@ public abstract class Control extends GameStateManager
 		return dX;
 	}
 	
-	public void setdX(int dX)
-	{
-		this.dX=dX;
-	}
-	
-	public void setdY(int dY)
-	{
-		this.dY=dY;
-	}
-	
 	/**
 	 * Gets the amount of rotation desired on the vertical plane.
 	 * @return The vertical rotation.
@@ -97,9 +86,16 @@ public abstract class Control extends GameStateManager
 		return pause;
 	}
 	
+	public void setdY(int dY){
+		this.dY=dY;
+	}
+	
+	public void setdX(int dX){
+		this.dX=dX;
+	}
 	/**
 	 * Updates the fields of the Control class to represent the
 	 * most up-to-date values. 
 	 */
-	public abstract void update();
+	public abstract void update(GLAutoDrawable drawable);
 }

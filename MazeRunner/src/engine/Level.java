@@ -1,4 +1,4 @@
-package new_default;
+package engine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -83,10 +83,9 @@ public class Level {
 	}
 
 	// This methods detects collision.
-	public boolean collides(GameObject object) {
+	public boolean collides(GameObject object, double margin) {
 		// If you do not implement a margin (or set it to 0), you can still look
 		// through the walls
-		double margin = 0.2;
 		int i = getCurrentMaze(object);
 		if (i != -1) {
 			Maze maze = mazelist.get(i);

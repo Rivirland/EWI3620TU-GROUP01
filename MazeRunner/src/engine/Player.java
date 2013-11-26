@@ -1,4 +1,4 @@
-package new_default;
+package engine;
 
 import javax.media.opengl.GLAutoDrawable;
 
@@ -22,6 +22,7 @@ import javax.media.opengl.GLAutoDrawable;
 public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
+	public double begX, begY, begZ;
 
 	private Control control = null;
 
@@ -48,6 +49,9 @@ public class Player extends GameObject {
 	public Player(double x, double y, double z, double h, double v) {
 		// Set the initial position and viewing direction of the player.
 		super(x, y, z);
+		this.begX = x;
+		this.begY = y;
+		this.begZ = z;
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
@@ -141,9 +145,13 @@ public class Player extends GameObject {
 			control.update(drawable);
 
 			double i = -1;
+			horAngle = horAngle%360;
 			this.horAngle = this.getHorAngle() - i * control.getdX();
 			this.verAngle = this.getVerAngle() - i * control.getdY();
 			// make sure the camera doesn't turn
+			
+			control.setdX(0);
+			control.setdY(0);
 			if (this.getVerAngle() > 90) {
 				this.verAngle = 90;
 			} else if (this.getVerAngle() < -90) {

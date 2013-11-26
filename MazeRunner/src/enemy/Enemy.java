@@ -2,24 +2,27 @@ package enemy;
 
 import javax.media.opengl.GL;
 
-import new_default.*;
-
 import com.sun.opengl.util.GLUT;
+
+import engine.*;
 
 public class Enemy extends GameObject implements VisibleObject {
 	private EnemyControl enemyControl;
-	private double speed;
+	public double speed;
+	public double begX, begY, begZ;
 	private double horAngle;
 	private boolean west = false;
 	private boolean east = false;
 	private boolean north = false;
 	private boolean south = false;
-	private boolean patrol = true;
 	private int randomizer;
 
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
-		horAngle = h;
+		this.begX = x;
+		this.begY = y;
+		this.begZ = z;
+		this.horAngle = h;
 		this.speed = speed;
 	}
 
@@ -72,7 +75,6 @@ public class Enemy extends GameObject implements VisibleObject {
 	}
 
 	public void update(int deltaTime) {
-		Player player = new_default.MazeRunner.getPlayer();
 	
 		
 //		if (patrol) {
@@ -130,15 +132,18 @@ public class Enemy extends GameObject implements VisibleObject {
 		if (Math.abs(xdiff) > 0.2) {
 			if (xdiff > 0) {
 				east = true;
+				randomizer = 0;
 			} else if (xdiff < 0) {
 				west = true;
+				randomizer = 2;
 			}
-		}
-		if (Math.abs(zdiff) > 0.2) {
+		}if (Math.abs(zdiff) > 0.2) {
 			if (zdiff > 0) {
 				south = true;
+				randomizer = 3;
 			} else if (zdiff < 0) {
 				north = true;
+				randomizer = 1;
 			}
 		}
 //		System.out.print(" " + east + " " + west + " " + north + " " + south
@@ -151,17 +156,19 @@ public class Enemy extends GameObject implements VisibleObject {
 
 	@Override
 	public void display(GL gl) {
-
-		GLUT glut = new GLUT();
 		gl.glColor3d(0.0, 0.0, 1.0);
 		gl.glPushMatrix();
 
 		gl.glTranslated(getX(), 2.5, getZ());
-		glut.glutSolidSphere(1, 30, 30);
+		drawEnemy(gl);
 
 		gl.glPopMatrix();
 		gl.glFlush(); // Flush drawing routines
-
+	}
+	
+	public void drawEnemy(GL gl){
+		GLUT glut = new GLUT();
+		glut.glutSolidSphere(1,10,10);
 	}
 
 }

@@ -1,4 +1,4 @@
-package new_default;
+package engine;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +42,7 @@ public class Maze implements VisibleObject {
 	public final double WALL_WIDTH=0.5;
 	public final double WALL_LENGTH=CELL_SIZE-WALL_WIDTH;
 	public final double COLUMN_WIDTH=WALL_WIDTH;
-	public final double ITEM_HEIGHT=1 ;
+	public final double ITEM_HEIGHT=5;
 	public int mazeX, mazeY, mazeZ;
 	public int minX, minZ, mazeID;
 	public double maxX, maxZ;
