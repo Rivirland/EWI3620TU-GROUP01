@@ -4,7 +4,6 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -41,14 +40,14 @@ public class UserInput extends Control implements MouseListener,
 	private Robot robot;
 	private Point mouseLocation;
 	private Point centerLocation;
-	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
+//	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
 										// on
 	private boolean isRecentering;
 	private boolean mouselookMode = false;
-	private Cursor cursor;
+//	private Cursor cursor;
 	private boolean mousechange = false;
 	// private Cursor invisibleCursor;
-	private Window window;
+//	private Window window;
 
 	Cursor invisibleCursor;
 	Cursor normalCursor;
@@ -92,7 +91,7 @@ public class UserInput extends Control implements MouseListener,
 		// canvas.setCursor(invisibleCursor);
 		mouseLocation = new Point();
 		centerLocation = new Point();
-		relativeMouseMode = true;
+//		relativeMouseMode = true;
 		isRecentering = true;
 
 		try {

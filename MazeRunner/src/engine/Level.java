@@ -1,8 +1,6 @@
 package engine;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
 //A level consists of several mazes. In this class, we can import mazes from a .txt file and store them into an ArrayList.
@@ -56,16 +54,16 @@ public class Level {
 			i++;
 		}
 	}
-	
 
-	//Returns true if two objects are in the same maze, otherwise it returns false.
-	public int inSameMaze(GameObject object1, GameObject object2){
-		if (getCurrentMaze(object1) == getCurrentMaze(object2)){
+	// Returns true if two objects are in the same maze, otherwise it returns
+	// false.
+	public int inSameMaze(GameObject object1, GameObject object2) {
+		if (getCurrentMaze(object1) == getCurrentMaze(object2)) {
 			return getCurrentMaze(object1);
 		}
 		return -1;
-	}	
-	
+	}
+
 	public int getCurrentMaze(GameObject object) {
 		for (int i = 0; i < this.getAantal(); i++) {
 			Maze maze = this.getMaze(i);
@@ -75,7 +73,7 @@ public class Level {
 					&& object.locationZ > maze.getMinZ()
 					&& object.locationZ < maze.getMaxZ()
 					&& object.locationY >= maze.getMazeY()
-					&& object.locationY <= maze.getMazeY() + 500) {
+					&& object.locationY <= maze.getMazeY() + 5) {
 				return i;
 			}
 		}

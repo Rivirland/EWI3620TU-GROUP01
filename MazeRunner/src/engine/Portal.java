@@ -1,7 +1,5 @@
 package engine;
 
-import java.util.Vector;
-
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
@@ -126,7 +124,7 @@ public class Portal {
 		gl.glRotatef(facingdirection*90, 0, 1, 0); 
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-		gl.glDisable(GL.GL_CULL_FACE);
+//		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 		
 		
@@ -151,7 +149,7 @@ public class Portal {
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glCullFace(GL.GL_BACK);
-		gl.glEnable(GL.GL_CULL_FACE);
+//		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glPopMatrix();
 		//gl.glLoadIdentity();
 		

@@ -1,16 +1,16 @@
 package engine;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.GLUT;
+import PickupItems.Item;
+import PickupItems.Trap;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -46,6 +46,8 @@ public class Maze implements VisibleObject {
 	public int mazeX, mazeY, mazeZ;
 	public int minX, minZ, mazeID;
 	public double maxX, maxZ;
+	public ArrayList<Item> itemList = new ArrayList<Item>();
+	
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
@@ -57,6 +59,9 @@ public class Maze implements VisibleObject {
 			e.printStackTrace();
 		}
 		mazeID = i;	
+		// TODO: init items
+		itemList.add(new Trap(5,2.5,10));
+		itemList.add(new Trap(10,2.5,5));
 	}
 	
 	//Loads the maze into an int[][]: it goes through the file to determine the matrix size
@@ -273,6 +278,7 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
+		displayItems(gl);
 		// Setting the wall colour and material.
 		float wallColour[] = { 1.0f, 0.0f, 1.0f, 1.0f }; // The walls are
 															// purple.
@@ -322,6 +328,12 @@ public class Maze implements VisibleObject {
 		gl.glPopMatrix();
 	}
 
+	private void displayItems(GL gl) {
+		for(int i=0; i<itemList.size();i++){
+			itemList.get(i).display(gl);
+		}
+	}
+
 	/**
 	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent
 	 * the floor of the entire maze.
@@ -367,7 +379,7 @@ public class Maze implements VisibleObject {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 3);
 		gl.glBegin (GL.GL_TRIANGLE_FAN);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		
 		// TODO: light shading on roof
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
 		gl.glTexCoord2d(0.5, 1.0);
@@ -382,8 +394,7 @@ public class Maze implements VisibleObject {
 		gl.glVertex3d (WALL_LENGTH, h, 0.0);
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d (WALL_LENGTH, h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glNormal3d(0, 1, 0);	
+		gl.glTexCoord2d(1.0, 0.0);	
 		gl.glEnd();
 	}
 	
@@ -392,7 +403,7 @@ public class Maze implements VisibleObject {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
 		gl.glBegin (GL.GL_QUAD_STRIP);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		
 		// TODO: light shading on walls
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
 		
@@ -433,7 +444,7 @@ public class Maze implements VisibleObject {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
 		gl.glBegin (GL.GL_QUAD_STRIP);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		
 		// TODO: light shading on walls
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
 		
@@ -474,13 +485,13 @@ public class Maze implements VisibleObject {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
 		gl.glBegin (GL.GL_QUAD_STRIP);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		
 		// TODO: light shading on walls
 //		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
 		
 		gl.glTexCoord2d (0.0, 0.0);
 		gl.glVertex3d (0.0, h, 0.0);
-		gl.glTexCoord2d (0.0, 1.0);
+		gl.glTexCoord2d (0.0, 1.0); 
 		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
 		
 		gl.glTexCoord2d (1.0, 0.0);
@@ -499,7 +510,7 @@ public class Maze implements VisibleObject {
 		gl.glVertex3d (0.0,h,COLUMN_WIDTH);
 		gl.glTexCoord2d (1.0, 1.0);
 		gl.glVertex3d (0.0,ITEM_HEIGHT+h,COLUMN_WIDTH);
-		gl.glNormal3d(0, 0, 1);
+		gl.glNormal3d(0, 0, -1);
 		
 		gl.glTexCoord2d (0.0, 0.0);
 		gl.glVertex3d (0.0,h,0.0);
@@ -508,19 +519,5 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(-1, 0, 0);
 		
 		gl.glEnd ();
-	}
-	
-	//Paints the finish!
-	private void paintExit(GL gl) {
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); 
-		
-		gl.glNormal3d(0, 1, 0);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3d((MAZE_SIZE_X-1)*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-1)*SQUARE_SIZE);
-		gl.glVertex3d((MAZE_SIZE_X-1)*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-1)*SQUARE_SIZE);
-		gl.glEnd();
 	}
 }

@@ -152,10 +152,10 @@ public class Player extends GameObject {
 			
 			control.setdX(0);
 			control.setdY(0);
-			if (this.getVerAngle() > 90) {
-				this.verAngle = 90;
-			} else if (this.getVerAngle() < -90) {
-				this.verAngle = -90;
+			if (this.getVerAngle() > 89) {
+				this.verAngle = 89;
+			} else if (this.getVerAngle() < -89) {
+				this.verAngle = -89;
 			}
 
 			if (control.forward) {
