@@ -1,7 +1,12 @@
 package new_default;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 
-import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 
 /**
@@ -21,17 +26,33 @@ import javax.media.opengl.GLCanvas;
  * @author Mattijs Driel
  * 
  */
-
-//This class implements GameStates. That means that some inputs may have different
-//results, depending on the State the game is currently in.
 public class UserInput extends Control implements MouseListener,
-		MouseMotionListener, KeyListener {
+		MouseMotionListener, KeyListener, Runnable {
 	int x1, x2, y1, y2;
 	GameState gamestatePause = new GameStatePause();
 	GameState gamestatePlay = new GameStatePlay();
+	
+	// fields for mouselook, uit het boek Developing games in Java door David Brackeen
+	
+	private Robot robot;
+	private Point mouseLocation;
+	private Point centerLocation;
+	private boolean relativeMouseMode; // to turn this mode (mouselook) off or on
+	private boolean isRecentering;
+	private boolean mouselookMode=false;
+	private Cursor cursor;
+	private  boolean mousechange=false;
+	//private Cursor invisibleCursor;
+	private Window window;
+	
+	Cursor invisibleCursor;
+	Cursor normalCursor;
+	
 
+	private GLCanvas canvas;
 	// TODO: Add fields to help calculate mouse movement
 
+	
 	/**
 	 * UserInput constructor.
 	 * <p>
@@ -45,23 +66,93 @@ public class UserInput extends Control implements MouseListener,
 		canvas.addMouseListener(this);
 		canvas.addMouseMotionListener(this);
 		canvas.addKeyListener(this);
+		this.canvas = canvas;
+		init(canvas);
+		
 	}
 
+	// method to put in init
+	
+	
+	// nog implimenteren als het window wordt verschoven via mouselook == false en daarna mouselook ==true weer wordt ingevoerd, moet de
+	// muis eerst naar het midden van het scherm verplaatst worden voordat de rest doorgaat.
+		public void init(GLCanvas canvas){
+			//window= canvas;
+			
+			invisibleCursor =
+				    Toolkit.getDefaultToolkit().createCustomCursor(
+				    Toolkit.getDefaultToolkit().getImage(""),
+				    new Point(0,0),"invisible");
+			 normalCursor =
+				    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
+			
+			//canvas.setCursor(invisibleCursor);
+			mouseLocation = new Point();
+			centerLocation = new Point();
+			relativeMouseMode = true;
+			isRecentering = true;
+			
+			try{
+				robot = new Robot();
+				if(mouselookMode){
+				recenterMouse(canvas);
+				mouseLocation.x = centerLocation.x;
+				mouseLocation.y = centerLocation.y;
+				}
+			}
+			
+			catch (Exception e){
+				System.out.println("Robot couldn't be made and may not be supported by your system");
+			}
+			
+		}
+		
+		
+		
+
+		
+		// the robot is going to recenter the mouse
+		private void recenterMouse(GLCanvas canvas) {
+			if(robot != null && canvas.isVisible() && mouselookMode ){
+				centerLocation.x = canvas.getWidth() /2;
+				centerLocation.y = canvas.getHeight()/2;
+				// hier swing utilities.convertPointToScreen(centerLocation, canvas)
+				isRecentering = true;
+				robot.mouseMove(centerLocation.x, centerLocation.y);
+				
+			}
+			
+		}
 	/*
 	 * **********************************************
 	 * * Updating * **********************************************
 	 */
 
 	@Override
-	public void update(GLAutoDrawable drawable) {
-		if (gamestate.getStringOfState().equals("play")){
-			dX = x1 - x2;
-			dY = y1 - y2;
-		}
+	public void update() {
+		if (!mouselookMode){
+		dX = x1 - x2;
+		dY = y1 - y2;
 		x1 = x2;
-		y1 = y2;
-	
-		gamestate.doAction(drawable);
+		y1 = y2;}
+		
+		if(mousechange){
+			if (mouselookMode){
+				canvas.setCursor(invisibleCursor);
+				mousechange = false;
+			}else
+			{
+				canvas.setCursor(normalCursor);
+				mousechange = false;
+			}
+		}
+		
+		
+		
+		
+		
+		//gamestate.doAction();
 
 	}
 
@@ -72,17 +163,47 @@ public class UserInput extends Control implements MouseListener,
 
 	@Override
 	public void mousePressed(MouseEvent event) {
+		
+		if (!mouselookMode){
 		x1 = event.getX();
 		y1 = event.getY();
 		x2 = x1;
-		y2 = y1;
+		y2 = y1;}
+		
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent event) {
+		if (!mouselookMode){
 		x2 = event.getX();
-		y2 = event.getY();
+		y2 = event.getY();}
+		else{
+		mouseMoved(event);}
 	}
+	
+	public void mouseMoved(MouseEvent event) {
+		//System.out.println("Mousemoved");
+		/*if (isRecentering && centerLocation.x == event.getX() && centerLocation.y ==event.getY()){
+			isRecentering = false;*/
+		if (isRecentering){
+			isRecentering =false;
+		}
+		else{
+			// maar als de muis terugbeweegt moet dit niet in dX dY gedirigeerd worden
+			dX = -(event.getX()- mouseLocation.x);
+			dY = -(event.getY()- mouseLocation.y);
+			
+			
+			//recenter the mouse
+			recenterMouse(this.canvas);
+			//isRecentering = false;
+		}
+		
+		mouseLocation.x=event.getX();
+		mouseLocation.y=event.getY();
+	}
+	
+	
 
 	@Override
 	public void keyPressed(KeyEvent event) {
@@ -104,6 +225,21 @@ public class UserInput extends Control implements MouseListener,
 			}
 			if (event.getKeyCode() == KeyEvent.VK_X) {
 				down = true;
+			}
+			
+			if (event.getKeyCode()== KeyEvent.VK_P){
+				if (mouselookMode){
+					mouselookMode = false;
+					mousechange=true;
+				}
+					else{mouselookMode = true;
+					mousechange=true;
+					}
+				
+			}
+			
+			if (event.getKeyCode()== KeyEvent.VK_L){
+				//hierin switch voor full screen
 			}
 
 		}
@@ -140,6 +276,8 @@ public class UserInput extends Control implements MouseListener,
 				up = false;
 				down = false;
 			}
+			
+		
 		}
 		else if (gamestate.getStringOfState().equals("pause")) {
 			if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -154,9 +292,8 @@ public class UserInput extends Control implements MouseListener,
 	 * * Unused event handlers * **********************************************
 	 */
 
-	@Override
-	public void mouseMoved(MouseEvent event) {
-	}
+	
+
 
 	@Override
 	public void keyTyped(KeyEvent event) {
@@ -176,6 +313,12 @@ public class UserInput extends Control implements MouseListener,
 
 	@Override
 	public void mouseReleased(MouseEvent event) {
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
