@@ -1,0 +1,18 @@
+package PickupItems;
+
+import javax.media.opengl.GL;
+
+import engine.*;
+
+
+public abstract class Item extends GameObject implements VisibleObject{
+	public int mazeID;
+	
+	public Item(double x, double y, double z, int i) {
+		super(x,y,z);
+		mazeID = i-1;
+	}
+	public abstract void display(GL gl);
+	public abstract boolean collides(Player player);
+	
+}

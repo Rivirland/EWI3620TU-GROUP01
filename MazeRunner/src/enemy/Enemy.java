@@ -101,7 +101,7 @@ public class Enemy extends GameObject implements VisibleObject {
 		// System.out.println(" " + getZ());
 	}
 
-	public void updateMovementPatrol(Player player) {
+	public void updateMovementPatrol() {
 		east = false;
 		west = false;
 		north = false;

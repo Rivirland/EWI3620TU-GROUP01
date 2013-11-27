@@ -6,14 +6,17 @@ import engine.*;
 
 
 public abstract class Item extends GameObject implements VisibleObject{
-
-	public Item(double x, double y, double z) {
+	public int mazeID;
+	
+	public Item(double x, double y, double z, int i) {
 		super(x,y,z);
+		mazeID = i;
 	}
+	
+	public abstract double getGlobalX();
+	public abstract double getGlobalY();
+	public abstract double getGlobalZ();
 	public abstract void display(GL gl);
-	public abstract double getX();
-	public abstract double getY();
-	public abstract double getZ();
-	public abstract boolean collides(Player player);
+	public abstract boolean touches(Player player);
 	
 }

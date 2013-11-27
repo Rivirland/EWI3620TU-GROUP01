@@ -86,7 +86,7 @@ public class Portal {
 				
 				if (previousX<x && playerx>x || previousX>x && playerx<x){ // kijken of bij van x< x van portal naar x > x van portal is gegaan terwijl z binnen de boundary is
 					teleportation = true;
-					System.out.println(teleportation);
+//					System.out.println(teleportation);
 				}
 				
 			}
@@ -98,7 +98,7 @@ public class Portal {
 			if (previousZ<z && playerz>z || previousZ>z && playerz<z){
 				
 				teleportation = true;
-				System.out.println(teleportation);
+//				System.out.println(teleportation);
 			}
 			}
 			// kijken of bij van z< z van portal naar z > z van portal is gegaan terwijl x binnen de boundary is

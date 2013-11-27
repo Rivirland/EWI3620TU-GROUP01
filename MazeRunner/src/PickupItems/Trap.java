@@ -7,9 +7,9 @@ import com.sun.opengl.util.GLUT;
 import engine.*;
 
 public class Trap extends Item {
-
-	public Trap(double x, double y, double z) {
-		super(x, y, z);
+		
+	public Trap(double x, double y, double z, int i) {
+		super(x, y, z, i);
 	}
 
 	@Override
@@ -23,40 +23,32 @@ public class Trap extends Item {
 	}
 
 	@Override
-	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getZ() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public boolean collides(Player player) {
-		int mazeID = MazeRunner.level.getCurrentMaze(this);
-		System.out.println(mazeID);
-		System.out.print("x=" + this.locationX);
-		System.out.print(" y= "+ this.locationY);
-		System.out.println(" z= "+ this.locationZ);
-		double diffX = player.getLocationX()
-				- (this.locationX + MazeRunner.level.getMaze(mazeID).getMazeX());
-		double diffY = player.getLocationY()
-				- (this.locationY + MazeRunner.level.getMaze(mazeID).getMazeY());
-		double diffZ = player.getLocationZ()
-				- (this.locationZ + MazeRunner.level.getMaze(mazeID).getMazeZ());
+	public boolean touches(Player player) {
+//		System.out.println(player.getLocationX());
+//		System.out.println(this.locationX + MazeRunner.level.getMaze(mazeID).getMazeX());
+		double diffX = player.getLocationX() - this.getGlobalX();
+		double diffY = player.getLocationY() - this.getGlobalY();
+		double diffZ = player.getLocationZ() - this.getGlobalZ();
 		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public double getGlobalX() {
+//		System.out.println(MazeRunner.level.getMaze(mazeID).getMazeX());
+		return locationX+MazeRunner.level.getMaze(this.mazeID).getMazeX();
+	}
+
+	@Override
+	public double getGlobalY() {
+		return locationY+MazeRunner.level.getMaze(this.mazeID).getMazeY();
+	}
+
+	@Override
+	public double getGlobalZ() {
+		return locationZ+MazeRunner.level.getMaze(this.mazeID).getMazeZ();
 	}
 
 }
