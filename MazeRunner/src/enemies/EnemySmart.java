@@ -1,77 +1,18 @@
-package enemy;
+package enemies;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
-import engine.*;
+import engine.Maze;
+import engine.MazeRunner;
+import engine.Player;
+import engine.VisibleObject;
 
-public class Enemy extends GameObject implements VisibleObject {
-	private EnemyControl enemyControl;
-	public double speed;
-	public double begX, begY, begZ;
-	private double horAngle;
-	private boolean west = false;
-	private boolean east = false;
-	private boolean north = false;
-	private boolean south = false;
-	private int randomizer;
+public class EnemySmart extends Enemy implements VisibleObject {
 
-	public Enemy(double x, double y, double z, double speed, double h) {
-		super(x, y, z);
-		this.begX = x;
-		this.begY = y;
-		this.begZ = z;
-		this.horAngle = h;
-		this.speed = speed;
-	}
-
-	public void setControl(EnemyControl enemyControl) {
-		this.enemyControl = enemyControl;
-	}
-
-	public EnemyControl getControl() {
-		return this.enemyControl;
-	}
-
-	public void setRandomizer(int r) {
-		this.randomizer = r;
-	}
-
-	public int getRandomizer() {
-		return this.randomizer;
-	}
-
-	public void setHorAngle(double horangle) {
-		this.horAngle = horangle;
-	}
-
-	public double getHorAngle() {
-		return this.horAngle;
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
-
-	public double getSpeed() {
-		return this.speed;
-	}
-
-	public double getX() {
-		return super.locationX;
-	}
-
-	public void setX(double x) {
-		super.locationX = x;
-	}
-
-	public double getZ() {
-		return super.locationZ;
-	}
-
-	public void setZ(double z) {
-		super.locationZ = z;
+	public EnemySmart(double x, double y, double z, double speed, double h) {
+		super(x, y, z, speed, h);
 	}
 
 	public void update(int deltaTime, Player player) {
@@ -119,8 +60,8 @@ public class Enemy extends GameObject implements VisibleObject {
 					player.setLocationZ(player.begZ);
 					for (int resetEnemy = 0; resetEnemy < MazeRunner.enemyList.size(); resetEnemy++) {
 						Enemy resEnemy = MazeRunner.enemyList.get(resetEnemy);
-						resEnemy.setX(resEnemy.begX);
-						resEnemy.setZ(resEnemy.begZ);
+						resEnemy.setLocationX(resEnemy.begX);
+						resEnemy.setLocationZ(resEnemy.begZ);
 					}
 				}
 			}
@@ -188,11 +129,11 @@ public class Enemy extends GameObject implements VisibleObject {
 
 			boolean[] enemyCollide = MazeRunner.level.collides(this, 1);
 			if (enemyCollide[0]) {
-				this.setX(locationX);
+				this.setLocationX(locationX);
 				this.setRandomizer((int) (1 + 3 * Math.random()));
 			}
 			if (enemyCollide[1]) {
-				this.setZ(locationZ);
+				this.setLocationZ(locationZ);
 				int randomNumber = (int) (3 * Math.random());
 				if (randomNumber == 0) {
 					this.setRandomizer(0);
@@ -203,7 +144,7 @@ public class Enemy extends GameObject implements VisibleObject {
 				}
 			}
 			if (enemyCollide[2]) {
-				this.setX(locationX);
+				this.setLocationX(locationX);
 				int randomNumber = (int) (3 * Math.random());
 				if (randomNumber == 0) {
 					this.setRandomizer(0);
@@ -214,24 +155,23 @@ public class Enemy extends GameObject implements VisibleObject {
 				}
 			}
 			if (enemyCollide[3]) {
-				this.setZ(locationZ);
+				this.setLocationZ(locationZ);
 				this.setRandomizer((int) (3 * Math.random()));
 			}
 
 		} else {
-			for (int e = 0; e < MazeRunner.enemyList.size(); e++) {
-				Enemy enemy = MazeRunner.enemyList.get(e);
-				double locationX = this.getX();
-				double locationZ = this.getZ();
+
+				double locationX = this.getLocationX();
+				double locationZ = this.getLocationZ();
 				this.updateMovementPatrol();
 
-				boolean[] enemyCollide = MazeRunner.level.collides(enemy, 1);
+				boolean[] enemyCollide = MazeRunner.level.collides(this, 1);
 				if (enemyCollide[0]) {
-					this.setX(locationX);
+					this.setLocationX(locationX);
 					this.setRandomizer((int) (1 + 3 * Math.random()));
 				}
 				if (enemyCollide[1]) {
-					this.setZ(locationZ);
+					this.setLocationZ(locationZ);
 					int randomNumber = (int) (3 * Math.random());
 					if (randomNumber == 0) {
 						this.setRandomizer(0);
@@ -242,7 +182,7 @@ public class Enemy extends GameObject implements VisibleObject {
 					}
 				}
 				if (enemyCollide[2]) {
-					this.setX(locationX);
+					this.setLocationX(locationX);
 					int randomNumber = (int) (3 * Math.random());
 					if (randomNumber == 0) {
 						this.setRandomizer(0);
@@ -253,12 +193,11 @@ public class Enemy extends GameObject implements VisibleObject {
 					}
 				}
 				if (enemyCollide[3]) {
-					this.setZ(locationZ);
+					this.setLocationZ(locationZ);
 					this.setRandomizer((int) (3 * Math.random()));
 				}
 			}
 
-		}
 		if (west) {
 			locationX -= speed * deltaTime;
 		}
@@ -274,66 +213,13 @@ public class Enemy extends GameObject implements VisibleObject {
 
 	}
 
-	public void updateMovementPatrol() {
-		east = false;
-		west = false;
-		north = false;
-		south = false;
-		if (randomizer == 1) {
-			north = true;
-		} else if (randomizer == 2) {
-			west = true;
-		} else if (randomizer == 3) {
-			south = true;
-		} else {
-			east = true;
-		}
-	}
-
-	public void updateMovementFollow(Player player) {
-		east = false;
-		west = false;
-		north = false;
-		south = false;
-		double xdiff = player.getLocationX() - getX();
-		double zdiff = player.getLocationZ() - getZ();
-		// System.out.println(player.getLocationX() + " " +
-		// player.getLocationZ());
-		// System.out.print(" " + getX());
-		// System.out.println(" " + getZ());
-
-		if (Math.abs(xdiff) > 0.2) {
-			if (xdiff > 0) {
-				east = true;
-				randomizer = 0;
-			} else if (xdiff < 0) {
-				west = true;
-				randomizer = 2;
-			}
-		}
-		if (Math.abs(zdiff) > 0.2) {
-			if (zdiff > 0) {
-				south = true;
-				randomizer = 3;
-			} else if (zdiff < 0) {
-				north = true;
-				randomizer = 1;
-			}
-		}
-		// System.out.print(" " + east + " " + west + " " + north + " " + south
-		// + " ");
-		// System.out.println(xdiff + " " + zdiff);
-
-		double angle = Math.tan(xdiff / zdiff);
-		setHorAngle(angle);
-	}
-
+	
 	@Override
 	public void display(GL gl) {
 		gl.glColor3d(0.0, 0.0, 1.0);
 		gl.glPushMatrix();
 
-		gl.glTranslated(getX(), 2.5, getZ());
+		gl.glTranslated(getLocationX(), 2.5, getLocationZ());
 		drawEnemy(gl);
 
 		gl.glPopMatrix();

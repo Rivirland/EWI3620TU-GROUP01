@@ -8,7 +8,7 @@ public class PlayerStateTrap extends PlayerState {
 	public void itemUse() {
 		if (Player.nrOfTraps > 0) {
 			Player.nrOfTraps--;
-			TrapDropped trapDropped = new TrapDropped(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ(), MazeRunner.level.getCurrentMaze(MazeRunner.player));
+			TrapDropped trapDropped = new TrapDropped(MazeRunner.player.getLocationX(), 1.25f, MazeRunner.player.getLocationZ(), MazeRunner.level.getCurrentMaze(MazeRunner.player));
 			MazeRunner.visibleObjects.add(trapDropped);
 			MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(MazeRunner.player)).itemList.add(trapDropped);
 			System.out.println("Trap dropped, motherfucker! nrOfTraps: "

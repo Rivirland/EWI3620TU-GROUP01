@@ -123,7 +123,7 @@ public class Portal {
 		
 		gl.glRotatef(facingdirection*90, 0, 1, 0); 
 		
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 //		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 		

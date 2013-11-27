@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
-import enemy.Enemy;
+import enemies.Enemy;
 import engine.GameObject;
 import engine.MazeRunner;
 import engine.Player;

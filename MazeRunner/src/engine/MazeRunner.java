@@ -28,8 +28,10 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
-import enemy.Enemy;
-import enemy.EnemyControl;
+import enemies.Enemy;
+import enemies.EnemyControl;
+import enemies.EnemySmart;
+import enemies.EnemySpooky;
 
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
@@ -198,8 +200,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		enemyList.add(new Enemy(20, 2.5, 20, 0.005, -90));
-
+		enemyList.add(new EnemySmart(20, 2.5, 20, 0.005, -90));
+		enemyList.add(new EnemySpooky(20, 2.5, 20, 0.001, -90));
+		
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));

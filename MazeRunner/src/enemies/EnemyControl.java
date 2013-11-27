@@ -1,4 +1,4 @@
-package enemy;
+package enemies;
 
 public abstract class EnemyControl {
 
