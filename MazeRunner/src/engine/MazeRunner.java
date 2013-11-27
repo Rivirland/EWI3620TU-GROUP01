@@ -58,8 +58,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 														// will be displayed on
 														// screen.
 	public static Player player; // The player object.
-	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	private static int enemyListLength;
+	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
+	public static int enemyListLength;
 	// private ArrayList<Item> itemList = new ArrayList<Item>();
 	// private int itemListLength;
 	private Camera camera; // The camera object.
@@ -441,6 +441,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
 		player.update(deltaTime, drawable);
+
 		int currentMazeID = level.getCurrentMaze(player);
 		if (currentMazeID != -1) {
 			Maze currentMaze = level.getMaze(currentMazeID);
@@ -451,201 +452,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 					currentMaze.itemList.remove(i);
 				}
 			}
-
-			for (int e = 0; e < enemyListLength; e++) {
-				Enemy enemy = enemyList.get(e);
-				double enemyX = enemy.getX();
-				double enemyZ = enemy.getZ();
-				enemy.update(deltaTime);
-				if (level.inSameMaze(enemy, player) != -1) {
-					double playerX = player.getLocationX();
-					double playerZ = player.getLocationZ();
-					int enemyMatrixX = currentMaze.coordToMatrixElement(enemyX);
-					int enemyMatrixZ = currentMaze.coordToMatrixElement(enemyZ);
-					int playerMatrixX = currentMaze
-							.coordToMatrixElement(playerX);
-					int playerMatrixZ = currentMaze
-							.coordToMatrixElement(playerZ);
-					// System.out.println(playerMatrixX + " " + playerMatrixZ +
-					// " "
-					// + enemyMatrixX + " " + enemyMatrixZ);
-					if (enemyMatrixX != playerMatrixX
-							&& enemyMatrixZ != playerMatrixZ) {
-						enemy.updateMovementPatrol();
-					}
-					if (enemyMatrixX == playerMatrixX
-							&& enemyMatrixZ == playerMatrixZ) {
-						if (enemyX > playerX) {
-							enemy.locationX -= enemy.speed * deltaTime;
-						}
-						if (enemyX < playerX) {
-							enemy.locationX += enemy.speed * deltaTime;
-						}
-						if (enemyZ > playerZ) {
-							enemy.locationZ -= enemy.speed * deltaTime;
-						}
-						if (enemyZ < playerZ) {
-							enemy.locationZ += enemy.speed * deltaTime;
-						}
-						if (Math.sqrt(Math.pow(enemyZ - playerZ, 2)
-								+ Math.pow(enemyX - playerX, 2)) < 1) {
-							System.out.println("dood!");
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-							player.setLocationX(player.begX);
-							player.setLocationY(player.begY);
-							player.setLocationZ(player.begZ);
-							for (int resetEnemy = 0; resetEnemy < enemyListLength; resetEnemy++) {
-								Enemy resEnemy = enemyList.get(resetEnemy);
-								resEnemy.setX(enemy.begX);
-								resEnemy.setZ(enemy.begZ);
-							}
-						}
-					}
-					if (enemyMatrixX == playerMatrixX
-							&& enemyMatrixZ != playerMatrixZ) {
-						int diffZ = enemyMatrixZ - playerMatrixZ;
-						if (diffZ > 0) {
-							boolean wallDetected = false;
-							for (int i = enemyMatrixZ; i > playerMatrixZ; i--) {
-								if (currentMaze.getCoords(enemyMatrixX, i) != 0
-										&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
-									wallDetected = true;
-								}
-							}
-							if (wallDetected) {
-								enemy.updateMovementPatrol();
-							} else {
-								enemy.updateMovementFollow(player);
-							}
-						} else {
-							boolean wallDetected = false;
-							for (int i = enemyMatrixZ; i < playerMatrixZ; i++) {
-								if (currentMaze.getCoords(enemyMatrixX, i) != 0
-										&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
-									wallDetected = true;
-								}
-							}
-							if (wallDetected) {
-								enemy.updateMovementPatrol();
-							} else {
-								enemy.updateMovementFollow(player);
-							}
-						}
-					}
-					if (enemyMatrixX != playerMatrixX
-							&& enemyMatrixZ == playerMatrixZ) {
-						int diffX = enemyMatrixX - playerMatrixX;
-						if (diffX > 0) {
-							boolean wallDetected = false;
-							for (int i = enemyMatrixX; i > playerMatrixX; i--) {
-								if (currentMaze.getCoords(i, enemyMatrixZ) != 0
-										&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
-									wallDetected = true;
-								}
-							}
-							if (wallDetected) {
-								enemy.updateMovementPatrol();
-							} else {
-								enemy.updateMovementFollow(player);
-							}
-						} else {
-							boolean wallDetected = false;
-							for (int i = enemyMatrixX; i < playerMatrixX; i++) {
-								if (currentMaze.getCoords(i, enemyMatrixZ) != 0
-										&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
-									wallDetected = true;
-								}
-							}
-							if (wallDetected) {
-								enemy.updateMovementPatrol();
-							} else {
-								enemy.updateMovementFollow(player);
-							}
-						}
-					}
-				}
-
-				boolean[] enemyCollide = level.collides(enemy, 1);
-				if (enemyCollide[0]) {
-					enemy.setX(enemyX);
-					enemy.setRandomizer((int) (1 + 3 * Math.random()));
-				}
-				if (enemyCollide[1]) {
-					enemy.setZ(enemyZ);
-					int randomNumber = (int) (3 * Math.random());
-					if (randomNumber == 0) {
-						enemy.setRandomizer(0);
-					} else if (randomNumber == 1) {
-						enemy.setRandomizer(2);
-					} else {
-						enemy.setRandomizer(3);
-					}
-				}
-				if (enemyCollide[2]) {
-					enemy.setX(enemyX);
-					int randomNumber = (int) (3 * Math.random());
-					if (randomNumber == 0) {
-						enemy.setRandomizer(0);
-					} else if (randomNumber == 1) {
-						enemy.setRandomizer(1);
-					} else {
-						enemy.setRandomizer(3);
-					}
-				}
-				if (enemyCollide[3]) {
-					enemy.setZ(enemyZ);
-					enemy.setRandomizer((int) (3 * Math.random()));
-				}
-
-			}
-
-		} else {
-			for (int e = 0; e < enemyListLength; e++) {
-				Enemy enemy = enemyList.get(e);
-				double enemyX = enemy.getX();
-				double enemyZ = enemy.getZ();
-				enemy.updateMovementPatrol();
-				enemy.update(deltaTime);
-				boolean[] enemyCollide = level.collides(enemy, 1);
-				if (enemyCollide[0]) {
-					enemy.setX(enemyX);
-					enemy.setRandomizer((int) (1 + 3 * Math.random()));
-				}
-				if (enemyCollide[1]) {
-					enemy.setZ(enemyZ);
-					int randomNumber = (int) (3 * Math.random());
-					if (randomNumber == 0) {
-						enemy.setRandomizer(0);
-					} else if (randomNumber == 1) {
-						enemy.setRandomizer(2);
-					} else {
-						enemy.setRandomizer(3);
-					}
-				}
-				if (enemyCollide[2]) {
-					enemy.setX(enemyX);
-					int randomNumber = (int) (3 * Math.random());
-					if (randomNumber == 0) {
-						enemy.setRandomizer(0);
-					} else if (randomNumber == 1) {
-						enemy.setRandomizer(1);
-					} else {
-						enemy.setRandomizer(3);
-					}
-				}
-				if (enemyCollide[3]) {
-					enemy.setZ(enemyZ);
-					enemy.setRandomizer((int) (3 * Math.random()));
-				}
-			}
+		}
+		for (int e = 0; e < enemyListLength; e++) {
+			Enemy enemy = enemyList.get(e);
+//			double enemyX = enemy.getX();
+//			double enemyZ = enemy.getZ();
+			enemy.update(deltaTime, player);
 
 		}
-
 		portal1.checkteleportation(player, (float) previousX,
 				(float) previousY, (float) previousZ);
 		portal2.checkteleportation(player, (float) previousX,

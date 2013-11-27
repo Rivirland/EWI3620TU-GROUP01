@@ -144,16 +144,10 @@ public class Player extends GameObject {
 		double previousX = this.getLocationX();
 		double previousY = this.getLocationY();
 		double previousZ = this.getLocationZ();
-		boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
+		
 		
 		if (control != null) {
 			control.update(drawable);
-			if (playerCollide[0] || playerCollide[2]) {
-				this.setLocationX(previousX);
-			}
-			if (playerCollide[1] || playerCollide[3]) {
-				this.setLocationZ(previousZ);
-			}
 			double i = -1;
 			horAngle = horAngle % 360;
 			this.horAngle = this.getHorAngle() - i * control.getdX();
@@ -201,7 +195,15 @@ public class Player extends GameObject {
 					locationY = 2.5;
 				}
 			}
+			boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
+			if (playerCollide[0] || playerCollide[2]) {
+				this.setLocationX(previousX);
+			}
+			if (playerCollide[1] || playerCollide[3]) {
+				this.setLocationZ(previousZ);
+			}
 		}
+		
 	}
 
 }
