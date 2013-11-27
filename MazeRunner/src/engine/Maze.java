@@ -1,5 +1,8 @@
 package engine;
 
+import items.Item;
+import items.TrapHolder;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,9 +12,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
-
-import PickupItems.Item;
-import PickupItems.Trap;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -60,8 +60,8 @@ public class Maze implements VisibleObject {
 		}
 		mazeID = i-1;
 		// TODO: init items
-		itemList.add(new Trap(5, 2.5, 10, mazeID));
-		itemList.add(new Trap(10, 2.5, 5, mazeID));
+		itemList.add(new TrapHolder(5, 2.5, 10, mazeID));
+		itemList.add(new TrapHolder(10, 2.5, 5, mazeID));
 	}
 
 	// Loads the maze into an int[][]: it goes through the file to determine the

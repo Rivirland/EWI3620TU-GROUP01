@@ -1,5 +1,9 @@
 package engine;
 
+import items.Item;
+import items.TrapDropped;
+import items.TrapHolder;
+
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -7,7 +11,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -54,12 +57,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private GLCanvas canvas;
 
 	private int screenWidth = 900, screenHeight = 900; // Screen size.
-	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
-														// will be displayed on
-														// screen.
+	public static ArrayList<VisibleObject> visibleObjects; // A list of objects
+															// that
+															// will be displayed
+															// on
+															// screen.
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	public static int enemyListLength;
 	// private ArrayList<Item> itemList = new ArrayList<Item>();
 	// private int itemListLength;
 	private Camera camera; // The camera object.
@@ -196,9 +200,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Initialize the enemies.
 		enemyList.add(new Enemy(20, 2.5, 20, 0.005, -90));
 
-		enemyListLength = enemyList.size();
-
-		for (int i = 0; i < enemyListLength; i++) {
+		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
@@ -447,17 +449,32 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Maze currentMaze = level.getMaze(currentMazeID);
 
 			for (int i = 0; i < currentMaze.itemList.size(); i++) {
-				if (currentMaze.itemList.get(i).touches(player)) {
-					visibleObjects.remove(currentMaze.itemList.get(i));
-					currentMaze.itemList.remove(i);
+				Item item = currentMaze.itemList.get(i);
+				if (item.touches(player)) {
+					if (item instanceof TrapHolder) {
+						visibleObjects.remove(currentMaze.itemList.get(i));
+						currentMaze.itemList.remove(i);
+					}
 				}
 			}
 		}
-		for (int e = 0; e < enemyListLength; e++) {
+		for (int e = 0; e < enemyList.size(); e++) {
 			Enemy enemy = enemyList.get(e);
-//			double enemyX = enemy.getX();
-//			double enemyZ = enemy.getZ();
+			currentMazeID = level.getCurrentMaze(enemy);
+			Maze currentMaze = level.getMaze(currentMazeID);
+			// double enemyX = enemy.getX();
+			// double enemyZ = enemy.getZ();
 			enemy.update(deltaTime, player);
+			for (int i = 0; i < currentMaze.itemList.size(); i++) {
+				Item item = currentMaze.itemList.get(i);
+				if (item.touches(enemy) && item instanceof TrapDropped) {
+					visibleObjects.remove(enemy);
+					enemyList.remove(enemy);
+					visibleObjects.remove(item);
+					currentMaze.itemList.remove(item);
+
+				}
+			}
 
 		}
 		portal1.checkteleportation(player, (float) previousX,

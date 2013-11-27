@@ -1,0 +1,26 @@
+package engine;
+
+public class PlayerStateTrap extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		//Drop trap
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Entering() {
+		//
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Leaving() {
+		//
+		// TODO Auto-generated method stub
+		
+	}
+
+}

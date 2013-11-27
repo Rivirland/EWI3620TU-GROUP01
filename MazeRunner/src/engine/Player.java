@@ -23,6 +23,9 @@ public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
 	public double begX, begY, begZ;
+	public static int nrOfTraps;
+	public static int nrOfBullets;
+	public static int playerStateInt;
 
 	private Control control = null;
 
@@ -55,6 +58,9 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
+		nrOfTraps = 0;
+		nrOfBullets = 3;
+		playerStateInt = 0;
 	}
 
 	/**
@@ -141,11 +147,11 @@ public class Player extends GameObject {
 	 *            The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime, GLAutoDrawable drawable) {
+		playerStateUpdate();
 		double previousX = this.getLocationX();
 		double previousY = this.getLocationY();
 		double previousZ = this.getLocationZ();
-		
-		
+
 		if (control != null) {
 			control.update(drawable);
 			double i = -1;
@@ -204,6 +210,29 @@ public class Player extends GameObject {
 			}
 		}
 		
+		if (control.itemUse){
+			PlayerState.getState(playerStateInt).itemUse();
+			control.itemUse = false;
+		}
+	}
+
+	public void playerStateUpdate() {
+		if (control.playerStateUp) {
+			control.playerStateUp = false;
+			PlayerState.getState(playerStateInt).leaving();
+			playerStateInt++;
+			playerStateInt = playerStateInt % 3;
+			PlayerState.getState(playerStateInt).entering();
+			
+		}
+		if (control.playerStateDown) {
+			control.playerStateDown = false;
+			PlayerState.getState(playerStateInt).leaving();
+			playerStateInt--;
+			playerStateInt = (playerStateInt+3) % 3;
+			PlayerState.getState(playerStateInt).entering();
+		}
+
 	}
 
 }

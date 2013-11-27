@@ -117,7 +117,7 @@ public class Enemy extends GameObject implements VisibleObject {
 					player.setLocationX(player.begX);
 					player.setLocationY(player.begY);
 					player.setLocationZ(player.begZ);
-					for (int resetEnemy = 0; resetEnemy < MazeRunner.enemyListLength; resetEnemy++) {
+					for (int resetEnemy = 0; resetEnemy < MazeRunner.enemyList.size(); resetEnemy++) {
 						Enemy resEnemy = MazeRunner.enemyList.get(resetEnemy);
 						resEnemy.setX(resEnemy.begX);
 						resEnemy.setZ(resEnemy.begZ);
@@ -219,7 +219,7 @@ public class Enemy extends GameObject implements VisibleObject {
 			}
 
 		} else {
-			for (int e = 0; e < MazeRunner.enemyListLength; e++) {
+			for (int e = 0; e < MazeRunner.enemyList.size(); e++) {
 				Enemy enemy = MazeRunner.enemyList.get(e);
 				double locationX = this.getX();
 				double locationZ = this.getZ();

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="new_default.Level"/>
+<fullyQualifiedTypeName name="engine.MazeRunner"/>
+<fullyQualifiedTypeName name="PickupItems.Trap"/>
+<fullyQualifiedTypeName name="engine.Player"/>
 </qualifiedTypeNameHistroy>

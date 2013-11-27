@@ -29,6 +29,9 @@ public abstract class Control
 	protected boolean up = false;
 	protected boolean down= false;
 	protected boolean pause = false;
+	protected boolean itemUse = false;
+	protected boolean playerStateDown = false;
+	protected boolean playerStateUp = false;
 	protected int dX = 0;
 	protected int dY = 0;
 	
