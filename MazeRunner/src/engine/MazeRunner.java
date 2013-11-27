@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -58,7 +59,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 														// screen.
 	public static Player player; // The player object.
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	private int enemyListLength;
+	private static int enemyListLength;
 	// private ArrayList<Item> itemList = new ArrayList<Item>();
 	// private int itemListLength;
 	private Camera camera; // The camera object.
@@ -440,13 +441,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
 		player.update(deltaTime, drawable);
-		boolean[] playerCollide = level.collides(player, 0.2);
-		if (playerCollide[0] || playerCollide[2]) {
-			player.setLocationX(previousX);
-		}
-		if (playerCollide[1] || playerCollide[3]) {
-			player.setLocationZ(previousZ);
-		}
 		int currentMazeID = level.getCurrentMaze(player);
 		if (currentMazeID != -1) {
 			Maze currentMaze = level.getMaze(currentMazeID);
@@ -574,8 +568,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 							}
 						}
 					}
-				} else {
-					enemy.updateMovementPatrol();
 				}
 
 				boolean[] enemyCollide = level.collides(enemy, 1);
@@ -610,6 +602,46 @@ public class MazeRunner extends Frame implements GLEventListener {
 					enemy.setRandomizer((int) (3 * Math.random()));
 				}
 
+			}
+
+		} else {
+			for (int e = 0; e < enemyListLength; e++) {
+				Enemy enemy = enemyList.get(e);
+				double enemyX = enemy.getX();
+				double enemyZ = enemy.getZ();
+				enemy.updateMovementPatrol();
+				enemy.update(deltaTime);
+				boolean[] enemyCollide = level.collides(enemy, 1);
+				if (enemyCollide[0]) {
+					enemy.setX(enemyX);
+					enemy.setRandomizer((int) (1 + 3 * Math.random()));
+				}
+				if (enemyCollide[1]) {
+					enemy.setZ(enemyZ);
+					int randomNumber = (int) (3 * Math.random());
+					if (randomNumber == 0) {
+						enemy.setRandomizer(0);
+					} else if (randomNumber == 1) {
+						enemy.setRandomizer(2);
+					} else {
+						enemy.setRandomizer(3);
+					}
+				}
+				if (enemyCollide[2]) {
+					enemy.setX(enemyX);
+					int randomNumber = (int) (3 * Math.random());
+					if (randomNumber == 0) {
+						enemy.setRandomizer(0);
+					} else if (randomNumber == 1) {
+						enemy.setRandomizer(1);
+					} else {
+						enemy.setRandomizer(3);
+					}
+				}
+				if (enemyCollide[3]) {
+					enemy.setZ(enemyZ);
+					enemy.setRandomizer((int) (3 * Math.random()));
+				}
 			}
 
 		}

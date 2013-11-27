@@ -149,10 +149,10 @@ public class Player extends GameObject {
 		if (control != null) {
 			control.update(drawable);
 			if (playerCollide[0] || playerCollide[2]) {
-				this.setLocationX(previousX);
+				player.setLocationX(previousX);
 			}
 			if (playerCollide[1] || playerCollide[3]) {
-				this.setLocationZ(previousZ);
+				player.setLocationZ(previousZ);
 			}
 			double i = -1;
 			horAngle = horAngle % 360;
