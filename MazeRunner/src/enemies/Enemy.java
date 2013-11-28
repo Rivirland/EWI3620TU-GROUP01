@@ -63,22 +63,6 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		return this.speed;
 	}
 
-//	public double getX() {
-//		return super.locationX;
-//	}
-
-//	public void setX(double x) {
-//		super.locationX = x;
-//	}
-
-//	public double getZ() {
-//		return super.locationZ;
-//	}
-//
-//	public void setZ(double z) {
-//		super.locationZ = z;
-//	}
-
 	public abstract void update(int deltaTime, Player player);
 
 	public void updateMovementPatrol() {

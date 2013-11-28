@@ -77,7 +77,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// calculate
 																			// elapsed
 																			// time.
-	public static Texture earthTexture, wallTexture, roofTexture;
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 
@@ -183,13 +183,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 		level = new Level("level1");
 
 		portal1 = new Portal(16, 2, 6, 2);
-
 		portal2 = new Portal(56, 2, 16, 2);
 
 		Portal.portalConnection(portal1, portal2);
+		
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
-
 		}
 
 		// Initialize the player.
@@ -200,7 +199,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		enemyList.add(new EnemySmart(70, 2.5, 30, 0.005, -90));
+//		enemyList.add(new EnemySmart(70, 2.5, 30, 0.005, -90));
 //		enemyList.add(new EnemySpooky(70, 2.5, 30, 0.0015, -90));
 
 		for (int i = 0; i < enemyList.size(); i++) {
@@ -217,12 +216,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 					+ level.getMaze(mazeID).itemList.get(0).getGlobalX() + " "
 					+ level.getMaze(mazeID).itemList.get(0).getGlobalY() + " "
 					+ level.getMaze(mazeID).itemList.get(0).getGlobalZ());
-			System.out.println("MazeID: "
-					+ level.getMaze(mazeID).itemList.get(1).mazeID
-					+ ", item 1 op: "
-					+ level.getMaze(mazeID).itemList.get(1).getGlobalX() + " "
-					+ level.getMaze(mazeID).itemList.get(1).getGlobalY() + " "
-					+ level.getMaze(mazeID).itemList.get(1).getGlobalZ());
+//			System.out.println("MazeID: "
+//					+ level.getMaze(mazeID).itemList.get(1).mazeID
+//					+ ", item 1 op: "
+//					+ level.getMaze(mazeID).itemList.get(1).getGlobalX() + " "
+//					+ level.getMaze(mazeID).itemList.get(1).getGlobalY() + " "
+//					+ level.getMaze(mazeID).itemList.get(1).getGlobalZ());
 		}
 	}
 
@@ -294,6 +293,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	// 1: earthTexture
 	// 2: wallTexture
 	// 3: roofTexture
+	// 4: trapHolderTexture
 	public void loadTextures(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
@@ -306,7 +306,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
 			earthTexture = TextureIO.newTexture(data2);
 		} catch (IOException exc) {
-			System.out.println("niet gevonden");
+			System.out.println("niet gevonden - texture");
 			exc.printStackTrace();
 			System.exit(1);
 		}
@@ -323,7 +323,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			TextureData data1 = TextureIO.newTextureData(file1, false, "jpg");
 			wallTexture = TextureIO.newTexture(data1);
 		} catch (IOException exc) {
-			System.out.println("niet gevonden");
+			System.out.println("niet gevonden - walltexture2");
 			exc.printStackTrace();
 			System.exit(1);
 		}
@@ -340,7 +340,23 @@ public class MazeRunner extends Frame implements GLEventListener {
 			TextureData data3 = TextureIO.newTextureData(file3, false, "jpg");
 			roofTexture = TextureIO.newTexture(data3);
 		} catch (IOException exc) {
-			System.out.println("niet gevonden");
+			System.out.println("niet gevonden - roofTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\trapHolderTexture.jpg";
+
+			filename = currentdir + filename;
+			File file4 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data4 = TextureIO.newTextureData(file4, false, "jpg");
+			trapHolderTexture = TextureIO.newTexture(data4);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - trapHolderTexture");
 			exc.printStackTrace();
 			System.exit(1);
 		}
@@ -370,6 +386,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
+		
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
