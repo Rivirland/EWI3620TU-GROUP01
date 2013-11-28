@@ -58,10 +58,10 @@ public class Maze implements VisibleObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mazeID = i-1;
+		mazeID = i - 1;
 		// TODO: init items
-		itemList.add(new TrapHolder(5, 2.5, 10, mazeID));
-		itemList.add(new TrapHolder(10, 2.5, 5, mazeID));
+		itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
+//		itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
 	}
 
 	// Loads the maze into an int[][]: it goes through the file to determine the
@@ -204,7 +204,8 @@ public class Maze implements VisibleObject {
 	}
 
 	public int getCoords(int i, int j) {
-		if(i>=0 && j >= 0 && i <= coordToMatrixElement(maxX - minX) && j <= coordToMatrixElement(maxZ - minZ)){
+		if (i >= 0 && j >= 0 && i <= coordToMatrixElement(maxX - minX)
+				&& j <= coordToMatrixElement(maxZ - minZ)) {
 			return maze[i][j];
 		}
 		return 0;
@@ -343,7 +344,6 @@ public class Maze implements VisibleObject {
 						gl.glPopMatrix();
 
 					}
-					// paintRoof(gl, maze[i][j] * SQUARE_SIZE);
 				}
 			}
 		}

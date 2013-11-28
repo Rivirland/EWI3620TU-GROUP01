@@ -17,12 +17,29 @@ public class TrapDropped extends Item {
 
 	@Override
 	public void display(GL gl) {
+		double sizeX = 0.5;
+		double sizeY = sizeX;
+		double sizeZ = sizeX;
+		double xmin = 0;
+		double xmax = sizeX;
+		double ymin = 0;
+		double ymax = sizeY;
+		double zmin = 0;
+		double zmax = sizeZ;
+		// Setting the trapHolder color and material.
+		
 
-		GLUT glut = new GLUT();
+		// Apply texture.
+		if (MazeRunner.trapHolderTexture != null) {
+			MazeRunner.trapHolderTexture.enable();
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
+		}
 		gl.glPushMatrix();
-		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
-		glut.glutSolidCube(0.5f);
+		gl.glTranslated(super.locationX, 0, super.locationZ);
+		// drawCuboid
+		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax);
 		gl.glPopMatrix();
+		
 	}
 
 	@Override
