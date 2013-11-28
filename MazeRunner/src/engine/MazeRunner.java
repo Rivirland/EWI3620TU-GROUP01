@@ -81,12 +81,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// calculate
 																			// elapsed
 																			// time.
-<<<<<<< HEAD
-	public static Texture earthTexture, wallTexture, roofTexture;
+
+	
 	public static Model spookyModel, smartModel;
-=======
+
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture;
->>>>>>> 081da42e975b8966119c81b7c22d51f1c6282743
+
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 
@@ -208,13 +208,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-<<<<<<< HEAD
+
 		enemyList.add(new EnemySmart(20, 2.5, 20, 0.005, -90));
 		enemyList.add(new EnemySpooky(70, 2.5, 30, 0.0015, -90));
-=======
-//		enemyList.add(new EnemySmart(70, 2.5, 30, 0.005, -90));
-//		enemyList.add(new EnemySpooky(70, 2.5, 30, 0.0015, -90));
->>>>>>> 081da42e975b8966119c81b7c22d51f1c6282743
 
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
@@ -517,11 +513,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 				for (int i = 0; i < currentMaze.itemList.size(); i++) {
 					Item item = currentMaze.itemList.get(i);
 					if (item.touches(enemy) && item instanceof TrapDropped) {
+						System.out.println("trap werkt");
 						visibleObjects.remove(enemy);
 						enemyList.remove(enemy);
 						visibleObjects.remove(item);
 						currentMaze.itemList.remove(item);
-
 					}
 				}
 			}

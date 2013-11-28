@@ -54,8 +54,9 @@ public class TrapDropped extends Item {
 		if (object instanceof Enemy) {
 			System.out.println("enemy: " + object.getGlobalX());
 			System.out.println("trap: " + this.getGlobalX());
+			
 		}
-		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
+		if (Math.sqrt(diffX * diffX  + diffZ * diffZ) < 2 && diffY<10) {
 			return true;
 		}
 		return false;
