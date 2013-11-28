@@ -117,8 +117,10 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 	}
 
 	public void drawEnemy(GL gl) {
-		GLUT glut = new GLUT();
-		glut.glutSolidTeapot(1);
+//		GLUT glut = new GLUT();
+//		glut.glutSolidTeapot(1);
+		
+		MazeRunner.spookyModel.display(gl);
 	}
 
 }

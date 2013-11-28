@@ -9,6 +9,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +22,9 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+
+import model.Model;
+import model.OBJLoader;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
@@ -78,6 +82,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// elapsed
 																			// time.
 	public static Texture earthTexture, wallTexture, roofTexture;
+	public static Model spookyModel, smartModel;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 
@@ -200,8 +205,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		enemyList.add(new EnemySmart(70, 2.5, 30, 0.005, -90));
-//		enemyList.add(new EnemySpooky(70, 2.5, 30, 0.0015, -90));
+		enemyList.add(new EnemySmart(20, 2.5, 20, 0.005, -90));
+		enemyList.add(new EnemySpooky(70, 2.5, 30, 0.0015, -90));
 
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
@@ -285,6 +290,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
+		loadModels();
 
 	}
 
@@ -345,6 +351,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 			System.exit(1);
 		}
 
+	}
+	
+	public void loadModels(){
+		try {
+            String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\eva.obj";
+            spookyModel = OBJLoader.loadModel(new File(filename));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	/**

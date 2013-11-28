@@ -1,0 +1,10 @@
+package engine;
+
+import java.util.ArrayList;
+
+public class Model {
+	private final ArrayList<Point3f> vertices = new ArrayList<Point3f>();
+    private final ArrayList<Poind2f> textureCoordinates = new ArrayList<Point2f>();
+    private final ArrayList<Point3f> normals = new ArrayList<Point3f>();
+    private final ArrayList<Face> faces = new ArrayList<Face>();
+}
