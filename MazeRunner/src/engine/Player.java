@@ -22,7 +22,8 @@ import javax.media.opengl.GLAutoDrawable;
 public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
-	public double begX, begY, begZ;
+	public double begX, begY, begZ, begV, begH;
+	public static boolean canTeleport = true;
 	public static int nrOfTraps;
 	public static int nrOfBullets;
 	public static int playerStateInt;
@@ -52,9 +53,11 @@ public class Player extends GameObject {
 	public Player(double x, double y, double z, double h, double v) {
 		// Set the initial position and viewing direction of the player.
 		super(x, y, z);
-		this.begX = x;
-		this.begY = y;
-		this.begZ = z;
+		begX = x;
+		begY = y;
+		begZ = z;
+		begH = h;
+		begV = v;
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
@@ -209,8 +212,8 @@ public class Player extends GameObject {
 				this.setLocationZ(previousZ);
 			}
 		}
-		
-		if (control.itemUse){
+
+		if (control.itemUse) {
 			PlayerState.getState(playerStateInt).itemUse();
 			control.itemUse = false;
 		}
@@ -223,16 +226,24 @@ public class Player extends GameObject {
 			playerStateInt++;
 			playerStateInt = playerStateInt % 3;
 			PlayerState.getState(playerStateInt).entering();
-			
+
 		}
 		if (control.playerStateDown) {
 			control.playerStateDown = false;
 			PlayerState.getState(playerStateInt).leaving();
 			playerStateInt--;
-			playerStateInt = (playerStateInt+3) % 3;
+			playerStateInt = (playerStateInt + 3) % 3;
 			PlayerState.getState(playerStateInt).entering();
 		}
 
+	}
+
+	public void reset() {
+		setLocationX(begX);
+		setLocationY(begY);
+		setLocationZ(begZ);
+		setHorAngle(begH);
+		setVerAngle(begV);
 	}
 
 }

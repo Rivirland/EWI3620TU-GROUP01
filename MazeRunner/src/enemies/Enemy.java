@@ -26,6 +26,11 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		this.speed = speed;
 	}
 
+	public void reset(){
+		setLocationX(begX);
+		setLocationY(begY);
+		setLocationZ(begZ);
+	}
 	public void setControl(EnemyControl enemyControl) {
 		this.enemyControl = enemyControl;
 	}
@@ -145,6 +150,21 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	public void drawEnemy(GL gl) {
 		GLUT glut = new GLUT();
 		glut.glutSolidSphere(1, 10, 10);
+	}
+	
+	@Override
+	public double getGlobalX(){
+		return locationX+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
+	}
+	
+	@Override
+	public double getGlobalY(){
+		return locationY+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+	}
+	
+	@Override
+	public double getGlobalZ(){
+		return locationZ+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
 	}
 
 }

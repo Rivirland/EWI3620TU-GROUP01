@@ -1,0 +1,34 @@
+package engine;
+
+import enemies.Enemy;
+
+public class PlayerStateDead extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		System.out.println("You died :(");
+		
+	}
+
+	@Override
+	public void entering() {
+
+		System.out.println("Entering DeadMode");
+		MazeRunner.player.reset();
+		for(int e = 0; e < MazeRunner.enemyList.size(); e++){
+			MazeRunner.enemyList.get(e).reset();
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+
+		System.out.println("Leaving DeadMode");
+		//Remove gun
+		// TODO Auto-generated method stub
+		
+	}
+
+}

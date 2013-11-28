@@ -15,6 +15,9 @@ public abstract class PlayerState {
 		if(input == 2){
 			return new PlayerStateGun();
 		}
+		if(input == 3){
+			return new PlayerStateDead();
+		}
 		return null;
 	}
 

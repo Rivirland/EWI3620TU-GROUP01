@@ -24,19 +24,14 @@ public class TrapHolder extends Item {
 
 	@Override
 	public boolean touches(GameObject object) {
-//		System.out.println(player.getLocationX());
-//		System.out.println(this.locationX + MazeRunner.level.getMaze(mazeID).getMazeX());
-		double diffX = object.getLocationX() - this.getGlobalX();
-		double diffY = object.getLocationY() - this.getGlobalY();
-		double diffZ = object.getLocationZ() - this.getGlobalZ();
+		double diffX = object.getGlobalX() - this.getGlobalX();
+		double diffY = object.getGlobalY() - this.getGlobalY();
+		double diffZ = object.getGlobalZ() - this.getGlobalZ();
 		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
 			if(object instanceof Player){
-				Player.nrOfTraps++;
-				
 				return true;
 			}
 			else{
-				
 				//do nothing
 			}
 		}

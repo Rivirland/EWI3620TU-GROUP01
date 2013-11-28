@@ -30,9 +30,14 @@ public class TrapDropped extends Item {
 		// System.out.println(player.getLocationX());
 		// System.out.println(this.locationX +
 		// MazeRunner.level.getMaze(mazeID).getMazeX());
-		double diffX = object.getLocationX() - this.getGlobalX();
-		double diffY = object.getLocationY() - this.getGlobalY();
-		double diffZ = object.getLocationZ() - this.getGlobalZ();
+		double diffX = object.getGlobalX() - this.getGlobalX();
+		double diffY = object.getGlobalY() - this.getGlobalY();
+		double diffZ = object.getGlobalZ() - this.getGlobalZ();
+		
+		if (object instanceof Enemy) {
+			System.out.println("enemy: " + object.getGlobalX());
+			System.out.println("trap: " + this.getGlobalX());
+		}
 		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
 			return true;
 		}

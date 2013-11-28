@@ -47,49 +47,44 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 				}
 				if (Math.sqrt(Math.pow(locationZ - playerZ, 2)
 						+ Math.pow(locationX - playerX, 2)) < 1) {
-					System.out.println("dood!");
-					// try {
-					// Thread.sleep(1000);
-					// } catch (InterruptedException e1) {
-					// // TODO Auto-generated catch block
-					// e1.printStackTrace();
-					// }
-					player.setLocationX(player.begX);
-					player.setLocationY(player.begY);
-					player.setLocationZ(player.begZ);
-					for (int resetEnemy = 0; resetEnemy < MazeRunner.enemyList
-							.size(); resetEnemy++) {
-						Enemy resEnemy = MazeRunner.enemyList.get(resetEnemy);
-						resEnemy.setLocationX(resEnemy.begX);
-						resEnemy.setLocationZ(resEnemy.begZ);
-					}
+					Player.playerStateInt = 3;
 				}
 			}
 
-			if (locationX > currentMaze.maxX - 1
-					|| locationX < currentMaze.minX + 1) {
-				this.setLocationX(locationX);
-			}
-			if (locationZ > currentMaze.maxZ - 1
-					|| locationZ < currentMaze.minZ + 1) {
-				this.setLocationZ(locationZ);
-			}
-
 		} else {
-			System.out.println("Spooky says: you're not in the maze");
-			double locationX = this.getLocationX();
-			double locationZ = this.getLocationZ();
 			this.updateMovementPatrol();
 			Maze currentMaze = MazeRunner.level.getMaze(MazeRunner.level
 					.getCurrentMaze(this));
 
-			if (locationX > currentMaze.maxX - 1
-					|| locationX < currentMaze.minX + 1) {
-				this.setLocationX(locationX);
+			if (locationX > currentMaze.maxX - 1){
+				east = false;
+				this.setRandomizer((int) (1 + 3 * Math.random()));
 			}
-			if (locationZ > currentMaze.maxZ - 1
-					|| locationZ < currentMaze.minZ + 1) {
-				this.setLocationZ(locationZ);
+			if (locationX < currentMaze.minX + 1){
+				west = false;
+				int randomNumber = (int) (3 * Math.random());
+				if (randomNumber == 0) {
+					this.setRandomizer(0);
+				} else if (randomNumber == 1) {
+					this.setRandomizer(1);
+				} else {
+					this.setRandomizer(3);
+				}
+			}
+			if (locationZ < currentMaze.minZ + 1) {
+				north = false;
+				int randomNumber = (int) (3 * Math.random());
+				if (randomNumber == 0) {
+					this.setRandomizer(0);
+				} else if (randomNumber == 1) {
+					this.setRandomizer(2);
+				} else {
+					this.setRandomizer(3);
+				}
+			}
+			if (locationZ > currentMaze.maxZ - 1){
+				west = false;
+				this.setRandomizer((int) (3 * Math.random()));
 			}
 
 		}

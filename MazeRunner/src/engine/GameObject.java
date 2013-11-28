@@ -76,4 +76,17 @@ public class GameObject {
 	public double getLocationZ() {
 		return locationZ;
 	}
+	
+	public double getGlobalX(){
+		return locationX;
+	}
+	
+	public double getGlobalY(){
+		return locationY;
+	}
+	
+	public double getGlobalZ(){
+		return locationZ;
+	}
+	
 }

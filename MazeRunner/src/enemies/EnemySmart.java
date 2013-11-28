@@ -48,21 +48,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				}
 				if (Math.sqrt(Math.pow(locationZ - playerZ, 2)
 						+ Math.pow(locationX - playerX, 2)) < 1) {
-					System.out.println("dood!");
-//					try {
-//						Thread.sleep(1000);
-//					} catch (InterruptedException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//					}
-					player.setLocationX(player.begX);
-					player.setLocationY(player.begY);
-					player.setLocationZ(player.begZ);
-					for (int resetEnemy = 0; resetEnemy < MazeRunner.enemyList.size(); resetEnemy++) {
-						Enemy resEnemy = MazeRunner.enemyList.get(resetEnemy);
-						resEnemy.setLocationX(resEnemy.begX);
-						resEnemy.setLocationZ(resEnemy.begZ);
-					}
+					Player.playerStateInt = 3;
 				}
 			}
 			if (enemyMatrixX == playerMatrixX && enemyMatrixZ != playerMatrixZ) {
@@ -161,8 +147,6 @@ public class EnemySmart extends Enemy implements VisibleObject {
 
 		} else {
 
-				double locationX = this.getLocationX();
-				double locationZ = this.getLocationZ();
 				this.updateMovementPatrol();
 
 				boolean[] enemyCollide = MazeRunner.level.collides(this, 1);

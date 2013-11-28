@@ -204,7 +204,7 @@ public class Maze implements VisibleObject {
 	}
 
 	public int getCoords(int i, int j) {
-		if(i>=0 && j >= 0 && i <= maxX - minX && j <= maxZ - minZ){
+		if(i>=0 && j >= 0 && i <= coordToMatrixElement(maxX - minX) && j <= coordToMatrixElement(maxZ - minZ)){
 			return maze[i][j];
 		}
 		return 0;
