@@ -1,0 +1,30 @@
+package engine;
+
+public class PlayerStateDead extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		Player.nrOfBullets--;
+		System.out.println("You died :(");
+		//Shoot bullet if nrOfBullets > 0
+	}
+
+	@Override
+	public void entering() {
+
+		System.out.println("Entering DeadMode");
+		//Show gun
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+
+		System.out.println("Leaving DeadMode");
+		//Remove gun
+		// TODO Auto-generated method stub
+		
+	}
+
+}

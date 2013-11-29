@@ -1,0 +1,11 @@
+import java.util.ArrayList;
+
+
+public class LevelEditorMain {
+	public static void main(String[] args){
+		ArrayList<Integer> hoi = new ArrayList<Integer>();
+		hoi.add(2);
+		
+		//new LevelEditor();
+	}
+}

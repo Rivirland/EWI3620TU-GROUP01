@@ -1,16 +1,17 @@
 package engine;
+
+import items.Item;
+import items.TrapHolder;
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
-
-import com.sun.opengl.util.GLUT;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -35,17 +36,18 @@ import com.sun.opengl.util.GLUT;
  */
 public class Maze implements VisibleObject {
 
-	public int MAZE_SIZE_X=0;
-	public int MAZE_SIZE_Z=0;
-	public final double CELL_SIZE=7;
+	public int MAZE_SIZE_X = 0;
+	public int MAZE_SIZE_Z = 0;
+	public final double CELL_SIZE = 7;
 	public final double SQUARE_SIZE = 5;
-	public final double WALL_WIDTH=0.5;
-	public final double WALL_LENGTH=CELL_SIZE-WALL_WIDTH;
-	public final double COLUMN_WIDTH=WALL_WIDTH;
-	public final double ITEM_HEIGHT=5;
+	public final double WALL_WIDTH = 0.5;
+	public final double WALL_LENGTH = CELL_SIZE - WALL_WIDTH;
+	public final double COLUMN_WIDTH = WALL_WIDTH;
+	public final double ITEM_HEIGHT = 5;
 	public int mazeX, mazeY, mazeZ;
 	public int minX, minZ, mazeID;
 	public double maxX, maxZ;
+	public ArrayList<Item> itemList = new ArrayList<Item>();
 
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
@@ -56,17 +58,23 @@ public class Maze implements VisibleObject {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mazeID = i;	
+		mazeID = i - 1;
+		// TODO: init items
+		itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
+//		itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
 	}
-	
-	//Loads the maze into an int[][]: it goes through the file to determine the matrix size
-	//and then actually fills the matrix with the correct elements. It also stores several
-	//useful properties such as the mazeX,Y and Z to determine where it will be positioned
-	//in the 3D space.
-	public void loadMaze(File infile) throws FileNotFoundException{
+
+	// Loads the maze into an int[][]: it goes through the file to determine the
+	// matrix size
+	// and then actually fills the matrix with the correct elements. It also
+	// stores several
+	// useful properties such as the mazeX,Y and Z to determine where it will be
+	// positioned
+	// in the 3D space.
+	public void loadMaze(File infile) throws FileNotFoundException {
 		try {
 			loadMazeSize(infile);
-			
+
 		} catch (IOException e) {
 			System.out.println("Fout in loadMazeSize");
 		}
@@ -75,69 +83,80 @@ public class Maze implements VisibleObject {
 		} catch (IOException e) {
 			System.out.println("Fout in buildMaze");
 		}
-		
+
 	}
-	
-	//Loads the maze's dimensions.
-	private void loadMazeSize(File file) throws NumberFormatException, IOException{
-		
+
+	// Loads the maze's dimensions.
+	private void loadMazeSize(File file) throws NumberFormatException,
+			IOException {
+
 		int row = -1;
-        int col = 0;
-        BufferedReader bufRdr  = new BufferedReader(new FileReader(file));
-        String line = null;
-        while((line = bufRdr.readLine()) != null){   
-        	col = 0;
-        	StringTokenizer st = new StringTokenizer(line,",");
-        	while (st.hasMoreTokens()){
-        		col++;
-        		st.nextToken();
-        	}
-        	row++;
-        }
-        bufRdr.close();
-        MAZE_SIZE_X = row;
-        MAZE_SIZE_Z = col;
-        System.out.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
-        maze=new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+		int col = 0;
+		BufferedReader bufRdr = new BufferedReader(new FileReader(file));
+		String line = null;
+		while ((line = bufRdr.readLine()) != null) {
+			col = 0;
+			StringTokenizer st = new StringTokenizer(line, ",");
+			while (st.hasMoreTokens()) {
+				col++;
+				st.nextToken();
+			}
+			row++;
+		}
+		bufRdr.close();
+		MAZE_SIZE_X = row;
+		MAZE_SIZE_Z = col;
+		System.out
+				.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
+		maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	}
-	
-	public double getMaxX(){
+
+	public double getMaxX() {
 		return this.maxX;
 	}
-	public int getMinX(){
+
+	public int getMinX() {
 		return this.minX;
 	}
-	public double getMaxZ(){
+
+	public double getMaxZ() {
 		return this.maxZ;
 	}
-	public int getMinZ(){
+
+	public int getMinZ() {
 		return this.minZ;
 	}
-	public int getMazeID(){
+
+	public int getMazeID() {
 		return this.mazeID;
 	}
-	public int getMazeX(){
+
+	public int getMazeX() {
 		return this.mazeX;
 	}
-	public int getMazeY(){
+
+	public int getMazeY() {
 		return this.mazeY;
 	}
-	public int getMazeZ(){
+
+	public int getMazeZ() {
 		return this.mazeZ;
 	}
-	
-	//Translates a coordinate to the row/column this column will be found. This method is kind of confusing,
-	//because our matrix design is pretty weird: elements on (even,even) are smaller than elements on (even,odd)
-	//and (odd,even) and elements on (odd,odd) represent a roof.
-	public int coordToMatrixElement(double input){
+
+	// Translates a coordinate to the row/column this column will be found. This
+	// method is kind of confusing,
+	// because our matrix design is pretty weird: elements on (even,even) are
+	// smaller than elements on (even,odd)
+	// and (odd,even) and elements on (odd,odd) represent a roof.
+	public int coordToMatrixElement(double input) {
 		int res = -1;
 		double sum = 0;
 		int columnWallSwitcher = 0;
-		while(sum < input){
-			if(columnWallSwitcher == 0){
+		while (sum < input) {
+			if (columnWallSwitcher == 0) {
 				sum += COLUMN_WIDTH;
 			}
-			if(columnWallSwitcher == 1){
+			if (columnWallSwitcher == 1) {
 				sum += WALL_LENGTH;
 			}
 			columnWallSwitcher = 1 - columnWallSwitcher;
@@ -145,56 +164,65 @@ public class Maze implements VisibleObject {
 		}
 		return res;
 	}
-	
-	//Fills maze[][] with the right elements.
-	private void buildMaze(File file) throws IOException{
-        int row = -1;
-        int col = 0;
-        BufferedReader bufRdr  = new BufferedReader(new FileReader(file));
-        String line = null;
-        
-        while((line = bufRdr.readLine()) != null && row < MAZE_SIZE_Z){   
-        	StringTokenizer st = new StringTokenizer(line,",");
-        	if(row == -1){
-        		mazeX = Integer.parseInt(st.nextToken());
-            	mazeY = Integer.parseInt(st.nextToken());
-            	mazeZ = Integer.parseInt(st.nextToken());
-        	}
-        	while (st.hasMoreTokens()){
-        		//System.out.println(Integer.parseInt(st.nextToken()) + " en row: " + row + " en col: " + col);
-        		maze[row][col] = Integer.parseInt(st.nextToken());
-        		//System.out.println(maze[col][row]);
-        		col++;
-        	}
-        	col = 0;
-        	row++;
-        }
-        System.out.println(mazeX + ", " + mazeY + ", " + mazeZ);
-        bufRdr.close();
-        printMatrix();
-        minX = mazeX;
-        minZ = mazeZ;
-        maxX = minX + Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH;//+ COLUMN_WIDTH??
-        maxZ = minZ + Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH;// + COLUMN_WIDTH??
 
-      }
-		
-		
-	public int getCoords(int i, int j){
-		return maze[i][j];
+	// Fills maze[][] with the right elements.
+	private void buildMaze(File file) throws IOException {
+		int row = -1;
+		int col = 0;
+		BufferedReader bufRdr = new BufferedReader(new FileReader(file));
+		String line = null;
+
+		while ((line = bufRdr.readLine()) != null && row < MAZE_SIZE_Z) {
+			StringTokenizer st = new StringTokenizer(line, ",");
+			if (row == -1) {
+				this.mazeX = Integer.parseInt(st.nextToken());
+				this.mazeY = Integer.parseInt(st.nextToken());
+				this.mazeZ = Integer.parseInt(st.nextToken());
+			}
+			while (st.hasMoreTokens()) {
+				// System.out.println(Integer.parseInt(st.nextToken()) +
+				// " en row: " + row + " en col: " + col);
+				maze[row][col] = Integer.parseInt(st.nextToken());
+				// System.out.println(maze[col][row]);
+				col++;
+			}
+			col = 0;
+			row++;
+		}
+		System.out.println(mazeX + ", " + mazeY + ", " + mazeZ);
+		bufRdr.close();
+		printMatrix();
+		minX = mazeX;
+		minZ = mazeZ;
+		maxX = minX + Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH
+				+ Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;// +
+																		// COLUMN_WIDTH??
+		maxZ = minZ + Math.floor(((double) MAZE_SIZE_Z + 1) / 2) * COLUMN_WIDTH
+				+ Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;// +
+																		// COLUMN_WIDTH??
+
 	}
-		
-	//Prints the maze.
-	public void printMatrix(){
-		String res="";
-		for(int i=0; i<maze.length; i++){
-			for(int j=0; j<maze[0].length; j++){
-				res=res + maze[i][j] + ",";
+
+	public int getCoords(int i, int j) {
+		if (i >= 0 && j >= 0 && i <= coordToMatrixElement(maxX - minX)
+				&& j <= coordToMatrixElement(maxZ - minZ)) {
+			return maze[i][j];
+		}
+		return 0;
+	}
+
+	// Prints the maze.
+	public void printMatrix() {
+		String res = "";
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				res = res + maze[i][j] + ",";
 			}
 			res = res + "\n";
 		}
 		System.out.println(res);
 	}
+
 	/**
 	 * isWall(int x, int z) checks for a wall.
 	 * <p>
@@ -212,10 +240,10 @@ public class Maze implements VisibleObject {
 		else
 			return false;
 	}
-	
-	//Basically the same as isWall;
+
+	// Basically the same as isWall;
 	public boolean isExit(int x, int z) {
-		if (x == MAZE_SIZE_X-2 && z == MAZE_SIZE_Z-2)
+		if (x == MAZE_SIZE_X - 2 && z == MAZE_SIZE_Z - 2)
 			return true;
 		else
 			return false;
@@ -240,12 +268,12 @@ public class Maze implements VisibleObject {
 		int gZ = convertToGridZ(z);
 		return isWall(gX, gZ);
 	}
-	
+
 	public boolean isExit(double x, double z) {
 		return false;
-//		int gX = convertToGridX(x);
-//		int gZ = convertToGridZ(z);
-//		return isExit(gX, gZ);
+		// int gX = convertToGridX(x);
+		// int gZ = convertToGridZ(z);
+		// return isExit(gX, gZ);
 	}
 
 	/**
@@ -273,6 +301,7 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
+		displayItems(gl);
 		// Setting the wall colour and material.
 		float wallColour[] = { 1.0f, 0.0f, 1.0f, 1.0f }; // The walls are
 															// purple.
@@ -283,43 +312,57 @@ public class Maze implements VisibleObject {
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
-				if (isWall(i, j)){
-					
-					for (int height = 0; height < maze[i][j]; height++){		
+				if (isWall(i, j)) {
+
+					for (int height = 0; height < maze[i][j]; height++) {
 						gl.glPushMatrix();
-						//Here you calculate the coordinates for which the bottom left point of the element has to be drawn
-						double xtrans = Math.floor(((double)i+1)/2)*COLUMN_WIDTH + Math.floor((double)i/2)*WALL_LENGTH;
-						double ztrans = Math.floor(((double)j+1)/2)*COLUMN_WIDTH + Math.floor((double)j/2)*WALL_LENGTH;
+						// Here you calculate the coordinates for which the
+						// bottom left point of the element has to be drawn
+						double xtrans = Math.floor(((double) i + 1) / 2)
+								* COLUMN_WIDTH + Math.floor((double) i / 2)
+								* WALL_LENGTH;
+						double ztrans = Math.floor(((double) j + 1) / 2)
+								* COLUMN_WIDTH + Math.floor((double) j / 2)
+								* WALL_LENGTH;
 						gl.glTranslated(xtrans, 0.0, ztrans);
-						//If it's (even,even), you paint a column
-						if (i%2==0 && j%2==0){
-							paintColumnFromQuad(gl, height*ITEM_HEIGHT);
+						// If it's (even,even), you paint a column
+						if (i % 2 == 0 && j % 2 == 0) {
+							paintColumnFromQuad(gl, height * ITEM_HEIGHT);
 						}
-						//(odd,even) paints a wall in the Z-direction
-						if (i%2!=0 && j%2==0){
-							paintWallZFromQuad(gl, height*ITEM_HEIGHT);
+						// (odd,even) paints a wall in the Z-direction
+						if (i % 2 != 0 && j % 2 == 0) {
+							paintWallZFromQuad(gl, height * ITEM_HEIGHT);
 						}
-						//(even,odd) paints a wall in the X-direction
-						if (i%2==0 && j%2!=0){
-							paintWallXFromQuad(gl, height*ITEM_HEIGHT);
+						// (even,odd) paints a wall in the X-direction
+						if (i % 2 == 0 && j % 2 != 0) {
+							paintWallXFromQuad(gl, height * ITEM_HEIGHT);
 						}
-						//(odd,odd) paints a roof
-						if (i%2!=0 && j%2!=0){
-							paintRoof(gl, ( height+1)*ITEM_HEIGHT );
+						// (odd,odd) paints a roof
+						if (i % 2 != 0 && j % 2 != 0) {
+							paintRoof(gl, (height + 1) * ITEM_HEIGHT);
 						}
 						gl.glPopMatrix();
-						
+
 					}
-					// paintRoof(gl, maze[i][j] * SQUARE_SIZE);
 				}
 			}
 		}
-		
-		//Calculates the size of the maze and then draws the floor tile
-		double xsize=Math.floor(((double)MAZE_SIZE_X+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_X/2)*WALL_LENGTH;
-		double zsize=Math.floor(((double)MAZE_SIZE_Z+1)/2)*COLUMN_WIDTH + Math.floor((double)MAZE_SIZE_Z/2)*WALL_LENGTH;
+
+		// Calculates the size of the maze and then draws the floor tile
+		double xsize = Math.floor(((double) MAZE_SIZE_X + 1) / 2)
+				* COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_X / 2)
+				* WALL_LENGTH;
+		double zsize = Math.floor(((double) MAZE_SIZE_Z + 1) / 2)
+				* COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_Z / 2)
+				* WALL_LENGTH;
 		paintSingleFloorTile(gl, xsize, zsize); // Paint the floor.
 		gl.glPopMatrix();
+	}
+
+	private void displayItems(GL gl) {
+		for (int i = 0; i < itemList.size(); i++) {
+			itemList.get(i).display(gl);
+		}
 	}
 
 	/**
@@ -331,196 +374,181 @@ public class Maze implements VisibleObject {
 	 * @param size_x
 	 *            the size of the tile
 	 */
-	
-	//Paints the floor tile
+
+	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
-        
+
 		// Setting the floor color and material.
-        float[] rgba = {1f, 1f, 1f};
+		float[] rgba = { 1f, 1f, 1f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
-        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
-        gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
+		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
 
-        // Apply texture.
-        if(MazeRunner.earthTexture != null){       
-        	MazeRunner.earthTexture.enable();
-        	gl.glBindTexture (GL.GL_TEXTURE_2D, 1);
-        }
+		// Apply texture.
+		if (MazeRunner.earthTexture != null) {
+			MazeRunner.earthTexture.enable();
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 1);
+		}
 
-        //Calculate coordinates and the corresponding texture coordinates.
+		// Calculate coordinates and the corresponding texture coordinates.
 		gl.glNormal3d(0, 1, 0);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2d(0.0,0.0);
-		gl.glVertex3d(0, 0, 0); 
-		gl.glTexCoord2d(1.0,0.0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0, 0, 0);
+		gl.glTexCoord2d(1.0, 0.0);
 		gl.glVertex3d(0, 0, size_z);
-		gl.glTexCoord2d(0.0,1.0);
+		gl.glTexCoord2d(0.0, 1.0);
 		gl.glVertex3d(size_x, 0, size_z);
-		gl.glTexCoord2d(1.0,1.0);
+		gl.glTexCoord2d(1.0, 1.0);
 		gl.glVertex3d(size_x, 0, 0);
 		gl.glEnd();
 
 	}
-	
-	//Paints a roof using a trianglefan
-	private void paintRoof(GL gl, double h){
+
+	// Paints a roof using a trianglefan
+	private void paintRoof(GL gl, double h) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture (GL.GL_TEXTURE_2D, 3);
-		gl.glBegin (GL.GL_TRIANGLE_FAN);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+
 		// TODO: light shading on roof
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
+		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 		gl.glTexCoord2d(0.5, 1.0);
-		gl.glVertex3d (WALL_LENGTH/2, h+2, WALL_LENGTH/2);	
+		gl.glVertex3d(WALL_LENGTH / 2, h + 2, WALL_LENGTH / 2);
 		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d (WALL_LENGTH, h, WALL_LENGTH);
+		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
 		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d (0.0, h, WALL_LENGTH);
+		gl.glVertex3d(0.0, h, WALL_LENGTH);
 		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d (0.0, h, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
 		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d (WALL_LENGTH, h, 0.0);
+		gl.glVertex3d(WALL_LENGTH, h, 0.0);
 		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d (WALL_LENGTH, h, WALL_LENGTH);
+		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
 		gl.glTexCoord2d(1.0, 0.0);
-		gl.glNormal3d(0, 1, 0);	
 		gl.glEnd();
 	}
-	
-	//Paints a wall in the z-direction
-	private void paintWallZFromQuad(GL gl, double h){
+
+	// Paints a wall in the z-direction
+	private void paintWallZFromQuad(GL gl, double h) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
-		gl.glBegin (GL.GL_QUAD_STRIP);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
 		// TODO: light shading on walls
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (0.0, h, 0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
-		
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (WALL_LENGTH, h, 0.0);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (WALL_LENGTH, ITEM_HEIGHT+h, 0.0);
+		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(0, 0, -1);
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (WALL_LENGTH,+h,WALL_WIDTH);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (WALL_LENGTH,ITEM_HEIGHT+h,WALL_WIDTH);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, +h, WALL_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
 		gl.glNormal3d(1, 0, 0);
-		
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (0.0,h,WALL_WIDTH);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (0.0,ITEM_HEIGHT+h,WALL_WIDTH);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, h, WALL_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
 		gl.glNormal3d(0, 0, 1);
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (0.0,h,0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0,ITEM_HEIGHT+h,0.0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(-1, 0, 0);
-		
-		gl.glEnd ();
+
+		gl.glEnd();
 	}
 
-	//Paints a wall in the X-direction
-	private void paintWallXFromQuad(GL gl, double h){
+	// Paints a wall in the X-direction
+	private void paintWallXFromQuad(GL gl, double h) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
-		gl.glBegin (GL.GL_QUAD_STRIP);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
 		// TODO: light shading on walls
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (0.0, h, 0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
-		
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (WALL_WIDTH, h, 0.0);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (WALL_WIDTH, ITEM_HEIGHT+h, 0.0);
+		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(WALL_WIDTH, h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(0, 0, -1);
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (WALL_WIDTH,+h,WALL_LENGTH);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (WALL_WIDTH,ITEM_HEIGHT+h,WALL_LENGTH);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(WALL_WIDTH, +h, WALL_LENGTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, WALL_LENGTH);
 		gl.glNormal3d(1, 0, 0);
-		
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (0.0,h,WALL_LENGTH);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (0.0,ITEM_HEIGHT+h,WALL_LENGTH);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, h, WALL_LENGTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_LENGTH);
 		gl.glNormal3d(0, 0, 1);
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (0.0,h,0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0,ITEM_HEIGHT+h,0.0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(-1, 0, 0);
-		
-		gl.glEnd ();
+
+		gl.glEnd();
 	}
-	
-	//Paints a column
-	private void paintColumnFromQuad(GL gl, double h){
+
+	// Paints a column
+	private void paintColumnFromQuad(GL gl, double h) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture (GL.GL_TEXTURE_2D, 2);
-		gl.glBegin (GL.GL_QUAD_STRIP);
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
 		// TODO: light shading on walls
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0); 
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (0.0, h, 0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0, ITEM_HEIGHT+h, 0.0);
-		
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (COLUMN_WIDTH, h, 0.0);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (COLUMN_WIDTH, ITEM_HEIGHT+h, 0.0);
+		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(0, 0, -1);
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (COLUMN_WIDTH,+h,COLUMN_WIDTH);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (COLUMN_WIDTH,ITEM_HEIGHT+h,COLUMN_WIDTH);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, +h, COLUMN_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
 		gl.glNormal3d(1, 0, 0);
-		
-		gl.glTexCoord2d (1.0, 0.0);
-		gl.glVertex3d (0.0,h,COLUMN_WIDTH);
-		gl.glTexCoord2d (1.0, 1.0);
-		gl.glVertex3d (0.0,ITEM_HEIGHT+h,COLUMN_WIDTH);
-		gl.glNormal3d(0, 0, 1);
-		
-		gl.glTexCoord2d (0.0, 0.0);
-		gl.glVertex3d (0.0,h,0.0);
-		gl.glTexCoord2d (0.0, 1.0);
-		gl.glVertex3d (0.0,ITEM_HEIGHT+h,0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, h, COLUMN_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
+		gl.glNormal3d(0, 0, -1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(-1, 0, 0);
-		
-		gl.glEnd ();
-	}
-	
-	//Paints the finish!
-	private void paintExit(GL gl) {
-		float wallColour[] = { 1.0f, 0.0f, 0.0f, 1.0f }; // The end tile is red
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); 
-		
-		gl.glNormal3d(0, 1, 0);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3d((MAZE_SIZE_X-1)*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-1)*SQUARE_SIZE);
-		gl.glVertex3d((MAZE_SIZE_X-1)*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, MAZE_SIZE_Z*SQUARE_SIZE);
-		gl.glVertex3d(MAZE_SIZE_X*SQUARE_SIZE, 0.01, (MAZE_SIZE_Z-1)*SQUARE_SIZE);
+
 		gl.glEnd();
 	}
 }

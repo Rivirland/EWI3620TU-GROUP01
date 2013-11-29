@@ -1,0 +1,27 @@
+package engine;
+
+public class PlayerStateTrap extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		System.out.println("Trap dropped, motherfucker!");
+		//Drop trap
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void entering() {
+		//Show Trap if nrOfTraps > 0
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+		//Remove Trap
+		// TODO Auto-generated method stub
+		
+	}
+
+}

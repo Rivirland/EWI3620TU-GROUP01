@@ -1,0 +1,8 @@
+package engine;
+
+import java.util.ArrayList;
+import org.lwjgl.util.vector.vector3f;
+
+public class Model {
+	public ArrayList<Vector3d> hoi = new ArrayList<vector3d>();
+}

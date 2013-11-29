@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<<<<<<< HEAD
 <listEntry value="/MazeRunner/src/menu/Main.java"/>
+=======
+<listEntry value="/MazeRunner/src/engine/MazeRunner.java"/>
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
+<<<<<<< HEAD
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="menu.Main"/>
+=======
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="engine.MazeRunner"/>
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="MazeRunner"/>
 </launchConfiguration>

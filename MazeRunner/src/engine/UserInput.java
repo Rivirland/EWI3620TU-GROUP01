@@ -4,7 +4,6 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -40,14 +39,26 @@ public class UserInput extends Control implements Runnable {
 	private Robot robot;
 	private Point mouseLocation;
 	private Point centerLocation;
+<<<<<<< HEAD
 	private boolean relativeMouseMode; // to turn this mode (mouselook) off or	// on
 	private boolean isRecentering;
 	private boolean mouselookMode = true;
 	private Cursor cursor;
+=======
+//	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
+										// on
+	private boolean isRecentering;
+	private boolean mouselookMode = false;
+//	private Cursor cursor;
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 	private boolean mousechange = false;
 	private boolean startedinput = false;
 	// private Cursor invisibleCursor;
+<<<<<<< HEAD
 
+=======
+//	private Window window;
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 
 	Cursor invisibleCursor;
 	Cursor normalCursor;
@@ -91,7 +102,7 @@ public class UserInput extends Control implements Runnable {
 		// canvas.setCursor(invisibleCursor);
 		mouseLocation = new Point();
 		centerLocation = new Point();
-		relativeMouseMode = true;
+//		relativeMouseMode = true;
 		isRecentering = true;
 
 		try {
@@ -269,15 +280,15 @@ public class UserInput extends Control implements Runnable {
 		if (event.getKeyCode() == KeyEvent.VK_X) {
 			down = false;
 		}
-		if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			forward = false;
-			left = false;
-			back = false;
-			right = false;
-			up = false;
-			down = false;
+		if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+			itemUse = true;			
 		}
-
+		if(event.getKeyCode() == KeyEvent.VK_UP){
+			playerStateUp = true;
+		}
+		if(event.getKeyCode() == KeyEvent.VK_DOWN){
+			playerStateDown = true;
+		}
 	}
 
 	

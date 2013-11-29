@@ -1,0 +1,14 @@
+import java.util.ArrayList;
+
+
+public class LevelEditorMain {
+	public static void main(String[] args){
+		ArrayList<String> hoi = new ArrayList<String>();
+		hoi.add("Hoi!");
+		System.out.println(hoi.get(0));
+		System.out.println(hoi.size());
+		hoi.remove(0);
+		
+		//new LevelEditor();
+	}
+}

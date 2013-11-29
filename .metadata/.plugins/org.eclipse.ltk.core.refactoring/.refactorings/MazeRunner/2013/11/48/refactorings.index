@@ -1,5 +1,21 @@
+<<<<<<< HEAD
 1385460787659	Delete element
 1385462806727	Rename package 'Menu'
 1385465208761	Delete element
 1385465220539	Move compilation units
 1385487236975	Delete element
+=======
+1385460536795	Delete element
+1385471904833	Delete elements
+1385472375870	Copy file
+1385472381051	Rename resource '1_3.txt'
+1385473446407	Delete element
+1385561481345	Rename compilation unit 'playerState.java'
+1385563814100	Rename package 'PickupItems'
+1385563836389	Copy compilation unit
+1385563841826	Rename type 'DroppedTrap'
+1385630397064	Delete element
+1385631773110	Delete elements
+1385632960331	Rename compilation unit 'Vector3f.java'
+1385635556757	Delete element
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495

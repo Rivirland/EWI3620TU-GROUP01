@@ -1,0 +1,23 @@
+package engine;
+
+public class PlayerStateTorch extends PlayerState{
+
+	@Override
+	public void itemUse() {
+	}
+
+	@Override
+	public void entering() {
+		//Increase Light, Decrease movement speed, Show torch
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+		//Decrease Light, Increase movement speed, Remove torch
+		// TODO Auto-generated method stub
+		
+	}
+
+}

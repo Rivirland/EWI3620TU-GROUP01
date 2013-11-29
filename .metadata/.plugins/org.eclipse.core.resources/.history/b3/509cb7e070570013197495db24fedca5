@@ -1,0 +1,24 @@
+package engine;
+
+public class PlayerStateGun extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		//Shoot bullet if nrOfBullets > 0
+	}
+
+	@Override
+	public void Entering() {
+		//Show gun
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void Leaving() {
+		//Remove gun
+		// TODO Auto-generated method stub
+		
+	}
+
+}

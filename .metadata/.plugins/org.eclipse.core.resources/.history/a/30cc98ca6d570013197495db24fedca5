@@ -1,0 +1,9 @@
+package engine;
+
+public abstract class PlayerState {
+	
+	public abstract void itemUse();
+	public abstract void Entering();
+	public abstract void Leaving();
+
+}

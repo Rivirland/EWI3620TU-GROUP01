@@ -22,7 +22,11 @@ import javax.media.opengl.GLAutoDrawable;
 public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
-	public double begX, begY, begZ;
+	public double begX, begY, begZ, begV, begH;
+	public static boolean canTeleport = true;
+	public static int nrOfTraps;
+	public static int nrOfBullets;
+	public static int playerStateInt;
 
 	private Control control = null;
 
@@ -49,12 +53,17 @@ public class Player extends GameObject {
 	public Player(double x, double y, double z, double h, double v) {
 		// Set the initial position and viewing direction of the player.
 		super(x, y, z);
-		this.begX = x;
-		this.begY = y;
-		this.begZ = z;
+		begX = x;
+		begY = y;
+		begZ = z;
+		begH = h;
+		begV = v;
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
+		nrOfTraps = 15;
+		nrOfBullets = 3;
+		playerStateInt = 0;
 	}
 
 	/**
@@ -143,15 +152,27 @@ public class Player extends GameObject {
 	 *            The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime, GLAutoDrawable drawable) {
+		playerStateUpdate();
+		double previousX = this.getLocationX();
+		double previousY = this.getLocationY();
+		double previousZ = this.getLocationZ();
+
 		if (control != null) {
 			control.update(drawable);
+<<<<<<< HEAD
 			
+=======
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 			double i = -1;
-			horAngle = horAngle%360;
+			horAngle = horAngle % 360;
 			this.horAngle = this.getHorAngle() - i * control.getdX();
 			this.verAngle = this.getVerAngle() - i * control.getdY();
 			// make sure the camera doesn't turn
+<<<<<<< HEAD
 			//System.out.println(control.forward);
+=======
+
+>>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 			control.setdX(0);
 			control.setdY(0);
 			if (this.getVerAngle() > 89) {
@@ -195,8 +216,46 @@ public class Player extends GameObject {
 					locationY = 2.5;
 				}
 			}
+			boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
+			if (playerCollide[0] || playerCollide[2]) {
+				this.setLocationX(previousX);
+			}
+			if (playerCollide[1] || playerCollide[3]) {
+				this.setLocationZ(previousZ);
+			}
+		}
+
+		if (control.itemUse) {
+			PlayerState.getState(playerStateInt).itemUse();
+			control.itemUse = false;
 		}
 	}
 
+	public void playerStateUpdate() {
+		if (control.playerStateUp) {
+			control.playerStateUp = false;
+			PlayerState.getState(playerStateInt).leaving();
+			playerStateInt++;
+			playerStateInt = playerStateInt % 3;
+			PlayerState.getState(playerStateInt).entering();
+
+		}
+		if (control.playerStateDown) {
+			control.playerStateDown = false;
+			PlayerState.getState(playerStateInt).leaving();
+			playerStateInt--;
+			playerStateInt = (playerStateInt + 3) % 3;
+			PlayerState.getState(playerStateInt).entering();
+		}
+
+	}
+
+	public void reset() {
+		setLocationX(begX);
+		setLocationY(begY);
+		setLocationZ(begZ);
+		setHorAngle(begH);
+		setVerAngle(begV);
+	}
 
 }

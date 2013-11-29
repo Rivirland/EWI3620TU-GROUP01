@@ -1,0 +1,19 @@
+package model;
+
+public class Face {
+	public Vector3d vertex;
+	public Vector3d normal;
+
+	public Face(Vector3d vertex, Vector3d normal){
+		this.vertex = vertex;
+		this.normal = normal;
+	}
+	
+	public Vector3d getNormal(){
+		return normal;
+	}
+	
+	public Vector3d getVertex(){
+		return vertex;
+	}
+}
