@@ -4,8 +4,10 @@
 <fullyQualifiedTypeName name="engine.MazeRunner"/>
 <fullyQualifiedTypeName name="PickupItems.Trap"/>
 <fullyQualifiedTypeName name="engine.Player"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="model.Vector3d"/>
 <fullyQualifiedTypeName name="model.Model.Face"/>
 <fullyQualifiedTypeName name="enemies.EnemySpooky"/>
+<fullyQualifiedTypeName name="java.lang.ArrayStoreException"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="java.io.File"/>
 </qualifiedTypeNameHistroy>

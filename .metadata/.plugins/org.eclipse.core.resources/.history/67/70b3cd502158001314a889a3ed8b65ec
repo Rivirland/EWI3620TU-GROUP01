@@ -1,12 +1,15 @@
 package engine;
 
 import items.Item;
+import items.TrapDropped;
+import items.TrapHolder;
 
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,14 +23,19 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+import model.Model;
+import model.OBJLoader;
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
-import enemy.Enemy;
-import enemy.EnemyControl;
+import enemies.Enemy;
+import enemies.EnemyControl;
+import enemies.EnemySmart;
+import enemies.EnemySpooky;
 
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
@@ -62,7 +70,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 															// screen.
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-	public static int enemyListLength;
 	// private ArrayList<Item> itemList = new ArrayList<Item>();
 	// private int itemListLength;
 	private Camera camera; // The camera object.
@@ -74,7 +81,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// calculate
 																			// elapsed
 																			// time.
-	public static Texture earthTexture, wallTexture, roofTexture;
+
+	
+	public static Model spookyModel, smartModel;
+
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture;
+
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 
@@ -180,13 +192,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 		level = new Level("level1");
 
 		portal1 = new Portal(16, 2, 6, 2);
-
 		portal2 = new Portal(56, 2, 16, 2);
 
 		Portal.portalConnection(portal1, portal2);
+		
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
-
 		}
 
 		// Initialize the player.
@@ -197,11 +208,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		enemyList.add(new Enemy(20, 2.5, 20, 0.005, -90));
 
-		enemyListLength = enemyList.size();
+		enemyList.add(new EnemySmart(20, 2.5, 20, 0.005, -90));
+		enemyList.add(new EnemySpooky(70, 2.5, 30, 0.0015, -90));
 
-		for (int i = 0; i < enemyListLength; i++) {
+		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
@@ -215,12 +226,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 					+ level.getMaze(mazeID).itemList.get(0).getGlobalX() + " "
 					+ level.getMaze(mazeID).itemList.get(0).getGlobalY() + " "
 					+ level.getMaze(mazeID).itemList.get(0).getGlobalZ());
-			System.out.println("MazeID: "
-					+ level.getMaze(mazeID).itemList.get(1).mazeID
-					+ ", item 1 op: "
-					+ level.getMaze(mazeID).itemList.get(1).getGlobalX() + " "
-					+ level.getMaze(mazeID).itemList.get(1).getGlobalY() + " "
-					+ level.getMaze(mazeID).itemList.get(1).getGlobalZ());
+//			System.out.println("MazeID: "
+//					+ level.getMaze(mazeID).itemList.get(1).mazeID
+//					+ ", item 1 op: "
+//					+ level.getMaze(mazeID).itemList.get(1).getGlobalX() + " "
+//					+ level.getMaze(mazeID).itemList.get(1).getGlobalY() + " "
+//					+ level.getMaze(mazeID).itemList.get(1).getGlobalZ());
 		}
 	}
 
@@ -283,6 +294,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
+		loadModels();
 
 	}
 
@@ -292,6 +304,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	// 1: earthTexture
 	// 2: wallTexture
 	// 3: roofTexture
+	// 4: trapHolderTexture
 	public void loadTextures(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
@@ -304,7 +317,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
 			earthTexture = TextureIO.newTexture(data2);
 		} catch (IOException exc) {
-			System.out.println("niet gevonden");
+			System.out.println("niet gevonden - texture");
 			exc.printStackTrace();
 			System.exit(1);
 		}
@@ -321,7 +334,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			TextureData data1 = TextureIO.newTextureData(file1, false, "jpg");
 			wallTexture = TextureIO.newTexture(data1);
 		} catch (IOException exc) {
-			System.out.println("niet gevonden");
+			System.out.println("niet gevonden - walltexture2");
 			exc.printStackTrace();
 			System.exit(1);
 		}
@@ -338,11 +351,39 @@ public class MazeRunner extends Frame implements GLEventListener {
 			TextureData data3 = TextureIO.newTextureData(file3, false, "jpg");
 			roofTexture = TextureIO.newTexture(data3);
 		} catch (IOException exc) {
-			System.out.println("niet gevonden");
+			System.out.println("niet gevonden - roofTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\trapHolderTexture.jpg";
+
+			filename = currentdir + filename;
+			File file4 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data4 = TextureIO.newTextureData(file4, false, "jpg");
+			trapHolderTexture = TextureIO.newTexture(data4);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - trapHolderTexture");
 			exc.printStackTrace();
 			System.exit(1);
 		}
 
+	}
+	
+	public void loadModels(){
+		try {
+            String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\superobject.obj";
+            spookyModel = OBJLoader.loadModel(new File(filename));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	/**
@@ -368,6 +409,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
+		
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
@@ -450,35 +492,46 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Maze currentMaze = level.getMaze(currentMazeID);
 
 			for (int i = 0; i < currentMaze.itemList.size(); i++) {
-				if (currentMaze.itemList.get(i).touches(player)) {
-					visibleObjects.remove(currentMaze.itemList.get(i));
-					currentMaze.itemList.remove(i);
-				}
-
-			}
-		}
-		for (int e = 0; e < enemyListLength; e++) {
-			Maze currentMaze = level.getMaze(currentMazeID);
-			Enemy enemy = enemyList.get(e);
-			// double enemyX = enemy.getX();
-			// double enemyZ = enemy.getZ();
-			enemy.update(deltaTime, player);
-			for (int i = 0; i < currentMaze.itemList.size(); i++) {
 				Item item = currentMaze.itemList.get(i);
-				if (item.touches(enemy) && item instanceof TrapDropped) {
-					visibleObjects.remove(enemy);
-					enemyList.remove(enemy);
-					System.out.println("enemy dood");
-					
+				if (item.touches(player)) {
+					if (item instanceof TrapHolder) {
+						Player.nrOfTraps++;
+						visibleObjects.remove(currentMaze.itemList.get(i));
+						currentMaze.itemList.remove(i);
+					}
+				}
+			}
+		}
+		for (int e = 0; e < enemyList.size(); e++) {
+			Enemy enemy = enemyList.get(e);
+			currentMazeID = level.getCurrentMaze(enemy);
+			if (currentMazeID != -1) {
+				Maze currentMaze = level.getMaze(currentMazeID);
+				// double enemyX = enemy.getX();
+				// double enemyZ = enemy.getZ();
+				enemy.update(deltaTime, player);
+				for (int i = 0; i < currentMaze.itemList.size(); i++) {
+					Item item = currentMaze.itemList.get(i);
+					if (item.touches(enemy) && item instanceof TrapDropped) {
+						System.out.println("trap werkt");
+						visibleObjects.remove(enemy);
+						enemyList.remove(enemy);
+						visibleObjects.remove(item);
+						currentMaze.itemList.remove(item);
+					}
 				}
 			}
 
 		}
-		portal1.checkteleportation(player, (float) previousX,
-				(float) previousY, (float) previousZ);
-		portal2.checkteleportation(player, (float) previousX,
-				(float) previousY, (float) previousZ);
 
+		if (Player.canTeleport) {
+			portal1.checkteleportation(player, (float) previousX,
+					(float) previousY, (float) previousZ);
+			portal2.checkteleportation(player, (float) previousX,
+					(float) previousY, (float) previousZ);
+		}else{
+			Player.canTeleport = true;
+		}
 		// if (maze.isExit(player.locationX, player.locationZ)) {
 		// Sound.applause.play();
 		// player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;

@@ -85,7 +85,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	
 	public static Model spookyModel, smartModel;
 
-	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture;
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture;
 
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
@@ -97,7 +97,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	/**
 	 * Initializes the complete MazeRunner game.
 	 * <p>
-	 * MazeRunner extends Java AWT Frame, to function as the window. It creats a
+	 * MazeRunner extends Java AWT Frame, to function as the window. It creates a
 	 * canvas on itself where JOGL will be able to paint the OpenGL graphics. It
 	 * then initializes all game components and initializes JOGL, giving it the
 	 * proper settings to accurately display MazeRunner. Finally, it adds itself
@@ -294,7 +294,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
-		loadModels();
+		loadModels(gl);
 
 	}
 
@@ -371,14 +371,31 @@ public class MazeRunner extends Frame implements GLEventListener {
 			exc.printStackTrace();
 			System.exit(1);
 		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\oildrum_col.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false, "jpg");
+			oildrumTexture = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - oildrumTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
 
 	}
 	
-	public void loadModels(){
+	public void loadModels(GL gl){
+		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
             String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\eva.obj";
-            spookyModel = OBJLoader.loadModel(new File(filename));
+			String filename = currentdir + "\\models\\oildrum.obj";
+            spookyModel = OBJLoader.loadTexturedModel(new File(filename));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

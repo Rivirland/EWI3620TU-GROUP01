@@ -16,15 +16,16 @@
 		<item value="display" key="selection"/>
 		<list key="findhistory">
 			<item value="display"/>
+			<item value="Vector2f"/>
 			<item value="Vector3f"/>
-			<item value="add"/>
-			<item value="m."/>
-			<item value="loadTex"/>
-			<item value="3f"/>
-			<item value="Vector"/>
-			<item value="3d"/>
+			<item value="eva"/>
+			<item value="2D"/>
+			<item value="wD"/>
+			<item value="normalIn"/>
+			<item value="loadMo"/>
 		</list>
 		<list key="replacehistory">
+			<item value="Vector2d"/>
 			<item value="Vector3d"/>
 			<item value="this."/>
 			<item value="3d"/>
