@@ -1,0 +1,9 @@
+package menu;
+
+public class MainMenu {
+	
+	public void displayMainMenu(){
+		
+	}
+
+}

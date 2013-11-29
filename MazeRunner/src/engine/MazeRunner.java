@@ -15,6 +15,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
@@ -43,16 +44,15 @@ import enemy.EnemyControl;
  * @author Bruno Scheele, revised by Mattijs Driel
  * 
  */
-public class MazeRunner extends Frame implements GLEventListener {
-	static final long serialVersionUID = 7526471155622776147L;
+public class MazeRunner {
 
 	/*
 	 * **********************************************
 	 * * Local variables * **********************************************
 	 */
-	private GLCanvas canvas;
 
-	private int screenWidth = 900, screenHeight = 1000; // Screen size.
+
+	private int screenWidth, screenHeight; // Screen size.
 	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
 														// will be displayed on
 														// screen.
@@ -60,17 +60,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	private int enemyListLength;
 	private Camera camera; // The camera object.
-	private UserInput input; // The user input object that controls the player.
+	//private UserInput input; // The user input object that controls the player.
 	private EnemyControl enemyControl;
 	private Level level;
-	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used
-																			// to
+	//private long previousTime = Calendar.getInstance().getTimeInMillis();
+	//final private long startTime = Calendar.getInstance().getTimeInMillis();// Used
+	
+	private long previousTime = Calendar.getInstance().getTimeInMillis();
+	private long startTime = Calendar.getInstance().getTimeInMillis();
+	
+	// to
 																			// calculate
 																			// elapsed
 																			// time.
 	public static Texture earthTexture, wallTexture, roofTexture;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
+	
+	private UserInput input;
 
 	/*
 	 * **********************************************
@@ -87,38 +94,37 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * controller.
 	 */
 
-	public MazeRunner() {
+	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas, GLAutoDrawable drawable, GL gl, GLU glu,  UserInput userinput) {
 		// Make a new window.
-		super("MazeRunner");
 
 		// Let's change the window to our liking.
-		setSize(screenWidth, screenHeight);
-		setBackground(Color.white);
+		setScreen(screenWidth, screenHeight);
 
 		// The window also has to close when we want to.
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-
-		initJOGL(); // Initialize JOGL.
-		initObjects(); // Initialize all the objects!
+		//canvas = new GLCanvas();
+		//initJOGL();
+		init(drawable , gl, glu);
+		/**
+		 * @@
+		 */
+		initObjects(canvas, userinput);
+		
+		//this.input = userinput;
 
 		// Set the frame to visible. This automatically calls upon OpenGL to
 		// prevent a blank screen.
-		setVisible(true);
 	}
 
-	/**
-	 * initJOGL() sets up JOGL to work properly.
-	 * <p>
-	 * It sets the capabilities we want for MazeRunner, and uses these to create
-	 * the GLCanvas upon which MazeRunner will actually display our screen. To
-	 * indicate to OpenGL that is has to enter a continuous loop, it uses an
-	 * Animator, which is part of the JOGL api.
-	 */
-	private void initJOGL() {
+	public void setScreen(int screenWidth, int screenHeight) {
+		this.screenWidth=screenWidth;
+		this.screenHeight=screenHeight;
+		
+
+		
+		
+	}
+	
+/*	private void initJOGL() {
 		// First, we set up JOGL. We start with the default settings.
 		GLCapabilities caps = new GLCapabilities();
 		// Then we make sure that JOGL is hardware accelerated and uses double
@@ -129,7 +135,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Now we add the canvas, where OpenGL will actually draw for us. We'll
 		// use settings we've just defined.
 		canvas = new GLCanvas(caps);
-		add(canvas);
+		//add(canvas);
 		/*
 		 * We need to add a GLEventListener to interpret OpenGL events for us.
 		 * Since MazeRunner implements GLEventListener, this means that we add
@@ -137,15 +143,35 @@ public class MazeRunner extends Frame implements GLEventListener {
 		 * methods to this class. These will be called when we are ready to
 		 * perform the OpenGL phases of MazeRunner.
 		 */
-		canvas.addGLEventListener(this);
+		//canvas.addGLEventListener(this);
 
 		/*
 		 * We need to create an internal thread that instructs OpenGL to
 		 * continuously repaint itself. The Animator class handles that for
 		 * JOGL.
 		 */
+	/*
 		Animator anim = new Animator(canvas);
 		anim.start();
+	}
+*/
+	
+	
+public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
+		
+		this.screenWidth=screenWidth;
+		this.screenHeight=screenHeight;
+		
+	gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
+	
+	// Set the new projection matrix.
+	gl.glMatrixMode(GL.GL_PROJECTION);
+	gl.glLoadIdentity();
+	glu.gluPerspective(60, screenWidth / screenHeight, .1, 200);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	
+	input.reshape();
+
 	}
 
 	/**
@@ -164,7 +190,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * be added to the visualObjects list of MazeRunner through the add method,
 	 * so it will be displayed automatically.
 	 */
-	private void initObjects() {
+	public void initObjects(GLCanvas canvas, UserInput input) {
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
@@ -199,8 +225,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 			visibleObjects.add(enemyList.get(i));
 		}
 
-		input = new UserInput(canvas);
+		//input = new UserInput(canvas);
+		
+		this.input=input;
 		player.setControl(input);
+		
+		
 	}
 
 	/*
@@ -218,18 +248,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * It is <b>very important</b> to realize that there should be no drawing at
 	 * all in this method.
 	 */
-	public void init(GLAutoDrawable drawable) {
+	public void init(GLAutoDrawable drawable, GL gl, GLU glu) {
+		
+		
+		//GLU glu = new GLU();
 		drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
 														// pipeline to Debugging
 														// mode.
-		GL gl = drawable.getGL();
-		GLU glu = new GLU();
-
+		
+		/*
 		gl.glClearColor(0, 0, 0, 0); // Set the background color.
 
 		// Now we set up our viewpoint.
 		gl.glMatrixMode(GL.GL_PROJECTION); // We'll use orthogonal projection.
 		gl.glLoadIdentity(); // Reset the current matrix.
+		*/
+		//@gamestate switch
 		glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
 																// parameters
 																// for
@@ -242,9 +276,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// gl.glCullFace(GL.GL_BACK);
 		// gl.glEnable(GL.GL_CULL_FACE);
 
-		// Enable Z-buffering.
+		// @Enable Z-buffering, gamestate switch
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
+		
+		//@ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
 		// Set and enable the lighting.
 		float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; // High up in the
 																// sky!
@@ -262,6 +298,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
 
+		//@@
 	}
 
 	// Loads all the texture and stores them into the memory. We have to keep
@@ -270,6 +307,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	// 1: earthTexture
 	// 2: wallTexture
 	// 3: roofTexture
+	
 	public void loadTextures(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
@@ -322,6 +360,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 
 	}
+	
+	public void setTime (long time){
+		this.previousTime = time;
+	}
+
 
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
@@ -333,16 +376,28 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * specifies how that object should be drawn. The object is passed a
 	 * reference of the GL context, so it knows where to draw.
 	 */
-	public void display(GLAutoDrawable drawable) {
-		System.out.println(player.getLocationX() + " " + player.getLocationZ());
-		GL gl = drawable.getGL();
+	public void display(GLAutoDrawable drawable, GL gl) {
+		//System.out.println(input.getForward());
+	//System.out.println(player.getLocationX() + " " + player.getLocationZ());
+		//GL gl = drawable.getGL();
+		
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glLoadIdentity();
+		
 		GLU glu = new GLU();
 		GLUT glut = new GLUT();
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
-		long currentTime = now.getTimeInMillis();
+		long currentTime = now.getTimeInMillis()-startTime;
+		
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
+		//time = previousTime-startTime;
+		
+		//this.time;
+		
+		//System.out.println(previousTime);s
+
 
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
@@ -360,12 +415,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 				.hasNext();) {
 			it.next().display(gl);
 		}
+		
+		
+		
 		portal1.displayPortal(glut, gl);
 		portal2.displayPortal(glut, gl);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
+		
 		gl.glFlush();
 	}
 
@@ -390,7 +449,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * associates with it). It adjust the projection matrix to accomodate the
 	 * new shape.
 	 */
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+	/*public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 		GL gl = drawable.getGL();
 		GLU glu = new GLU();
@@ -398,14 +457,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Setting the new screen size and adjusting the viewport.
 		screenWidth = width;
 		screenHeight = height;
-		gl.glViewport(0, 0, screenWidth, screenHeight);
+		gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
+		
+		
 
 		// Set the new projection matrix.
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
 		glu.gluPerspective(60, screenWidth / screenHeight, .1, 200);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
-	}
+	}*/
 
 	/*
 	 * **********************************************
@@ -417,11 +478,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
 
+
 	// Updates the player and the enemy movement
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
 		double previousX = player.getLocationX();
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
+		
 		player.update(deltaTime, drawable);
 		for (int e = 0; e < enemyListLength; e++) {
 			Enemy enemy = enemyList.get(e);
@@ -600,8 +663,4 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * @param args
 	 */
 
-	public static void main(String[] args) {
-		// Create and run MazeRunner.
-		new MazeRunner();
-	}
 }

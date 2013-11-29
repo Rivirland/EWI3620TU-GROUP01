@@ -37,6 +37,7 @@ public abstract class Control
 	 */
 	public boolean getForward()
 	{
+		
 		return forward;
 	}
 	
@@ -98,4 +99,5 @@ public abstract class Control
 	 * most up-to-date values. 
 	 */
 	public abstract void update(GLAutoDrawable drawable);
+	
 }

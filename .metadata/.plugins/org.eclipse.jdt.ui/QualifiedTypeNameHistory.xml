@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="new_default.Level"/>
+<fullyQualifiedTypeName name="java.awt.Font"/>
+<fullyQualifiedTypeName name="com.sun.opengl.util.j2d.TextRenderer"/>
+<fullyQualifiedTypeName name="levelEditor.LevelEditor"/>
+<fullyQualifiedTypeName name="javax.media.opengl.GLAutoDrawable"/>
+<fullyQualifiedTypeName name="javax.media.opengl.GL"/>
+<fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
+<fullyQualifiedTypeName name="java.awt.event.MouseMotionListener"/>
+<fullyQualifiedTypeName name="engine.MazeRunner"/>
+<fullyQualifiedTypeName name="javax.media.opengl.glu.GLU"/>
+<fullyQualifiedTypeName name="javax.media.opengl.GLDrawable"/>
 </qualifiedTypeNameHistroy>

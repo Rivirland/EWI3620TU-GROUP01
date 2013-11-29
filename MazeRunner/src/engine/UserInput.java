@@ -31,8 +31,7 @@ import javax.media.opengl.GLCanvas;
  * @author Mattijs Driel
  * 
  */
-public class UserInput extends Control implements MouseListener,
-		MouseMotionListener, KeyListener, Runnable {
+public class UserInput extends Control implements Runnable {
 	int x1, x2, y1, y2;
 
 	// fields for mouselook, uit het boek Developing games in Java door David
@@ -41,14 +40,14 @@ public class UserInput extends Control implements MouseListener,
 	private Robot robot;
 	private Point mouseLocation;
 	private Point centerLocation;
-	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
-										// on
+	private boolean relativeMouseMode; // to turn this mode (mouselook) off or	// on
 	private boolean isRecentering;
-	private boolean mouselookMode = false;
+	private boolean mouselookMode = true;
 	private Cursor cursor;
 	private boolean mousechange = false;
+	private boolean startedinput = false;
 	// private Cursor invisibleCursor;
-	private Window window;
+
 
 	Cursor invisibleCursor;
 	Cursor normalCursor;
@@ -67,9 +66,9 @@ public class UserInput extends Control implements MouseListener,
 	 *            The GLCanvas to which to add the listeners.
 	 */
 	public UserInput(GLCanvas canvas) {
-		canvas.addMouseListener(this);
-		canvas.addMouseMotionListener(this);
-		canvas.addKeyListener(this);
+		//canvas.addMouseListener(this);
+		//canvas.addMouseMotionListener(this);
+		//canvas.addKeyListener(this);
 		this.canvas = canvas;
 		init(canvas);
 
@@ -121,7 +120,7 @@ public class UserInput extends Control implements MouseListener,
 			robot.mouseMove(centerLocation.x, centerLocation.y);
 
 		}
-
+		
 	}
 
 	/*
@@ -129,16 +128,27 @@ public class UserInput extends Control implements MouseListener,
 	 * * Updating * **********************************************
 	 */
 
+	public void reshape (){
+		if (startedinput){
+		centerLocation.x = canvas.getWidth() / 2;
+		centerLocation.y = canvas.getHeight() / 2;
+		}
+	}
+	
 	@Override
 	public void update(GLAutoDrawable drawable) {
+		
+		
 		if (!mouselookMode) {
+			
 			dX = x1 - x2;
 			dY = y1 - y2;
 			x1 = x2;
 			y1 = y2;
+			
 		}
 
-		if (mousechange) {
+		//if (mousechange) {
 			if (mouselookMode) {
 				canvas.setCursor(invisibleCursor);
 				mousechange = false;
@@ -146,7 +156,7 @@ public class UserInput extends Control implements MouseListener,
 				canvas.setCursor(normalCursor);
 				mousechange = false;
 			}
-		}
+		//}
 
 		// gamestate.doAction();
 
@@ -157,7 +167,6 @@ public class UserInput extends Control implements MouseListener,
 	 * * Input event handlers * **********************************************
 	 */
 
-	@Override
 	public void mousePressed(MouseEvent event) {
 
 		if (!mouselookMode) {
@@ -169,10 +178,10 @@ public class UserInput extends Control implements MouseListener,
 
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent event) {
 		if (!mouselookMode) {
 			x2 = event.getX();
+			
 			y2 = event.getY();
 		} else {
 			mouseMoved(event);
@@ -185,6 +194,8 @@ public class UserInput extends Control implements MouseListener,
 		 * if (isRecentering && centerLocation.x == event.getX() &&
 		 * centerLocation.y ==event.getY()){ isRecentering = false;
 		 */
+		
+		
 		if (isRecentering) {
 			isRecentering = false;
 		} else {
@@ -202,7 +213,6 @@ public class UserInput extends Control implements MouseListener,
 		mouseLocation.y = event.getY();
 	}
 
-	@Override
 	public void keyPressed(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.VK_W) {
 			forward = true;
@@ -240,7 +250,6 @@ public class UserInput extends Control implements MouseListener,
 
 	}
 
-	@Override
 	public void keyReleased(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.VK_W) {
 			forward = false;
@@ -271,30 +280,12 @@ public class UserInput extends Control implements MouseListener,
 
 	}
 
+	
 	/*
 	 * **********************************************
 	 * * Unused event handlers * **********************************************
 	 */
 
-	@Override
-	public void keyTyped(KeyEvent event) {
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent event) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent event) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent event) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent event) {
-	}
 
 	@Override
 	public void run() {

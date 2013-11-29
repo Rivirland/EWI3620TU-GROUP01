@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="185" key="DIALOG_Y_ORIGIN"/>
-		<item value="380" key="DIALOG_HEIGHT"/>
-		<item value="680" key="DIALOG_X_ORIGIN"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="305" key="DIALOG_WIDTH"/>
+		<item value="291" key="DIALOG_Y_ORIGIN"/>
+		<item value="1519" key="DIALOG_X_ORIGIN"/>
+		<item value="442" key="DIALOG_HEIGHT"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
-		<item value="false" key="wholeword"/>
-		<item value="Enemy" key="selection"/>
+		<item value="true" key="wholeword"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
-			<item value="enemy"/>
-			<item value="speed"/>
-			<item value="enemy.update("/>
-			<item value="enemy.upd"/>
-			<item value="&quot;patrol&quot;"/>
-			<item value="System"/>
-			<item value="getCo"/>
-			<item value="get"/>
+			<item value="gettime"/>
+			<item value="display"/>
+			<item value="reshape"/>
+			<item value="input"/>
+			<item value="control"/>
+			<item value="userinput"/>
+			<item value="time"/>
+			<item value="/1000"/>
 		</list>
 		<list key="replacehistory">
+			<item value="screenHeight"/>
+			<item value="screenHeigth"/>
+			<item value="screenWidth"/>
+			<item value="screenWidth2"/>
 		</list>
 	</section>
 </section>

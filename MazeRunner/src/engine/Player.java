@@ -66,6 +66,8 @@ public class Player extends GameObject {
 	 */
 	public void setControl(Control control) {
 		this.control = control;
+		System.out.println(control);
+		
 	}
 
 	/**
@@ -143,26 +145,28 @@ public class Player extends GameObject {
 	public void update(int deltaTime, GLAutoDrawable drawable) {
 		if (control != null) {
 			control.update(drawable);
-
+			
 			double i = -1;
 			horAngle = horAngle%360;
 			this.horAngle = this.getHorAngle() - i * control.getdX();
 			this.verAngle = this.getVerAngle() - i * control.getdY();
 			// make sure the camera doesn't turn
-			
+			//System.out.println(control.forward);
 			control.setdX(0);
 			control.setdY(0);
-			if (this.getVerAngle() > 90) {
-				this.verAngle = 90;
-			} else if (this.getVerAngle() < -90) {
-				this.verAngle = -90;
+			if (this.getVerAngle() > 89) {
+				this.verAngle = 89;
+			} else if (this.getVerAngle() < -89) {
+				this.verAngle = -89;
 			}
 
+			
 			if (control.forward) {
 				locationX -= Math.sin(Math.toRadians(getHorAngle())) * speed
 						* deltaTime;
 				locationZ -= Math.cos(Math.toRadians(getHorAngle())) * speed
 						* deltaTime;
+				System.out.println(locationX+"  "+locationZ);
 			}
 			if (control.back) {
 				locationX -= Math.sin(Math.toRadians(getHorAngle() + 180))
