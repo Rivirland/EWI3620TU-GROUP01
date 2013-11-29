@@ -40,6 +40,21 @@ public class Teken {
 	    renderer.endRendering();
 	}
 	
+	public static void textDrawMetKleur (GLAutoDrawable drawable, GL gl, String str, float x, float y, float size, float r, float g, float b){
+		int xint = (int) x;
+		int yint = (int) y;
+		int sizeint = (int) size;
+		
+		TextRenderer renderer = new TextRenderer(new Font("Agency FB", Font.BOLD, sizeint));
+		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+	    // optionally set the color
+	    renderer.setColor(r, g, b, 1f);
+	    renderer.draw(str, xint, yint);
+	    
+	    // ... more draw commands, color changes, etc.
+	    renderer.endRendering();
+	}
+	
 public static void tekenButton(GL gl, float xmin, float ymin, float xmax, float ymax){
 		gl.glColor3f(0.16f, 0.16f, 0.16f);
 		rechthoek(gl, xmin, ymin, xmax, ymax);

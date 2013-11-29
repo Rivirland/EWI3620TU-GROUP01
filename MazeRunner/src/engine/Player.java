@@ -159,20 +159,15 @@ public class Player extends GameObject {
 
 		if (control != null) {
 			control.update(drawable);
-<<<<<<< HEAD
-			
-=======
->>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
+
+
 			double i = -1;
 			horAngle = horAngle % 360;
 			this.horAngle = this.getHorAngle() - i * control.getdX();
 			this.verAngle = this.getVerAngle() - i * control.getdY();
 			// make sure the camera doesn't turn
-<<<<<<< HEAD
-			//System.out.println(control.forward);
-=======
 
->>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
+			//System.out.println(control.forward);
 			control.setdX(0);
 			control.setdY(0);
 			if (this.getVerAngle() > 89) {

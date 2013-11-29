@@ -39,26 +39,20 @@ public class UserInput extends Control implements Runnable {
 	private Robot robot;
 	private Point mouseLocation;
 	private Point centerLocation;
-<<<<<<< HEAD
+
 	private boolean relativeMouseMode; // to turn this mode (mouselook) off or	// on
 	private boolean isRecentering;
 	private boolean mouselookMode = true;
 	private Cursor cursor;
-=======
+
 //	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
 										// on
-	private boolean isRecentering;
-	private boolean mouselookMode = false;
+
 //	private Cursor cursor;
->>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
+
 	private boolean mousechange = false;
 	private boolean startedinput = false;
 	// private Cursor invisibleCursor;
-<<<<<<< HEAD
-
-=======
-//	private Window window;
->>>>>>> a58643642e76276e2ab55d8012f48eef431e3495
 
 	Cursor invisibleCursor;
 	Cursor normalCursor;

@@ -54,6 +54,11 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final byte INGAME = 5;
 	final byte LEVELEDITOR = 6;
 	final byte PAUZE = 7;
+	final byte LOADGAME = 8;
+	final byte DELETEGAME = 9;
+	final byte LOADLEVEL = 10;
+	
+	final boolean fullscreenboolean= false;
 	
 	private boolean activate=false;
 	
@@ -65,7 +70,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long pausedtime;
 	
 	
-	private int gamestate = MAINMENU;
+	private int gamestate;
 	private int currentstate = gamestate;
 	private boolean ingamestarted = false;
 	
@@ -83,6 +88,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
 	private GLCanvas canvas;
+	
+	Fullscreen fullscreen = new Fullscreen();
 	
 	GL gl;
 	GLU glu;
@@ -103,11 +110,21 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	public Main() {
 		super("naam van onze g@me");
 
+		gamestate = MAINMENU;
 	
 
 		// Set the desired size and background color of the frame
-		setSize(screenWidth, screenHeight);
-		
+		if (fullscreenboolean){
+			  screenWidth = fullscreen.getWidth();
+		      screenHeight = fullscreen.getHeight();
+			}
+		      setSize(screenWidth, screenHeight);
+		    if (fullscreenboolean){
+		      fullscreen.init(this);
+		      setFocusable(true);
+		    }
+		    
+		   
 		setBackground(new Color(0f, 0f, 0f));
 		
 
@@ -174,12 +191,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glLoadIdentity();
 
 		mainmenu = new MainMenu(screenWidth, screenHeight);
-		leveleditor = new LevelEditor(screenWidth, screenHeight);
+		leveleditor = new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultWorld());
 		gamemenu = new GameMenu(screenWidth, screenHeight);
 		quit = new Quit(screenWidth, screenHeight);
 		settings = new Settings(screenWidth, screenHeight);
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
-		
+		//mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput);
 		
@@ -240,7 +257,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		
 		
 		// check of andere gamestate dan INGAME vanuit pauze wordt aangeroepen
-		
+		/*
 		if (currentstate == INGAME && gamestate != INGAME && ingamestarted){
 			currentstate = gamestate;
 			pausedtime=time;
@@ -250,7 +267,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			// calculate the time elapsed while the game was paused
 			ingamepausetime= time - ingamepausetime;
 		}
-		
+		*/
 		
 		
 		GL gl = drawable.getGL();
@@ -262,9 +279,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		
 	
 	switch(gamestate){
-	case MAINMENU: 
+	case MAINMENU:
+		if (currentstate != gamestate){
+			mainmenu.setScreen(screenWidth, screenHeight);
+		}
 		mainmenu.display(drawable, gl);
-		
+		currentstate = gamestate;
 		
 		break;
 	case GAMEMENU:
@@ -283,38 +303,72 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		
 		break;
 	case SETTINGS:
+		if (currentstate != gamestate){
+			settings.setScreen(screenWidth, screenHeight);
+		}
 		settings.display(drawable, gl);
+		currentstate = gamestate;
 		
 		break;
 	case QUIT:
+		if (currentstate != gamestate){
+			quit.setScreen(screenWidth, screenHeight);
+		}
 		quit.display(drawable, gl);
+		currentstate = gamestate;
 		
 		break;
 	case INGAME:
 		if (!ingamestarted){
 			ingamestarted =true;
-			// hier alle inits voor de mazerunner	
+			gl.glEnable(GL.GL_TEXTURE_2D);
+			gl.glEnable(GL.GL_LIGHTING);
+			gl.glEnable(GL.GL_CULL_FACE);
+			gl.glEnable(GL.GL_DEPTH_TEST);
 			mazerunner.init(drawable, gl, glu);
+			
+			// hier alle inits voor de mazerunner
 			//mazerunner.initObjects(canvas, userinput);
 			
 		}
 		if (currentstate != gamestate){
+			
 			mazerunner.setScreen(glu, gl, screenWidth, screenHeight);
 		}
 		mazerunner.display(drawable, gl);
-		
+		currentstate = gamestate;
 		break;
 		
 	case LEVELEDITOR:
-		
+		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
-			leveleditor=new LevelEditor(screenWidth, screenHeight);	
+			gl.glDisable(GL.GL_TEXTURE_2D);
+			gl.glDisable(GL.GL_LIGHTING);
+			gl.glDisable(GL.GL_CULL_FACE);
+			gl.glDisable(GL.GL_DEPTH_TEST);
+			leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultWorld());	
 		}
-		leveleditor.display(gl);
+		gl = drawable.getGL();
+		leveleditor.displayLevelEditor(gl);
 		currentstate = gamestate;
 		break;
 	case PAUZE:
 		
+		break;
+		
+	case LOADLEVEL:
+		//leveleditor = new LevelEditor(screenWidth, screenHeight);
+		if (currentstate != gamestate){
+			KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+			String filename = kfub.loadFile(new Frame(), "Open...", ".\\", "*.txt");
+			String currentdir = System.getProperty("user.dir");
+			filename = currentdir + "\\levels\\" + filename;
+			System.out.println(filename);
+			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.read(filename));}
+			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
+		}
+		leveleditor.displayLevelEditor(gl);
+		currentstate = gamestate;
 		break;
 	}
 		
@@ -338,8 +392,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 * A function defined in GLEventListener. This function is called when the GLCanvas is resized or moved. 
 	 * Since the canvas fills the frame, this event also triggers whenever the frame is resized or moved.
 	 */
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL gl = drawable.getGL();
 		
 		// Set the new screen size and adjusting the viewport
@@ -355,27 +408,30 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			
 			break;
 		case GAMEMENU:
-			
+			gamemenu.setScreen(screenWidth,screenHeight);
 			break;
 		case LEVELMENU:
-			
+			levelmenu.setScreen(screenWidth,screenHeight);
 			break;
 		case SETTINGS:
-			
+			settings.setScreen(screenWidth,screenHeight);
 			break;
 		case QUIT:
-			
+			quit.setScreen(screenWidth,screenHeight);
 			break;
 		case INGAME:
-			
+			//ingame.setScreen(screenWidth,screenHeight);
 			break;
 		case LEVELEDITOR:
-		
 			leveleditor.setScreen(screenWidth, screenHeight);
 
 			break;
 		case PAUZE:
 			
+			break;
+			
+		case LOADLEVEL:
+			leveleditor.setScreen(screenWidth,screenHeight);
 			break;
 		}
 
@@ -389,7 +445,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	/**
 	 * A function defined in MouseListener. Is called when the pointer is in the GLCanvas, and a mouse button is released.
 	 */
-	public void mouseReleased(MouseEvent me) {
+	@Override
+public void mouseReleased(MouseEvent me) {
 		
 		//GL gl = drawable.getGL();
 		
@@ -398,32 +455,39 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case MAINMENU: 
 			mainmenu.setScreen(screenWidth, screenHeight);
 			gamestate = mainmenu.mouseReleased(me);
-			gamestate = INGAME;
 			System.out.println(gamestate);
 			break;
 		case GAMEMENU:
-			
+			gamemenu.setScreen(screenWidth, screenHeight);
+			gamestate = gamemenu.MouseReleased(me);
 			break;
 		case LEVELMENU:
+			levelmenu.setScreen(screenWidth, screenHeight);
+			gamestate = levelmenu.MouseReleased(me);
 			
 			break;
 		case SETTINGS:
 			
 			break;
 		case QUIT:
+			quit.setScreen(screenWidth, screenHeight);
+			gamestate = quit.mouseReleased(me);
 			
 			break;
 		case INGAME:
 			
 			break;
 		case LEVELEDITOR:
-			
+			leveleditor.setScreen(screenWidth, screenHeight);
 			leveleditor.mouseReleased(me);
 			
 			break;
 		case PAUZE:
 			
 			break;
+		case LOADLEVEL:
+			leveleditor.setScreen(screenWidth, screenHeight);
+			leveleditor.mouseReleased(me);
 		}
 	}
 
@@ -534,24 +598,14 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		/*
 		
-		if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-			if (gamestate == PAUZE){
-				gamestate =INGAME;
-			}
-			
-			if (gamestate == INGAME){
-				gamestate = PAUZE;
-			}
-			
-			
-			
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			gamestate = MAINMENU;
 		}
-		*/
+		
 		if (gamestate == INGAME){
 			userinput.keyReleased(e);
-	}
+		}
 	}
 
 	@Override

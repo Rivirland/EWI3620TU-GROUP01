@@ -49,6 +49,8 @@ public class Maze implements VisibleObject {
 	public double maxX, maxZ;
 	public ArrayList<Item> itemList = new ArrayList<Item>();
 
+	
+
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(File filename, int i) {
@@ -60,7 +62,7 @@ public class Maze implements VisibleObject {
 		}
 		mazeID = i - 1;
 		// TODO: init items
-		itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
+//		itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
 //		itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
 	}
 

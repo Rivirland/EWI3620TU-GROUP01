@@ -1,4 +1,5 @@
 package engine;
+import engine.*;
 
 public class PlayerStateDead extends PlayerState{
 

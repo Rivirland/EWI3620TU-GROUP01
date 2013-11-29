@@ -18,10 +18,10 @@ public class Settings {
 	
 	public void display(GLAutoDrawable drawable, GL gl){
 		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, 200f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Option1", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Option2", 750f/1920f*screenWidth, 530f/1080f*screenHeight, 80f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Option3", 750f/1920f*screenWidth, 380f/1080f*screenHeight, 80f/1080f*screenHeight);
-		//Teken.textDraw(drawable, gl, "Quit Game", 750f/1920f*screenWidth, 230f/1080f*screenHeight, 80f/1080f*screenHeight);
+		Teken.textDraw(drawable, gl, "Difficulty: Levi (EASY)", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight);
+		Teken.textDraw(drawable, gl, "Difficulty: Joris (MEDIUM)", 750f/1920f*screenWidth, 530f/1080f*screenHeight, 80f/1080f*screenHeight);
+		Teken.textDraw(drawable, gl, "Difficulty: Peter (HARD)", 750f/1920f*screenWidth, 380f/1080f*screenHeight, 80f/1080f*screenHeight);
+		Teken.textDraw(drawable, gl, "Difficulty: Martijn (IMPOSSIBLE)", 750f/1920f*screenWidth, 230f/1080f*screenHeight, 80f/1080f*screenHeight);
 	}
 
 }
