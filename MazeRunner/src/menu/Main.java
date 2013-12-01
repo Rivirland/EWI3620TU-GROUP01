@@ -422,11 +422,11 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		levelmenu.setScreen(screenWidth,screenHeight);
 		settings.setScreen(screenWidth,screenHeight);
 		quit.setScreen(screenWidth,screenHeight);
-		//mazerunner.setScreen(screenWidth,screenHeight);
+		mazerunner.setScreen(screenWidth,screenHeight);
 		//leveleditor.setScreen(screenWidth, screenHeight);
 		leveleditor.setScreen(screenWidth,screenHeight);
 		
-		/*switch(gamestate){
+		switch(gamestate){
 		case MAINMENU: 
 			mainmenu.setScreen(screenWidth, screenHeight);
 			
@@ -447,7 +447,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			//ingame.setScreen(screenWidth,screenHeight);
 			break;
 		case LEVELEDITOR:
-			leveleditor.setScreen(screenWidth, screenHeight);
+			//leveleditor.setScreen(screenWidth, screenHeight);
+			
+			// Update the projection to an orthogonal projection using the new screen size
+			gl.glMatrixMode(GL.GL_PROJECTION);
+			gl.glLoadIdentity();
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 
 			break;
 		case PAUZE:
@@ -457,12 +462,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case LOADLEVEL:
 			leveleditor.setScreen(screenWidth,screenHeight);
 			break;
-		}*/
+		}
 
-		// Update the projection to an orthogonal projection using the new screen size
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 	}
 
 	
