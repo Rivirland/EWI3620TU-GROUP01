@@ -3,6 +3,7 @@ package menu;
 
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -46,6 +47,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private int screenWidth = 800, screenHeight = 600;
 	private float buttonSize = screenHeight / 10.0f;
 	
+	// all the different states and their corresponding number
 	final byte MAINMENU = 0;
 	final byte GAMEMENU = 1;
 	final byte LEVELMENU = 2;
@@ -62,20 +64,27 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	
 	private boolean activate=false;
 	
+	private Cursor normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	
 	private long previousTime = Calendar.getInstance().getTimeInMillis();
 	// begintijd vastgesteld
 	final private long startTime = Calendar.getInstance().getTimeInMillis();
 	private long time;
+	// is the delta of the time that pause is initaited to the time the game is resumed
 	private long ingamepausetime;
+	// time the pause is resumed
 	private long pausedtime;
 	
+	//private boolean mouselookMode;
 	
+	// the gamestate
 	private int gamestate;
+	// to check if a gamestate was changed
 	private int currentstate = gamestate;
+	// if the ingame is started
 	private boolean ingamestarted = false;
 	
-	//private long previousTime = Calendar.getInstance().getTimeInMillis();
-	
+	// constructors for the different gamestates
 	LevelEditor leveleditor; 
 	MainMenu mainmenu;
 	GameMenu gamemenu;
@@ -218,13 +227,13 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		// We have a simple 2D application, so we do not need to check for depth
 		// when rendering.
-		gl.glDisable(GL.GL_DEPTH_TEST);
+		//gl.glDisable(GL.GL_DEPTH_TEST);
 		
 		
 		
 	}
-	public void loadTextures(GL gl, String filename){
-		gl.glEnable(GL.GL_TEXTURE_1D);
+	/*public void loadTextures(GL gl, String filename){
+		//gl.glEnable(GL.GL_TEXTURE_1D);
 		Texture backTexture = null;
 		try {
 			String currentdir = System.getProperty("user.dir");
@@ -242,7 +251,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
             exc.printStackTrace();
             System.exit(1);
         }
-	}
+	}*/
 
 	@Override
 	/**
@@ -250,6 +259,14 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 * contain the rendering code.
 	 */
 	public void display(GLAutoDrawable drawable) {
+		
+		if (gamestate != INGAME){
+			
+			userinput.setmouselookMode(false);
+			canvas.setCursor(normalCursor);
+		}
+		
+		
 		
 		// over de tijd
 		
@@ -321,10 +338,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	case INGAME:
 		if (!ingamestarted){
 			ingamestarted =true;
-			gl.glEnable(GL.GL_TEXTURE_2D);
-			gl.glEnable(GL.GL_LIGHTING);
-			gl.glEnable(GL.GL_CULL_FACE);
-			gl.glEnable(GL.GL_DEPTH_TEST);
 			mazerunner.init(drawable, gl, glu);
 			
 			// hier alle inits voor de mazerunner
@@ -332,9 +345,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			
 		}
 		if (currentstate != gamestate){
-			
+			userinput.setmouselookMode(true);
 			mazerunner.setScreen(glu, gl, screenWidth, screenHeight);
 		}
+		gl = drawable.getGL();
 		mazerunner.display(drawable, gl);
 		currentstate = gamestate;
 		break;
@@ -342,15 +356,21 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	case LEVELEDITOR:
 		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
-			gl.glDisable(GL.GL_TEXTURE_2D);
-			gl.glDisable(GL.GL_LIGHTING);
-			gl.glDisable(GL.GL_CULL_FACE);
-			gl.glDisable(GL.GL_DEPTH_TEST);
+			
 			leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultWorld());	
+			gl.glMatrixMode(GL.GL_PROJECTION);
+			gl.glLoadIdentity();
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+			//leveleditor.setScreen(screenWidth, screenHeight);
 		}
+		//gl.glLoadIdentity();
+		//gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 		gl = drawable.getGL();
-		leveleditor.displayLevelEditor(gl);
+		//gl.glLoadIdentity();
+		
+		leveleditor.display(gl);
 		currentstate = gamestate;
+		
 		break;
 	case PAUZE:
 		
@@ -367,7 +387,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.read(filename));}
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
 		}
-		leveleditor.displayLevelEditor(gl);
+		leveleditor.display(gl);
 		currentstate = gamestate;
 		break;
 	}
@@ -376,11 +396,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glFlush();
 	}
 
-	
-	public void tekenMenuAchtergrond(GL gl){
-		
-		
-	}
 
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged) {
@@ -393,7 +408,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 * Since the canvas fills the frame, this event also triggers whenever the frame is resized or moved.
 	 */
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		GL gl = drawable.getGL();
+		//GL gl = drawable.getGL();
 		
 		// Set the new screen size and adjusting the viewport
 		screenWidth = width;
@@ -402,7 +417,16 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glViewport(0, 0, screenWidth, screenHeight);
 		userinput.reshape();
 		
-		switch(gamestate){
+		mainmenu.setScreen(screenWidth, screenHeight);
+		gamemenu.setScreen(screenWidth,screenHeight);
+		levelmenu.setScreen(screenWidth,screenHeight);
+		settings.setScreen(screenWidth,screenHeight);
+		quit.setScreen(screenWidth,screenHeight);
+		//mazerunner.setScreen(screenWidth,screenHeight);
+		//leveleditor.setScreen(screenWidth, screenHeight);
+		leveleditor.setScreen(screenWidth,screenHeight);
+		
+		/*switch(gamestate){
 		case MAINMENU: 
 			mainmenu.setScreen(screenWidth, screenHeight);
 			
@@ -433,7 +457,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case LOADLEVEL:
 			leveleditor.setScreen(screenWidth,screenHeight);
 			break;
-		}
+		}*/
 
 		// Update the projection to an orthogonal projection using the new screen size
 		gl.glMatrixMode(GL.GL_PROJECTION);
@@ -449,13 +473,13 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 public void mouseReleased(MouseEvent me) {
 		
 		//GL gl = drawable.getGL();
-		
-		
+			
 		switch(gamestate){
 		case MAINMENU: 
 			mainmenu.setScreen(screenWidth, screenHeight);
 			gamestate = mainmenu.mouseReleased(me);
-			System.out.println(gamestate);
+			
+			
 			break;
 		case GAMEMENU:
 			gamemenu.setScreen(screenWidth, screenHeight);
@@ -476,6 +500,7 @@ public void mouseReleased(MouseEvent me) {
 			break;
 		case INGAME:
 			
+			
 			break;
 		case LEVELEDITOR:
 			leveleditor.setScreen(screenWidth, screenHeight);
@@ -489,6 +514,7 @@ public void mouseReleased(MouseEvent me) {
 			leveleditor.setScreen(screenWidth, screenHeight);
 			leveleditor.mouseReleased(me);
 		}
+		
 	}
 
 	@Override
@@ -552,7 +578,7 @@ public void mouseReleased(MouseEvent me) {
 			
 			break;
 		case INGAME:
-			gamestate = MAINMENU;
+			
 			userinput.mousePressed(e);
 			
 			break;
@@ -606,6 +632,8 @@ public void mouseReleased(MouseEvent me) {
 		if (gamestate == INGAME){
 			userinput.keyReleased(e);
 		}
+		
+		
 	}
 
 	@Override

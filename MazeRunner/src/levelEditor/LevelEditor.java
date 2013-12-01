@@ -1,20 +1,15 @@
 package levelEditor;
 
 import java.awt.Color;
-
 import java.awt.Frame;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
-
 import java.io.File;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,6 +27,8 @@ import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
+
+import engine.ChangeGL;
 
 public class LevelEditor {
 	static final long serialVersionUID = 7526471155622776147L;
@@ -82,6 +79,8 @@ public class LevelEditor {
 	Array columncheckamount;
 	
 
+	
+	
 	/**
 	 * When instantiating, a GLCanvas is added for us to play with. An animator
 	 * is created to continuously render the canvas.
@@ -94,10 +93,14 @@ public class LevelEditor {
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
 	}
-public void setScreen(int screenWidth, int screenHeight){
-	this.screenWidth = screenWidth;
-	this.screenHeight = screenHeight;
-}
+	
+	
+	
+	public void setScreen(int screenWidth, int screenHeight){
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+	}
+	
 
 	public void loadTextures(GL gl, String filename){
 		gl.glEnable(GL.GL_TEXTURE_1D);
@@ -125,22 +128,24 @@ public void setScreen(int screenWidth, int screenHeight){
 	 * A function defined in GLEventListener. This function is called many times per second and should 
 	 * contain the rendering code.
 	 */
-
-	
-	public void displayLevelEditor(GL gl){
+	public void display(GL gl){
 		// Set the clear color and clear the screen.
+		ChangeGL.GLto2D(gl);
+		
 				gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
 				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-			
+				
 				tekenLevelEditorAchtergrond(gl);
 				drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 				drawGridInhoud(gl);
 				
 				veranderMatrixVolgensKlikInGrid(gl);
 				
+				
 				drawCatalogus(gl);
 				
 				drawFigure(gl);
+				//gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 
 	}
 

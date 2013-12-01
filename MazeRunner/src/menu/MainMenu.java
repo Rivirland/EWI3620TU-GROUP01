@@ -1,6 +1,7 @@
 package menu;
 
 import java.awt.MouseInfo;
+
 import java.awt.event.MouseEvent;
 
 import javax.media.opengl.GL;
@@ -29,6 +30,8 @@ public class MainMenu {
 	}
 	
 	public void display(GLAutoDrawable drawable, GL gl){
+		
+		
 		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, 200f/1080f*screenHeight);
 		Teken.textDraw(drawable, gl, "Start Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight);
 		Teken.textDraw(drawable, gl, "Level Editor", 750f/1920f*screenWidth, 530f/1080f*screenHeight, 80f/1080f*screenHeight);

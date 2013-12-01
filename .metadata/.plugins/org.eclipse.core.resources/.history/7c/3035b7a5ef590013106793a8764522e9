@@ -1,0 +1,18 @@
+package engine;
+
+public class ChangeGL {
+
+	
+
+public void GLto3D (){
+	
+	
+}
+
+
+public void GLto2D (){
+	
+
+}
+
+}
