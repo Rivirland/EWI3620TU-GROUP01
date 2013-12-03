@@ -204,6 +204,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 		gl.glPushMatrix();
 
 		gl.glTranslated(getLocationX(), 2.5, getLocationZ());
+		rotateEnemy(gl);
 		drawEnemy(gl);
 
 		gl.glPopMatrix();

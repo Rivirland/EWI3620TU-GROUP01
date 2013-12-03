@@ -28,8 +28,6 @@ import model.*;
 import enemies.*;
 import items.*;
 
-
-
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
  * and game logic manager.
@@ -53,32 +51,31 @@ public class MazeRunner {
 	 * * Local variables * **********************************************
 	 */
 
-
 	private int screenWidth, screenHeight; // Screen size.
-	public static ArrayList<VisibleObject> visibleObjects; // A list of objects that
-														// will be displayed on
-														// screen.
+	public static ArrayList<VisibleObject> visibleObjects; // A list of objects
+															// that
+															// will be displayed
+															// on
+															// screen.
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
-//	private int enemyListLength;
+	// private int enemyListLength;
 	private Camera camera; // The camera object.
-	//private UserInput input; // The user input object that controls the player.
+	// private UserInput input; // The user input object that controls the
+	// player.
 	private EnemyControl enemyControl;
 	public static Level level;
-	//private long previousTime = Calendar.getInstance().getTimeInMillis();
-	//final private long startTime = Calendar.getInstance().getTimeInMillis();// Used
-	
+	// private long previousTime = Calendar.getInstance().getTimeInMillis();
+	// final private long startTime =
+	// Calendar.getInstance().getTimeInMillis();// Used
+
 	private long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel;
-	
-	
-	
-	
-	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture;
+	public static Model spookyModel, m21Model, torchModel;
+	public static Texture earthTexture, wallTexture, roofTexture,
+			trapHolderTexture, oildrumTexture;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
-	
 	private UserInput input;
 
 	/*
@@ -96,33 +93,33 @@ public class MazeRunner {
 	 * controller.
 	 */
 
-	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas, GLAutoDrawable drawable, GL gl, GLU glu,  UserInput userinput) {
+	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas,
+			GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput) {
 		setScreen(screenWidth, screenHeight);
-		init(drawable , gl, glu);
+		init(drawable, gl, glu);
 		initObjects(canvas, userinput);
 
 	}
 
 	public void setScreen(int screenWidth, int screenHeight) {
-		this.screenWidth=screenWidth;
-		this.screenHeight=screenHeight;
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
 	}
-	
-	
-public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
-		
-		this.screenWidth=screenWidth;
-		this.screenHeight=screenHeight;
-		
-	gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
-	
-	// Set the new projection matrix.
-	gl.glMatrixMode(GL.GL_PROJECTION);
-	gl.glLoadIdentity();
-	glu.gluPerspective(60, screenWidth / screenHeight, .1, 200);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	
-	input.reshape();
+
+	public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
+
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+
+		gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
+
+		// Set the new projection matrix.
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		glu.gluPerspective(60, screenWidth / screenHeight, .1, 200);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
+		input.reshape();
 
 	}
 
@@ -140,10 +137,17 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 
 		level = new Level("level1");
 
+<<<<<<< HEAD
 		portal1 = new Portal(24,2,28,3);
 		
 		portal2 = new Portal(20,2,20,3);
 		
+=======
+		portal1 = new Portal(6, 2, 6, 2);
+
+		portal2 = new Portal(160, 2, 160, 2);
+
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		Portal.portalConnection(portal1, portal2);
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
@@ -158,17 +162,17 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		enemyList.add(new EnemySpooky(10, 2.5, 10, 0.005, -90));
-		
-//		enemyListLength = enemyList.size();
+		// enemyList.add(new EnemySpooky(10, 2.5, 10, 0.0015, -90));
+
+		// enemyListLength = enemyList.size();
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
 
-		//input = new UserInput(canvas);
-		
-		this.input=input;
+		// input = new UserInput(canvas);
+
+		this.input = input;
 		player.setControl(input);
 	}
 
@@ -188,20 +192,19 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 	 * all in this method.
 	 */
 	public void init(GLAutoDrawable drawable, GL gl, GLU glu) {
-		
-		
-		//GLU glu = new GLU();
-		//drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
-														// pipeline to Debugging
-														// mode
-		/*
-		gl.glClearColor(0, 0, 0, 0); // Set the background color.
 
-		// Now we set up our viewpoint.
-		gl.glMatrixMode(GL.GL_PROJECTION); // We'll use orthogonal projection.
-		gl.glLoadIdentity(); // Reset the current matrix.
-		*/
-		//@gamestate switch
+		// GLU glu = new GLU();
+		// drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
+		// pipeline to Debugging
+		// mode
+		/*
+		 * gl.glClearColor(0, 0, 0, 0); // Set the background color.
+		 * 
+		 * // Now we set up our viewpoint. gl.glMatrixMode(GL.GL_PROJECTION); //
+		 * We'll use orthogonal projection. gl.glLoadIdentity(); // Reset the
+		 * current matrix.
+		 */
+		// @gamestate switch
 		glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
 																// parameters
 																// for
@@ -215,36 +218,45 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 		// gl.glEnable(GL.GL_CULL_FACE);
 
 		// @Enable Z-buffering, gamestate switch
-		//gl.glEnable(GL.GL_DEPTH_TEST);
+		// gl.glEnable(GL.GL_DEPTH_TEST);
 
-		
-		//@ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
+		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
 		// Set and enable the lighting.
-		float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; // High up in the
-																// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
-																		// that
-																		// we're
-																		// setting
-																		// Light0.
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-		//gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHTING);
+		
+//		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };
+		float lightPosition[] = { 5.0f, 2.5f, 5.0f, 1.0f };
+		float light_ambient[] = { 1.0f, 0.0f, 0.0f };
+		float light_diffuse[] = { 1.0f, 1.0f, 1.0f };
+		float light_specular[] = { 1.0f, 1.0f, 1.0f };
+
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, light_ambient, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, light_diffuse, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, light_specular, 0);
+		
+		// Setting the color and material.
+		float[] rgba = { 0.5f, 0.5f, 0.5f };
+		float[] mat_specular = { 1.0f, 1.0f, 1.0f };
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, rgba, 0);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, mat_specular, 0);
+//		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 1.0f);
+
 		gl.glEnable(GL.GL_LIGHT0);
 
 		// Set the shading model.
-		//gl.glShadeModel(GL.GL_SMOOTH);
+		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
 		loadModels(gl);
-		//@@
+		// @@
 	}
 
-	
-	
-	public void setTime (long time){
+	public void setTime(long time) {
 		this.previousTime = time;
 	}
 
+<<<<<<< HEAD
 	
 	// function to test multiple views, and later to test portals
 	public void multipleView(GLAutoDrawable drawable, GL gl){
@@ -284,6 +296,8 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 	
 	
 }
+=======
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -295,24 +309,44 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
+<<<<<<< HEAD
+=======
+		// System.out.println(input.getForward());
+		// System.out.println(player.getLocationX() + " " +
+		// player.getLocationZ());
+		// GL gl = drawable.getGL();
+
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		ChangeGL.GLto3D(gl);
-		
+
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
-		
+
 		GLU glu = new GLU();
 		GLUT glut = new GLUT();
 
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
-		long currentTime = now.getTimeInMillis()-startTime;
-		
+		long currentTime = now.getTimeInMillis() - startTime;
+
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
+<<<<<<< HEAD
 		//time = previousTime-startTime;
 		//this.time;
 		//System.out.println(previousTime);s
 
+=======
+		if (deltaTime > 33) {
+			deltaTime = 0;
+		}
+		// time = previousTime-startTime;
+
+		// this.time;
+
+		// System.out.println(previousTime);s
+
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
@@ -346,15 +380,22 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 				.hasNext();) {
 			it.next().display(gl);
 		}
+<<<<<<< HEAD
+=======
+
+		gl.glDisable(GL.GL_CULL_FACE);
+		PlayerState.getState(Player.playerStateInt).displayItem(gl);
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		portal1.displayPortal(glut, gl);
 		portal2.displayPortal(glut, gl);
+		gl.glEnable(GL.GL_CULL_FACE);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
 		//portal1.createCamera(glut, gl);
 		//portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
-		
+
 		gl.glFlush();
 		
 	}
@@ -368,31 +409,25 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 	 * associates with it). It adjust the projection matrix to accomodate the
 	 * new shape.
 	 */
-	/*public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
-		GL gl = drawable.getGL();
-		GLU glu = new GLU();
-
-		// Setting the new screen size and adjusting the viewport.
-		screenWidth = width;
-		screenHeight = height;
-		gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
-		
-		
-
-		// Set the new projection matrix.
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		glu.gluPerspective(60, screenWidth / screenHeight, .1, 200);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-	}*/
+	/*
+	 * public void reshape(GLAutoDrawable drawable, int x, int y, int width, int
+	 * height) { GL gl = drawable.getGL(); GLU glu = new GLU();
+	 * 
+	 * // Setting the new screen size and adjusting the viewport. screenWidth =
+	 * width; screenHeight = height; gl.glViewport(0, 0, screenWidth,
+	 * screenHeight); // VOOR PORTAL!!!!!!!
+	 * 
+	 * 
+	 * 
+	 * // Set the new projection matrix. gl.glMatrixMode(GL.GL_PROJECTION);
+	 * gl.glLoadIdentity(); glu.gluPerspective(60, screenWidth / screenHeight,
+	 * .1, 200); gl.glMatrixMode(GL.GL_MODELVIEW); }
+	 */
 
 	/*
 	 * **********************************************
 	 * * Methods * **********************************************
 	 */
-
-
 
 	/**
 	 * updateCamera() updates the camera position and orientation.
@@ -423,201 +458,213 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 	 * 
 	 * @param args
 	 */
-	
-	
+
 	// Loads all the texture and stores them into the memory. We have to keep
-		// track of the order ourselves.
-		// Right now, it is stored like this:
-		// 1: earthTexture
-		// 2: wallTexture
-		// 3: roofTexture
+	// track of the order ourselves.
+	// Right now, it is stored like this:
+	// 1: earthTexture
+	// 2: wallTexture
+	// 3: roofTexture
 
-		// 4: trapHolderTexture
+	// 4: trapHolderTexture
 
-		public void loadTextures(GL gl) {
-			gl.glEnable(GL.GL_TEXTURE_2D);
-			try {
-				String currentdir = System.getProperty("user.dir");
-				String filename = "\\textures\\texture.jpg";
+	public void loadTextures(GL gl) {
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\texture.jpg";
 
-				filename = currentdir + filename;
-				File file2 = new File(filename);
-				System.out.println(filename);
-				TextureData data2 = TextureIO.newTextureData(file2, false, 
+			filename = currentdir + filename;
+			File file2 = new File(filename);
+			System.out.println(filename);
+			TextureData data2 = TextureIO.newTextureData(file2, false,
 
-	"jpg");
-				earthTexture = TextureIO.newTexture(data2);
-			} catch (IOException exc) {
-				System.out.println("niet gevonden - texture");
-				exc.printStackTrace();
-				System.exit(1);
-			}
-
-			try {
-				String currentdir = System.getProperty("user.dir");
-				String filename = "\\textures\\walltexture2.jpg";
-
-				filename = currentdir + filename;
-				File file1 = new File(filename);
-				System.out.println(filename);
-				// InputStream stream =
-				// getClass().getResourceAsStream("texture.jpg");
-				TextureData data1 = TextureIO.newTextureData(file1, false, 
-
-	"jpg");
-				wallTexture = TextureIO.newTexture(data1);
-			} catch (IOException exc) {
-				System.out.println("niet gevonden - walltexture2");
-				exc.printStackTrace();
-				System.exit(1);
-			}
-
-			try {
-				String currentdir = System.getProperty("user.dir");
-				String filename = "\\textures\\rooftexture.jpg";
-
-				filename = currentdir + filename;
-				File file3 = new File(filename);
-				System.out.println(filename);
-				// InputStream stream =
-				// getClass().getResourceAsStream("texture.jpg");
-				TextureData data3 = TextureIO.newTextureData(file3, false, 
-
-	"jpg");
-				roofTexture = TextureIO.newTexture(data3);
-			} catch (IOException exc) {
-				System.out.println("niet gevonden - roofTexture");
-				exc.printStackTrace();
-				System.exit(1);
-			}
-			try {
-				String currentdir = System.getProperty("user.dir");
-				String filename = "\\textures\\trapHolderTexture.jpg";
-
-				filename = currentdir + filename;
-				File file4 = new File(filename);
-				System.out.println(filename);
-				// InputStream stream =
-				// getClass().getResourceAsStream("texture.jpg");
-				TextureData data4 = TextureIO.newTextureData(file4, false, 
-
-	"jpg");
-				trapHolderTexture = TextureIO.newTexture(data4);
-			} catch (IOException exc) {
-				System.out.println("niet gevonden - trapHolderTexture");
-				exc.printStackTrace();
-				System.exit(1);
-			}
-			try {
-				String currentdir = System.getProperty("user.dir");
-				String filename = "\\textures\\oildrum_col.jpg";
-
-				filename = currentdir + filename;
-				File file5 = new File(filename);
-				System.out.println(filename);
-				// InputStream stream =
-				// getClass().getResourceAsStream("texture.jpg");
-				TextureData data5 = TextureIO.newTextureData(file5, false, 
-
-	"jpg");
-				oildrumTexture = TextureIO.newTexture(data5);
-			} catch (IOException exc) {
-				System.out.println("niet gevonden - oildrumTexture");
-				exc.printStackTrace();
-				System.exit(1);
-			}
-			gl.glDisable(GL.GL_TEXTURE_2D);
-
+			"jpg");
+			earthTexture = TextureIO.newTexture(data2);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - texture");
+			exc.printStackTrace();
+			System.exit(1);
 		}
 
-	public void loadModels(GL gl){
-			gl.glEnable(GL.GL_TEXTURE_2D);
-			try {
-	            String currentdir = System.getProperty("user.dir");
-				String filename = currentdir + "\\models\\oildrum.obj";
-	            spookyModel = OBJLoader.loadTexturedModel(new File(filename));
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-			gl.glEnable(GL.GL_TEXTURE_2D);
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\walltexture2.jpg";
+
+			filename = currentdir + filename;
+			File file1 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data1 = TextureIO.newTextureData(file1, false,
+
+			"jpg");
+			wallTexture = TextureIO.newTexture(data1);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - walltexture2");
+			exc.printStackTrace();
+			System.exit(1);
 		}
+
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\rooftexture.jpg";
+
+			filename = currentdir + filename;
+			File file3 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data3 = TextureIO.newTextureData(file3, false,
+
+			"jpg");
+			roofTexture = TextureIO.newTexture(data3);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - roofTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\trapHolderTexture.jpg";
+
+			filename = currentdir + filename;
+			File file4 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data4 = TextureIO.newTextureData(file4, false,
+
+			"jpg");
+			trapHolderTexture = TextureIO.newTexture(data4);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - trapHolderTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\oildrum_col.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			System.out.println(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			oildrumTexture = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - oildrumTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		gl.glDisable(GL.GL_TEXTURE_2D);
+
+	}
+
+	public void loadModels(GL gl) {
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\oildrum.obj";
+			spookyModel = OBJLoader.loadTexturedModel(new File(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\m21.obj";
+			m21Model = OBJLoader.loadTexturedModel(new File(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\medieval-torch.obj";
+			torchModel = OBJLoader.loadTexturedModel(new File(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
-			double previousX = player.getLocationX();
-			double previousY = player.getLocationY();
-			double previousZ = player.getLocationZ();
-			
-			player.update(deltaTime, drawable);
+		double previousX = player.getLocationX();
+		double previousY = player.getLocationY();
+		double previousZ = player.getLocationZ();
 
-			int currentMazeID = level.getCurrentMaze(player);
+		player.update(deltaTime, drawable);
+
+		int currentMazeID = level.getCurrentMaze(player);
+		if (currentMazeID != -1) {
+			Maze currentMaze = level.getMaze(currentMazeID);
+
+			for (int i = 0; i < currentMaze.itemList.size(); i++) {
+				Item item = currentMaze.itemList.get(i);
+				if (item.touches(player)) {
+					if (item instanceof TrapHolder) {
+						Player.nrOfTraps++;
+						visibleObjects.remove
+
+						(currentMaze.itemList.get(i));
+						currentMaze.itemList.remove(i);
+					}
+				}
+			}
+		}
+		for (int e = 0; e < enemyList.size(); e++) {
+			Enemy enemy = enemyList.get(e);
+			currentMazeID = level.getCurrentMaze(enemy);
 			if (currentMazeID != -1) {
 				Maze currentMaze = level.getMaze(currentMazeID);
-
+				// double enemyX = enemy.getX();
+				// double enemyZ = enemy.getZ();
+				enemy.update(deltaTime, player);
 				for (int i = 0; i < currentMaze.itemList.size(); i++) {
 					Item item = currentMaze.itemList.get(i);
-					if (item.touches(player)) {
-						if (item instanceof TrapHolder) {
-							Player.nrOfTraps++;
-							visibleObjects.remove
+					if (item.touches(enemy) && item
 
-	(currentMaze.itemList.get(i));
-							currentMaze.itemList.remove(i);
-						}
+					instanceof TrapDropped) {
+						System.out.println("trap werkt");
+						visibleObjects.remove(enemy);
+						enemyList.remove(enemy);
+						visibleObjects.remove(item);
+						currentMaze.itemList.remove
+
+						(item);
 					}
 				}
 			}
-			for (int e = 0; e < enemyList.size(); e++) {
-				Enemy enemy = enemyList.get(e);
-				currentMazeID = level.getCurrentMaze(enemy);
-				if (currentMazeID != -1) {
-					Maze currentMaze = level.getMaze(currentMazeID);
-					// double enemyX = enemy.getX();
-					// double enemyZ = enemy.getZ();
-					enemy.update(deltaTime, player);
-					for (int i = 0; i < currentMaze.itemList.size(); i++) {
-						Item item = currentMaze.itemList.get(i);
-						if (item.touches(enemy) && item 
 
-	instanceof TrapDropped) {
-							System.out.println("trap werkt");
-							visibleObjects.remove(enemy);
-							enemyList.remove(enemy);
-							visibleObjects.remove(item);
-							currentMaze.itemList.remove
-
-	(item);
-						}
-					}
-				}
-
-			}
-
-			if (Player.canTeleport) {
-				portal1.checkteleportation(player, (float) previousX,
-						(float) previousY, (float) previousZ);
-				portal2.checkteleportation(player, (float) previousX,
-						(float) previousY, (float) previousZ);
-			}else{
-				Player.canTeleport = true;
-			}
-			// if (maze.isExit(player.locationX, player.locationZ)) {
-			// Sound.applause.play();
-			// player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-			// player.locationY = maze.SQUARE_SIZE / 2;
-			// player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
-			// try {
-			// maze.loadMaze("level1");
-			// } catch (FileNotFoundException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
 		}
 
-
+		if (Player.canTeleport) {
+			portal1.checkteleportation(player, (float) previousX,
+					(float) previousY, (float) previousZ);
+			portal2.checkteleportation(player, (float) previousX,
+					(float) previousY, (float) previousZ);
+		} else {
+			Player.canTeleport = true;
+		}
+		// if (maze.isExit(player.locationX, player.locationZ)) {
+		// Sound.applause.play();
+		// player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+		// player.locationY = maze.SQUARE_SIZE / 2;
+		// player.locationZ = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+		// try {
+		// maze.loadMaze("level1");
+		// } catch (FileNotFoundException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+	}
 
 }
-
-

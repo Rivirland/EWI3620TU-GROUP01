@@ -110,6 +110,7 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 		gl.glPushMatrix();
 
 		gl.glTranslated(getLocationX(), 2.5, getLocationZ());
+		rotateEnemy(gl);
 		drawEnemy(gl);
 
 		gl.glPopMatrix();
@@ -119,8 +120,10 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 	public void drawEnemy(GL gl) {
 //		GLUT glut = new GLUT();
 //		glut.glutSolidTeapot(1);
+		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
 		MazeRunner.spookyModel.display(gl);
+		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
 }

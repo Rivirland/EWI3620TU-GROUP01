@@ -1,5 +1,7 @@
 package engine;
 
+import javax.media.opengl.GL;
+
 public class PlayerStateTorch extends PlayerState{
 
 	@Override
@@ -23,5 +25,22 @@ public class PlayerStateTorch extends PlayerState{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	public void displayItem(GL gl) {
+		gl.glPushMatrix();
+		gl.glTranslated(MazeRunner.player.getLocationX(),MazeRunner.player.getLocationY(),MazeRunner.player.getLocationZ());
+		double s = Math.toRadians(MazeRunner.player.getHorAngle());
+		double t = Math.toRadians(MazeRunner.player.getVerAngle());
+		double x = -Math.sin(s)*Math.cos(t);
+		double y = Math.sin(t);
+		double z = -Math.cos(s)*Math.cos(t);
+		gl.glTranslated(x, y, z);
+		gl.glRotated(MazeRunner.player.getHorAngle(),0,1,0);
+		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
+		MazeRunner.torchModel.display(gl);
+		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glPopMatrix();	
+	}
 }

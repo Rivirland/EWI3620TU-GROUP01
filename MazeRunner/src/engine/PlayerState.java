@@ -1,10 +1,13 @@
 package engine;
 
+import javax.media.opengl.GL;
+
 public abstract class PlayerState {
 	
 	public abstract void itemUse();
 	public abstract void entering();
 	public abstract void leaving();
+	public abstract void displayItem(GL gl);
 	public static PlayerState getState(int input){
 		if(input == 0 ){
 			return new PlayerStateTorch();
