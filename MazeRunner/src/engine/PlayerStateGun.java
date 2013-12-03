@@ -34,7 +34,12 @@ public class PlayerStateGun extends PlayerState{
 //		System.out.println(MazeRunner.player.getHorAngle() + " " + MazeRunner.player.getVerAngle());
 		gl.glPushMatrix();
 		gl.glTranslated(MazeRunner.player.getLocationX(),MazeRunner.player.getLocationY(),MazeRunner.player.getLocationZ());
-		gl.glTranslated(-Math.sin(Math.toRadians(MazeRunner.player.getHorAngle())),Math.sin(Math.toRadians(MazeRunner.player.getVerAngle())),-Math.cos(Math.toRadians(MazeRunner.player.getHorAngle())));
+		double s = Math.toRadians(MazeRunner.player.getHorAngle());
+		double t = Math.toRadians(MazeRunner.player.getVerAngle());
+		double x = -Math.sin(s)*Math.cos(t);
+		double y = Math.sin(t);
+		double z = -Math.cos(s)*Math.cos(t);
+		gl.glTranslated(x, y, z);
 		gl.glRotated(MazeRunner.player.getHorAngle(),0,1,0);
 		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
 		gl.glDisable(GL.GL_CULL_FACE);
