@@ -1,0 +1,35 @@
+package engine;
+
+import javax.media.opengl.GL;
+
+public class PlayerStateGun extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		Player.nrOfBullets--;
+		System.out.println("Bullet, motherfucker! nrOfBullets: " + Player.nrOfBullets);
+		//Shoot bullet if nrOfBullets > 0
+	}
+
+	@Override
+	public void entering() {
+
+		System.out.println("Entering GunMode");
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+
+		System.out.println("Leaving GunMode");
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void displayItem(GL gl) {
+		// show 3D gun		
+	}
+
+}

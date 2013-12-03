@@ -2,6 +2,10 @@ package engine;
 
 import items.TrapDropped;
 
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.GLUT;
+
 public class PlayerStateTrap extends PlayerState {
 
 	@Override
@@ -38,6 +42,10 @@ public class PlayerStateTrap extends PlayerState {
 		// Remove Trap
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void displayItem(GL gl) {
+		
 	}
 
 }

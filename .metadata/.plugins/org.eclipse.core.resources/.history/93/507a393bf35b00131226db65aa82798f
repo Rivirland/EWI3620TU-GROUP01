@@ -1,0 +1,30 @@
+package engine;
+
+public class PlayerStateGun extends PlayerState{
+
+	@Override
+	public void itemUse() {
+		Player.nrOfBullets--;
+		System.out.println("Bullet, motherfucker! nrOfBullets: " + Player.nrOfBullets);
+		//Shoot bullet if nrOfBullets > 0
+	}
+
+	@Override
+	public void entering() {
+
+		System.out.println("Entering GunMode");
+		//Show gun
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+
+		System.out.println("Leaving GunMode");
+		//Remove gun
+		// TODO Auto-generated method stub
+		
+	}
+
+}

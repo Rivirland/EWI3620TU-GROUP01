@@ -27,7 +27,6 @@ public class Player extends GameObject {
 	public static int nrOfTraps;
 	public static int nrOfBullets;
 	public static int playerStateInt;
-
 	private Control control = null;
 
 	/**
@@ -182,7 +181,7 @@ public class Player extends GameObject {
 						* deltaTime;
 				locationZ -= Math.cos(Math.toRadians(getHorAngle())) * speed
 						* deltaTime;
-				System.out.println(locationX+"  "+locationZ);
+//				System.out.println(locationX+"  "+locationZ);
 			}
 			if (control.back) {
 				locationX -= Math.sin(Math.toRadians(getHorAngle() + 180))
