@@ -1,7 +1,6 @@
 package engine;
 
 import items.Item;
-import items.TrapHolder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +11,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
+
+import com.sun.opengl.util.GLUT;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -304,13 +305,6 @@ public class Maze implements VisibleObject {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
 		displayItems(gl);
-		// Setting the wall colour and material.
-		float wallColour[] = { 1.0f, 0.0f, 1.0f, 1.0f }; // The walls are
-															// purple.
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
-																	// materials
-																	// used by
-																	// the wall.
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
@@ -379,13 +373,8 @@ public class Maze implements VisibleObject {
 
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
-
-		// Setting the floor color and material.
-		float[] rgba = { 1f, 1f, 1f };
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
-		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
-
+	
+		
 		// Apply texture.
 		if (MazeRunner.earthTexture != null) {
 			MazeRunner.earthTexture.enable();
@@ -415,8 +404,6 @@ public class Maze implements VisibleObject {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 
-		// TODO: light shading on roof
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 		gl.glTexCoord2d(0.5, 1.0);
 		gl.glVertex3d(WALL_LENGTH / 2, h + 2, WALL_LENGTH / 2);
 		gl.glTexCoord2d(0.0, 0.0);
@@ -439,9 +426,6 @@ public class Maze implements VisibleObject {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
 		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		// TODO: light shading on walls
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
@@ -481,8 +465,7 @@ public class Maze implements VisibleObject {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
-		// TODO: light shading on walls
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
@@ -522,8 +505,8 @@ public class Maze implements VisibleObject {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
-		// TODO: light shading on walls
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
+
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);

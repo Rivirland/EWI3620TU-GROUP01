@@ -210,20 +210,31 @@ public class MazeRunner {
 
 		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
 		// Set and enable the lighting.
-		float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; // High up in the
-																// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
-																		// that
-																		// we're
-																		// setting
-																		// Light0.
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-		// gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHTING);
+		
+//		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };
+		float lightPosition[] = { 5.0f, 2.5f, 5.0f, 1.0f };
+		float light_ambient[] = { 1.0f, 0.0f, 0.0f };
+		float light_diffuse[] = { 1.0f, 1.0f, 1.0f };
+		float light_specular[] = { 1.0f, 1.0f, 1.0f };
+
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, light_ambient, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, light_diffuse, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, light_specular, 0);
+		
+		// Setting the color and material.
+		float[] rgba = { 0.5f, 0.5f, 0.5f };
+		float[] mat_specular = { 1.0f, 1.0f, 1.0f };
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, rgba, 0);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, mat_specular, 0);
+//		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 1.0f);
+
 		gl.glEnable(GL.GL_LIGHT0);
 
 		// Set the shading model.
-		// gl.glShadeModel(GL.GL_SMOOTH);
+		gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
 		loadModels(gl);
 		// @@
