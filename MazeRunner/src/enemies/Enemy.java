@@ -72,12 +72,16 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		south = false;
 		if (randomizer == 1) {
 			north = true;
+			setHorAngle(0);
 		} else if (randomizer == 2) {
 			west = true;
+			setHorAngle(90);
 		} else if (randomizer == 3) {
 			south = true;
+			setHorAngle(180);
 		} else {
 			east = true;
+			setHorAngle(-90);
 		}
 	}
 
@@ -88,11 +92,26 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		south = false;
 		double xdiff = player.getLocationX() - getLocationX();
 		double zdiff = player.getLocationZ() - getLocationZ();
-		// System.out.println(player.getLocationX() + " " +
-		// player.getLocationZ());
-		// System.out.print(" " + getX());
-		// System.out.println(" " + getZ());
+		double diff = Math.sqrt(xdiff*xdiff+zdiff*zdiff);
+		
+		double alpha = Math.toDegrees(Math.acos(Math.abs(zdiff/diff)));
+		System.out.println("xdiff: " + xdiff + " zdiff: " + zdiff + " diff: " + diff + " alpha: "+ alpha);
+		if (xdiff<0){
+			if (zdiff<0){
+				
+			}else if (zdiff>0){
+				alpha=180-alpha;
+			}
+		} else if (xdiff>0){
+			if (zdiff<0){
+				alpha=-alpha;
+			}else if (zdiff>0){
+				alpha+=180;
+			}
+		}
+		setHorAngle(alpha);
 
+		
 		if (Math.abs(xdiff) > 0.2) {
 			if (xdiff > 0) {
 				east = true;
@@ -111,14 +130,10 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 				randomizer = 1;
 			}
 		}
-		// System.out.print(" " + east + " " + west + " " + north + " " + south
-		// + " ");
-		// System.out.println(xdiff + " " + zdiff);
-
-		double angle = Math.tan(xdiff / zdiff);
-		setHorAngle(angle);
 	}
-
+	public void rotateEnemy(GL gl){
+		gl.glRotated(horAngle, 0,1, 0);
+	}
 	@Override
 	public void display(GL gl) {
 		gl.glColor3d(0.0, 0.0, 1.0);
