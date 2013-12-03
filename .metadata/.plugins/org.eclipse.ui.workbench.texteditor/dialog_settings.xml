@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="toteleport" key="selection"/>
 		<list key="findhistory">
-			<item value="glto2d"/>
-			<item value="reshape"/>
-			<item value="gottabe"/>
-			<item value="setmouse"/>
+			<item value="toteleport"/>
+			<item value="dx"/>
+			<item value="portal"/>
+			<item value="input"/>
 			<item value="userinput"/>
-			<item value="setmouselook"/>
-			<item value="leveleditor."/>
-			<item value="display"/>
+			<item value="nomouse"/>
+			<item value="nomose"/>
+			<item value="control"/>
 		</list>
 		<list key="replacehistory">
 		</list>

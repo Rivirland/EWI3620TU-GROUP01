@@ -303,7 +303,13 @@ public class UserInput extends Control implements Runnable {
 	 * * Unused event handlers * **********************************************
 	 */
 
-
+	public void noMousechange(){
+		if(mouselookMode){
+			recenterMouse(this.canvas);
+		}
+		
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

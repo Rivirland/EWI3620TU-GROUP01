@@ -126,6 +126,11 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 
 	}
 
+	public void noMousechange(){
+	player.noMousechange();
+	input.noMousechange();
+	}
+
 	public void initObjects(GLCanvas canvas, UserInput input) {
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
@@ -135,9 +140,9 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 
 		level = new Level("level1");
 
-		portal1 = new Portal(6,2,6,2);
+		portal1 = new Portal(24,2,28,3);
 		
-		portal2 = new Portal(160,2,160,2);
+		portal2 = new Portal(20,2,20,3);
 		
 		Portal.portalConnection(portal1, portal2);
 		for (int i = 0; i < level.getAantal(); i++) {
@@ -240,7 +245,45 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 		this.previousTime = time;
 	}
 
-
+	
+	// function to test multiple views, and later to test portals
+	public void multipleView(GLAutoDrawable drawable, GL gl){
+	
+		// 0,0
+	gl.glViewport (0,0,screenWidth/2, screenHeight/2);
+	gl.glLoadIdentity();
+	gl.glScissor(0, 0, screenWidth/2, screenHeight/2);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+		// 1,0
+	gl.glViewport (screenWidth/2,0,screenWidth, screenHeight/2);
+	gl.glLoadIdentity();
+	gl.glScissor(screenWidth/2,0,screenWidth, screenHeight/2);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+		// 0,1
+	gl.glViewport (0,screenHeight/2,screenWidth/2, screenHeight);
+	gl.glLoadIdentity();
+	gl.glScissor(0,screenHeight/2,screenWidth/2, screenHeight);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+		// 1,1
+	gl.glViewport (screenWidth/2,screenHeight/2,screenWidth, screenHeight);
+	gl.glLoadIdentity();
+	gl.glScissor(screenWidth/2,screenHeight/2,screenWidth, screenHeight);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+	
+	
+}
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -252,10 +295,6 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
-		//System.out.println(input.getForward());
-	//System.out.println(player.getLocationX() + " " + player.getLocationZ());
-		//GL gl = drawable.getGL();
-		
 		ChangeGL.GLto3D(gl);
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -263,6 +302,7 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 		
 		GLU glu = new GLU();
 		GLUT glut = new GLUT();
+
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
 		long currentTime = now.getTimeInMillis()-startTime;
@@ -270,51 +310,53 @@ public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 		//time = previousTime-startTime;
-		
 		//this.time;
-		
 		//System.out.println(previousTime);s
-
 
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
-
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
+		
+		//gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
 				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
 				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
 				camera.getVuvZ());
-
+		
+		
+		
+		
+		
+		
+		
+		
+		//gl.glLoadIdentity();
+		
+		//gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
+		//gl.glScissor(0,0,screenWidth/2,screenHeight/2);
+		//gl.glEnable(GL.GL_SCISSOR_TEST);
+		
+		
+		
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
 				.hasNext();) {
 			it.next().display(gl);
 		}
-		
-		
-		
 		portal1.displayPortal(glut, gl);
 		portal2.displayPortal(glut, gl);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
+		//portal1.createCamera(glut, gl);
+		//portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 		
 		gl.glFlush();
-	}
-
-	/**
-	 * displayChanged(GLAutoDrawable, boolean, boolean) is called upon whenever
-	 * the display mode changes.
-	 * <p>
-	 * Implemented through GLEventListener. Seeing as this does not happen very
-	 * often, we leave this unimplemented.
-	 */
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
-		// GL gl = drawable.getGL();
+		
 	}
 
 	/**
