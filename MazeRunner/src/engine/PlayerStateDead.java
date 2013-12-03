@@ -1,5 +1,5 @@
 package engine;
-import engine.*;
+import javax.media.opengl.GL;
 
 public class PlayerStateDead extends PlayerState{
 
@@ -24,6 +24,11 @@ public class PlayerStateDead extends PlayerState{
 	public void leaving() {
 		//nothing
 		
+	}
+
+	@Override
+	public void displayItem(GL gl) {
+		// nothing		
 	}
 
 }

@@ -1,0 +1,62 @@
+package engine;
+
+import items.TrapDropped;
+
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.GLUT;
+
+public class PlayerStateTrap extends PlayerState {
+
+	@Override
+	public void itemUse() {
+		if (Player.nrOfTraps > 0) {
+			Player.nrOfTraps--;
+			double trapX=MazeRunner.player.getLocationX();
+			double trapY=MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(MazeRunner.player)).getMazeY();
+			double trapZ=MazeRunner.player.getLocationZ();
+			
+			TrapDropped trapDropped = new TrapDropped(trapX, trapY, trapZ, MazeRunner.level.getCurrentMaze(MazeRunner.player));
+			MazeRunner.visibleObjects.add(trapDropped);
+			MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(MazeRunner.player)).itemList.add(trapDropped);
+			System.out.println("Trap dropped, motherfucker! nrOfTraps: "
+					+ Player.nrOfTraps);
+		} else {
+			System.out.println("out of traps");
+		}// Drop trap
+			// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void entering() {
+		System.out.println("Entering TrapMode");
+		// Show Trap if nrOfTraps > 0
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void leaving() {
+		System.out.println("Leaving TrapMode");
+		// Remove Trap
+		// TODO Auto-generated method stub
+
+	}
+	
+	public void displayItem(GL gl) {
+		GLUT glut = new GLUT();
+		System.out.println(MazeRunner.player.getHorAngle() + " " + MazeRunner.player.getVerAngle());
+		gl.glPushMatrix();
+		gl.glTranslated(MazeRunner.player.getLocationX(),MazeRunner.player.getLocationY(),MazeRunner.player.getLocationZ());
+		gl.glTranslated(-Math.sin(Math.toRadians(MazeRunner.player.getHorAngle())),Math.sin(Math.toRadians(MazeRunner.player.getVerAngle())),-Math.cos(Math.toRadians(MazeRunner.player.getHorAngle())));
+		gl.glRotated(MazeRunner.player.getHorAngle(),0,1,0);
+		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
+		MazeRunner.paardModel.display(gl);
+		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glPopMatrix();
+	}
+
+}

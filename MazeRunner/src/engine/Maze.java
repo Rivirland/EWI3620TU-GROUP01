@@ -409,6 +409,8 @@ public class Maze implements VisibleObject {
 
 	// Paints a roof using a trianglefan
 	private void paintRoof(GL gl, double h) {
+		gl.glDisable(GL.GL_CULL_FACE);
+
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
@@ -429,6 +431,7 @@ public class Maze implements VisibleObject {
 		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
 	// Paints a wall in the z-direction
