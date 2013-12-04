@@ -355,7 +355,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	case LOADGAME:			
 			KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 			String filename = kfub.loadFile(new Frame(), "Open...", ".\\", "*.txt");
-			//String currentdir = System.getProperty("user.dir");
+			String currentdir = System.getProperty("user.dir");
 			//filename = currentdir + "\\levels\\" + filename;
 			System.out.println(filename.substring(0, filename.length()-6));
 			mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length()-6)));
@@ -389,10 +389,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	case LOADLEVEL:
 		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
-			KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
-			String filename2 = kfub2.loadFile(new Frame(), "Open...", ".\\", "*.txt");
-			String currentdir2 = System.getProperty("user.dir");
-			filename = currentdir2 + "\\levels\\" + filename2;
+			KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+			String filename = kfub.loadFile(new Frame(), "Open...", ".\\", "*.txt");
+			String currentdir = System.getProperty("user.dir");
+			filename = currentdir + "\\levels\\" + filename;
 			System.out.println(filename);
 			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.readWorld(filename), LevelEditor.readTextures(filename));}
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	

@@ -94,10 +94,10 @@ public class MazeRunner {
 	 */
 
 	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas,
-			GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput, Level level) {
+			GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput) {
 		setScreen(screenWidth, screenHeight);
 		init(drawable, gl, glu);
-		initObjects(canvas, userinput, level);
+		initObjects(canvas, userinput);
 
 	}
 
@@ -128,14 +128,14 @@ public class MazeRunner {
 	input.noMousechange();
 	}
 
-	public void initObjects(GLCanvas canvas, UserInput input, Level level) {
+	public void initObjects(GLCanvas canvas, UserInput input) {
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		// Add the maze that we will be using.
 
-		this.level = level;
+		level = new Level("level1");
 
 		portal1 = new Portal(6, 2, 6, 2);
 
