@@ -13,7 +13,8 @@ public class PlayerStateTorch extends PlayerState{
 	public void entering() {
 
 		System.out.println("Entering TorchMode");
-		//Increase Light, Decrease movement speed, Show torch
+		//Increase Light,
+		//Decrease movement speed, Show torch
 		// TODO Auto-generated method stub
 		
 	}

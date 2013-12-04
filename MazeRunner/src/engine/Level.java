@@ -43,9 +43,7 @@ public class Level {
 		boolean hasNext = true;
 		while (hasNext) {
 			hasNext = false;
-			File file = new File(filename + "_" + i + ".txt");
-
-			Maze maze = new Maze(file, i);
+			Maze maze = new Maze(filename, i);
 			this.voegToe(maze);
 			File fileNext = new File(filename + "_" + (i + 1) + ".txt");
 			if (fileNext.exists()) {
@@ -104,20 +102,20 @@ public class Level {
 			int newX3= maze.coordToMatrixElement(x);
 			int newZ3 = maze.coordToMatrixElement(z + margin);
 			if (!(newX0 % 2 == 1 && newZ0 % 2 == 1) && (maze.getCoords(newX0,
-					newZ0) != 0)) {
+					newZ0) > 0)) {
 				res[0] = true;
 			}
 			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getCoords(newX1,
-					newZ1) != 0)) {
+					newZ1) > 0)) {
 				res[1] = true;
 			}
 			if(!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze.getCoords(
-					newX2, newZ2) != 0)){
+					newX2, newZ2) > 0)){
 				res[2] = true;
 			}
 			
 			if(!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze.getCoords(
-					newX3, newZ3) != 0)){
+					newX3, newZ3) > 0)){
 				res[3] = true;
 			}
 		}

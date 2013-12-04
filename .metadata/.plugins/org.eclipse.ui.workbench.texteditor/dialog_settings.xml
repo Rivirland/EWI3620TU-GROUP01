@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="loadM" key="selection"/>
+		<item value="lightPosi" key="selection"/>
 		<list key="findhistory">
-			<item value="loadm"/>
-			<item value="paard"/>
-			<item value="println("/>
-			<item value="println(player."/>
-			<item value="Syst"/>
-			<item value="enemys"/>
-			<item value="display"/>
-			<item value="playerState"/>
+			<item value="lightPosi"/>
+			<item value="collides"/>
+			<item value="column"/>
+			<item value="debrisx"/>
+			<item value="debris"/>
+			<item value="wallx"/>
+			<item value="roof"/>
+			<item value="debrisz"/>
 		</list>
 		<list key="replacehistory">
 		</list>

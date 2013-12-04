@@ -110,8 +110,6 @@ public class OBJLoader {
                 // Float.valueOf(faceIndices[3].split("/")[2]));
                 m.getFaces().add(new Model.Face(vertexIndicesArray, normalIndicesArray,
                         textureCoordinateIndicesArray));
-            } else {
-                System.err.println("[OBJ] Unknown Line: " + line);
             }
         }
         reader.close();
