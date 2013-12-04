@@ -381,7 +381,8 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,even) paints a wall in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i, j);
+							//paintWallZFromQuad(gl, height * ITEM_HEIGHT);
+							Wall.paintWallZFromQuad_Door(gl, height*ITEM_HEIGHT, ITEM_HEIGHT, WALL_LENGTH, WALL_WIDTH);
 						}
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {

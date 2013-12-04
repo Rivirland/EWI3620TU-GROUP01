@@ -200,7 +200,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glLoadIdentity();
 
 		mainmenu = new MainMenu(screenWidth, screenHeight);
-		leveleditor = new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultWorld());
+		leveleditor = new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix());
 		gamemenu = new GameMenu(screenWidth, screenHeight);
 		quit = new Quit(screenWidth, screenHeight);
 		settings = new Settings(screenWidth, screenHeight);
@@ -346,11 +346,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		}
 		if (currentstate != gamestate){
 			userinput.setmouselookMode(true);
-			mazerunner.noMousechange();
 			mazerunner.setScreen(glu, gl, screenWidth, screenHeight);
 		}
 		gl = drawable.getGL();
-		
 		mazerunner.display(drawable, gl);
 		currentstate = gamestate;
 		break;
@@ -359,7 +357,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
 			
-			leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultWorld());	
+			leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix());	
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
 			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
@@ -370,7 +368,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl = drawable.getGL();
 		//gl.glLoadIdentity();
 		
-		leveleditor.display(gl);
+		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
 		
 		break;
@@ -386,13 +384,17 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			String currentdir = System.getProperty("user.dir");
 			filename = currentdir + "\\levels\\" + filename;
 			System.out.println(filename);
-			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.read(filename));}
+			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.readWorld(filename), LevelEditor.readTextures(filename));}
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
+			gl.glMatrixMode(GL.GL_PROJECTION);
+			gl.glLoadIdentity();
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 		}
-		leveleditor.display(gl);
+		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
 		break;
 	}
+	
 		
 	
 		gl.glFlush();
@@ -462,7 +464,13 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			break;
 			
 		case LOADLEVEL:
-			leveleditor.setScreen(screenWidth,screenHeight);
+			//leveleditor.setScreen(screenWidth,screenHeight);
+			
+			// Update the projection to an orthogonal projection using the new screen size
+						gl.glMatrixMode(GL.GL_PROJECTION);
+						gl.glLoadIdentity();
+						gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+						
 			break;
 		}
 

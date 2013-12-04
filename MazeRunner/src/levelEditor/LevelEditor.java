@@ -22,6 +22,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 
 import menu.KiesFileUitBrowser;
+import menu.Teken;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.texture.Texture;
@@ -49,6 +50,8 @@ public class LevelEditor {
 	private byte drawMode = NIETS;
 	
 	private byte textureMode = 0;
+	private byte hoogteMode = 1;
+	private boolean heightsOn = false;
 	
 	private int gridrows; //afmetingen grid
 	private int gridcolumns;
@@ -63,6 +66,7 @@ public class LevelEditor {
 	private Texture backTexture;
 	
 	private int[][] wereld;
+	private int[][] textures;
 
 	/*private int [][] wereld =  new int[gridrows][gridcolumns];
 	
@@ -85,13 +89,14 @@ public class LevelEditor {
 	 * When instantiating, a GLCanvas is added for us to play with. An animator
 	 * is created to continuously render the canvas.
 	 */
-	public LevelEditor(int screenWidth, int screenHeight, int[][] wereld) {
+	public LevelEditor(int screenWidth, int screenHeight, int[][] wereld, int[][] textures) {
 		//calculateGrid();
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.wereld = wereld;
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
+		this.textures = textures;
 	}
 	
 	
@@ -128,16 +133,16 @@ public class LevelEditor {
 	 * A function defined in GLEventListener. This function is called many times per second and should 
 	 * contain the rendering code.
 	 */
-	public void display(GL gl){
+	public void display(GLAutoDrawable drawable, GL gl){
 		// Set the clear color and clear the screen.
 		ChangeGL.GLto2D(gl);
 		
 				gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
 				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 				
-				tekenLevelEditorAchtergrond(gl);
+				tekenLevelEditorAchtergrond(drawable, gl);
 				drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
-				drawGridInhoud(gl);
+				drawGridInhoud(drawable, gl);
 				
 				veranderMatrixVolgensKlikInGrid(gl);
 				
@@ -247,7 +252,7 @@ public class LevelEditor {
 		gl.glEnd();
 	}
 
-	public void tekenLevelEditorAchtergrond(GL gl){
+	public void tekenLevelEditorAchtergrond(GLAutoDrawable drawable, GL gl){
 		
 		// kolom knop
 		float columnbxmin = 90f/1920f*screenWidth;
@@ -344,6 +349,15 @@ public class LevelEditor {
 		lineOnScreen(gl, 90f/1920f*screenWidth, 860f/1080f*screenHeight, 90f/1920f*screenWidth, 90f/1080f*screenHeight);
 		
 		gl.glColor3f(0.76f, 0.76f, 0.76f);
+		//grijs hoogte min
+		rechthoek(gl, (340f-55f)/1920f*screenWidth, (90f-40f)/1080f*screenHeight, (340f-35f)/1920f*screenWidth, (90f-20f)/1080f*screenHeight);
+		//grijs hoogte midden
+		rechthoek(gl, (340f-20f)/1920f*screenWidth, (90f-40f)/1080f*screenHeight, (340f+20f)/1920f*screenWidth, (90f-20f)/1080f*screenHeight);
+		Teken.textDrawMetKleur (drawable, gl, String.valueOf(hoogteMode), (340f-15f)/1920f*screenWidth, (90f-38f)/1080f*screenHeight, 20f/1080f*screenHeight, 0, 0, 0);
+		gl.glColor3f(0.76f, 0.76f, 0.76f);
+		//grijs hoogte plus
+		rechthoek(gl, (340f+35f)/1920f*screenWidth, (90f-40f)/1080f*screenHeight, (340f+55f)/1920f*screenWidth, (90f-20f)/1080f*screenHeight);
+		
 		//grijs min boven
 		rechthoek(gl, (1330f-28f)/1920f*screenWidth, (990f+20f)/1080f*screenHeight, (1330f-8f)/1920f*screenWidth, (990f+40f)/1080f*screenHeight);
 		//grijs plus boven
@@ -450,38 +464,58 @@ public class LevelEditor {
 			}
 			
 			//catalogus knoppen
-			
-			if ((1-851.25f/1080)*screenHeight < me.getY() && me.getY() < (1-751.25f/1080)*screenHeight) {
-				if (109.8f/1920*screenWidth < me.getX() && me.getX() < 209.8f/1920*screenWidth) {
-					// The first button is clicked
-					textureMode = 1;
-					System.out.println("Catalogus: TEXTURE 1");
-					catalogus = false;
-				}
-				if (229.6f/1920*screenWidth < me.getX() && me.getX() < 329.6f/1920*screenWidth) {
-					// The second button is clicked
-					textureMode = 2;
-					System.out.println("Catalogus: TEXTURE 2");
-					catalogus = false;
+			if (catalogus){
+				if ((1-851.25f/1080)*screenHeight < me.getY() && me.getY() < (1-751.25f/1080)*screenHeight) {
+					if (109.8f/1920*screenWidth < me.getX() && me.getX() < 209.8f/1920*screenWidth) {
+						// The first button is clicked
+						textureMode = 1;
+						System.out.println("Catalogus: TEXTURE 1");
+						catalogus = false;
+					}
+					if (229.6f/1920*screenWidth < me.getX() && me.getX() < 329.6f/1920*screenWidth) {
+						// The second button is clicked
+						textureMode = 2;
+						System.out.println("Catalogus: TEXTURE 2");
+						catalogus = false;
+					}
 				}
 			}
 			
-			//grid knoppen
+			//hoogte knoppen
 			
+			if ((1-(90f-20f)/1080)*screenHeight < me.getY() && me.getY() < (1-(90f-40f)/1080)*screenHeight) {
+				//minknop
+				if ((340f-55f)/1920*screenWidth < me.getX() && me.getX() < (340f-35f)/1920*screenWidth) {
+					if (hoogteMode > 1){
+						hoogteMode--;
+					}
+					System.out.println("Hoogte: " + hoogteMode);
+				}
+				//plusknop
+				if ((340f+35f)/1920*screenWidth < me.getX() && me.getX() < (340f+55f)/1920*screenWidth) {
+					hoogteMode++;
+					System.out.println("Hoogte: " + hoogteMode);
+				}
+			}
+
+			//grid knoppen
+
 			if ((1f-(990f+20f)/1080f)*screenHeight > me.getY() && me.getY() > (1f-(990f+40f)/1080f)*screenHeight){
 				if ((1330f-28f)/1920f*screenWidth < me.getX() && me.getX() < (1330f-8f)/1920f*screenWidth){
 					//minknop boven
 					if (gridrows != 1){
 						gridrows = gridrows - 1;
 						System.out.println("Aantal rijen: " + gridrows);
-						wereld = veranderMatrixGrootte2();
+						wereld = veranderMatrixGrootte2(wereld);
+						textures = veranderMatrixGrootte2(textures);
 					}
 				}
 				else if ((1330f+8f)/1920f*screenWidth < me.getX() && me.getX() < (1330f+28f)/1920f*screenWidth){
 					//plusknop boven
 					gridrows = gridrows + 1;
 					System.out.println("Aantal rijen: " + gridrows);
-					wereld = veranderMatrixGrootte2();
+					wereld = veranderMatrixGrootte2(wereld);
+					textures = veranderMatrixGrootte2(textures);
 				}
 			}
 			
@@ -491,14 +525,16 @@ public class LevelEditor {
 					if (gridrows != 1){
 						gridrows = gridrows - 1;
 						System.out.println("Aantal rijen: " + gridrows);
-						wereld = veranderMatrixGrootte();
+						wereld = veranderMatrixGrootte(wereld);
+						textures = veranderMatrixGrootte(textures);
 					}
 				}
 				else if ((1330f+8f)/1920f*screenWidth < me.getX() && me.getX() < (1330f+28f)/1920f*screenWidth){
 					//plusknop onder
 					gridrows = gridrows + 1;
 					System.out.println("Aantal rijen: " + gridrows);
-					wereld = veranderMatrixGrootte();
+					wereld = veranderMatrixGrootte(wereld);
+					textures = veranderMatrixGrootte(textures);
 				}
 			}
 			
@@ -508,14 +544,16 @@ public class LevelEditor {
 					if (gridcolumns != 1){
 						gridcolumns = gridcolumns - 1;
 						System.out.println("Aantal kolommen: " + gridcolumns);
-						wereld = veranderMatrixGrootte2();
+						wereld = veranderMatrixGrootte2(wereld);
+						textures = veranderMatrixGrootte2(textures);
 					}
 				}
 				else if ((1f-(540f-28f)/1080f)*screenHeight > me.getY() && me.getY() > (1f-(540f-8f)/1080f)*screenHeight){
 					//plusknop links
 					gridcolumns = gridcolumns + 1;
 					System.out.println("Aantal kolommen: " + gridcolumns);
-					wereld = veranderMatrixGrootte2();
+					wereld = veranderMatrixGrootte2(wereld);
+					textures = veranderMatrixGrootte2(textures);
 				}
 			}
 			
@@ -525,14 +563,16 @@ public class LevelEditor {
 					if (gridcolumns != 1){
 						gridcolumns = gridcolumns - 1;
 						System.out.println("Aantal kolommen: " + gridcolumns);
-						wereld = veranderMatrixGrootte();
+						wereld = veranderMatrixGrootte(wereld);
+						textures = veranderMatrixGrootte(textures);
 					}
 				}
 				else if ((1f-(540f-28f)/1080f)*screenHeight > me.getY() && me.getY() > (1f-(540f-8f)/1080f)*screenHeight){
 					//plusknop rechts
 					gridcolumns = gridcolumns + 1;
 					System.out.println("Aantal kolommen: " + gridcolumns);
-					wereld = veranderMatrixGrootte();
+					wereld = veranderMatrixGrootte(wereld);
+					textures = veranderMatrixGrootte(textures);
 				}
 			}
 			
@@ -560,6 +600,14 @@ public class LevelEditor {
 				gridklikxrechts = me.getX();
 				gridklikyrechts = screenHeight - me.getY();
 				gridklik = true;
+			}
+			else{
+				if (heightsOn){
+					heightsOn = false;
+				}
+				else{
+					heightsOn = true;
+				}
 			}
 		}
 	
@@ -602,7 +650,8 @@ public class LevelEditor {
 				for (int kolom=1; kolom <= gridcolumns; kolom++){
 					for (int rij=1; rij <= gridrows; rij++){
 						if (xmin+(kolom-1)*distance < gridklikx && gridklikx < xmin+kolom*distance && ymax-rij*distance < gridkliky && gridkliky < ymax-(rij-1)*distance){
-							wereld[2*rij-1][2*kolom-1]=1;
+							wereld[2*rij-1][2*kolom-1]=hoogteMode;
+							textures[2*rij-1][2*kolom-1]=textureMode;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){
@@ -621,7 +670,8 @@ public class LevelEditor {
 				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance-distance/5 < gridklikx && gridklikx < xmin+(kolom-1)*distance+distance/5 && ymax-(rij-1)*distance-distance/5 < gridkliky && gridkliky < ymax-(rij-1)*distance+distance/5){
-							wereld[2*rij-2][2*kolom-2] = textureMode;
+							wereld[2*rij-2][2*kolom-2]=hoogteMode;
+							textures[2*rij-2][2*kolom-2]=textureMode;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){
@@ -640,7 +690,8 @@ public class LevelEditor {
 				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance-distance/5 < gridklikx && gridklikx < xmin+(kolom-1)*distance+distance/5 && ymax-rij*distance+distance/5 < gridkliky && gridkliky < ymax-(rij-1)*distance-distance/5){
-							wereld[2*rij-1][2*kolom-2]=textureMode;
+							wereld[2*rij-1][2*kolom-2]=hoogteMode;
+							textures[2*rij-1][2*kolom-2]=textureMode;
 							
 							checkVoorAangrenzendeMurenVerticaal(rij,kolom);
 							
@@ -661,7 +712,8 @@ public class LevelEditor {
 				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance+distance/5 < gridklikx && gridklikx < xmin+kolom*distance-distance/5 && ymax-(rij-1)*distance-distance/5 < gridkliky && gridkliky < ymax-(rij-1)*distance+distance/5){
-							wereld[2*rij-2][2*kolom-1]=textureMode;
+							wereld[2*rij-2][2*kolom-1]=hoogteMode;
+							textures[2*rij-2][2*kolom-1]=textureMode;
 							
 							checkVoorAangrenzendeMurenHorizontaal(rij,kolom);
 							
@@ -691,6 +743,7 @@ public class LevelEditor {
 					for (int rij=1; rij <= gridrows; rij++){
 						if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
 							wereld[2*rij-1][2*kolom-1]=0;
+							textures[2*rij-1][2*kolom-1]=0;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){
@@ -710,6 +763,7 @@ public class LevelEditor {
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
 							wereld[2*rij-2][2*kolom-2]=0;
+							textures[2*rij-1][2*kolom-1]=0;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){
@@ -729,6 +783,7 @@ public class LevelEditor {
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
 							wereld[2*rij-1][2*kolom-2]=0;
+							textures[2*rij-1][2*kolom-2]=0;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){
@@ -748,6 +803,7 @@ public class LevelEditor {
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
 							wereld[2*rij-2][2*kolom-1]=0;
+							textures[2*rij-2][2*kolom-1]=0;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){
@@ -769,12 +825,14 @@ public class LevelEditor {
 	public void checkVoorAangrenzendeMurenVerticaal(int rij, int kolom){
 		if (checkIfExists((2*rij-1)+1,(2*kolom-2)-1) || checkIfExists((2*rij-1)+2,2*kolom-2) || checkIfExists((2*rij-1)+1,(2*kolom-2)+1)){
 			if (wereld[(2*rij-1)+1][2*kolom-2] == 0){
-				wereld[(2*rij-1)+1][2*kolom-2] = textureMode;
+				wereld[(2*rij-1)+1][2*kolom-2] = hoogteMode;
+				textures[(2*rij-1)+1][2*kolom-2] = textureMode;
 			}
 		}
 		if (checkIfExists((2*rij-1)-1,(2*kolom-2)-1) || checkIfExists((2*rij-1)-2,2*kolom-2) || checkIfExists((2*rij-1)-1,(2*kolom-2)+1)){
 			if (wereld[(2*rij-1)-1][2*kolom-2] == 0){
-				wereld[(2*rij-1)-1][2*kolom-2] = textureMode;
+				wereld[(2*rij-1)-1][2*kolom-2] = hoogteMode;
+				textures[(2*rij-1)-1][2*kolom-2] = textureMode;
 			}
 		}
 	}
@@ -782,12 +840,14 @@ public class LevelEditor {
 	public void checkVoorAangrenzendeMurenHorizontaal(int rij, int kolom){
 		if (checkIfExists((2*rij-2)-1,(2*kolom-1)-1) || checkIfExists(2*rij-2,(2*kolom-1)-2) || checkIfExists((2*rij-2)+1,(2*kolom-1)-1)){
 			if (wereld[2*rij-2][(2*kolom-1)-1] == 0){
-				wereld[2*rij-2][(2*kolom-1)-1] = textureMode;
+				wereld[2*rij-2][(2*kolom-1)-1] = hoogteMode;
+				textures[2*rij-2][(2*kolom-1)-1] = textureMode;
 			}
 		}
 		if (checkIfExists((2*rij-2)-1,(2*kolom-1)+1) || checkIfExists(2*rij-2,(2*kolom-1)+2) || checkIfExists((2*rij-2)+1,(2*kolom-1)+1)){
 			if (wereld[2*rij-2][(2*kolom-1)+1] == 0){
-				wereld[2*rij-2][(2*kolom-1)+1] = textureMode;
+				wereld[2*rij-2][(2*kolom-1)+1] = hoogteMode;
+				textures[2*rij-2][(2*kolom-1)+1] = textureMode;
 			}
 		}
 	}
@@ -799,24 +859,24 @@ public class LevelEditor {
 		else return false;
 	}
 	
-	public int[][] veranderMatrixGrootte(){
+	public int[][] veranderMatrixGrootte(int[][] matrix){
 		int[][] res = new int[2*gridrows+1][2*gridcolumns+1];
-		if (res.length < wereld.length || res[0].length < wereld[0].length){
+		if (res.length < matrix.length || res[0].length < matrix[0].length){
 			for (int i=0 ; i!=res.length ; i++){			//kopieert de oude matrix naar de nieuwe, met verlies van 1 van de zijkanten van de oude matrix
 				for (int j=0 ; j!=res[0].length ; j++){
-					res[i][j] = wereld[i][j];
+					res[i][j] = matrix[i][j];
 				}
 			}
 		}
-		if (res.length > wereld.length || res[0].length > wereld[0].length){
+		if (res.length > matrix.length || res[0].length > matrix[0].length){
 			for (int i=0 ; i!=res.length ; i++){			//zet nieuwe matrix vol nullen
 				for (int j=0 ; j!=res[0].length ; j++){
 					res[i][j] = 0;
 				}
 			}
-			for (int i=0 ; i!=wereld.length ; i++){			//kopieert de oude matrix naar de nieuwe
-				for (int j=0 ; j!=wereld[0].length ; j++){
-					res[i][j] = wereld[i][j];
+			for (int i=0 ; i!=matrix.length ; i++){			//kopieert de oude matrix naar de nieuwe
+				for (int j=0 ; j!=matrix[0].length ; j++){
+					res[i][j] = matrix[i][j];
 				}
 			}
 		}
@@ -829,43 +889,43 @@ public class LevelEditor {
 		return res;
 	}
 	
-	public int[][] veranderMatrixGrootte2(){
+	public int[][] veranderMatrixGrootte2(int[][] matrix){
 		int[][] res = new int[2*gridrows+1][2*gridcolumns+1];
-		if (res.length < wereld.length){
+		if (res.length < matrix.length){
 			for (int i=0 ; i!=res.length ; i++){			//kopieert de oude matrix naar de nieuwe, met verlies van 1 van de zijkanten van de oude matrix
 				for (int j=0 ; j!=res[0].length ; j++){
-					res[i][j] = wereld[i+2][j];
+					res[i][j] = matrix[i+2][j];
 				}
 			}
 		}
-		if (res[0].length < wereld[0].length){
+		if (res[0].length < matrix[0].length){
 			for (int i=0 ; i!=res.length ; i++){			//kopieert de oude matrix naar de nieuwe, met verlies van 1 van de zijkanten van de oude matrix
 				for (int j=0 ; j!=res[0].length ; j++){
-					res[i][j] = wereld[i][j+2];
+					res[i][j] = matrix[i][j+2];
 				}
 			}
 		}
-		if (res.length > wereld.length){
+		if (res.length > matrix.length){
 			for (int i=0 ; i!=res.length ; i++){			//zet nieuwe matrix vol nullen
 				for (int j=0 ; j!=res[0].length ; j++){
 					res[i][j] = 0;
 				}
 			}
-			for (int i=0 ; i!=wereld.length ; i++){			//kopieert de oude matrix naar de nieuwe
-				for (int j=0 ; j!=wereld[0].length ; j++){
-					res[i+2][j] = wereld[i][j];
+			for (int i=0 ; i!=matrix.length ; i++){			//kopieert de oude matrix naar de nieuwe
+				for (int j=0 ; j!=matrix[0].length ; j++){
+					res[i+2][j] = matrix[i][j];
 				}
 			}
 		}
-		if (res[0].length > wereld[0].length){
+		if (res[0].length > matrix[0].length){
 			for (int i=0 ; i!=res.length ; i++){			//zet nieuwe matrix vol nullen
 				for (int j=0 ; j!=res[0].length ; j++){
 					res[i][j] = 0;
 				}
 			}
-			for (int i=0 ; i!=wereld.length ; i++){			//kopieert de oude matrix naar de nieuwe
-				for (int j=0 ; j!=wereld[0].length ; j++){
-					res[i][j+2] = wereld[i][j];
+			for (int i=0 ; i!=matrix.length ; i++){			//kopieert de oude matrix naar de nieuwe
+				for (int j=0 ; j!=matrix[0].length ; j++){
+					res[i][j+2] = matrix[i][j];
 				}
 			}
 		}
@@ -909,7 +969,7 @@ public class LevelEditor {
 		}
 	}
 	
-	private void drawGridInhoud(GL gl){
+	private void drawGridInhoud(GLAutoDrawable drawable, GL gl){
 		float xmin = 830f/1920f*screenWidth;
 		float ymin = 90f/1080f*screenHeight;
 		float xmax = 1830f/1920f*screenWidth;
@@ -936,9 +996,12 @@ public class LevelEditor {
 		//teken dak
 		for (int rij=1; rij <= wereld.length-1; rij=rij+2){
 			for (int kolom=1; kolom <= wereld[0].length-1; kolom=kolom+2){
-				if (wereld[rij][kolom]==1){
+				if (textures[rij][kolom] > 0){
 					//onderstaande moet veranderen in een daktexture
 					tekenButton(gl, xmin+(kolom/2)*distance, ymax-rij/2*distance ,xmin+(kolom/2+1)*distance, ymax-(rij/2+1)*distance);
+				}
+				if (wereld[rij][kolom]!=0 && heightsOn){
+					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin+(kolom/2)*distance+distance/2, ymax-(rij/2+1)*distance+distance/2, 20f/1080f*screenHeight, 1f, 1f, 1f);
 				}
 			}
 		}	
@@ -946,11 +1009,11 @@ public class LevelEditor {
 		//teken kolom
 		for (int rij=0; rij <= wereld.length; rij=rij+2){
 			for (int kolom=0; kolom <= wereld[0].length; kolom=kolom+2){
-				if (wereld[rij][kolom]==1){
+				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een kolomtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 1f, 0f, 0f);
 				}
-				else if (wereld[rij][kolom]==2){
+				else if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een kolomtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 0f, 1f, 0f);
 				}
@@ -960,11 +1023,11 @@ public class LevelEditor {
 		//teken verticale muur
 		for (int rij=1; rij <= wereld.length-1; rij=rij+2){
 			for (int kolom=0; kolom <= wereld[0].length; kolom=kolom+2){
-				if (wereld[rij][kolom]==1){
+				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een muurtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 1f ,0f, 0f);
 				}
-				if (wereld[rij][kolom]==2){
+				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 0f, 1f, 0f);
 				}
@@ -974,11 +1037,11 @@ public class LevelEditor {
 		//teken horizontale muur
 		for (int rij=0; rij <= wereld.length; rij=rij+2){
 			for (int kolom=1; kolom <= wereld[0].length-1; kolom=kolom+2){
-				if (wereld[rij][kolom]==1){
+				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een muurtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 1f, 0f, 0f);
 				}
-				if (wereld[rij][kolom]==2){
+				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 0f, 1f, 0f);
 				}
@@ -1053,19 +1116,19 @@ public class LevelEditor {
 		}
 		bestand.close();
 
-		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + "level1_1_h.txt");
-		for (int i = 0; i != wereld.length; i++){
-			for (int j = 0; j!=wereld[0].length; j++){
-				bestand2.print(1 + ",");
+		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
+		for (int i = 0; i != textures.length; i++){
+			for (int j = 0; j!=textures[0].length; j++){
+				bestand2.print(textures[i][j] + ",");
 			}
 			bestand2.println();
 		}
 		bestand2.close();
 	}
 	
-	public static int[][] read(String filename) throws FileNotFoundException{
+	public static int[][] readWorld(String filename) throws FileNotFoundException{
 		File file = new File(filename);
-		Scanner sc = new Scanner(new File(filename));
+		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
 		int x = sc.nextInt();
 		int y = sc.nextInt();
@@ -1100,8 +1163,41 @@ public class LevelEditor {
 		return res;
 	}
 	
-	public static int[][] defaultWorld(){
-		 int[][] defaultworld = {
+	public static int[][] readTextures(String filename) throws FileNotFoundException{
+		File file = new File(filename.substring(0, filename.length()-4) + "_t.txt");
+		Scanner sc = new Scanner(file);
+		sc.useDelimiter("\\s*,\\s*");
+		
+		//tel het aantal rijen en kolommen in de matrix
+		int rows=0;
+		int columns=0;
+		String string = "";
+		while (sc.hasNextLine()){
+			string = sc.nextLine();
+			rows++;
+		}
+		Scanner stringsc = new Scanner(string);
+		stringsc.useDelimiter("\\s*,\\s*");
+		while (stringsc.hasNext()){
+			stringsc.nextInt();
+			columns++;
+		}
+
+		//lees de matrix
+		Scanner sc2 = new Scanner(file);
+		sc2.useDelimiter("\\s*,\\s*");
+		int[][] res = new int[rows][columns];
+		for (int i=0; i<rows; i++){
+			for (int j=0; j<columns; j++){
+				res[i][j] = sc2.nextInt();
+			}
+		}
+		System.out.println("file ingelezen");
+		return res;
+	}
+	
+	public static int[][] defaultMatrix(){
+		 int[][] defaultmatrix = {
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -1122,7 +1218,7 @@ public class LevelEditor {
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 					};
-	  return defaultworld;
+	  return defaultmatrix;
 	}
 	
 	private void plaatsTexture(GL gl, double xmin, double ymin, double xmax, double ymax) {
