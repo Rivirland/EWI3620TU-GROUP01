@@ -8,8 +8,19 @@ public class PlayerStateGun extends PlayerState{
 
 	@Override
 	public void itemUse() {
-		Player.nrOfBullets--;
-		System.out.println("Bullet, motherfucker! nrOfBullets: " + Player.nrOfBullets);
+		if(Player.nrOfBullets > 0){
+			Player.nrOfBullets--;
+			double hAngle = MazeRunner.player.getHorAngle();
+			double vAngle = MazeRunner.player.getVerAngle();
+			double x = MazeRunner.player.getLocationX()-Math.sin(Math.toRadians(hAngle))*2;
+			double y = MazeRunner.player.getLocationY()+Math.sin(Math.toRadians(vAngle))*2;
+			double z = MazeRunner.player.getLocationZ()-Math.cos(Math.toRadians(hAngle))*2;
+			Bullet bullet = new Bullet(x, y, z, hAngle, vAngle, 0.02);
+			MazeRunner.bulletList.add(bullet);
+			MazeRunner.visibleObjects.add(bullet);
+		}
+		System.out.println(Player.nrOfBullets);
+
 		//Shoot bullet if nrOfBullets > 0
 	}
 

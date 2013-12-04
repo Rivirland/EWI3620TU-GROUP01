@@ -1,6 +1,6 @@
 package engine;
 
-import items.Item;
+import items.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,8 +47,8 @@ public class Maze implements VisibleObject {
 	public int minX, minZ, mazeID;
 	public double maxX, maxZ;
 	public ArrayList<Item> itemList = new ArrayList<Item>();
-	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
-	private int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(String filename, int i) {
 		try {
@@ -59,7 +59,8 @@ public class Maze implements VisibleObject {
 		}
 		mazeID = i - 1;
 		// TODO: init items
-		// itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
+		Item th = new TrapHolder(18, mazeY, 18, mazeID);
+		 itemList.add(th);
 		// itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
 	}
 
@@ -381,8 +382,8 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,even) paints a wall in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							//paintWallZFromQuad(gl, height * ITEM_HEIGHT);
-							Wall.paintWallZFromQuad_Door(gl, height*ITEM_HEIGHT, ITEM_HEIGHT, WALL_LENGTH, WALL_WIDTH);
+							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i, j);
+//							Wall.paintWallZFromQuad_Door(gl, height*ITEM_HEIGHT, ITEM_HEIGHT, WALL_LENGTH, WALL_WIDTH);
 						}
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {

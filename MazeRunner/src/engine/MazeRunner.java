@@ -1,32 +1,30 @@
 package engine;
 
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.*;
+import items.Item;
+import items.TrapDropped;
+import items.TrapHolder;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
-import javax.media.opengl.DebugGL;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLDrawable;
-import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import com.sun.opengl.util.Animator;
+import model.Model;
+import model.OBJLoader;
+
 import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
-import model.*;
+
 import enemies.*;
-import items.*;
 
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
@@ -59,6 +57,7 @@ public class MazeRunner {
 															// screen.
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
+	public static ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	// private int enemyListLength;
 	private Camera camera; // The camera object.
 	// private UserInput input; // The user input object that controls the
@@ -94,7 +93,8 @@ public class MazeRunner {
 	 */
 
 	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas,
-			GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput, Level level) {
+			GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput,
+			Level level) {
 		setScreen(screenWidth, screenHeight);
 		init(drawable, gl, glu);
 		initObjects(canvas, userinput, level);
@@ -123,9 +123,9 @@ public class MazeRunner {
 
 	}
 
-	public void noMousechange(){
-	player.noMousechange();
-	input.noMousechange();
+	public void noMousechange() {
+		player.noMousechange();
+		input.noMousechange();
 	}
 
 	public void initObjects(GLCanvas canvas, UserInput input, Level level) {
@@ -137,15 +137,16 @@ public class MazeRunner {
 
 		this.level = level;
 
-		portal1 = new Portal(6, 2, 6, 2);
+		portal1 = new Portal(106, 2, 106, 2);
 
 		portal2 = new Portal(160, 2, 160, 2);
 
 		Portal.portalConnection(portal1, portal2);
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
-
 		}
+		
+		
 
 		// Initialize the player.
 		player = new Player(5, 2.5, 5, -90, 0);
@@ -155,13 +156,13 @@ public class MazeRunner {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		// enemyList.add(new EnemySpooky(10, 2.5, 10, 0.0015, -90));
+		 enemyList.add(new EnemySpooky(25, 2.5, 25, 0.0015, -90));
 
-		// enemyListLength = enemyList.size();
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
+		visibleObjects.add(level.getMaze(0).itemList.get(0));
 
 		// input = new UserInput(canvas);
 
@@ -215,15 +216,20 @@ public class MazeRunner {
 
 		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
 		// Set and enable the lighting.
-		float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 			// High up in the sky!
-        float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
-        gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
-        gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-        gl.glEnable( GL.GL_LIGHTING );
-        gl.glEnable( GL.GL_LIGHT0 );
-        
-        // Set the shading model.
-        gl.glShadeModel( GL.GL_SMOOTH );
+		float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; // High up in the
+																// sky!
+		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
+																		// that
+																		// we're
+																		// setting
+																		// Light0.
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT0);
+
+		// Set the shading model.
+		gl.glShadeModel(GL.GL_SMOOTH);
 		// Set the shading model.
 		// gl.glShadeModel(GL.GL_SMOOTH);
 		loadTextures(gl);
@@ -235,45 +241,45 @@ public class MazeRunner {
 		this.previousTime = time;
 	}
 
-	
 	// function to test multiple views, and later to test portals
-	public void multipleView(GLAutoDrawable drawable, GL gl){
-	
+	public void multipleView(GLAutoDrawable drawable, GL gl) {
+
 		// 0,0
-	gl.glViewport (0,0,screenWidth/2, screenHeight/2);
-	gl.glLoadIdentity();
-	gl.glScissor(0, 0, screenWidth/2, screenHeight/2);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
+		gl.glViewport(0, 0, screenWidth / 2, screenHeight / 2);
+		gl.glLoadIdentity();
+		gl.glScissor(0, 0, screenWidth / 2, screenHeight / 2);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
 		// 1,0
-	gl.glViewport (screenWidth/2,0,screenWidth, screenHeight/2);
-	gl.glLoadIdentity();
-	gl.glScissor(screenWidth/2,0,screenWidth, screenHeight/2);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
+		gl.glViewport(screenWidth / 2, 0, screenWidth, screenHeight / 2);
+		gl.glLoadIdentity();
+		gl.glScissor(screenWidth / 2, 0, screenWidth, screenHeight / 2);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
 		// 0,1
-	gl.glViewport (0,screenHeight/2,screenWidth/2, screenHeight);
-	gl.glLoadIdentity();
-	gl.glScissor(0,screenHeight/2,screenWidth/2, screenHeight);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
+		gl.glViewport(0, screenHeight / 2, screenWidth / 2, screenHeight);
+		gl.glLoadIdentity();
+		gl.glScissor(0, screenHeight / 2, screenWidth / 2, screenHeight);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
 		// 1,1
-	gl.glViewport (screenWidth/2,screenHeight/2,screenWidth, screenHeight);
-	gl.glLoadIdentity();
-	gl.glScissor(screenWidth/2,screenHeight/2,screenWidth, screenHeight);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
-	
-	
-}
+		gl.glViewport(screenWidth / 2, screenHeight / 2, screenWidth,
+				screenHeight);
+		gl.glLoadIdentity();
+		gl.glScissor(screenWidth / 2, screenHeight / 2, screenWidth,
+				screenHeight);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
+	}
+
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -310,35 +316,24 @@ public class MazeRunner {
 
 		// System.out.println(previousTime);s
 
-
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
-		
-		
-		//gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		
+
+		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
 				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
 				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
 				camera.getVuvZ());
-		
-		
-		
-		
-		
-		
-		
-		
-		//gl.glLoadIdentity();
-		
-		//gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
-		//gl.glScissor(0,0,screenWidth/2,screenHeight/2);
-		//gl.glEnable(GL.GL_SCISSOR_TEST);
-		
-		
-		
+
+		// gl.glLoadIdentity();
+
+		// gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
+		// gl.glScissor(0,0,screenWidth/2,screenHeight/2);
+		// gl.glEnable(GL.GL_SCISSOR_TEST);
+
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
 				.hasNext();) {
@@ -353,13 +348,13 @@ public class MazeRunner {
 		gl.glEnable(GL.GL_CULL_FACE);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
-		//portal1.createCamera(glut, gl);
-		//portal2.createCamera(glut, gl);
+		// portal1.createCamera(glut, gl);
+		// portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-		
+
 	}
 
 	/**
@@ -623,6 +618,50 @@ public class MazeRunner {
 					}
 				}
 			}
+
+		}
+		for (int bNr = 0; bNr < bulletList.size(); bNr++) {
+			Bullet b = bulletList.get(bNr);
+			b.update(deltaTime);
+			int i = MazeRunner.level.getCurrentMaze(b);
+			if(i != -1){
+				Maze maze = MazeRunner.level.mazelist.get(i);
+				if(b.locationY < mazeY+0.1){
+					bulletList.remove(b);
+					visibleObjects.remove(b);
+				}
+				// Check for collision with wall
+				if (MazeRunner.level.collides(b, 0)[0]) {
+					if (maze.textureMatrix[maze
+							.coordToMatrixElement(b.locationX)][maze
+							.coordToMatrixElement(b.locationZ)] == 2) {
+						maze.maze[maze.coordToMatrixElement(b.locationX)][maze
+								.coordToMatrixElement(b.locationZ)] = -1;
+						bulletList.remove(b);
+						visibleObjects.remove(b);
+					} else {
+						bulletList.remove(b);
+						visibleObjects.remove(b);
+					}
+				}
+			}
+			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
+				Enemy e = enemyList.get(eNr);
+				double diffX = b.getGlobalX() - e.getGlobalX();
+				double diffY = b.getGlobalY() - e.getGlobalY();
+				double diffZ = b.getGlobalZ() - e.getGlobalZ();
+
+				if (e instanceof EnemySmart
+						&& Math.sqrt(diffX * diffX + diffY * diffY + diffZ
+								* diffZ) < 1) {
+					visibleObjects.remove(e);
+					visibleObjects.remove(b);
+					bulletList.remove(b);
+					enemyList.remove(e);
+					break;
+				}
+			}
+			
 
 		}
 

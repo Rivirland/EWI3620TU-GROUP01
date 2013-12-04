@@ -95,7 +95,6 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		double diff = Math.sqrt(xdiff*xdiff+zdiff*zdiff);
 		
 		double alpha = Math.toDegrees(Math.acos(Math.abs(zdiff/diff)));
-		System.out.println("xdiff: " + xdiff + " zdiff: " + zdiff + " diff: " + diff + " alpha: "+ alpha);
 		if (xdiff<0){
 			if (zdiff<0){
 				

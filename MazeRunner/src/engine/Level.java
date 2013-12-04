@@ -6,7 +6,7 @@ import java.util.ArrayList;
 //A level consists of several mazes. In this class, we can import mazes from a .txt file and store them into an ArrayList.
 //Because this class contains all the mazes, we also implemented the collision detection here.
 public class Level {
-	private ArrayList<Maze> mazelist;
+	public ArrayList<Maze> mazelist;
 	// The amount of mazes.
 	private int aantal;
 
