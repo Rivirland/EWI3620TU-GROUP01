@@ -2,9 +2,9 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="283" key="DIALOG_Y_ORIGIN"/>
+		<item value="185" key="DIALOG_Y_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
-		<item value="1351" key="DIALOG_X_ORIGIN"/>
+		<item value="680" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -13,42 +13,12 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="lightPosi" key="selection"/>
+		<item value="paintSin" key="selection"/>
 		<list key="findhistory">
-			<item value="lightPosi"/>
-			<item value="collides"/>
-			<item value="column"/>
-			<item value="debrisx"/>
-			<item value="debris"/>
-			<item value="wallx"/>
-			<item value="roof"/>
-			<item value="debrisz"/>
-=======
-<<<<<<< HEAD
-		<item value="toteleport" key="selection"/>
-		<list key="findhistory">
-			<item value="toteleport"/>
-			<item value="dx"/>
-			<item value="portal"/>
-			<item value="input"/>
-			<item value="userinput"/>
-			<item value="nomouse"/>
-			<item value="nomose"/>
-			<item value="control"/>
-=======
-		<item value="loadM" key="selection"/>
-		<list key="findhistory">
-			<item value="loadm"/>
-			<item value="paard"/>
-			<item value="println("/>
-			<item value="println(player."/>
-			<item value="Syst"/>
-			<item value="enemys"/>
+			<item value="paintSin"/>
+			<item value="glenable"/>
+			<item value="enableLig"/>
 			<item value="display"/>
-			<item value="playerState"/>
->>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
->>>>>>> f943977cf6fadfac6da528818453af56464c767b
 		</list>
 		<list key="replacehistory">
 		</list>

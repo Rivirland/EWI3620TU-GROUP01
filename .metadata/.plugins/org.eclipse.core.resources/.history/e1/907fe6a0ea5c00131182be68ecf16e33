@@ -1,7 +1,6 @@
 package engine;
 
 import items.Item;
-import items.TrapHolder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,20 +47,20 @@ public class Maze implements VisibleObject {
 	public int minX, minZ, mazeID;
 	public double maxX, maxZ;
 	public ArrayList<Item> itemList = new ArrayList<Item>();
-
 	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	private int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
-	public Maze(File filename, int i) {
+	public Maze(String filename, int i) {
 		try {
-			loadMaze(filename);
+			loadMaze(filename, i);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		mazeID = i - 1;
 		// TODO: init items
-//		itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
-//		itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
+		// itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
+		// itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
 	}
 
 	// Loads the maze into an int[][]: it goes through the file to determine the
@@ -71,7 +70,8 @@ public class Maze implements VisibleObject {
 	// useful properties such as the mazeX,Y and Z to determine where it will be
 	// positioned
 	// in the 3D space.
-	public void loadMaze(File infile) throws FileNotFoundException {
+	public void loadMaze(String filename, int i) throws FileNotFoundException {
+		File infile = new File(filename + "_" + i + ".txt");
 		try {
 			loadMazeSize(infile);
 
@@ -82,6 +82,41 @@ public class Maze implements VisibleObject {
 			buildMaze(infile);
 		} catch (IOException e) {
 			System.out.println("Fout in buildMaze");
+		}
+		File infileTex = new File(filename + "_" + i + "_t.txt");
+		try {
+			buildTextureMatrix(infileTex);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Fout in buildTextureMatrix - NFE");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Fout in buildTextureMatrix - IOE");
+			e.printStackTrace();
+		}
+	}
+
+	private void buildTextureMatrix(File infile) throws NumberFormatException,
+			IOException {
+		int row = 0;
+		int col = 0;
+		BufferedReader bufRdrTex;
+		try {
+			bufRdrTex = new BufferedReader(new FileReader(infile));
+			String line = null;
+			while ((line = bufRdrTex.readLine()) != null && row < MAZE_SIZE_Z) {
+				StringTokenizer st = new StringTokenizer(line, ",");
+				while (st.hasMoreTokens()) {
+					textureMatrix[row][col] = Integer.parseInt(st.nextToken());
+					col++;
+				}
+				col = 0;
+				row++;
+			}
+			System.out.println(textureMatrix[0][0]);
+		} catch (FileNotFoundException e) {
+			System.out.println("Fout in buildTextureMatrix");
+			e.printStackTrace();
 		}
 
 	}
@@ -109,6 +144,7 @@ public class Maze implements VisibleObject {
 		System.out
 				.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
 		maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+		textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	}
 
 	public double getMaxX() {
@@ -195,12 +231,9 @@ public class Maze implements VisibleObject {
 		minX = mazeX;
 		minZ = mazeZ;
 		maxX = minX + Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH
-				+ Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;// +
-																		// COLUMN_WIDTH??
+				+ Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;
 		maxZ = minZ + Math.floor(((double) MAZE_SIZE_Z + 1) / 2) * COLUMN_WIDTH
-				+ Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;// +
-																		// COLUMN_WIDTH??
-
+				+ Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;
 	}
 
 	public int getCoords(int i, int j) {
@@ -302,16 +335,33 @@ public class Maze implements VisibleObject {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
 		displayItems(gl);
-		// Setting the wall colour and material.
-		float wallColour[] = { 1.0f, 0.0f, 1.0f, 1.0f }; // The walls are
-															// purple.
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
-																	// materials
-																	// used by
-																	// the wall.
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
+				if (maze[i][j] == -1) {
+					gl.glPushMatrix();
+					// Here you calculate the coordinates for which the
+					// bottom left point of the element has to be drawn
+					double xtrans = Math.floor(((double) i + 1) / 2)
+							* COLUMN_WIDTH + Math.floor((double) i / 2)
+							* WALL_LENGTH;
+					double ztrans = Math.floor(((double) j + 1) / 2)
+							* COLUMN_WIDTH + Math.floor((double) j / 2)
+							* WALL_LENGTH;
+					gl.glTranslated(xtrans, 0.0, ztrans);
+					if (i % 2 == 0 && j % 2 == 0) {
+						paintDebrisColumnFromQuad(gl);
+					}
+					// (odd,even) paints debris in the Z-direction
+					if (i % 2 != 0 && j % 2 == 0) {
+						paintDebrisZFromQuad(gl);
+					}
+					// (even,odd) paints debris in the X-direction
+					if (i % 2 == 0 && j % 2 != 0) {
+						paintDebrisXFromQuad(gl);
+					}
+					gl.glPopMatrix();
+				}
 				if (isWall(i, j)) {
 
 					for (int height = 0; height < maze[i][j]; height++) {
@@ -327,15 +377,15 @@ public class Maze implements VisibleObject {
 						gl.glTranslated(xtrans, 0.0, ztrans);
 						// If it's (even,even), you paint a column
 						if (i % 2 == 0 && j % 2 == 0) {
-							paintColumnFromQuad(gl, height * ITEM_HEIGHT);
+							paintColumnFromQuad(gl, height * ITEM_HEIGHT, i, j);
 						}
 						// (odd,even) paints a wall in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							paintWallZFromQuad(gl, height * ITEM_HEIGHT);
+							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i, j);
 						}
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {
-							paintWallXFromQuad(gl, height * ITEM_HEIGHT);
+							paintWallXFromQuad(gl, height * ITEM_HEIGHT, i, j);
 						}
 						// (odd,odd) paints a roof
 						if (i % 2 != 0 && j % 2 != 0) {
@@ -359,6 +409,122 @@ public class Maze implements VisibleObject {
 		gl.glPopMatrix();
 	}
 
+	private void paintDebrisXFromQuad(GL gl) {
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(WALL_WIDTH, 0, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT/10, 0.0);
+		gl.glNormal3d(0, 0, -1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(WALL_WIDTH, 0, WALL_LENGTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT/10, WALL_LENGTH);
+		gl.glNormal3d(1, 0, 0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, 0, WALL_LENGTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT/10, WALL_LENGTH);
+		gl.glNormal3d(0, 0, 1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+		gl.glNormal3d(-1, 0, 0);
+
+		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
+
+	}
+
+	private void paintDebrisColumnFromQuad(GL gl) {
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT/10, 0.0);
+		gl.glNormal3d(0, 0, -1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT/10, COLUMN_WIDTH);
+		gl.glNormal3d(1, 0, 0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT/10, COLUMN_WIDTH);
+		gl.glNormal3d(0, 0, -1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+		gl.glNormal3d(-1, 0, 0);
+
+		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
+
+	}
+
+	private void paintDebrisZFromQuad(GL gl) {
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, 0, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT / 10 + 0, 0.0);
+		gl.glNormal3d(0, 0, -1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, 0, WALL_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT / 10, WALL_WIDTH);
+		gl.glNormal3d(1, 0, 0);
+
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, 0, WALL_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, WALL_WIDTH);
+		gl.glNormal3d(0, 0, 1);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
+		gl.glNormal3d(-1, 0, 0);
+		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
+
+	}
+
 	private void displayItems(GL gl) {
 		for (int i = 0; i < itemList.size(); i++) {
 			itemList.get(i).display(gl);
@@ -378,17 +544,8 @@ public class Maze implements VisibleObject {
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
 
-		// Setting the floor color and material.
-		float[] rgba = { 1f, 1f, 1f };
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
-		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
-
 		// Apply texture.
-		if (MazeRunner.earthTexture != null) {
-			MazeRunner.earthTexture.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 8);
-		}
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 1);
 
 		// Calculate coordinates and the corresponding texture coordinates.
 		gl.glNormal3d(0, 1, 0);
@@ -407,12 +564,12 @@ public class Maze implements VisibleObject {
 
 	// Paints a roof using a trianglefan
 	private void paintRoof(GL gl, double h) {
+		gl.glDisable(GL.GL_CULL_FACE);
+
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 
-		// TODO: light shading on roof
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 		gl.glTexCoord2d(0.5, 1.0);
 		gl.glVertex3d(WALL_LENGTH / 2, h + 2, WALL_LENGTH / 2);
 		gl.glTexCoord2d(0.0, 0.0);
@@ -427,16 +584,18 @@ public class Maze implements VisibleObject {
 		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
 	// Paints a wall in the z-direction
-	private void paintWallZFromQuad(GL gl, double h) {
+	private void paintWallZFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		if (textureMatrix[i][j] == 1) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		} else if (textureMatrix[i][j] == 2) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		}
 		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		// TODO: light shading on walls
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
@@ -471,13 +630,14 @@ public class Maze implements VisibleObject {
 	}
 
 	// Paints a wall in the X-direction
-	private void paintWallXFromQuad(GL gl, double h) {
+	private void paintWallXFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		if (textureMatrix[i][j] == 1) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		} else if (textureMatrix[i][j] == 2) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		}
 		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		// TODO: light shading on walls
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
@@ -512,13 +672,14 @@ public class Maze implements VisibleObject {
 	}
 
 	// Paints a column
-	private void paintColumnFromQuad(GL gl, double h) {
+	private void paintColumnFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		if (textureMatrix[i][j] == 1) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		} else if (textureMatrix[i][j] == 2) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		}
 		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		// TODO: light shading on walls
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
