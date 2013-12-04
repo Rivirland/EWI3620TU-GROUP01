@@ -35,12 +35,12 @@ public class TrapDropped extends Item {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
 		}
 		gl.glPushMatrix();
-		gl.glTranslated(super.locationX, 0, super.locationZ);
+		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		// drawCuboid
 		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax);
 		gl.glPopMatrix();
-		
 	}
+	
 
 	@Override
 	public boolean touches(GameObject object) {
@@ -52,11 +52,12 @@ public class TrapDropped extends Item {
 		double diffZ = object.getGlobalZ() - this.getGlobalZ();
 		
 		if (object instanceof Enemy) {
-			System.out.println("enemy: " + object.getGlobalX());
-			System.out.println("trap: " + this.getGlobalX());
+//			System.out.println("enemy: " + object.getGlobalX());
+//			System.out.println("trap: " + this.getGlobalX());
+			
 			
 		}
-		if (Math.sqrt(diffX * diffX  + diffZ * diffZ) < 2 && diffY<10) {
+		if (Math.sqrt(diffX * diffX  + diffZ * diffZ) < 1 && diffY<10) {
 			return true;
 		}
 		return false;
