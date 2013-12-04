@@ -241,7 +241,6 @@ public class MazeRunner {
 		this.previousTime = time;
 	}
 
-<<<<<<< HEAD
 	
 	// function to test multiple views, and later to test portals
 	public void multipleView(GLAutoDrawable drawable, GL gl){
@@ -281,8 +280,6 @@ public class MazeRunner {
 	
 	
 }
-=======
->>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -294,14 +291,7 @@ public class MazeRunner {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
-<<<<<<< HEAD
-=======
-		// System.out.println(input.getForward());
-		// System.out.println(player.getLocationX() + " " +
-		// player.getLocationZ());
-		// GL gl = drawable.getGL();
 
->>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		ChangeGL.GLto3D(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -316,12 +306,7 @@ public class MazeRunner {
 
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
-<<<<<<< HEAD
-		//time = previousTime-startTime;
-		//this.time;
-		//System.out.println(previousTime);s
 
-=======
 		if (deltaTime > 33) {
 			deltaTime = 0;
 		}
@@ -331,7 +316,7 @@ public class MazeRunner {
 
 		// System.out.println(previousTime);s
 
->>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
+
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
@@ -365,12 +350,10 @@ public class MazeRunner {
 				.hasNext();) {
 			it.next().display(gl);
 		}
-<<<<<<< HEAD
-=======
 
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(Player.playerStateInt).displayItem(gl);
->>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
+
 		portal1.displayPortal(glut, gl);
 		portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
