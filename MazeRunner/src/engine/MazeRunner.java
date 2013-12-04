@@ -5,7 +5,6 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -24,6 +23,7 @@ import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
+
 import model.*;
 import enemies.*;
 import items.*;
@@ -123,9 +123,9 @@ public class MazeRunner {
 
 	}
 
-	public void noMousechange(){
-	player.noMousechange();
-	input.noMousechange();
+	public void noMousechange() {
+		player.noMousechange();
+		input.noMousechange();
 	}
 
 	public void initObjects(GLCanvas canvas, UserInput input) {
@@ -155,7 +155,7 @@ public class MazeRunner {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		// enemyList.add(new EnemySpooky(10, 2.5, 10, 0.0015, -90));
+		enemyList.add(new EnemySpooky(10, 2.5, 10, 0.0015, -90));
 
 		// enemyListLength = enemyList.size();
 		for (int i = 0; i < enemyList.size(); i++) {
@@ -216,16 +216,16 @@ public class MazeRunner {
 		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
 		// Set and enable the lighting.
 		gl.glEnable(GL.GL_LIGHTING);
-		float lightPosition[] = { 0.0f, 20.0f, 0.0f, 1.0f }; // High up in the
+		float lightPosition[] = { 5.0f, 20.0f, 7.0f, 1.0f }; // High up in the
 		// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
+		float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // White light!
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
 		// that
 		// we're
 		// setting
 		// Light0.
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
-		//gl.glEnable(GL.GL_LIGHT0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
+		gl.glEnable(GL.GL_LIGHT0);
 
 		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
@@ -241,45 +241,45 @@ public class MazeRunner {
 		this.previousTime = time;
 	}
 
-	
 	// function to test multiple views, and later to test portals
-	public void multipleView(GLAutoDrawable drawable, GL gl){
-	
+	public void multipleView(GLAutoDrawable drawable, GL gl) {
+
 		// 0,0
-	gl.glViewport (0,0,screenWidth/2, screenHeight/2);
-	gl.glLoadIdentity();
-	gl.glScissor(0, 0, screenWidth/2, screenHeight/2);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
+		gl.glViewport(0, 0, screenWidth / 2, screenHeight / 2);
+		gl.glLoadIdentity();
+		gl.glScissor(0, 0, screenWidth / 2, screenHeight / 2);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
 		// 1,0
-	gl.glViewport (screenWidth/2,0,screenWidth, screenHeight/2);
-	gl.glLoadIdentity();
-	gl.glScissor(screenWidth/2,0,screenWidth, screenHeight/2);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
+		gl.glViewport(screenWidth / 2, 0, screenWidth, screenHeight / 2);
+		gl.glLoadIdentity();
+		gl.glScissor(screenWidth / 2, 0, screenWidth, screenHeight / 2);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
 		// 0,1
-	gl.glViewport (0,screenHeight/2,screenWidth/2, screenHeight);
-	gl.glLoadIdentity();
-	gl.glScissor(0,screenHeight/2,screenWidth/2, screenHeight);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
+		gl.glViewport(0, screenHeight / 2, screenWidth / 2, screenHeight);
+		gl.glLoadIdentity();
+		gl.glScissor(0, screenHeight / 2, screenWidth / 2, screenHeight);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
 		// 1,1
-	gl.glViewport (screenWidth/2,screenHeight/2,screenWidth, screenHeight);
-	gl.glLoadIdentity();
-	gl.glScissor(screenWidth/2,screenHeight/2,screenWidth, screenHeight);
-	gl.glEnable(GL.GL_SCISSOR_TEST);
-	gl.glMatrixMode(GL.GL_MODELVIEW);
-	display(drawable, gl);
-	
-	
-	
-}
+		gl.glViewport(screenWidth / 2, screenHeight / 2, screenWidth,
+				screenHeight);
+		gl.glLoadIdentity();
+		gl.glScissor(screenWidth / 2, screenHeight / 2, screenWidth,
+				screenHeight);
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		display(drawable, gl);
+
+	}
+
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -316,35 +316,24 @@ public class MazeRunner {
 
 		// System.out.println(previousTime);s
 
-
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
-		
-		
-		//gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		
+
+		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
 				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
 				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
 				camera.getVuvZ());
-		
-		
-		
-		
-		
-		
-		
-		
-		//gl.glLoadIdentity();
-		
-		//gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
-		//gl.glScissor(0,0,screenWidth/2,screenHeight/2);
-		//gl.glEnable(GL.GL_SCISSOR_TEST);
-		
-		
-		
+
+		// gl.glLoadIdentity();
+
+		// gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
+		// gl.glScissor(0,0,screenWidth/2,screenHeight/2);
+		// gl.glEnable(GL.GL_SCISSOR_TEST);
+
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
 				.hasNext();) {
@@ -359,13 +348,13 @@ public class MazeRunner {
 		gl.glEnable(GL.GL_CULL_FACE);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
-		//portal1.createCamera(glut, gl);
-		//portal2.createCamera(glut, gl);
+		// portal1.createCamera(glut, gl);
+		// portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-		
+
 	}
 
 	/**
@@ -606,7 +595,7 @@ public class MazeRunner {
 				}
 			}
 		}
-		for (int e = 0; e < enemyList.size(); e++) {
+		for (int e = 0; e < enemyList.size(); e++) {					// for each enemy
 			Enemy enemy = enemyList.get(e);
 			currentMazeID = level.getCurrentMaze(enemy);
 			if (currentMazeID != -1) {
@@ -614,18 +603,22 @@ public class MazeRunner {
 				// double enemyX = enemy.getX();
 				// double enemyZ = enemy.getZ();
 				enemy.update(deltaTime, player);
-				for (int i = 0; i < currentMaze.itemList.size(); i++) {
+				for (int i = 0; i < currentMaze.itemList.size(); i++) {		// for each item in currentMaze of enemy
+					
 					Item item = currentMaze.itemList.get(i);
-					if (item.touches(enemy) && item
-
-					instanceof TrapDropped) {
-						System.out.println("trap werkt");
-						visibleObjects.remove(enemy);
-						enemyList.remove(enemy);
-						visibleObjects.remove(item);
-						currentMaze.itemList.remove
-
-						(item);
+					if (item.touches(enemy) && item instanceof TrapDropped) {
+						System.out.println("trap wordt ghostbusters style");
+						
+						// Set speed of enemy on 0
+						enemy.setSpeed(0);
+						// Draw ghostbusters style
+						visibleObjects.add(new TrapDroppedGBS(item.locationX, item.locationY, item.locationZ, item.mazeID));
+						// Remove enemy from visibleObjects & enemyList
+						// visibleObjects.remove(enemy);
+						// enemyList.remove(enemy);
+						// Remove item from visibleObjects & itemList
+						// visibleObjects.remove(item);
+						// currentMaze.itemList.remove(item);
 					}
 				}
 			}
