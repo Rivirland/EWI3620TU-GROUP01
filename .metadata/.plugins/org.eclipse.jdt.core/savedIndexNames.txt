@@ -1,7 +1,30 @@
+<<<<<<< HEAD
+INDEX VERSION 1.126+C:\Users\Levi\Documents\Sourcetree\EWI3620TU-GROUP01\.metadata\.plugins\org.eclipse.jdt.core
+1498219845.index
+163172794.index
+4108727661.index
+3974580528.index
+1299022128.index
+3133528496.index
+3065916431.index
+4155206848.index
+1995173708.index
+30765161.index
+305854171.index
+1465425685.index
+2076742336.index
+=======
 INDEX VERSION 1.126+C:\Users\Gebruiker\Documents\SourceTree\EWI3620TU-GROUP01\.metadata\.plugins\org.eclipse.jdt.core
 2076742336.index
 305854171.index
+<<<<<<< HEAD
 1299022128.index
+=======
+4155206848.index
+1697886153.index
+1465425685.index
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
+>>>>>>> f943977cf6fadfac6da528818453af56464c767b
 1115467115.index
 1465425685.index
 1697886153.index

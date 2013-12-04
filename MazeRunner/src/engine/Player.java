@@ -251,5 +251,11 @@ public class Player extends GameObject {
 		setHorAngle(begH);
 		setVerAngle(begV);
 	}
+	
+	public void noMousechange() {
+	control.setdX(0);
+	control.setdY(0);
+	
+	}
 
 }

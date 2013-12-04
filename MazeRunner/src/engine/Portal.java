@@ -112,6 +112,10 @@ public class Portal {
 		
 	}
 	
+	public void portalView(GLUT glut, GL gl){
+		
+	}
+	
 	public void displayPortal (GLUT glut, GL gl){
 		gl.glPushMatrix();
 		
@@ -123,8 +127,8 @@ public class Portal {
 		
 		gl.glRotatef(facingdirection*90, 0, 1, 0); 
 		
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-//		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 		
 		
@@ -148,8 +152,8 @@ public class Portal {
 		gl.glPushMatrix();
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glCullFace(GL.GL_BACK);
-//		gl.glEnable(GL.GL_CULL_FACE);
+		//gl.glCullFace(GL.GL_BACK);
+	gl.glEnable(GL.GL_CULL_FACE);
 		gl.glPopMatrix();
 		//gl.glLoadIdentity();
 		
@@ -203,12 +207,21 @@ public class Portal {
 	public void createCamera(GLUT glut,GL gl){
 		if (connected){
 			
+			// de camera die wordt vertoont op p1 staat op evengrote omgekeerde afstand van de facing direction van portal p2 als de speler tot portal p1
+			// de camera staat gericht in dezelfde facing direction als de facing direction van p2
+			
 			float x = this.toportal.getX() + this.dx;
 			float y = this.toportal.getY() + this.dy;
 			float z = this.toportal.getZ() + this.dz;
 			gl.glPushMatrix();
 			
-			gl.glRotatef(facingdirection*90, 0, 1, 0);
+			// de translatie moet geflipt worden op de facing direction van de portal
+			
+			// juiste coordinaat = geflipte coordinaat - portal coordinaat
+			
+			
+			
+			gl.glRotatef(facingdirection*-90, 0, 1, 0);
 			gl.glTranslatef(x, y, z);
 			
 			// camera van een portal moet altijd in de richting van de portal wijzen
@@ -227,7 +240,8 @@ public class Portal {
 			//gl.glRotatef((float) (facingdirection*90+ Math.cos(straightlength/veclength)), 0, 1, 0);
 			
 			// voor nu is een wirecube gebruikt om de camera te representeren
-			glut.glutWireCube(1);
+			
+			glut.glutSolidCube(2);
 			gl.glPopMatrix();
 			
 			

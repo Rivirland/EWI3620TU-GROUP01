@@ -123,6 +123,11 @@ public class MazeRunner {
 
 	}
 
+	public void noMousechange(){
+	player.noMousechange();
+	input.noMousechange();
+	}
+
 	public void initObjects(GLCanvas canvas, UserInput input) {
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
@@ -236,6 +241,48 @@ public class MazeRunner {
 		this.previousTime = time;
 	}
 
+<<<<<<< HEAD
+	
+	// function to test multiple views, and later to test portals
+	public void multipleView(GLAutoDrawable drawable, GL gl){
+	
+		// 0,0
+	gl.glViewport (0,0,screenWidth/2, screenHeight/2);
+	gl.glLoadIdentity();
+	gl.glScissor(0, 0, screenWidth/2, screenHeight/2);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+		// 1,0
+	gl.glViewport (screenWidth/2,0,screenWidth, screenHeight/2);
+	gl.glLoadIdentity();
+	gl.glScissor(screenWidth/2,0,screenWidth, screenHeight/2);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+		// 0,1
+	gl.glViewport (0,screenHeight/2,screenWidth/2, screenHeight);
+	gl.glLoadIdentity();
+	gl.glScissor(0,screenHeight/2,screenWidth/2, screenHeight);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+		// 1,1
+	gl.glViewport (screenWidth/2,screenHeight/2,screenWidth, screenHeight);
+	gl.glLoadIdentity();
+	gl.glScissor(screenWidth/2,screenHeight/2,screenWidth, screenHeight);
+	gl.glEnable(GL.GL_SCISSOR_TEST);
+	gl.glMatrixMode(GL.GL_MODELVIEW);
+	display(drawable, gl);
+	
+	
+	
+}
+=======
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -247,11 +294,14 @@ public class MazeRunner {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
+<<<<<<< HEAD
+=======
 		// System.out.println(input.getForward());
 		// System.out.println(player.getLocationX() + " " +
 		// player.getLocationZ());
 		// GL gl = drawable.getGL();
 
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		ChangeGL.GLto3D(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -259,12 +309,19 @@ public class MazeRunner {
 
 		GLU glu = new GLU();
 		GLUT glut = new GLUT();
+
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
 		long currentTime = now.getTimeInMillis() - startTime;
 
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
+<<<<<<< HEAD
+		//time = previousTime-startTime;
+		//this.time;
+		//System.out.println(previousTime);s
+
+=======
 		if (deltaTime > 33) {
 			deltaTime = 0;
 		}
@@ -274,46 +331,58 @@ public class MazeRunner {
 
 		// System.out.println(previousTime);s
 
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
-
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
+		
+		//gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
 				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
 				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
 				camera.getVuvZ());
-
+		
+		
+		
+		
+		
+		
+		
+		
+		//gl.glLoadIdentity();
+		
+		//gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
+		//gl.glScissor(0,0,screenWidth/2,screenHeight/2);
+		//gl.glEnable(GL.GL_SCISSOR_TEST);
+		
+		
+		
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
 				.hasNext();) {
 			it.next().display(gl);
 		}
+<<<<<<< HEAD
+=======
 
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(Player.playerStateInt).displayItem(gl);
+>>>>>>> 4dc06a33b6e9f40a178ec60a63355b404fc2280a
 		portal1.displayPortal(glut, gl);
 		portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
+		//portal1.createCamera(glut, gl);
+		//portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-	}
-
-	/**
-	 * displayChanged(GLAutoDrawable, boolean, boolean) is called upon whenever
-	 * the display mode changes.
-	 * <p>
-	 * Implemented through GLEventListener. Seeing as this does not happen very
-	 * often, we leave this unimplemented.
-	 */
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-			boolean deviceChanged) {
-		// GL gl = drawable.getGL();
+		
 	}
 
 	/**
