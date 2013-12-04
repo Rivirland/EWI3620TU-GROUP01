@@ -544,6 +544,12 @@ public class Maze implements VisibleObject {
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
 
+		float wallColour[] = { 0.0f, 0.0f, 0.0f, 1.0f }; // The floor is blue.
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
+																	// materials
+																	// used by
+																	// the
+																	// floor.
 		// Apply texture.
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 1);
 
