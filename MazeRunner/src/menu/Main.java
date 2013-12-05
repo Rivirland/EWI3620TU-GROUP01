@@ -29,6 +29,7 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import levelEditor.LevelEditor;
+import levelEditor.LevelEditorWorld;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.texture.Texture;
@@ -199,7 +200,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glLoadIdentity();
 
 		mainmenu = new MainMenu(screenWidth, screenHeight);
-		leveleditor = new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix());
+		try{leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));}
+		catch (FileNotFoundException e){System.out.println("file niet gevonden: " + System.getProperty("user.dir") + "\\worlds\\world.txt");}
 		gamemenu = new GameMenu(screenWidth, screenHeight);
 		quit = new Quit(screenWidth, screenHeight);
 		settings = new Settings(screenWidth, screenHeight);
@@ -367,7 +369,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
 			
-			leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix());	
+			try{leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));}
+			catch (FileNotFoundException e){System.out.println("file niet gevonden");}
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
 			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
@@ -392,9 +395,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
 			String filename2 = kfub2.loadFile(new Frame(), "Open...", ".\\", "*.txt");
 			String currentdir2 = System.getProperty("user.dir");
-			filename = currentdir2 + "\\levels\\" + filename2;
+			filename = currentdir2 + "\\worlds\\" + filename2;
 			System.out.println(filename);
-			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditor.readWorld(filename), LevelEditor.readTextures(filename));}
+			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(filename));}
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();

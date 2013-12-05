@@ -302,9 +302,11 @@ public class MazeRunner {
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		if (deltaTime > 33) {
+		
+		 	if (deltaTime > 33) {
 			deltaTime = 0;
-		}
+			}
+	
 		// time = previousTime-startTime;
 
 		// this.time;

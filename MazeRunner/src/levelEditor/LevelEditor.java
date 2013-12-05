@@ -65,8 +65,11 @@ public class LevelEditor {
 	private boolean catalogus = false;
 	private Texture backTexture;
 	
+	private LevelEditorWorld levels;
 	private int[][] wereld;
 	private int[][] textures;
+	
+	private int selectedlevel=0;
 
 	/*private int [][] wereld =  new int[gridrows][gridcolumns];
 	
@@ -89,14 +92,15 @@ public class LevelEditor {
 	 * When instantiating, a GLCanvas is added for us to play with. An animator
 	 * is created to continuously render the canvas.
 	 */
-	public LevelEditor(int screenWidth, int screenHeight, int[][] wereld, int[][] textures) {
+	public LevelEditor(int screenWidth, int screenHeight, LevelEditorWorld levels) {
 		//calculateGrid();
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-		this.wereld = wereld;
+		this.levels = levels;
+		this.wereld = levels.get(0).getGebouwen();
+		this.textures = levels.get(0).getTextures();
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
-		this.textures = textures;
 	}
 	
 	
@@ -201,9 +205,6 @@ public class LevelEditor {
 	 * If the window is updated, or the gridsize is changed, updateGrid will be called and call upon certain methods to make
 	 * sure that the grid will grade the mouse coordinates when clicked appropriately
 	 */ 
-	private void updateGrid(){
-		
-	}
 	
 	private void drawGrid(GL gl, float xmin, float ymin, float xmax, float ymax, int gridcolumns, int gridrows ){
 		
@@ -1124,76 +1125,6 @@ public class LevelEditor {
 			bestand2.println();
 		}
 		bestand2.close();
-	}
-	
-	public static int[][] readWorld(String filename) throws FileNotFoundException{
-		File file = new File(filename);
-		Scanner sc = new Scanner(file);
-		sc.useDelimiter("\\s*,\\s*");
-		int x = sc.nextInt();
-		int y = sc.nextInt();
-		int z = sc.nextInt();
-		
-		//tel het aantal rijen en kolommen in de matrix
-		int rows=-1;
-		int columns=0;
-		String string = "";
-		while (sc.hasNextLine()){
-			string = sc.nextLine();
-			rows++;
-		}
-		Scanner stringsc = new Scanner(string);
-		stringsc.useDelimiter("\\s*,\\s*");
-		while (stringsc.hasNext()){
-			stringsc.nextInt();
-			columns++;
-		}
-
-		//lees de matrix
-		Scanner sc2 = new Scanner(file);
-		sc2.useDelimiter("\\s*,\\s*");
-		sc2.nextLine();
-		int[][] res = new int[rows][columns];
-		for (int i=0; i<rows; i++){
-			for (int j=0; j<columns; j++){
-				res[i][j] = sc2.nextInt();
-			}
-		}
-		System.out.println("file ingelezen");
-		return res;
-	}
-	
-	public static int[][] readTextures(String filename) throws FileNotFoundException{
-		File file = new File(filename.substring(0, filename.length()-4) + "_t.txt");
-		Scanner sc = new Scanner(file);
-		sc.useDelimiter("\\s*,\\s*");
-		
-		//tel het aantal rijen en kolommen in de matrix
-		int rows=0;
-		int columns=0;
-		String string = "";
-		while (sc.hasNextLine()){
-			string = sc.nextLine();
-			rows++;
-		}
-		Scanner stringsc = new Scanner(string);
-		stringsc.useDelimiter("\\s*,\\s*");
-		while (stringsc.hasNext()){
-			stringsc.nextInt();
-			columns++;
-		}
-
-		//lees de matrix
-		Scanner sc2 = new Scanner(file);
-		sc2.useDelimiter("\\s*,\\s*");
-		int[][] res = new int[rows][columns];
-		for (int i=0; i<rows; i++){
-			for (int j=0; j<columns; j++){
-				res[i][j] = sc2.nextInt();
-			}
-		}
-		System.out.println("file ingelezen");
-		return res;
 	}
 	
 	public static int[][] defaultMatrix(){
