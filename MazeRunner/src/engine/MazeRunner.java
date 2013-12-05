@@ -59,6 +59,7 @@ public class MazeRunner {
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	public static ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
+	public static ArrayList<Roof> roofList = new ArrayList<Roof>();
 	// private int enemyListLength;
 	private Camera camera; // The camera object.
 	// private UserInput input; // The user input object that controls the
@@ -136,7 +137,8 @@ public class MazeRunner {
 		// Add the maze that we will be using.
 
 		this.level = level;
-
+//		Roof roof = new Roof(0.5, 5, 0.5, 1);
+//		roofList.add(roof);
 		portal1 = new Portal(106, 2, 106, 2);
 
 		portal2 = new Portal(160, 2, 160, 2);
@@ -157,6 +159,9 @@ public class MazeRunner {
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
+		}
+		for (int i = 0; i < roofList.size(); i++){
+			visibleObjects.add(roofList.get(i));
 		}
 
 		// input = new UserInput(canvas);
@@ -542,7 +547,7 @@ public class MazeRunner {
 		}
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\m21.obj";
+			String filename = currentdir + "\\models\\Gun.obj";
 			m21Model = OBJLoader.loadTexturedModel(new File(filename));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -650,6 +655,28 @@ public class MazeRunner {
 				}
 			}
 
+		}
+		for (int rNr = 0; rNr < roofList.size(); rNr++){
+			Roof r = roofList.get(rNr);
+			if(!r.isOnWalls()){
+				r.locationY-=deltaTime*r.fallingSpeed;
+				r.fallingSpeed = r.fallingSpeed*1.005;
+				Maze maze = level.getMaze(r.mazeID);
+				if(r.locationY < maze.mazeY+0.5){
+					roofList.remove(r);
+					visibleObjects.remove(r);
+					for (int eNr = 0; eNr < enemyList.size(); eNr++ ){
+						Enemy e = enemyList.get(eNr);
+						if(e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX())==r.matrixX && maze.coordToMatrixElement(e.getGlobalZ()) == r.matrixZ){
+							enemyList.remove(e);
+							visibleObjects.remove(e);
+						}
+					}
+					if(maze.coordToMatrixElement(player.getGlobalX()-maze.mazeX)==r.matrixX && maze.coordToMatrixElement(player.getGlobalZ()-maze.mazeZ) == r.matrixZ){
+						player.playerStateInt = 3;				
+					}
+				}
+			}
 		}
 
 		if (Player.canTeleport) {

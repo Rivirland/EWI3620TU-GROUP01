@@ -2,6 +2,7 @@ package engine;
 
 import items.BulletHolder;
 import items.Item;
+import items.Roof;
 import items.TrapHolder;
 
 import java.io.BufferedReader;
@@ -58,13 +59,13 @@ public class Maze implements VisibleObject {
 	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(String filename, int i) {
+		mazeID = i - 1;
 		try {
 			loadMaze(filename, i);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mazeID = i - 1;
 	}
 
 	// Loads the maze into an int[][]: it goes through the file to determine the
@@ -77,7 +78,6 @@ public class Maze implements VisibleObject {
 	public void loadMaze(String filename, int i) throws FileNotFoundException {
 		String currentdir = System.getProperty("user.dir");
 		filename = currentdir + "\\levels\\" + filename;
-		System.out.println(filename + ".txt");
 		File infile = new File(filename + ".txt");
 		try {
 			loadMazeSize(infile);
@@ -103,6 +103,19 @@ public class Maze implements VisibleObject {
 		}
 		File objectsFile = new File(filename + "_o.txt");
 		readObjects(objectsFile);
+		for(int row = 1; row < MAZE_SIZE_X; row += 2){
+			for(int col = 1; col < MAZE_SIZE_Z; col += 2){
+				if (maze[row][col] > 0){
+					double rx = Math.floor((row + 1) / 2) * COLUMN_WIDTH
+							+ Math.floor(row / 2) * WALL_LENGTH;
+					double rz = Math.floor((col + 1) / 2) * COLUMN_WIDTH
+							+ Math.floor(col / 2) * WALL_LENGTH;
+					Roof r = new Roof(rx+mazeX,ITEM_HEIGHT*maze[row][col]+mazeY,rz+mazeZ,mazeID, WALL_LENGTH, row, col);
+					MazeRunner.visibleObjects.add(r);
+					MazeRunner.roofList.add(r);
+				}
+			}
+		}
 	}
 
 	private void readObjects(File objectsFile) {
@@ -111,50 +124,56 @@ public class Maze implements VisibleObject {
 			bufRdrTex = new BufferedReader(new FileReader(objectsFile));
 			String line = null;
 			try {
-				while ((line = bufRdrTex.readLine()) != null){
+				while ((line = bufRdrTex.readLine()) != null) {
 					StringTokenizer st = new StringTokenizer(line, ",");
-					int objectNumber = Integer.parseInt(st.nextToken()); 
-					if( objectNumber == 1){
+					int objectNumber = Integer.parseInt(st.nextToken());
+					if (objectNumber == 1) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int fd = Integer.parseInt(st.nextToken());
 						int portalID = Integer.parseInt(st.nextToken());
-						int portalConnectionID = Integer.parseInt(st.nextToken());
-//						Portal portal = new Portal((float)objectX, (float)objectY, objectZ, fd);
-//						System.out.println("Maakt portal " + portalID + " naar " + portalConnectionID + " op " + objectX + ", " + objectZ);
+						int portalConnectionID = Integer.parseInt(st
+								.nextToken());
+						// Portal portal = new Portal((float)objectX,
+						// (float)objectY, objectZ, fd);
+						// System.out.println("Maakt portal " + portalID +
+						// " naar " + portalConnectionID + " op " + objectX +
+						// ", " + objectZ);
 						continue;
-					}
-					else if(objectNumber ==2){
-						//EnemySpooky
+					} else if (objectNumber == 2) {
+						// EnemySpooky
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						EnemySpooky es = new EnemySpooky(objectX, mazeY+2.5, objectZ, 0.0015, mazeID);
+						EnemySpooky es = new EnemySpooky(objectX, mazeY + 2.5,
+								objectZ, 0.0015, mazeID);
 						MazeRunner.visibleObjects.add(es);
 						MazeRunner.enemyList.add(es);
-//						System.out.println("Maakt enemySpooky op: " + objectX + ", " + objectZ);
-					}
-					else if(objectNumber ==3){
-						//EnemySmart
+						// System.out.println("Maakt enemySpooky op: " + objectX
+						// + ", " + objectZ);
+					} else if (objectNumber == 3) {
+						// EnemySmart
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						EnemySmart es = new EnemySmart(objectX, mazeY+2.5, objectZ, 0.005, mazeID);
+						EnemySmart es = new EnemySmart(objectX, mazeY + 2.5,
+								objectZ, 0.005, mazeID);
 						MazeRunner.visibleObjects.add(es);
 						MazeRunner.enemyList.add(es);
-					}
-					else if(objectNumber ==4){
+					} else if (objectNumber == 4) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int amount = Integer.parseInt(st.nextToken());
-						BulletHolder bh = new BulletHolder(objectX, mazeY, objectZ, mazeID, amount);
+						BulletHolder bh = new BulletHolder(objectX, mazeY,
+								objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
-						System.out.println("Maakt " + amount + " bullets op: " + objectX + ", " + objectZ);
-					}
-					else if(objectNumber ==5){
+//						System.out.println("Maakt " + amount + " bullets op: "
+//								+ objectX + ", " + objectZ);
+					} else if (objectNumber == 5) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ, mazeID);
+						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ,
+								mazeID);
 						itemList.add(th);
 						MazeRunner.visibleObjects.add(th);
 					}
@@ -163,7 +182,7 @@ public class Maze implements VisibleObject {
 				System.out.println("Fout in readObjects");
 				e.printStackTrace();
 			}
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -186,7 +205,6 @@ public class Maze implements VisibleObject {
 				col = 0;
 				row++;
 			}
-			System.out.println(textureMatrix[0][0]);
 		} catch (FileNotFoundException e) {
 			System.out.println("Fout in buildTextureMatrix");
 			e.printStackTrace();
@@ -214,8 +232,7 @@ public class Maze implements VisibleObject {
 		bufRdr.close();
 		MAZE_SIZE_X = row;
 		MAZE_SIZE_Z = col;
-		System.out
-				.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
+		
 		maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 		textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	}
@@ -261,7 +278,7 @@ public class Maze implements VisibleObject {
 		int res = -1;
 		double sum = 0;
 		int columnWallSwitcher = 0;
-		while (sum < input) {
+		while (sum <= input) {
 			if (columnWallSwitcher == 0) {
 				sum += COLUMN_WIDTH;
 			}
@@ -298,7 +315,6 @@ public class Maze implements VisibleObject {
 			col = 0;
 			row++;
 		}
-		System.out.println(mazeX + ", " + mazeY + ", " + mazeZ);
 		bufRdr.close();
 		// printMatrix();
 		minX = mazeX;
@@ -310,8 +326,8 @@ public class Maze implements VisibleObject {
 	}
 
 	public int getCoords(int i, int j) {
-		if (i >= 0 && j >= 0 && i <= coordToMatrixElement(maxX - minX)
-				&& j <= coordToMatrixElement(maxZ - minZ)) {
+		if (i >= 0 && j >= 0 && i < coordToMatrixElement(maxX - minX)
+				&& j < coordToMatrixElement(maxZ - minZ)) {
 			return maze[i][j];
 		}
 		return 0;
@@ -342,7 +358,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isWall(int x, int z) {
 		if (x >= 0 && x < MAZE_SIZE_X && z >= 0 && z < MAZE_SIZE_Z)
-			return maze[x][z] != 0;
+			return maze[x][z] > 0;
 		else
 			return false;
 	}
@@ -454,9 +470,8 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,even) paints a wall in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							// paintWallZFromQuad(gl, height * ITEM_HEIGHT, i,
-							// j);
-							paintDoorZFromQuad(gl, height * ITEM_HEIGHT);
+							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i,j);
+//							paintDoorZFromQuad(gl, height * ITEM_HEIGHT);
 						}
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {
@@ -464,7 +479,7 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,odd) paints a roof
 						if (i % 2 != 0 && j % 2 != 0) {
-							paintRoof(gl, (height + 1) * ITEM_HEIGHT);
+//							paintRoof(gl, (height + 1) * ITEM_HEIGHT);
 						}
 						gl.glPopMatrix();
 
@@ -618,13 +633,9 @@ public class Maze implements VisibleObject {
 
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
+		float wallColour[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);
 
-		float wallColour[] = { 0.0f, 0.0f, 0.0f, 1.0f }; // The floor is blue.
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0); // Set the
-																	// materials
-																	// used by
-																	// the
-																	// floor.
 		// Apply texture.
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 1);
 
@@ -644,29 +655,7 @@ public class Maze implements VisibleObject {
 	}
 
 	// Paints a roof using a trianglefan
-	private void paintRoof(GL gl, double h) {
-		gl.glDisable(GL.GL_CULL_FACE);
-
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-		gl.glTexCoord2d(0.5, 1.0);
-		gl.glVertex3d(WALL_LENGTH / 2, h + 2, WALL_LENGTH / 2);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, h, WALL_LENGTH);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, 0.0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glEnd();
-		gl.glEnable(GL.GL_CULL_FACE);
-	}
+	
 
 	// Paints a wall in the z-direction
 	private void paintWallZFromQuad(GL gl, double h, int i, int j) {

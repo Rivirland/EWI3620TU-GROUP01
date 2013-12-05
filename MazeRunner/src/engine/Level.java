@@ -43,7 +43,7 @@ public class Level {
 		String currentdir = System.getProperty("user.dir");
 
 		filename = currentdir + "\\worlds\\" + filename;
-		System.out.println(filename);
+//		System.out.println(filename);
 		File worldFile = new File(filename + ".txt");
 		try {
 			bufRdr = new BufferedReader(
@@ -57,7 +57,6 @@ public class Level {
 		String line = null;
 		try {
 			while ((line = bufRdr.readLine()) != null){
-				System.out.println(i);
 				Maze maze = new Maze(line,i);
 				this.voegToe(maze);
 				i++;
@@ -66,18 +65,6 @@ public class Level {
 			System.out.println("Fout bij inlezen");
 			e.printStackTrace();
 		}
-		
-//		boolean hasNext = true;
-//		while (hasNext) {
-//			hasNext = false;
-//			Maze maze = new Maze(filename, i);
-//			this.voegToe(maze);
-//			File fileNext = new File(filename + "_" + (i + 1) + ".txt");
-//			if (fileNext.exists()) {
-//				hasNext = true;
-//			}
-//			i++;
-//		}
 	}
 
 	// Returns true if two objects are in the same maze, otherwise it returns

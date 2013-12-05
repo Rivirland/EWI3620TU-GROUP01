@@ -74,8 +74,6 @@ public class Player extends GameObject {
 	 */
 	public void setControl(Control control) {
 		this.control = control;
-		System.out.println(control);
-		
 	}
 
 	/**

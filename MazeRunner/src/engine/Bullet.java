@@ -21,16 +21,16 @@ public class Bullet extends GameObject implements VisibleObject {
 		gl.glColor3d(0.0, 0.0, 1.0);
 		gl.glPushMatrix();
 		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
-		glut.glutSolidSphere(0.5, 10, 10);
+		glut.glutSolidSphere(0.05, 10, 10);
 		gl.glPopMatrix();
 	}
 	
 	public void update(int deltaTime){
-		locationX -= Math.sin(Math.toRadians(horAngle)) * speed
+		locationX -= Math.sin(Math.toRadians(horAngle)) * Math.cos(Math.toRadians(verAngle)) * speed
 				* deltaTime;
 		locationY += Math.sin(Math.toRadians(verAngle)) * speed 
 				* deltaTime;
-		locationZ -= Math.cos(Math.toRadians(horAngle)) * speed
+		locationZ -= Math.cos(Math.toRadians(horAngle)) * Math.cos(Math.toRadians(verAngle)) * speed
 				* deltaTime;
 	}
 }
