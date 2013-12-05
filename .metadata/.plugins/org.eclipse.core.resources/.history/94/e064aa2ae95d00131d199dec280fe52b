@@ -16,9 +16,11 @@ public class EnemySmart extends Enemy implements VisibleObject {
 	}
 
 	public void update(int deltaTime, Player player) {
-		int currentMazeID = MazeRunner.level.getCurrentMaze(this);
-		Maze currentMaze = MazeRunner.level.getMaze(currentMazeID);
 		if (MazeRunner.level.inSameMaze(this, player) != -1) {
+
+			int currentMazeID = MazeRunner.level.getCurrentMaze(this);
+			Maze currentMaze = MazeRunner.level.getMaze(currentMazeID);
+
 			int enemyMatrixX = currentMaze.coordToMatrixElement(locationX);
 			int enemyMatrixZ = currentMaze.coordToMatrixElement(locationZ);
 
@@ -142,8 +144,6 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				this.setLocationZ(locationZ);
 				this.setRandomizer((int) (3 * Math.random()));
 			}
-			
-			
 
 		} else {
 
@@ -181,39 +181,6 @@ public class EnemySmart extends Enemy implements VisibleObject {
 					this.setRandomizer((int) (3 * Math.random()));
 				}
 			}
-		
-		if (locationX > currentMaze.maxX - 1){
-			east = false;
-			this.setRandomizer((int) (1 + 3 * Math.random()));
-		}
-		if (locationX < currentMaze.minX + 1){
-			west = false;
-			int randomNumber = (int) (3 * Math.random());
-			if (randomNumber == 0) {
-				this.setRandomizer(0);
-			} else if (randomNumber == 1) {
-				this.setRandomizer(1);
-			} else {
-				this.setRandomizer(3);
-			}
-		}
-		if (locationZ < currentMaze.minZ + 1) {
-			north = false;
-			int randomNumber = (int) (3 * Math.random());
-			if (randomNumber == 0) {
-				this.setRandomizer(0);
-			} else if (randomNumber == 1) {
-				this.setRandomizer(2);
-			} else {
-				this.setRandomizer(3);
-			}
-		}
-		if (locationZ > currentMaze.maxZ - 1){
-			west = false;
-			this.setRandomizer((int) (3 * Math.random()));
-		}
-		
-		
 
 		if (west) {
 			locationX -= speed * deltaTime;

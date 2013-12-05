@@ -2,9 +2,9 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="439" key="DIALOG_Y_ORIGIN"/>
+		<item value="185" key="DIALOG_Y_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
-		<item value="1016" key="DIALOG_X_ORIGIN"/>
+		<item value="680" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -13,24 +13,11 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="isWall" key="selection"/>
+		<item value="currentMaze" key="selection"/>
 		<list key="findhistory">
-			<item value="iswall"/>
-			<item value="collide"/>
-			<item value="System"/>
-			<item value="m21"/>
-			<item value=".remove"/>
-			<item value="display"/>
-			<item value="visibleObjects.remove"/>
-			<item value="println("/>
+			<item value="currentMaze"/>
 		</list>
 		<list key="replacehistory">
-			<item value="locationY,"/>
-			<item value=""/>
-			<item value="Maze.WALL_WIDTH"/>
-			<item value="Maze.WALL_LENGTH"/>
-			<item value="Maze.COLUMN_WIDTH"/>
-			<item value="Maze.ITEM_HEIGHT"/>
 		</list>
 	</section>
 </section>
