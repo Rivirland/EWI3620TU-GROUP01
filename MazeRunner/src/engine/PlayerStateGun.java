@@ -12,9 +12,9 @@ public class PlayerStateGun extends PlayerState{
 			Player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
-			double x = MazeRunner.player.getLocationX()-Math.sin(Math.toRadians(hAngle))*2;
-			double y = MazeRunner.player.getLocationY()+Math.sin(Math.toRadians(vAngle))*2;
-			double z = MazeRunner.player.getLocationZ()-Math.cos(Math.toRadians(hAngle))*2;
+			double x = MazeRunner.player.getLocationX()-Math.sin(Math.toRadians(hAngle))*4;
+			double y = MazeRunner.player.getLocationY()+Math.sin(Math.toRadians(vAngle))*4;
+			double z = MazeRunner.player.getLocationZ()-Math.cos(Math.toRadians(hAngle))*4;
 			Bullet bullet = new Bullet(x, y, z, hAngle, vAngle, 0.02);
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);

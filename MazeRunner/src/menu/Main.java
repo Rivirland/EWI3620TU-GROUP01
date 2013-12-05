@@ -206,7 +206,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
 		//mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput);
 		userinput = new UserInput(canvas);
-		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("level1"));
+		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
 		
 		
 		/*
@@ -358,7 +358,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			//String currentdir = System.getProperty("user.dir");
 			//filename = currentdir + "\\levels\\" + filename;
 			System.out.println(filename.substring(0, filename.length()-6));
-			mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length()-6)));
+			mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length()-4)));
 			//-6 moet veranderen naar -4 hierboven, nadat Level.java in orde is
 		gamestate = INGAME;
 		break;

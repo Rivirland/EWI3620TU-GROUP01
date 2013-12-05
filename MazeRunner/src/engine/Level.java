@@ -1,6 +1,10 @@
 package engine;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 //A level consists of several mazes. In this class, we can import mazes from a .txt file and store them into an ArrayList.
@@ -35,22 +39,45 @@ public class Level {
 	// level1_1.txt, level1_2.txt etc until
 	// such files do not exist anymore.
 	public void leesLevels(String filename) {
+		BufferedReader bufRdr = null;
 		String currentdir = System.getProperty("user.dir");
 
-		filename = currentdir + "\\levels\\" + filename;
+		filename = currentdir + "\\worlds\\" + filename;
+		System.out.println(filename);
+		File worldFile = new File(filename + ".txt");
+		try {
+			bufRdr = new BufferedReader(
+					new FileReader(worldFile));
+		} catch (FileNotFoundException e) {
+			System.out.println("WorldFile not found!");
+			e.printStackTrace();
+		}
 
 		int i = 1;
-		boolean hasNext = true;
-		while (hasNext) {
-			hasNext = false;
-			Maze maze = new Maze(filename, i);
-			this.voegToe(maze);
-			File fileNext = new File(filename + "_" + (i + 1) + ".txt");
-			if (fileNext.exists()) {
-				hasNext = true;
+		String line = null;
+		try {
+			while ((line = bufRdr.readLine()) != null){
+				System.out.println(i);
+				Maze maze = new Maze(line,i);
+				this.voegToe(maze);
+				i++;
 			}
-			i++;
+		} catch (IOException e) {
+			System.out.println("Fout bij inlezen");
+			e.printStackTrace();
 		}
+		
+//		boolean hasNext = true;
+//		while (hasNext) {
+//			hasNext = false;
+//			Maze maze = new Maze(filename, i);
+//			this.voegToe(maze);
+//			File fileNext = new File(filename + "_" + (i + 1) + ".txt");
+//			if (fileNext.exists()) {
+//				hasNext = true;
+//			}
+//			i++;
+//		}
 	}
 
 	// Returns true if two objects are in the same maze, otherwise it returns
@@ -82,7 +109,7 @@ public class Level {
 	public boolean[] collides(GameObject object, double margin) {
 		// If you do not implement a margin (or set it to 0), you can still look
 		// through the walls
-		boolean[] res = { false, false,false,false };
+		boolean[] res = { false, false, false, false };
 		int i = getCurrentMaze(object);
 		if (i != -1) {
 			Maze maze = mazelist.get(i);
@@ -99,23 +126,23 @@ public class Level {
 			int newZ1 = maze.coordToMatrixElement(z - margin);
 			int newX2 = maze.coordToMatrixElement(x - margin);
 			int newZ2 = maze.coordToMatrixElement(z);
-			int newX3= maze.coordToMatrixElement(x);
+			int newX3 = maze.coordToMatrixElement(x);
 			int newZ3 = maze.coordToMatrixElement(z + margin);
-			if (!(newX0 % 2 == 1 && newZ0 % 2 == 1) && (maze.getCoords(newX0,
-					newZ0) > 0)) {
+			if (!(newX0 % 2 == 1 && newZ0 % 2 == 1)
+					&& (maze.getCoords(newX0, newZ0) > 0)) {
 				res[0] = true;
 			}
-			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getCoords(newX1,
-					newZ1) > 0)) {
+			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1)
+					&& (maze.getCoords(newX1, newZ1) > 0)) {
 				res[1] = true;
 			}
-			if(!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze.getCoords(
-					newX2, newZ2) > 0)){
+			if (!(newX2 % 2 == 1 && newZ2 % 2 == 1)
+					&& (maze.getCoords(newX2, newZ2) > 0)) {
 				res[2] = true;
 			}
-			
-			if(!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze.getCoords(
-					newX3, newZ3) > 0)){
+
+			if (!(newX3 % 2 == 1 && newZ3 % 2 == 1)
+					&& (maze.getCoords(newX3, newZ3) > 0)) {
 				res[3] = true;
 			}
 		}

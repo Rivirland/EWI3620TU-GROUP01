@@ -61,7 +61,7 @@ public class Player extends GameObject {
 		verAngle = v;
 		speed = .01;
 		nrOfTraps = 0;
-		nrOfBullets = 1;
+		nrOfBullets = 0;
 		playerStateInt = 0;
 	}
 

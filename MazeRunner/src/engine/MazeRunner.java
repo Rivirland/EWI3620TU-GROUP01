@@ -1,8 +1,6 @@
 package engine;
 
-import items.Item;
-import items.TrapDropped;
-import items.TrapHolder;
+import items.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,11 +48,14 @@ public class MazeRunner {
 	 */
 
 	private int screenWidth, screenHeight; // Screen size.
-	public static ArrayList<VisibleObject> visibleObjects; // A list of objects
-															// that
-															// will be displayed
-															// on
-															// screen.
+	public static ArrayList<VisibleObject> visibleObjects = new ArrayList<VisibleObject>(); // A
+																							// list
+																							// of
+																							// objects
+	// that
+	// will be displayed
+	// on
+	// screen.
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	public static ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
@@ -132,7 +133,6 @@ public class MazeRunner {
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
-		visibleObjects = new ArrayList<VisibleObject>();
 		// Add the maze that we will be using.
 
 		this.level = level;
@@ -145,8 +145,6 @@ public class MazeRunner {
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
 		}
-		
-		
 
 		// Initialize the player.
 		player = new Player(5, 2.5, 5, -90, 0);
@@ -156,13 +154,10 @@ public class MazeRunner {
 				player.getVerAngle());
 
 		// Initialize the enemies.
-		 enemyList.add(new EnemySpooky(25, 2.5, 25, 0.0015, -90));
-
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
-		visibleObjects.add(level.getMaze(0).itemList.get(0));
 
 		// input = new UserInput(canvas);
 
@@ -433,7 +428,6 @@ public class MazeRunner {
 
 			filename = currentdir + filename;
 			File file2 = new File(filename);
-			System.out.println(filename);
 			TextureData data2 = TextureIO.newTextureData(file2, false,
 
 			"jpg");
@@ -450,7 +444,6 @@ public class MazeRunner {
 
 			filename = currentdir + filename;
 			File file1 = new File(filename);
-			System.out.println(filename);
 			// InputStream stream =
 			// getClass().getResourceAsStream("texture.jpg");
 			TextureData data1 = TextureIO.newTextureData(file1, false,
@@ -469,7 +462,6 @@ public class MazeRunner {
 
 			filename = currentdir + filename;
 			File file3 = new File(filename);
-			System.out.println(filename);
 			// InputStream stream =
 			// getClass().getResourceAsStream("texture.jpg");
 			TextureData data3 = TextureIO.newTextureData(file3, false,
@@ -487,7 +479,6 @@ public class MazeRunner {
 
 			filename = currentdir + filename;
 			File file4 = new File(filename);
-			System.out.println(filename);
 			// InputStream stream =
 			// getClass().getResourceAsStream("texture.jpg");
 			TextureData data4 = TextureIO.newTextureData(file4, false,
@@ -505,7 +496,6 @@ public class MazeRunner {
 
 			filename = currentdir + filename;
 			File file5 = new File(filename);
-			System.out.println(filename);
 			// InputStream stream =
 			// getClass().getResourceAsStream("texture.jpg");
 			TextureData data5 = TextureIO.newTextureData(file5, false,
@@ -523,7 +513,6 @@ public class MazeRunner {
 
 			filename = currentdir + filename;
 			File file5 = new File(filename);
-			System.out.println(filename);
 			// InputStream stream =
 			// getClass().getResourceAsStream("texture.jpg");
 			TextureData data5 = TextureIO.newTextureData(file5, false,
@@ -587,9 +576,12 @@ public class MazeRunner {
 				if (item.touches(player)) {
 					if (item instanceof TrapHolder) {
 						Player.nrOfTraps++;
-						visibleObjects.remove
-
-						(currentMaze.itemList.get(i));
+						visibleObjects.remove(currentMaze.itemList.get(i));
+						currentMaze.itemList.remove(i);
+					}
+					if (item instanceof BulletHolder){
+						Player.nrOfBullets += ((BulletHolder)item).getAmount();
+						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
 					}
 				}
@@ -605,16 +597,11 @@ public class MazeRunner {
 				enemy.update(deltaTime, player);
 				for (int i = 0; i < currentMaze.itemList.size(); i++) {
 					Item item = currentMaze.itemList.get(i);
-					if (item.touches(enemy) && item
-
-					instanceof TrapDropped) {
-						System.out.println("trap werkt");
+					if (item.touches(enemy) && item	instanceof TrapDropped) {
 						visibleObjects.remove(enemy);
 						enemyList.remove(enemy);
 						visibleObjects.remove(item);
-						currentMaze.itemList.remove
-
-						(item);
+						currentMaze.itemList.remove(item);
 					}
 				}
 			}
@@ -624,19 +611,20 @@ public class MazeRunner {
 			Bullet b = bulletList.get(bNr);
 			b.update(deltaTime);
 			int i = MazeRunner.level.getCurrentMaze(b);
-			if(i != -1){
+			if (i != -1) {
 				Maze maze = MazeRunner.level.mazelist.get(i);
-				if(b.locationY < mazeY+0.1){
+				if (b.locationY < mazeY + 0.1) {
 					bulletList.remove(b);
 					visibleObjects.remove(b);
 				}
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
 					if (maze.textureMatrix[maze
-							.coordToMatrixElement(b.locationX)][maze
-							.coordToMatrixElement(b.locationZ)] == 2) {
-						maze.maze[maze.coordToMatrixElement(b.locationX)][maze
-								.coordToMatrixElement(b.locationZ)] = -1;
+							.coordToMatrixElement(b.locationX - maze.mazeX)][maze
+							.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 2) {
+						maze.maze[maze.coordToMatrixElement(b.locationX
+								- maze.mazeX)][maze
+								.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
 						bulletList.remove(b);
 						visibleObjects.remove(b);
 					} else {
@@ -661,7 +649,6 @@ public class MazeRunner {
 					break;
 				}
 			}
-			
 
 		}
 
