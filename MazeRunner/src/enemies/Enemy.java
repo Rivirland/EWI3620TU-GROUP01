@@ -146,7 +146,7 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		gl.glRotated(horAngle, 0, 1, 0);
 	}
 
-	@Override
+	
 	public void display(GL gl) {
 		if (trapped) {
 			Animator.disappearIntoTrap(this);

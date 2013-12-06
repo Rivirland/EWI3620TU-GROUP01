@@ -111,7 +111,6 @@ public class Maze implements VisibleObject {
 					double rz = Math.floor((col + 1) / 2) * COLUMN_WIDTH
 							+ Math.floor(col / 2) * WALL_LENGTH;
 					Roof r = new Roof(rx+mazeX,ITEM_HEIGHT*maze[row][col]+mazeY,rz+mazeZ,mazeID, WALL_LENGTH, row, col);
-					MazeRunner.visibleObjects.add(r);
 					MazeRunner.roofList.add(r);
 				}
 			}
@@ -147,7 +146,6 @@ public class Maze implements VisibleObject {
 						double objectZ = Double.parseDouble(st.nextToken());
 						EnemySpooky es = new EnemySpooky(objectX, mazeY + 2.5,
 								objectZ, 0.0015, mazeID);
-						MazeRunner.visibleObjects.add(es);
 						MazeRunner.enemyList.add(es);
 						// System.out.println("Maakt enemySpooky op: " + objectX
 						// + ", " + objectZ);
@@ -157,7 +155,6 @@ public class Maze implements VisibleObject {
 						double objectZ = Double.parseDouble(st.nextToken());
 						EnemySmart es = new EnemySmart(objectX, mazeY + 2.5,
 								objectZ, 0.005, mazeID);
-						MazeRunner.visibleObjects.add(es);
 						MazeRunner.enemyList.add(es);
 					} else if (objectNumber == 4) {
 						double objectX = Double.parseDouble(st.nextToken());
