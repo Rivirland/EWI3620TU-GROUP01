@@ -60,8 +60,8 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
-		nrOfTraps = 15;
-		nrOfBullets = 3;
+		nrOfTraps = 0;
+		nrOfBullets = 0;
 		playerStateInt = 0;
 	}
 
@@ -74,8 +74,6 @@ public class Player extends GameObject {
 	 */
 	public void setControl(Control control) {
 		this.control = control;
-		System.out.println(control);
-		
 	}
 
 	/**

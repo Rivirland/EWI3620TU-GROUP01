@@ -13,12 +13,9 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="paintSin" key="selection"/>
+		<item value="currentMaze" key="selection"/>
 		<list key="findhistory">
-			<item value="paintSin"/>
-			<item value="glenable"/>
-			<item value="enableLig"/>
-			<item value="display"/>
+			<item value="currentMaze"/>
 		</list>
 		<list key="replacehistory">
 		</list>

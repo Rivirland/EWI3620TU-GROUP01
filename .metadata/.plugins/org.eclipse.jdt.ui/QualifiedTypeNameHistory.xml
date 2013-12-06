@@ -2,4 +2,6 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="javax.media.opengl.GLAutoDrawable"/>
 <fullyQualifiedTypeName name="engine.ChangeGL"/>
+<fullyQualifiedTypeName name="enemies.EnemySpooky"/>
+<fullyQualifiedTypeName name="items.TrapHolder"/>
 </qualifiedTypeNameHistroy>

@@ -11,6 +11,7 @@ public class GameMenu {
 	
 	final byte GAMEMENU = 1;
 	final byte INGAME = 5;
+	final byte LOADGAME = 8;
 	
 	public GameMenu(int screenWidth, int screenHeight){
 		this.screenWidth = screenWidth;
@@ -60,7 +61,7 @@ public class GameMenu {
 				}
 				else if (450f/1080f*screenHeight < me.getY() && me.getY() < 550f/1080f*screenHeight) {
 					// The second button is clicked
-					gamestate = GAMEMENU;
+					gamestate = LOADGAME;
 				}
 				else if (600f/1080f*screenHeight < me.getY() && me.getY() < 700f/1080f*screenHeight) {
 					// The third button is clicked

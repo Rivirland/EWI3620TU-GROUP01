@@ -1,6 +1,9 @@
 package engine;
 
+import items.BulletHolder;
 import items.Item;
+import items.Roof;
+import items.TrapHolder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +14,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
+
+import enemies.EnemySmart;
+import enemies.EnemySpooky;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -43,24 +49,23 @@ public class Maze implements VisibleObject {
 	public final double WALL_LENGTH = CELL_SIZE - WALL_WIDTH;
 	public final double COLUMN_WIDTH = WALL_WIDTH;
 	public final double ITEM_HEIGHT = 5;
+	public final double DOOR_WIDTH = 1.5;
+	public final double DOOR_HEIGHT = 3;
 	public int mazeX, mazeY, mazeZ;
 	public int minX, minZ, mazeID;
 	public double maxX, maxZ;
 	public ArrayList<Item> itemList = new ArrayList<Item>();
-	private int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
-	private int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(String filename, int i) {
+		mazeID = i - 1;
 		try {
 			loadMaze(filename, i);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mazeID = i - 1;
-		// TODO: init items
-		// itemList.add(new TrapHolder(3, mazeY, 3, mazeID));
-		// itemList.add(new TrapHolder(mazeX+1, mazeY, mazeZ+2, mazeID));
 	}
 
 	// Loads the maze into an int[][]: it goes through the file to determine the
@@ -71,7 +76,9 @@ public class Maze implements VisibleObject {
 	// positioned
 	// in the 3D space.
 	public void loadMaze(String filename, int i) throws FileNotFoundException {
-		File infile = new File(filename + "_" + i + ".txt");
+		String currentdir = System.getProperty("user.dir");
+		filename = currentdir + "\\levels\\" + filename;
+		File infile = new File(filename + ".txt");
 		try {
 			loadMazeSize(infile);
 
@@ -83,7 +90,7 @@ public class Maze implements VisibleObject {
 		} catch (IOException e) {
 			System.out.println("Fout in buildMaze");
 		}
-		File infileTex = new File(filename + "_" + i + "_t.txt");
+		File infileTex = new File(filename + "_t.txt");
 		try {
 			buildTextureMatrix(infileTex);
 		} catch (NumberFormatException e) {
@@ -92,6 +99,91 @@ public class Maze implements VisibleObject {
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("Fout in buildTextureMatrix - IOE");
+			e.printStackTrace();
+		}
+		File objectsFile = new File(filename + "_o.txt");
+		readObjects(objectsFile);
+		for(int row = 1; row < MAZE_SIZE_X; row += 2){
+			for(int col = 1; col < MAZE_SIZE_Z; col += 2){
+				if (maze[row][col] > 0){
+					double rx = Math.floor((row + 1) / 2) * COLUMN_WIDTH
+							+ Math.floor(row / 2) * WALL_LENGTH;
+					double rz = Math.floor((col + 1) / 2) * COLUMN_WIDTH
+							+ Math.floor(col / 2) * WALL_LENGTH;
+					Roof r = new Roof(rx+mazeX,ITEM_HEIGHT*maze[row][col]+mazeY,rz+mazeZ,mazeID, WALL_LENGTH, row, col);
+					MazeRunner.visibleObjects.add(r);
+					MazeRunner.roofList.add(r);
+				}
+			}
+		}
+	}
+
+	private void readObjects(File objectsFile) {
+		BufferedReader bufRdrTex = null;
+		try {
+			bufRdrTex = new BufferedReader(new FileReader(objectsFile));
+			String line = null;
+			try {
+				while ((line = bufRdrTex.readLine()) != null) {
+					StringTokenizer st = new StringTokenizer(line, ",");
+					int objectNumber = Integer.parseInt(st.nextToken());
+					if (objectNumber == 1) {
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectY = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						int fd = Integer.parseInt(st.nextToken());
+						int portalID = Integer.parseInt(st.nextToken());
+						int portalConnectionID = Integer.parseInt(st
+								.nextToken());
+						// Portal portal = new Portal((float)objectX,
+						// (float)objectY, objectZ, fd);
+						// System.out.println("Maakt portal " + portalID +
+						// " naar " + portalConnectionID + " op " + objectX +
+						// ", " + objectZ);
+						continue;
+					} else if (objectNumber == 2) {
+						// EnemySpooky
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						EnemySpooky es = new EnemySpooky(objectX, mazeY + 2.5,
+								objectZ, 0.0015, mazeID);
+						MazeRunner.visibleObjects.add(es);
+						MazeRunner.enemyList.add(es);
+						// System.out.println("Maakt enemySpooky op: " + objectX
+						// + ", " + objectZ);
+					} else if (objectNumber == 3) {
+						// EnemySmart
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						EnemySmart es = new EnemySmart(objectX, mazeY + 2.5,
+								objectZ, 0.005, mazeID);
+						MazeRunner.visibleObjects.add(es);
+						MazeRunner.enemyList.add(es);
+					} else if (objectNumber == 4) {
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						int amount = Integer.parseInt(st.nextToken());
+						BulletHolder bh = new BulletHolder(objectX, mazeY,
+								objectZ, mazeID, amount);
+						itemList.add(bh);
+						MazeRunner.visibleObjects.add(bh);
+//						System.out.println("Maakt " + amount + " bullets op: "
+//								+ objectX + ", " + objectZ);
+					} else if (objectNumber == 5) {
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ,
+								mazeID);
+						itemList.add(th);
+						MazeRunner.visibleObjects.add(th);
+					}
+				}
+			} catch (IOException e) {
+				System.out.println("Fout in readObjects");
+				e.printStackTrace();
+			}
+
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -113,7 +205,6 @@ public class Maze implements VisibleObject {
 				col = 0;
 				row++;
 			}
-			System.out.println(textureMatrix[0][0]);
 		} catch (FileNotFoundException e) {
 			System.out.println("Fout in buildTextureMatrix");
 			e.printStackTrace();
@@ -141,8 +232,7 @@ public class Maze implements VisibleObject {
 		bufRdr.close();
 		MAZE_SIZE_X = row;
 		MAZE_SIZE_Z = col;
-		System.out
-				.println("Size x: " + MAZE_SIZE_X + " Size z: " + MAZE_SIZE_Z);
+		
 		maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 		textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	}
@@ -188,7 +278,7 @@ public class Maze implements VisibleObject {
 		int res = -1;
 		double sum = 0;
 		int columnWallSwitcher = 0;
-		while (sum < input) {
+		while (sum <= input) {
 			if (columnWallSwitcher == 0) {
 				sum += COLUMN_WIDTH;
 			}
@@ -225,9 +315,8 @@ public class Maze implements VisibleObject {
 			col = 0;
 			row++;
 		}
-		System.out.println(mazeX + ", " + mazeY + ", " + mazeZ);
 		bufRdr.close();
-		printMatrix();
+		// printMatrix();
 		minX = mazeX;
 		minZ = mazeZ;
 		maxX = minX + Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH
@@ -237,8 +326,8 @@ public class Maze implements VisibleObject {
 	}
 
 	public int getCoords(int i, int j) {
-		if (i >= 0 && j >= 0 && i <= coordToMatrixElement(maxX - minX)
-				&& j <= coordToMatrixElement(maxZ - minZ)) {
+		if (i >= 0 && j >= 0 && i < coordToMatrixElement(maxX - minX)
+				&& j < coordToMatrixElement(maxZ - minZ)) {
 			return maze[i][j];
 		}
 		return 0;
@@ -269,7 +358,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isWall(int x, int z) {
 		if (x >= 0 && x < MAZE_SIZE_X && z >= 0 && z < MAZE_SIZE_Z)
-			return maze[x][z] != 0;
+			return maze[x][z] > 0;
 		else
 			return false;
 	}
@@ -381,7 +470,8 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,even) paints a wall in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i, j);
+							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i,j);
+//							paintDoorZFromQuad(gl, height * ITEM_HEIGHT);
 						}
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {
@@ -389,7 +479,7 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,odd) paints a roof
 						if (i % 2 != 0 && j % 2 != 0) {
-							paintRoof(gl, (height + 1) * ITEM_HEIGHT);
+//							paintRoof(gl, (height + 1) * ITEM_HEIGHT);
 						}
 						gl.glPopMatrix();
 
@@ -417,30 +507,30 @@ public class Maze implements VisibleObject {
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
 
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glVertex3d(WALL_WIDTH, 0, 0.0);
 		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT/10, 0.0);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT / 10, 0.0);
 		gl.glNormal3d(0, 0, -1);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(WALL_WIDTH, 0, WALL_LENGTH);
 		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT/10, WALL_LENGTH);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT / 10, WALL_LENGTH);
 		gl.glNormal3d(1, 0, 0);
 
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glVertex3d(0.0, 0, WALL_LENGTH);
 		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT/10, WALL_LENGTH);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, WALL_LENGTH);
 		gl.glNormal3d(0, 0, 1);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
 		gl.glNormal3d(-1, 0, 0);
 
 		gl.glEnd();
@@ -456,30 +546,30 @@ public class Maze implements VisibleObject {
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
 
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
 		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT/10, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, 0.0);
 		gl.glNormal3d(0, 0, -1);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
 		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT/10, COLUMN_WIDTH);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, COLUMN_WIDTH);
 		gl.glNormal3d(1, 0, 0);
 
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
 		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT/10, COLUMN_WIDTH);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, COLUMN_WIDTH);
 		gl.glNormal3d(0, 0, -1);
 
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT/10, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
 		gl.glNormal3d(-1, 0, 0);
 
 		gl.glEnd();
@@ -543,6 +633,8 @@ public class Maze implements VisibleObject {
 
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
+		float wallColour[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);
 
 		// Apply texture.
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 1);
@@ -563,29 +655,7 @@ public class Maze implements VisibleObject {
 	}
 
 	// Paints a roof using a trianglefan
-	private void paintRoof(GL gl, double h) {
-		gl.glDisable(GL.GL_CULL_FACE);
-
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-		gl.glTexCoord2d(0.5, 1.0);
-		gl.glVertex3d(WALL_LENGTH / 2, h + 2, WALL_LENGTH / 2);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, h, WALL_LENGTH);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, 0.0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glEnd();
-		gl.glEnable(GL.GL_CULL_FACE);
-	}
+	
 
 	// Paints a wall in the z-direction
 	private void paintWallZFromQuad(GL gl, double h, int i, int j) {
@@ -625,6 +695,133 @@ public class Maze implements VisibleObject {
 		gl.glTexCoord2d(0.0, 1.0);
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(-1, 0, 0);
+
+		gl.glEnd();
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
+
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
+		gl.glNormal3d(0, 1, 0);
+
+		gl.glEnd();
+	}
+
+	public void paintDoorZFromQuad(GL gl, double h) {
+		gl.glDisable(GL.GL_CULL_FACE);
+
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		// TODO: light shading on walls
+		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, h, WALL_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
+		gl.glNormal3d(-1, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, h, WALL_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h,
+				WALL_WIDTH);
+		gl.glNormal3d(0, 0, 1);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
+		gl.glNormal3d(1, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glNormal3d(0, 0, -1);
+		gl.glEnd();
+
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		// TODO: light shading on walls
+		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, h, WALL_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
+		gl.glNormal3d(1, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, h, WALL_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h,
+				WALL_WIDTH);
+		gl.glNormal3d(0, 0, 1);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
+		gl.glNormal3d(-1, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(WALL_LENGTH, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
+		gl.glNormal3d(0, 0, -1);
+		gl.glEnd();
+
+		// boven de deur
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, DOOR_HEIGHT + h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, DOOR_HEIGHT + h, 0.0);
+		gl.glNormal3d(0, 0, -1);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, DOOR_HEIGHT + h,
+				WALL_WIDTH);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, DOOR_HEIGHT + h,
+				WALL_WIDTH);
+		gl.glNormal3d(0, 0, 1);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h,
+				WALL_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h,
+				WALL_WIDTH);
+		gl.glNormal3d(0, -1, 0);
+
+		gl.glEnd();
+
+		// bovenkant wall
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
+
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
+		gl.glNormal3d(0, 1, 0);
 
 		gl.glEnd();
 	}
@@ -669,6 +866,16 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(-1, 0, 0);
 
 		gl.glEnd();
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_LENGTH);
+
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, WALL_LENGTH);
+		gl.glNormal3d(0, 1, 0);
+
+		gl.glEnd();
 	}
 
 	// Paints a column
@@ -711,5 +918,17 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(-1, 0, 0);
 
 		gl.glEnd();
+
+		gl.glBegin(GL.GL_QUAD_STRIP);
+
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
+
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
+		gl.glNormal3d(0, 1, 0);
+
+		gl.glEnd();
 	}
+
 }

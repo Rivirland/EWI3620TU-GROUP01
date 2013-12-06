@@ -32,7 +32,7 @@ public class TrapHolder extends Item {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
 		}
 		gl.glPushMatrix();
-		gl.glTranslated(sizeX, 0, sizeZ);
+		gl.glTranslated(super.locationX, 0, super.locationZ);
 		// drawCuboid
 		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax);
 		gl.glPopMatrix();
