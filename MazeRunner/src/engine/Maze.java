@@ -128,12 +128,12 @@ public class Maze implements VisibleObject {
 					int objectNumber = Integer.parseInt(st.nextToken());
 					if (objectNumber == 1) {
 						double objectX = Double.parseDouble(st.nextToken());
-						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int fd = Integer.parseInt(st.nextToken());
 						int portalID = Integer.parseInt(st.nextToken());
-						int portalConnectionID = Integer.parseInt(st
-								.nextToken());
+						int portalConID = Integer.parseInt(st.nextToken());
+						Portal portal = new Portal((float)objectX, mazeY, (float)objectZ, fd, portalID, portalConID);
+						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
 						// (float)objectY, objectZ, fd);
 						// System.out.println("Maakt portal " + portalID +

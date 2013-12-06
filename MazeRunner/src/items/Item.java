@@ -18,7 +18,7 @@ public abstract class Item extends GameObject implements VisibleObject{
 	public abstract double getGlobalZ();
 	public abstract void display(GL gl);
 	public abstract boolean touches(GameObject object);
-	public void drawCuboid(GL gl, double xmin, double xmax, double ymin,
+	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin,
 			double ymax, double zmin, double zmax) {
 //		 Floor plane
 		gl.glBegin(GL.GL_QUADS);
