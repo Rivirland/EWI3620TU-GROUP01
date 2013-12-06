@@ -79,6 +79,7 @@ public abstract class Animator {
 		}
 		if (e.TOD + shouldbeGone < cT) {
 			e.setDead(true);
+			MazeRunner.player.score += 100;
 
 		}
 	}

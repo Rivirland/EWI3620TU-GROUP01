@@ -3,8 +3,9 @@ package engine;
 import items.TrapDropped;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 
-import com.sun.opengl.util.GLUT;
+import menu.Teken;
 
 public class PlayerStateTrap extends PlayerState {
 
@@ -42,6 +43,11 @@ public class PlayerStateTrap extends PlayerState {
 		// Remove Trap
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
+		Teken.textDraw(autodrawable, gl, "Number of traps: " + Player.nrOfTraps, 0.8f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
 	}
 	
 	public void displayItem(GL gl) {

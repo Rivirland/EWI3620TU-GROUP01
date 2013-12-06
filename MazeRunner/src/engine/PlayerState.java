@@ -1,6 +1,7 @@
 package engine;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 
 public abstract class PlayerState {
 	
@@ -8,6 +9,7 @@ public abstract class PlayerState {
 	public abstract void entering();
 	public abstract void leaving();
 	public abstract void displayItem(GL gl);
+	public abstract void drawInfo(GLAutoDrawable autodrawable, GL gl);
 	public static PlayerState getState(int input){
 		if(input == 0 ){
 			return new PlayerStateTorch();

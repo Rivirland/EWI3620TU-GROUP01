@@ -1,6 +1,7 @@
 package engine;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 
 public class PlayerStateTorch extends PlayerState{
 
@@ -26,6 +27,11 @@ public class PlayerStateTorch extends PlayerState{
 		//Decrease Light, Increase movement speed, Remove torch
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
+		//
 	}
 	
 	public void displayItem(GL gl) {

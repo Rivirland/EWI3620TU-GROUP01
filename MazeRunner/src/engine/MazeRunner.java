@@ -19,6 +19,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import menu.Teken;
 import model.Model;
 import model.OBJLoader;
 
@@ -54,7 +55,7 @@ public class MazeRunner {
 	 * * Local variables * **********************************************
 	 */
 
-	private int screenWidth, screenHeight; // Screen size.
+	public static int screenWidth, screenHeight; // Screen size.
 	public static ArrayList<VisibleObject> visibleObjects = new ArrayList<VisibleObject>(); // A
 																							// list
 																							// of
@@ -362,12 +363,16 @@ public class MazeRunner {
 
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(Player.playerStateInt).displayItem(gl);
+		
 
 		portal1.displayPortal(glut, gl);
 		portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
 		portal1.calcPortaltoPlayer(player);
 		portal2.calcPortaltoPlayer(player);
+		
+		Teken.textDraw(drawable, gl, "Score: " + player.score, (float)(0.05*screenHeight),(float)(0.05 * screenWidth),(float)(0.05*screenHeight));
+		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 		// portal1.createCamera(glut, gl);
 		// portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();

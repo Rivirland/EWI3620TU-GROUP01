@@ -28,6 +28,7 @@ public class Player extends GameObject {
 	public static int nrOfBullets;
 	public static int playerStateInt;
 	private Control control = null;
+	public int score;
 
 	/**
 	 * The Player constructor.
@@ -60,9 +61,10 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
-		nrOfTraps = 0;
+		nrOfTraps = 2;
 		nrOfBullets = 0;
 		playerStateInt = 0;
+		score=0;
 	}
 
 	/**

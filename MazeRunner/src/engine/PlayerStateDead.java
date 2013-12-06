@@ -1,5 +1,6 @@
 package engine;
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 
 public class PlayerStateDead extends PlayerState{
 
@@ -16,14 +17,18 @@ public class PlayerStateDead extends PlayerState{
 
 	@Override
 	public void entering() {
-		//nothing
-		
+		//nothing0	
 	}
 
 	@Override
 	public void leaving() {
 		//nothing
 		
+	}
+
+	@Override
+	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
+		//
 	}
 
 	@Override
