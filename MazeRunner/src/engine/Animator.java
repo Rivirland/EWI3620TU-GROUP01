@@ -1,6 +1,7 @@
 package engine;
 
 import items.TrapDroppedGBS;
+import enemies.Enemy;
 import enemies.EnemySpooky;
 
 public abstract class Animator {
@@ -57,7 +58,7 @@ public abstract class Animator {
 
 	}
 
-	public static void disappearIntoTrap(EnemySpooky e) {
+	public static void disappearIntoTrap(Enemy e) {
 		double startSuck = TrapDroppedGBS.animationTime2;
 		double shouldbeGone = TrapDroppedGBS.animationTime3;
 		long cT = MazeRunner.currentTime;
@@ -81,6 +82,8 @@ public abstract class Animator {
 
 		}
 	}
+
+	
 }
 
 

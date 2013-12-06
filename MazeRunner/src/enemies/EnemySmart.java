@@ -4,6 +4,7 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
+import engine.Animator;
 import engine.Maze;
 import engine.MazeRunner;
 import engine.Player;
@@ -230,20 +231,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 
 	}
 
-	
 	@Override
-	public void display(GL gl) {
-		gl.glColor3d(0.0, 0.0, 1.0);
-		gl.glPushMatrix();
-
-		gl.glTranslated(getLocationX(), 2.5, getLocationZ());
-		rotateEnemy(gl);
-		drawEnemy(gl);
-
-		gl.glPopMatrix();
-		gl.glFlush(); // Flush drawing routines
-	}
-
 	public void drawEnemy(GL gl) {
 		GLUT glut = new GLUT();
 		glut.glutSolidSphere(1, 10, 10);

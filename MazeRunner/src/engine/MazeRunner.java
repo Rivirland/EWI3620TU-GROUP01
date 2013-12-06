@@ -1,32 +1,35 @@
 package engine;
 
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.*;
+import items.BulletHolder;
+import items.Item;
+import items.Roof;
+import items.TrapDropped;
+import items.TrapDroppedGBS;
+import items.TrapHolder;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
-import javax.media.opengl.DebugGL;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLDrawable;
-import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import com.sun.opengl.util.Animator;
+import model.Model;
+import model.OBJLoader;
+
 import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
-import model.*;
-import enemies.*;
-import items.*;
+import enemies.Enemy;
+import enemies.EnemyControl;
+import enemies.EnemySmart;
 
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
@@ -347,6 +350,9 @@ public class MazeRunner {
 			} else if (next instanceof Enemy && ((Enemy) next).getDead()) {
 				visibleObjects.remove(next);
 				System.out.println("removed Enemy");
+			} else if (next instanceof Roof && !((Roof) next).getLegal()){
+				visibleObjects.remove(next);
+				System.out.println("removed Roof");
 			}
 		}
 		// Display all the visible objects of MazeRunner.
@@ -678,7 +684,7 @@ public class MazeRunner {
 				double diffZ = b.getGlobalZ() - e.getGlobalZ();
 
 				if (e instanceof EnemySmart && Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 1) {
-					visibleObjects.remove(e);
+					e.setDead(true);
 					visibleObjects.remove(b);
 					bulletList.remove(b);
 					enemyList.remove(e);
@@ -695,7 +701,7 @@ public class MazeRunner {
 				Maze maze = level.getMaze(r.mazeID);
 				if (r.locationY < maze.mazeY + 0.5) {
 					roofList.remove(r);
-					visibleObjects.remove(r);
+					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 						Enemy e = enemyList.get(eNr);
 						if (e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX()) == r.matrixX

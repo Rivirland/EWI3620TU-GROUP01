@@ -11,11 +11,9 @@ import engine.Player;
 import engine.VisibleObject;
 
 public class EnemySpooky extends Enemy implements VisibleObject {
-	private double size;
 
 	public EnemySpooky(double x, double y, double z, double speed, double h) {
 		super(x, y, z, speed, h);
-		this.size = 1;
 	}
 
 	public void update(int deltaTime, Player player) {
@@ -105,25 +103,8 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 
 	}
 
+	
 	@Override
-	public void display(GL gl) {
-
-		if (trapped) {
-			Animator.disappearIntoTrap(this);
-		}
-
-		gl.glColor3d(0.0, 0.0, 1.0);
-		gl.glPushMatrix();
-
-		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
-		gl.glScaled(getSize(), getSize(), getSize());
-		rotateEnemy(gl);
-		drawEnemy(gl);
-
-		gl.glPopMatrix();
-		gl.glFlush(); // Flush drawing routines
-	}
-
 	public void drawEnemy(GL gl) {
 		// GLUT glut = new GLUT();
 		// glut.glutSolidTeapot(1);
@@ -133,12 +114,5 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
-	public double getSize() {
-		return size;
-	}
-
-	public void setSize(double size) {
-		this.size = size;
-	}
-
+	
 }

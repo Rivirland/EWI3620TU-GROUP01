@@ -19,6 +19,7 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	public long TOD;
 	protected boolean trapped;
 	protected boolean dead;
+	protected double size;
 
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
@@ -30,14 +31,16 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		this.begSpeed = speed;
 		this.trapped = false;
 		this.dead = false;
+		this.size = 1;
 
 	}
 
-	public void reset(){
+	public void reset() {
 		setLocationX(begX);
 		setLocationY(begY);
 		setLocationZ(begZ);
 	}
+
 	public void setControl(EnemyControl enemyControl) {
 		this.enemyControl = enemyControl;
 	}
@@ -99,26 +102,26 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		south = false;
 		double xdiff = player.getLocationX() - getLocationX();
 		double zdiff = player.getLocationZ() - getLocationZ();
-		double diff = Math.sqrt(xdiff*xdiff+zdiff*zdiff);
-		
-		double alpha = Math.toDegrees(Math.acos(Math.abs(zdiff/diff)));
-//		System.out.println("xdiff: " + xdiff + " zdiff: " + zdiff + " diff: " + diff + " alpha: "+ alpha);
-		if (xdiff<0){
-			if (zdiff<0){
-				
-			}else if (zdiff>0){
-				alpha=180-alpha;
+		double diff = Math.sqrt(xdiff * xdiff + zdiff * zdiff);
+
+		double alpha = Math.toDegrees(Math.acos(Math.abs(zdiff / diff)));
+		// System.out.println("xdiff: " + xdiff + " zdiff: " + zdiff + " diff: "
+		// + diff + " alpha: "+ alpha);
+		if (xdiff < 0) {
+			if (zdiff < 0) {
+
+			} else if (zdiff > 0) {
+				alpha = 180 - alpha;
 			}
-		} else if (xdiff>0){
-			if (zdiff<0){
-				alpha=-alpha;
-			}else if (zdiff>0){
-				alpha+=180;
+		} else if (xdiff > 0) {
+			if (zdiff < 0) {
+				alpha = -alpha;
+			} else if (zdiff > 0) {
+				alpha += 180;
 			}
 		}
 		setHorAngle(alpha);
 
-		
 		if (Math.abs(xdiff) > 0.2) {
 			if (xdiff > 0) {
 				east = true;
@@ -138,15 +141,22 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 			}
 		}
 	}
-	public void rotateEnemy(GL gl){
-		gl.glRotated(horAngle, 0,1, 0);
+
+	public void rotateEnemy(GL gl) {
+		gl.glRotated(horAngle, 0, 1, 0);
 	}
+
 	@Override
 	public void display(GL gl) {
+		if (trapped) {
+			Animator.disappearIntoTrap(this);
+		}
 		gl.glColor3d(0.0, 0.0, 1.0);
 		gl.glPushMatrix();
 
-		gl.glTranslated(getLocationX(), 2.5, getLocationZ());
+		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
+		gl.glScaled(getSize(), getSize(), getSize());
+		rotateEnemy(gl);
 		drawEnemy(gl);
 
 		gl.glPopMatrix();
@@ -157,23 +167,23 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		GLUT glut = new GLUT();
 		glut.glutSolidSphere(1, 10, 10);
 	}
-	
+
 	@Override
-	public double getGlobalX(){
-		return locationX+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
-	}
-	
-	@Override
-	public double getGlobalY(){
-		return locationY+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
-	}
-	
-	@Override
-	public double getGlobalZ(){
-		return locationZ+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+	public double getGlobalX() {
+		return locationX + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
 	}
 
-public void setTOD(long currentTime) {
+	@Override
+	public double getGlobalY() {
+		return locationY + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+	}
+
+	@Override
+	public double getGlobalZ() {
+		return locationZ + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+	}
+
+	public void setTOD(long currentTime) {
 		this.TOD = currentTime;
 
 	}
@@ -197,6 +207,14 @@ public void setTOD(long currentTime) {
 
 	public boolean getDead() {
 		return this.dead;
+	}
+
+	public double getSize() {
+		return size;
+	}
+
+	public void setSize(double size) {
+		this.size = size;
 	}
 
 }

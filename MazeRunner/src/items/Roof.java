@@ -11,6 +11,7 @@ public class Roof extends Item {
 	public int matrixX, matrixZ;
 	public double WALL_LENGTH;
 	public double fallingSpeed;
+	public boolean legal;
 
 	public Roof(double x, double y, double z, int i, double WL, int row, int col) {
 		super(x, y, z, i);
@@ -19,7 +20,7 @@ public class Roof extends Item {
 		matrixX = row;
 		matrixZ = col;
 		fallingSpeed = 0.01;
-		
+		this.legal=true;
 	}
 
 	@Override
@@ -101,6 +102,14 @@ public class Roof extends Item {
 			nrOfWalls++;
 		}
 		return (nrOfCol>2 || nrOfWalls>1);
+	}
+
+	public void setLegal(boolean b) {
+		this.legal=b;
+		
+	}
+	public boolean getLegal(){
+		return this.legal;
 	}
 	
 	
