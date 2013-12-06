@@ -9,13 +9,16 @@ import engine.*;
 public abstract class Enemy extends GameObject implements VisibleObject {
 	private EnemyControl enemyControl;
 	public double speed;
-	public double begX, begY, begZ;
+	public double begX, begY, begZ, begSpeed;
 	private double horAngle;
 	protected boolean west = false;
 	protected boolean east = false;
 	protected boolean north = false;
 	protected boolean south = false;
 	private int randomizer;
+	public long TOD;
+	protected boolean trapped;
+	protected boolean dead;
 
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
@@ -24,6 +27,10 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		this.begZ = z;
 		this.horAngle = h;
 		this.speed = speed;
+		this.begSpeed = speed;
+		this.trapped = false;
+		this.dead = false;
+
 	}
 
 	public void reset(){
@@ -164,6 +171,32 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	@Override
 	public double getGlobalZ(){
 		return locationZ+MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+	}
+
+public void setTOD(long currentTime) {
+		this.TOD = currentTime;
+
+	}
+
+	public long getTOD() {
+		return this.TOD;
+	}
+
+	public void setTrapped(boolean b) {
+		this.trapped = b;
+
+	}
+
+	public boolean getTrapped() {
+		return this.trapped;
+	}
+
+	public void setDead(boolean b) {
+		this.dead = b;
+	}
+
+	public boolean getDead() {
+		return this.dead;
 	}
 
 }

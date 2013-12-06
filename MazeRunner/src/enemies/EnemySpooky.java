@@ -4,15 +4,18 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
+import engine.Animator;
 import engine.Maze;
 import engine.MazeRunner;
 import engine.Player;
 import engine.VisibleObject;
 
 public class EnemySpooky extends Enemy implements VisibleObject {
+	private double size;
 
 	public EnemySpooky(double x, double y, double z, double speed, double h) {
 		super(x, y, z, speed, h);
+		this.size = 1;
 	}
 
 	public void update(int deltaTime, Player player) {
@@ -45,22 +48,20 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 				if (locationZ < playerZ) {
 					this.locationZ += this.speed * deltaTime;
 				}
-				if (Math.sqrt(Math.pow(locationZ - playerZ, 2)
-						+ Math.pow(locationX - playerX, 2)) < 1) {
+				if (Math.sqrt(Math.pow(locationZ - playerZ, 2) + Math.pow(locationX - playerX, 2)) < 1) {
 					Player.playerStateInt = 3;
 				}
 			}
 
 		} else {
 			this.updateMovementPatrol();
-			Maze currentMaze = MazeRunner.level.getMaze(MazeRunner.level
-					.getCurrentMaze(this));
+			Maze currentMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
 
-			if (locationX > currentMaze.maxX - 1){
+			if (locationX > currentMaze.maxX - 1) {
 				east = false;
 				this.setRandomizer((int) (1 + 3 * Math.random()));
 			}
-			if (locationX < currentMaze.minX + 1){
+			if (locationX < currentMaze.minX + 1) {
 				west = false;
 				int randomNumber = (int) (3 * Math.random());
 				if (randomNumber == 0) {
@@ -82,7 +83,7 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 					this.setRandomizer(3);
 				}
 			}
-			if (locationZ > currentMaze.maxZ - 1){
+			if (locationZ > currentMaze.maxZ - 1) {
 				west = false;
 				this.setRandomizer((int) (3 * Math.random()));
 			}
@@ -106,10 +107,16 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 
 	@Override
 	public void display(GL gl) {
+
+		if (trapped) {
+			Animator.disappearIntoTrap(this);
+		}
+
 		gl.glColor3d(0.0, 0.0, 1.0);
 		gl.glPushMatrix();
 
-		gl.glTranslated(getLocationX(), 2.5, getLocationZ());
+		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
+		gl.glScaled(getSize(), getSize(), getSize());
 		rotateEnemy(gl);
 		drawEnemy(gl);
 
@@ -118,12 +125,20 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 	}
 
 	public void drawEnemy(GL gl) {
-//		GLUT glut = new GLUT();
-//		glut.glutSolidTeapot(1);
+		// GLUT glut = new GLUT();
+		// glut.glutSolidTeapot(1);
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
 		MazeRunner.spookyModel.display(gl);
 		gl.glEnable(GL.GL_CULL_FACE);
+	}
+
+	public double getSize() {
+		return size;
+	}
+
+	public void setSize(double size) {
+		this.size = size;
 	}
 
 }

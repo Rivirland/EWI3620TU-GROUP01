@@ -77,11 +77,11 @@ public class MazeRunner {
 	private long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel;
-	public static Texture earthTexture, wallTexture, roofTexture,
-			trapHolderTexture, oildrumTexture, woodTexture;
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 	private UserInput input;
+	public static long currentTime;
 
 	/*
 	 * **********************************************
@@ -98,9 +98,8 @@ public class MazeRunner {
 	 * controller.
 	 */
 
-	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas,
-			GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput,
-			Level level) {
+	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas, GLAutoDrawable drawable, GL gl, GLU glu,
+			UserInput userinput, Level level) {
 		setScreen(screenWidth, screenHeight);
 		init(drawable, gl, glu);
 		initObjects(canvas, userinput, level);
@@ -141,8 +140,8 @@ public class MazeRunner {
 		// Add the maze that we will be using.
 
 		this.level = level;
-//		Roof roof = new Roof(0.5, 5, 0.5, 1);
-//		roofList.add(roof);
+		// Roof roof = new Roof(0.5, 5, 0.5, 1);
+		// roofList.add(roof);
 		portal1 = new Portal(106, 2, 106, 2);
 
 		portal2 = new Portal(160, 2, 160, 2);
@@ -155,19 +154,15 @@ public class MazeRunner {
 		// Initialize the player.
 		player = new Player(5, 2.5, 5, -90, 0);
 
-		camera = new Camera(player.getLocationX(), player.getLocationY(),
-				player.getLocationZ(), player.getHorAngle(),
+		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
-
-		// Initialize the enemies.
-		enemyList.add(new EnemySpooky(10, 2.5, 10, 0.0015, -90));
 
 		// enemyListLength = enemyList.size();
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
-		for (int i = 0; i < roofList.size(); i++){
+		for (int i = 0; i < roofList.size(); i++) {
 			visibleObjects.add(roofList.get(i));
 		}
 
@@ -233,15 +228,7 @@ public class MazeRunner {
 		// setting
 		// Light0.
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
-		float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; // High up in the
-																// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f }; // White light!
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
-																		// that
-																		// we're
-																		// setting
-																		// Light0.
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_LIGHT0);
 
@@ -287,11 +274,9 @@ public class MazeRunner {
 		display(drawable, gl);
 
 		// 1,1
-		gl.glViewport(screenWidth / 2, screenHeight / 2, screenWidth,
-				screenHeight);
+		gl.glViewport(screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
 		gl.glLoadIdentity();
-		gl.glScissor(screenWidth / 2, screenHeight / 2, screenWidth,
-				screenHeight);
+		gl.glScissor(screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
 		gl.glEnable(GL.GL_SCISSOR_TEST);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		display(drawable, gl);
@@ -320,16 +305,15 @@ public class MazeRunner {
 
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
-		long currentTime = now.getTimeInMillis() - startTime;
+		currentTime = now.getTimeInMillis() - startTime;
 
 		int deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		
-		 	if (deltaTime > 33) {
+		if (deltaTime > 33) {
 			deltaTime = 0;
-			}
-	
+		}
+
 		// time = previousTime-startTime;
 
 		// this.time;
@@ -343,10 +327,8 @@ public class MazeRunner {
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		gl.glLoadIdentity();
-		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
-				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
-				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
-				camera.getVuvZ());
+		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
+				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
 
 		// gl.glLoadIdentity();
 
@@ -354,9 +336,21 @@ public class MazeRunner {
 		// gl.glScissor(0,0,screenWidth/2,screenHeight/2);
 		// gl.glEnable(GL.GL_SCISSOR_TEST);
 
+		for (int i = 0; i < visibleObjects.size(); i++) {
+			VisibleObject next = visibleObjects.get(i);
+			if (next instanceof TrapDroppedGBS && ((TrapDroppedGBS) next).getUsed()) {
+				visibleObjects.remove(next);
+				System.out.println("removed TrapDroppedGBS");
+			} else if (next instanceof TrapDropped && !(next instanceof TrapDroppedGBS) && !((TrapDropped) next).getLegal()) {
+				visibleObjects.remove(next);
+				System.out.println("removed TrapDropped");
+			} else if (next instanceof Enemy && ((Enemy) next).getDead()) {
+				visibleObjects.remove(next);
+				System.out.println("removed Enemy");
+			}
+		}
 		// Display all the visible objects of MazeRunner.
-		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
-				.hasNext();) {
+		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
 
@@ -567,7 +561,7 @@ public class MazeRunner {
 		}
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\Gun.obj";
+			String filename = currentdir + "\\models\\m21.obj";
 			m21Model = OBJLoader.loadTexturedModel(new File(filename));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -604,15 +598,15 @@ public class MazeRunner {
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
 					}
-					if (item instanceof BulletHolder){
-						Player.nrOfBullets += ((BulletHolder)item).getAmount();
+					if (item instanceof BulletHolder) {
+						Player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
 					}
 				}
 			}
 		}
-		for (int e = 0; e < enemyList.size(); e++) {					// for each enemy
+		for (int e = 0; e < enemyList.size(); e++) { // for each enemy
 			Enemy enemy = enemyList.get(e);
 			currentMazeID = level.getCurrentMaze(enemy);
 			if (currentMazeID != -1) {
@@ -620,28 +614,34 @@ public class MazeRunner {
 				// double enemyX = enemy.getX();
 				// double enemyZ = enemy.getZ();
 				enemy.update(deltaTime, player);
-				for (int i = 0; i < currentMaze.itemList.size(); i++) {		// for each item in currentMaze of enemy
-					
+				for (int i = 0; i < currentMaze.itemList.size(); i++) { // for
+																		// each
+																		// item
+																		// in
+																		// currentMaze
+																		// of
+																		// enemy
+
 					Item item = currentMaze.itemList.get(i);
-<<<<<<< HEAD
+
 					if (item.touches(enemy) && item instanceof TrapDropped) {
-						System.out.println("trap wordt ghostbusters style");
-						
-						// Set speed of enemy on 0
-						enemy.setSpeed(0);
-						// Draw ghostbusters style
-						visibleObjects.add(new TrapDroppedGBS(item.locationX, item.locationY, item.locationZ, item.mazeID));
-						// Remove enemy from visibleObjects & enemyList
-						// visibleObjects.remove(enemy);
-						// enemyList.remove(enemy);
-						// Remove item from visibleObjects & itemList
-						// visibleObjects.remove(item);
-						// currentMaze.itemList.remove(item);
-					if (item.touches(enemy) && item	instanceof TrapDropped) {
-						visibleObjects.remove(enemy);
+
+						// Enemy
 						enemyList.remove(enemy);
-						visibleObjects.remove(item);
-						currentMaze.itemList.remove(item);
+						enemy.setSpeed(0);
+						enemy.setTrapped(true);
+						enemy.setTOD(currentTime);
+
+						// Item - TrapDropped
+						((TrapDropped) item).setTimeUsed(currentTime);
+						((TrapDropped) item).setUsed(true);
+						// Item - TrapDropped - remove from itemlist in maze
+						MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(enemy)).itemList.remove(item);
+
+						// Create trap GBS
+						TrapDroppedGBS tdGBS = new TrapDroppedGBS(item.locationX, item.locationY, item.locationZ, item.mazeID,
+								currentTime);
+						visibleObjects.add(tdGBS);
 					}
 				}
 			}
@@ -659,12 +659,10 @@ public class MazeRunner {
 				}
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
-					if (maze.textureMatrix[maze
-							.coordToMatrixElement(b.locationX - maze.mazeX)][maze
+					if (maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze
 							.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 2) {
-						maze.maze[maze.coordToMatrixElement(b.locationX
-								- maze.mazeX)][maze
-								.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
+						maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ
+								- maze.mazeZ)] = -1;
 						bulletList.remove(b);
 						visibleObjects.remove(b);
 					} else {
@@ -679,9 +677,7 @@ public class MazeRunner {
 				double diffY = b.getGlobalY() - e.getGlobalY();
 				double diffZ = b.getGlobalZ() - e.getGlobalZ();
 
-				if (e instanceof EnemySmart
-						&& Math.sqrt(diffX * diffX + diffY * diffY + diffZ
-								* diffZ) < 1) {
+				if (e instanceof EnemySmart && Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 1) {
 					visibleObjects.remove(e);
 					visibleObjects.remove(b);
 					bulletList.remove(b);
@@ -691,34 +687,34 @@ public class MazeRunner {
 			}
 
 		}
-		for (int rNr = 0; rNr < roofList.size(); rNr++){
+		for (int rNr = 0; rNr < roofList.size(); rNr++) {
 			Roof r = roofList.get(rNr);
-			if(!r.isOnWalls()){
-				r.locationY-=deltaTime*r.fallingSpeed;
-				r.fallingSpeed = r.fallingSpeed*1.005;
+			if (!r.isOnWalls()) {
+				r.locationY -= deltaTime * r.fallingSpeed;
+				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
-				if(r.locationY < maze.mazeY+0.5){
+				if (r.locationY < maze.mazeY + 0.5) {
 					roofList.remove(r);
 					visibleObjects.remove(r);
-					for (int eNr = 0; eNr < enemyList.size(); eNr++ ){
+					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 						Enemy e = enemyList.get(eNr);
-						if(e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX())==r.matrixX && maze.coordToMatrixElement(e.getGlobalZ()) == r.matrixZ){
+						if (e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX()) == r.matrixX
+								&& maze.coordToMatrixElement(e.getGlobalZ()) == r.matrixZ) {
 							enemyList.remove(e);
 							visibleObjects.remove(e);
 						}
 					}
-					if(maze.coordToMatrixElement(player.getGlobalX()-maze.mazeX)==r.matrixX && maze.coordToMatrixElement(player.getGlobalZ()-maze.mazeZ) == r.matrixZ){
-						player.playerStateInt = 3;				
+					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX
+							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ) {
+						player.playerStateInt = 3;
 					}
 				}
 			}
 		}
 
 		if (Player.canTeleport) {
-			portal1.checkteleportation(player, (float) previousX,
-					(float) previousY, (float) previousZ);
-			portal2.checkteleportation(player, (float) previousX,
-					(float) previousY, (float) previousZ);
+			portal1.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
 		} else {
 			Player.canTeleport = true;
 		}
