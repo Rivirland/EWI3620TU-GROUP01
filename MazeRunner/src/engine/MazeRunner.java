@@ -31,6 +31,7 @@ import com.sun.opengl.util.texture.TextureIO;
 import enemies.Enemy;
 import enemies.EnemyControl;
 import enemies.EnemySmart;
+import enemies.EnemySpooky;
 
 /**
  * MazeRunner is the base class of the game, functioning as the view controller
@@ -161,7 +162,6 @@ public class MazeRunner {
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(),
 				player.getVerAngle());
 
-		// enemyListLength = enemyList.size();
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
@@ -342,15 +342,19 @@ public class MazeRunner {
 
 		for (int i = 0; i < visibleObjects.size(); i++) {
 			VisibleObject next = visibleObjects.get(i);
+			System.out.println("i: " + i + " " + next.toString());
 			if (next instanceof TrapDroppedGBS && ((TrapDroppedGBS) next).getUsed()) {
 				visibleObjects.remove(next);
 				System.out.println("removed TrapDroppedGBS");
 			} else if (next instanceof TrapDropped && !(next instanceof TrapDroppedGBS) && !((TrapDropped) next).getLegal()) {
 				visibleObjects.remove(next);
 				System.out.println("removed TrapDropped");
-			} else if (next instanceof Enemy && ((Enemy) next).getDead()) {
+			} else if (next instanceof EnemySmart && ((EnemySmart) next).getDead()) {
 				visibleObjects.remove(next);
-				System.out.println("removed Enemy");
+				System.out.println("removed EnemySmart");
+			} else if (next instanceof EnemySpooky && ((EnemySpooky) next).getDead()){
+				visibleObjects.remove(next);
+				System.out.println("removed EnemySpooky");
 			} else if (next instanceof Roof && !((Roof) next).getLegal()){
 				visibleObjects.remove(next);
 				System.out.println("removed Roof");
@@ -595,8 +599,9 @@ public class MazeRunner {
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
 
+		
+		// Player updating
 		player.update(deltaTime, drawable);
-
 		int currentMazeID = level.getCurrentMaze(player);
 		if (currentMazeID != -1) {
 			Maze currentMaze = level.getMaze(currentMazeID);
@@ -617,6 +622,8 @@ public class MazeRunner {
 				}
 			}
 		}
+		
+		// Enemy updating
 		for (int e = 0; e < enemyList.size(); e++) { // for each enemy
 			Enemy enemy = enemyList.get(e);
 			currentMazeID = level.getCurrentMaze(enemy);
@@ -625,18 +632,11 @@ public class MazeRunner {
 				// double enemyX = enemy.getX();
 				// double enemyZ = enemy.getZ();
 				enemy.update(deltaTime, player);
-				for (int i = 0; i < currentMaze.itemList.size(); i++) { // for
-																		// each
-																		// item
-																		// in
-																		// currentMaze
-																		// of
-																		// enemy
-
+				
+				// For each item
+				for (int i = 0; i < currentMaze.itemList.size(); i++) { 
 					Item item = currentMaze.itemList.get(i);
-
 					if (item.touches(enemy) && item instanceof TrapDropped) {
-
 						// Enemy
 						enemyList.remove(enemy);
 						enemy.setSpeed(0);
