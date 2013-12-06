@@ -395,6 +395,7 @@ public class MazeRunner {
 
 		gl.glFlush();
 		
+		if(player.nrOfBullets ==)
 
 	}
 

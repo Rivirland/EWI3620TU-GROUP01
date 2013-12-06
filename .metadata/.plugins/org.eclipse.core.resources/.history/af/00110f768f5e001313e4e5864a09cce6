@@ -394,7 +394,6 @@ public class MazeRunner {
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-		
 
 	}
 

@@ -8,7 +8,6 @@ public class PlayerStateDead extends PlayerState{
 	public void itemUse() {
 		System.out.println("You died :(");
 		MazeRunner.player.reset();
-		MazeRunner.player.score -= 1000;
 		for(int e = 0; e < MazeRunner.enemyList.size(); e++){
 			MazeRunner.enemyList.get(e).reset();
 		}

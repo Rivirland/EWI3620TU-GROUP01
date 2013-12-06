@@ -155,7 +155,7 @@ public class MazeRunner {
 //		portal2 = new Portal(160, 2, 160, 2);
 
 		for (int i = 0; i < portalList.size(); i++){
-			Portal.portalConnection(portalList.get(i), portalList.get(portalList.get(i).portalConnectionID-1));
+			Portal.portalConnection(portalList.get(i), portalList.get(portalList.get(i).portalConnectionID));
 		}
 		
 //		Portal.portalConnection(portal1, portal2);
@@ -394,7 +394,6 @@ public class MazeRunner {
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-		
 
 	}
 
@@ -746,9 +745,8 @@ public class MazeRunner {
 		}
 
 		if (Player.canTeleport) {
-			for(int i = 0; i < portalList.size(); i++)
-			portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
-//			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal1.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
 		} else {
 			Player.canTeleport = true;
 		}

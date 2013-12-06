@@ -394,7 +394,6 @@ public class MazeRunner {
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-		
 
 	}
 
@@ -746,9 +745,8 @@ public class MazeRunner {
 		}
 
 		if (Player.canTeleport) {
-			for(int i = 0; i < portalList.size(); i++)
-			portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
-//			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal1.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
 		} else {
 			Player.canTeleport = true;
 		}

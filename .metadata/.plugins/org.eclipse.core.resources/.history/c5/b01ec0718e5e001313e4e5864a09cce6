@@ -130,7 +130,7 @@ public class Portal {
 	public void displayPortal (GLUT glut, GL gl){
 		gl.glPushMatrix();
 		
-		gl.glTranslatef(this.x, (float) (this.y), this.z);
+		gl.glTranslatef(this.x, (float) (this.y-0.5*hoogte), this.z);
 	
 		//lineOnScreen(gl, this.x, (float) (this.y+0.5*hoogte), this.z, this.x+5, (float) (this.y+0.5*hoogte), this.z);
 		

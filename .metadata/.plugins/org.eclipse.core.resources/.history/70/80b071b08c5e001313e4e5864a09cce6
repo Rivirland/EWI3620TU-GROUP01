@@ -69,7 +69,6 @@ public class MazeRunner {
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	public static ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	public static ArrayList<Roof> roofList = new ArrayList<Roof>();
-	public static ArrayList<Portal> portalList = new ArrayList<Portal>();
 	// private int enemyListLength;
 	private Camera camera; // The camera object.
 	// private UserInput input; // The user input object that controls the
@@ -148,17 +147,11 @@ public class MazeRunner {
 		this.level = level;
 		// Roof roof = new Roof(0.5, 5, 0.5, 1);
 		// roofList.add(roof);
-		
-		
-//		portal1 = new Portal(106, 2, 106, 2);
-//
-//		portal2 = new Portal(160, 2, 160, 2);
+		portal1 = new Portal(106, 2, 106, 2);
 
-		for (int i = 0; i < portalList.size(); i++){
-			Portal.portalConnection(portalList.get(i), portalList.get(portalList.get(i).portalConnectionID-1));
-		}
-		
-//		Portal.portalConnection(portal1, portal2);
+		portal2 = new Portal(160, 2, 160, 2);
+
+		Portal.portalConnection(portal1, portal2);
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
 		}
@@ -376,15 +369,12 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(Player.playerStateInt).displayItem(gl);
 		
-		for(int i = 0; i < portalList.size(); i++){
-			portalList.get(i).displayPortal(glut,gl);
-			portalList.get(i).calcPortaltoPlayer(player);
-		}
-//		portal1.displayPortal(glut, gl);
-//		portal2.displayPortal(glut, gl);
+
+		portal1.displayPortal(glut, gl);
+		portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
-//		portal1.calcPortaltoPlayer(player);
-//		portal2.calcPortaltoPlayer(player);
+		portal1.calcPortaltoPlayer(player);
+		portal2.calcPortaltoPlayer(player);
 		
 		Teken.textDraw(drawable, gl, "Score: " + player.score, (float)(0.05*screenHeight),(float)(0.05 * screenWidth),(float)(0.05*screenHeight));
 		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
@@ -394,7 +384,6 @@ public class MazeRunner {
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
-		
 
 	}
 
@@ -746,9 +735,8 @@ public class MazeRunner {
 		}
 
 		if (Player.canTeleport) {
-			for(int i = 0; i < portalList.size(); i++)
-			portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
-//			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal1.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
 		} else {
 			Player.canTeleport = true;
 		}

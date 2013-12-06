@@ -10,8 +10,6 @@ public class Portal {
 	private float x;
 	private float y;
 	private float z;
-	public int portalID;
-	public int portalConnectionID;
 	
 	// eigenschappen van de portal
 	private static float breedte = 2;
@@ -38,16 +36,7 @@ public class Portal {
 		this.z=z;
 		this.facingdirection=facingdirection%3; // als hoger dan 3 dan komt het toch goed
 		this.setisConnected(false);
-	}
-	
-	public Portal(float x, float y, float z, int facingdirection, int ID, int cID){
-		this.x=x;
-		this.y=y;
-		this.z=z;
-		this.facingdirection=facingdirection%3; // als hoger dan 3 dan komt het toch goed
-		this.setisConnected(false);
-		this.portalID = ID;
-		this.portalConnectionID = cID;
+		
 	}
 	
 	/*public Player toteleport (Player player, boolean teleportation){
@@ -130,7 +119,7 @@ public class Portal {
 	public void displayPortal (GLUT glut, GL gl){
 		gl.glPushMatrix();
 		
-		gl.glTranslatef(this.x, (float) (this.y), this.z);
+		gl.glTranslatef(this.x, (float) (this.y-0.5*hoogte), this.z);
 	
 		//lineOnScreen(gl, this.x, (float) (this.y+0.5*hoogte), this.z, this.x+5, (float) (this.y+0.5*hoogte), this.z);
 		

@@ -75,7 +75,7 @@ public class PlayerStateTrap extends PlayerState {
 		
 		
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
-		MazeRunner.trapModel.display(gl);
+		Item.drawCuboid(gl, 0, 2, 0, 2, 0, 2);
 		gl.glPopMatrix();
 
 	}
