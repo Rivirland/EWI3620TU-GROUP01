@@ -501,6 +501,10 @@ public class Maze implements VisibleObject {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
+		drawDebrisXFromQuad(gl);
+	}
+	
+	private void drawDebrisXFromQuad(GL gl){
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
@@ -534,51 +538,60 @@ public class Maze implements VisibleObject {
 		gl.glEnable(GL.GL_CULL_FACE);
 
 	}
-
+	
 	private void paintDebrisColumnFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, COLUMN_WIDTH);
-		gl.glNormal3d(1, 0, 0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, COLUMN_WIDTH);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(-1, 0, 0);
-
-		gl.glEnd();
-		gl.glEnable(GL.GL_CULL_FACE);
-
+		drawDebrisColumnFromQuad(gl);
 	}
+	
+	
+	public void drawDebrisColumnFromQuad(GL gl){
+			gl.glTexCoord2d(0.0, 0.0);
+			gl.glVertex3d(0.0, 0, 0.0);
+			gl.glTexCoord2d(0.0, 1.0);
+			gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
+
+			gl.glTexCoord2d(1.0, 0.0);
+			gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
+			gl.glTexCoord2d(1.0, 1.0);
+			gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, 0.0);
+			gl.glNormal3d(0, 0, -1);
+
+			gl.glTexCoord2d(0.0, 0.0);
+			gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
+			gl.glTexCoord2d(0.0, 1.0);
+			gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, COLUMN_WIDTH);
+			gl.glNormal3d(1, 0, 0);
+
+			gl.glTexCoord2d(1.0, 0.0);
+			gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
+			gl.glTexCoord2d(1.0, 1.0);
+			gl.glVertex3d(0.0, ITEM_HEIGHT / 10, COLUMN_WIDTH);
+			gl.glNormal3d(0, 0, -1);
+
+			gl.glTexCoord2d(0.0, 0.0);
+			gl.glVertex3d(0.0, 0, 0.0);
+			gl.glTexCoord2d(0.0, 1.0);
+			gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
+			gl.glNormal3d(-1, 0, 0);
+
+			gl.glEnd();
+			gl.glEnable(GL.GL_CULL_FACE);
+	 }
+	 
+	 
 
 	private void paintDebrisZFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		gl.glBegin(GL.GL_QUAD_STRIP);
-
+drawDebrisZFromQuad(gl);
+		
+	}
+	private void drawDebrisZFromQuad(GL gl){
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
@@ -611,6 +624,8 @@ public class Maze implements VisibleObject {
 		gl.glEnable(GL.GL_CULL_FACE);
 
 	}
+	
+
 
 	private void displayItems(GL gl) {
 		for (int i = 0; i < itemList.size(); i++) {
@@ -651,9 +666,6 @@ public class Maze implements VisibleObject {
 
 	}
 
-	// Paints a roof using a trianglefan
-	
-
 	// Paints a wall in the z-direction
 	private void paintWallZFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
@@ -662,6 +674,11 @@ public class Maze implements VisibleObject {
 		} else if (textureMatrix[i][j] == 2) {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		}
+		drawWallZFromQuad(gl,h,i,j);
+	}
+	
+	// Paints a roof using a trianglefan
+	private void drawWallZFromQuad(GL gl, double h, int i, int j) {
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		gl.glTexCoord2d(0.0, 0.0);
@@ -706,6 +723,9 @@ public class Maze implements VisibleObject {
 		gl.glEnd();
 	}
 
+
+	
+	
 	public void paintDoorZFromQuad(GL gl, double h) {
 		gl.glDisable(GL.GL_CULL_FACE);
 
@@ -715,7 +735,12 @@ public class Maze implements VisibleObject {
 
 		// TODO: light shading on walls
 		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
-
+		
+		drawDoorZFromQuad(gl,h);
+		
+	}
+	
+	public void drawDoorZFromQuad(GL gl, double h){
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
@@ -822,6 +847,8 @@ public class Maze implements VisibleObject {
 
 		gl.glEnd();
 	}
+	
+
 
 	// Paints a wall in the X-direction
 	private void paintWallXFromQuad(GL gl, double h, int i, int j) {
@@ -831,6 +858,11 @@ public class Maze implements VisibleObject {
 		} else if (textureMatrix[i][j] == 2) {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		}
+		drawWallXFromQuad(gl,h,i,j);
+	}
+	
+private void drawWallXFromQuad(GL gl, double h, int i, int j){
+		
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		gl.glTexCoord2d(0.0, 0.0);
@@ -874,58 +906,63 @@ public class Maze implements VisibleObject {
 
 		gl.glEnd();
 	}
-
 	// Paints a column
-	private void paintColumnFromQuad(GL gl, double h, int i, int j) {
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		if (textureMatrix[i][j] == 1) {
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
-		} else if (textureMatrix[i][j] == 2) {
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
-		}
-		gl.glBegin(GL.GL_QUAD_STRIP);
 
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, h, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, +h, COLUMN_WIDTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
-		gl.glNormal3d(1, 0, 0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, h, COLUMN_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glNormal3d(-1, 0, 0);
-
-		gl.glEnd();
-
-		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
-
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
-		gl.glNormal3d(0, 1, 0);
-
-		gl.glEnd();
+private void paintColumnFromQuad(GL gl, double h, int i, int j) {
+	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+	if (textureMatrix[i][j] == 1) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+	} else if (textureMatrix[i][j] == 2) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 	}
+	drawColumnFromQuad(gl,h,i,j);
+}
+
+private void drawColumnFromQuad(GL gl, double h, int i, int j){
+	gl.glBegin(GL.GL_QUAD_STRIP);
+
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(0.0, h, 0.0);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(COLUMN_WIDTH, h, 0.0);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
+	gl.glNormal3d(0, 0, -1);
+
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(COLUMN_WIDTH, +h, COLUMN_WIDTH);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
+	gl.glNormal3d(1, 0, 0);
+
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(0.0, h, COLUMN_WIDTH);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
+	gl.glNormal3d(0, 0, -1);
+
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(0.0, h, 0.0);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+	gl.glNormal3d(-1, 0, 0);
+
+	gl.glEnd();
+
+	gl.glBegin(GL.GL_QUAD_STRIP);
+
+	gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+	gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
+
+	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
+	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
+	gl.glNormal3d(0, 1, 0);
+
+	gl.glEnd();
+}
+
 
 }
