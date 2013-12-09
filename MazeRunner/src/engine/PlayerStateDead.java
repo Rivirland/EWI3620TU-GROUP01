@@ -2,11 +2,12 @@ package engine;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import menu.Teken;
+
 public class PlayerStateDead extends PlayerState{
 
 	@Override
 	public void itemUse() {
-		System.out.println("You died :(");
 		MazeRunner.player.reset();
 		MazeRunner.player.score -= 1000;
 		for(int e = 0; e < MazeRunner.enemyList.size(); e++){
@@ -14,11 +15,12 @@ public class PlayerStateDead extends PlayerState{
 		}
 		Player.canTeleport = false;
 		Player.playerStateInt = 0;
+		Player.canMove = true;
 	}
 
 	@Override
 	public void entering() {
-		//nothing0	
+		Player.canMove = false;
 	}
 
 	@Override
@@ -29,7 +31,8 @@ public class PlayerStateDead extends PlayerState{
 
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
-		//
+		Teken.textDraw(autodrawable, gl, "You died! Press space to start again", 0.35f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
+
 	}
 
 	@Override

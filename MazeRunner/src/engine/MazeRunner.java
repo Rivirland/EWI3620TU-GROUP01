@@ -305,6 +305,7 @@ public class MazeRunner {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
+//		level.getMaze(0).WALL_WIDTH = level.getMaze(0).WALL_WIDTH*1.001;
 
 		ChangeGL.GLto3D(gl);
 
@@ -726,6 +727,7 @@ public class MazeRunner {
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
 				if (r.locationY < maze.mazeY + 0.5) {
+					Sound.roofCrash.play();
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -739,7 +741,9 @@ public class MazeRunner {
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX
 							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ) {
-						player.playerStateInt = 3;
+						PlayerState.getState(Player.playerStateInt).leaving();
+						Player.playerStateInt = 3;
+						PlayerState.getState(Player.playerStateInt).entering();
 					}
 				}
 			}

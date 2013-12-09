@@ -12,6 +12,7 @@ public class PlayerStateTorch extends PlayerState{
 
 	@Override
 	public void entering() {
+		Sound.fire.play();
 
 		System.out.println("Entering TorchMode");
 		
@@ -26,7 +27,7 @@ public class PlayerStateTorch extends PlayerState{
 		System.out.println("Leaving TorchMode");
 		//Decrease Light, Increase movement speed, Remove torch
 		// TODO Auto-generated method stub
-		
+//		Sound.fire.stop();
 	}
 	
 	@Override

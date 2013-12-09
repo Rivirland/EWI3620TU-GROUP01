@@ -1,0 +1,34 @@
+package engine;
+import java.applet.Applet;
+import java.applet.AudioClip;
+
+public class Sound {
+	
+	public static final Sound applause = new Sound("/applause-2.wav");
+	public static final Sound gunfire = new Sound("/Gunfire.wav");
+	public static final Sound roofCrash = new Sound ("/crash.wav");
+	
+	private AudioClip clip;
+	
+	public Sound(String filename){
+		try{
+			clip = Applet.newAudioClip(Sound.class.getResource(filename));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void play(){
+		try{
+			new Thread(){
+				public void run(){
+					clip.play();
+				}
+			}.start();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+}

@@ -12,6 +12,7 @@ public class PlayerStateGun extends PlayerState{
 	@Override
 	public void itemUse() {
 		if(Player.nrOfBullets > 0){
+			Sound.gunfire.play();
 			Player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
@@ -22,6 +23,9 @@ public class PlayerStateGun extends PlayerState{
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
 		}
+		else{
+			Sound.noBullets.play();
+		}
 		System.out.println(Player.nrOfBullets);
 
 		//Shoot bullet if nrOfBullets > 0
@@ -30,7 +34,7 @@ public class PlayerStateGun extends PlayerState{
 	@Override
 	public void entering() {
 
-		System.out.println("Entering GunMode");
+Sound.reload.play();
 		// TODO Auto-generated method stub
 		
 	}
