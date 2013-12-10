@@ -178,7 +178,7 @@ public class Maze implements VisibleObject {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						Exit e = new Exit(objectX, objectY, objectZ, mazeID);
+						Exit e = new Exit(objectX, objectY, objectZ, mazeID)
 						itemList.add(e);
 						MazeRunner.visibleObjects.add(e);
 					}

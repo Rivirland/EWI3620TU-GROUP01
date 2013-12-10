@@ -173,14 +173,12 @@ public class Maze implements VisibleObject {
 						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ,
 								mazeID);
 						itemList.add(th);
-						MazeRunner.visibleObjects.add(th);
+//						MazeRunner.visibleObjects.add(th);
 					} else if (objectNumber == 6){
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						Exit e = new Exit(objectX, objectY, objectZ, mazeID);
-						itemList.add(e);
-						MazeRunner.visibleObjects.add(e);
+						itemList.add(new Exit(objectX, objectY, objectZ, mazeID));
 					}
 				}
 			} catch (IOException e) {
