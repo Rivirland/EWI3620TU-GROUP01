@@ -13,11 +13,13 @@ public class Level {
 	public ArrayList<Maze> mazelist;
 	// The amount of mazes.
 	private int aantal;
+	private String naam;
 
 	// The constructor.
 	public Level(String string) {
 		this.mazelist = new ArrayList<Maze>();
 		this.aantal = 0;
+		naam = string;
 		leesLevels(string);
 	}
 
@@ -29,6 +31,10 @@ public class Level {
 
 	public int getAantal() {
 		return this.aantal;
+	}
+	
+	public String getNaam(){
+		return naam;
 	}
 
 	public Maze getMaze(int i) {
