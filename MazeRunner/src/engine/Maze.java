@@ -420,7 +420,7 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
-		displayItems(gl);
+//		displayItems(gl);
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
@@ -612,11 +612,11 @@ public class Maze implements VisibleObject {
 
 	}
 
-	private void displayItems(GL gl) {
-		for (int i = 0; i < itemList.size(); i++) {
-			itemList.get(i).display(gl);
-		}
-	}
+//	private void displayItems(GL gl) {
+//		for (int i = 0; i < itemList.size(); i++) {
+////			itemList.get(i).display(gl);
+//		}
+//	}
 
 	/**
 	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent

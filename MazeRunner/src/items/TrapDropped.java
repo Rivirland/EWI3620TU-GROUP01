@@ -3,22 +3,40 @@ package items;
 import javax.media.opengl.GL;
 
 import enemies.Enemy;
+import engine.Animator;
 import engine.GameObject;
+import engine.Maze;
 import engine.MazeRunner;
 
 public class TrapDropped extends Item {
 	protected boolean used;
 	private long timeUsed;
 	private boolean legal;
+	private boolean thrown;
+	private long t0;
+	public static double vy0=.1;
+	public static double vx0=1.0;
+	public static double ay=-0.1;
+	public static double ax=0;
+	public double horAngle;
+	public boolean inair;
+	public boolean onground;
 
 	public TrapDropped(double x, double y, double z, int i) {
 		super(x, y, z, i);
 		this.legal = true;
 		this.used = false;
+		this.horAngle=MazeRunner.player.getHorAngle();
+		this.locationY=2.5;
+		this.inair=true;
+		this.onground=false;
 	}
 
 	@Override
 	public void display(GL gl) {
+		if (this.inair){
+			Animator.thrownTrapDropped(this);
+		}
 		if (this.used) {
 			if (this.timeUsed + TrapDroppedGBS.animationTime5 < MazeRunner.currentTime) {
 				this.setLegal(false);
@@ -40,7 +58,7 @@ public class TrapDropped extends Item {
 			MazeRunner.trapHolderTexture.enable();
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
 		}
-
+//		Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX - sizeX / 2, super.locationY, super.locationZ - sizeZ / 2);
 		// drawCuboid
@@ -108,4 +126,19 @@ public class TrapDropped extends Item {
 		this.legal = legal;
 	}
 
+	public void setThrown(boolean b) {
+		this.thrown=b;
+		
+	}
+	public boolean getThrown(){
+		return this.thrown;
+	}
+
+	public void setT0(long currentTime) {
+		this.t0=currentTime;
+		
+	}
+	public long getT0(){
+		return this.t0;
+	}
 }

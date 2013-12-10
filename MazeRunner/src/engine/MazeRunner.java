@@ -341,7 +341,6 @@ public class MazeRunner {
 
 		for (int i = 0; i < visibleObjects.size(); i++) {
 			VisibleObject next = visibleObjects.get(i);
-			System.out.println("i: " + i + " " + next.toString());
 			if (next instanceof TrapDroppedGBS && ((TrapDroppedGBS) next).getUsed()) {
 				visibleObjects.remove(next);
 				System.out.println("removed TrapDroppedGBS");
