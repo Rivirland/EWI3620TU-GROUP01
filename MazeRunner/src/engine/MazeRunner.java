@@ -1,6 +1,7 @@
 package engine;
 
 import items.BulletHolder;
+import items.Exit;
 import items.Item;
 import items.Roof;
 import items.TrapDropped;
@@ -10,6 +11,7 @@ import items.TrapHolder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -140,6 +142,54 @@ public class MazeRunner {
 	}
 
 	public void initObjects(GLCanvas canvas, UserInput input, Level level) {
+		
+
+//		try{
+//		Class.forName("org.sqlite.JDBC");
+//		/* Create a connection to a database stored in a local file. The DriverManager will select
+//		 * the driver that we just loaded. To initially create a database file, */
+//		Connection conn = DriverManager.getConnection("jdbc:sqlite:db/mydatabase.db");
+//		
+//		/* A Statement object is used to send SQL statements and retrieve its results. */
+//		Statement stat = conn.createStatement();
+//		
+//		/* A few example statements, these are executed at once. */
+//		
+//		// This sample recreates the database each time it is run.
+//		stat.executeUpdate("DROP TABLE IF EXISTS students;");
+//		stat.executeUpdate("CREATE TABLE students (studentnumber INT, name STRING);");
+//		
+//		// Insert some student data
+//		stat.executeUpdate("INSERT INTO students (studentnumber, name) values (123456, 'Piet');");
+//		stat.executeUpdate("INSERT INTO students (studentnumber, name) values (654321, 'Maria');");
+//		
+//
+//		// Select all columns from the table 'students'
+//		ResultSet rs = stat.executeQuery("SELECT * FROM students");
+//		
+//		System.out.println("Students in database:");
+//		
+//		/* The result set contains multiple rows of results. rs.next() selects the next row and returns true only if it exists. 
+//		 * Initially, the cursor is placed before the first row. */
+//		
+//		// While there are rows of requested data left
+//		while (rs.next()) {
+//			// Retrieve the values from the rows, by specifying the column name.
+//			System.out.println("Student number = " + rs.getInt("studentnumber"));
+//			System.out.println("Name = " + rs.getString("name")); 
+//		}
+//		
+//		/* It is important to manually close the connection when we're done, so that the database server is not overloaded
+//		 * with connections waiting to time out. */
+//		rs.close();
+//		stat.close();
+//		conn.close();
+//		}
+//		catch(Exception e){
+//			System.out.println("Zaidmanexception occured!");
+//			e.printStackTrace();
+//		}
+		
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
@@ -176,6 +226,7 @@ public class MazeRunner {
 		for (int i = 0; i < roofList.size(); i++) {
 			visibleObjects.add(roofList.get(i));
 		}
+		
 
 		// input = new UserInput(canvas);
 
@@ -756,6 +807,19 @@ public class MazeRunner {
 		} else {
 			Player.canTeleport = true;
 		}
+//		
+		for (Maze m : level.mazelist){
+			for (Item i : m.itemList){
+				if (i instanceof Exit){
+					if(i.touches(player)){
+						System.out.println("Victory! Score: " + player.score);						
+					}
+				}
+			}
+		}
+//		if(exit.touches(player)){
+//			System.out.println("Victory! Score: " + player.score);
+//		}
 		// if (maze.isExit(player.locationX, player.locationZ)) {
 		// Sound.applause.play();
 		// player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;

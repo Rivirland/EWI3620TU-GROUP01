@@ -1,6 +1,7 @@
 package engine;
 
 import items.BulletHolder;
+import items.Exit;
 import items.Item;
 import items.Roof;
 import items.TrapHolder;
@@ -163,7 +164,7 @@ public class Maze implements VisibleObject {
 						BulletHolder bh = new BulletHolder(objectX, mazeY,
 								objectZ, mazeID, amount);
 						itemList.add(bh);
-						MazeRunner.visibleObjects.add(bh);
+//						MazeRunner.visibleObjects.add(bh);
 //						System.out.println("Maakt " + amount + " bullets op: "
 //								+ objectX + ", " + objectZ);
 					} else if (objectNumber == 5) {
@@ -172,7 +173,12 @@ public class Maze implements VisibleObject {
 						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ,
 								mazeID);
 						itemList.add(th);
-						MazeRunner.visibleObjects.add(th);
+//						MazeRunner.visibleObjects.add(th);
+					} else if (objectNumber == 6){
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectY = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						itemList.add(new Exit(objectX, objectY, objectZ, mazeID));
 					}
 				}
 			} catch (IOException e) {
