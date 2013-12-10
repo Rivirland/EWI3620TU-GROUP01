@@ -1,6 +1,6 @@
 package engine;
 
-import items.TrapDroppedGBS;
+import items.*;
 import enemies.Enemy;
 import enemies.EnemySpooky;
 
@@ -82,7 +82,27 @@ public abstract class Animator {
 		}
 	}
 
-	
+	public static void thrownTrapDropped(TrapDropped t) {
+		long cT = MazeRunner.currentTime;
+		long dT = cT - t.getT0();
+		double i = 0.003;
+		if (t.inair) {
+			Maze curMaze = MazeRunner.level.getMaze(t.mazeID);
+			t.setLocationX(t.getLocationX()- (Math.sin(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
+			t.setLocationY(t.getLocationY() + TrapDropped.vy0 * dT * i + TrapDropped.ay * dT * dT * i * i);
+			
+			t.setLocationZ(t.getLocationZ() - (Math.cos(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
+			if (t.getLocationY() < curMaze.mazeY) {
+				t.inair = false;
+				t.setLocationY(curMaze.mazeY);
+				t.onground=true;
+			}
+		} else if (t.onground){
+			// TODO: rotate
+			// TODO: also rotate according to horangle
+		}
+//		System.out.println("y; " + t.getLocationY() + "  vy0: " + t.vy0 * dT * i + " ay " + t.ay * dT * dT * i * i + " dT " + dT
+//				+ " " + t.inair);
+
+	}
 }
-
-
