@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="itemList" key="selection"/>
+		<item value="= 3" key="selection"/>
 		<list key="findhistory">
-			<item value="itemList"/>
-			<item value="xit"/>
-			<item value=""/>
-			<item value="exit"/>
-			<item value="Exit"/>
-			<item value="mazeID"/>
-			<item value="Exit exit"/>
-			<item value="init"/>
+			<item value="= 3"/>
+			<item value="= 4"/>
+			<item value="checktele"/>
+			<item value="Victory!"/>
+			<item value="initObjects"/>
+			<item value="new Level"/>
+			<item value="world"/>
+			<item value=":"/>
 		</list>
 		<list key="replacehistory">
 		</list>

@@ -758,7 +758,7 @@ public class MazeRunner {
 						}
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX
-							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ && player.playerStateInt != 4) {
+							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ) {
 						PlayerState.getState(Player.playerStateInt).leaving();
 						Player.playerStateInt = 3;
 						PlayerState.getState(Player.playerStateInt).entering();
