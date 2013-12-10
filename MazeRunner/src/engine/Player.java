@@ -24,10 +24,12 @@ public class Player extends GameObject {
 	private double speed;
 	public double begX, begY, begZ, begV, begH;
 	public static boolean canTeleport = true;
+	public static boolean canMove = true;
 	public static int nrOfTraps;
 	public static int nrOfBullets;
 	public static int playerStateInt;
 	private Control control = null;
+	public int score;
 
 	/**
 	 * The Player constructor.
@@ -60,9 +62,10 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
-		nrOfTraps = 0;
+		nrOfTraps = 2;
 		nrOfBullets = 0;
 		playerStateInt = 0;
+		score = 0;
 	}
 
 	/**
@@ -149,77 +152,83 @@ public class Player extends GameObject {
 	 *            The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime, GLAutoDrawable drawable) {
-		playerStateUpdate();
-		double previousX = this.getLocationX();
-		double previousY = this.getLocationY();
-		double previousZ = this.getLocationZ();
+		
+		if (canMove) {
+			playerStateUpdate();
+			double previousX = this.getLocationX();
+			double previousY = this.getLocationY();
+			double previousZ = this.getLocationZ();
 
-		if (control != null) {
-			control.update(drawable);
+			if (control != null) {
+				control.update(drawable);
 
+				double i = -1;
+				horAngle = horAngle % 360;
+				this.horAngle = this.getHorAngle() - i * control.getdX();
+				this.verAngle = this.getVerAngle() - i * control.getdY();
+				// make sure the camera doesn't turn
 
-			double i = -1;
-			horAngle = horAngle % 360;
-			this.horAngle = this.getHorAngle() - i * control.getdX();
-			this.verAngle = this.getVerAngle() - i * control.getdY();
-			// make sure the camera doesn't turn
+				// System.out.println(control.forward);
+				control.setdX(0);
+				control.setdY(0);
+				if (this.getVerAngle() > 89) {
+					this.verAngle = 89;
+				} else if (this.getVerAngle() < -89) {
+					this.verAngle = -89;
+				}
 
-			//System.out.println(control.forward);
-			control.setdX(0);
-			control.setdY(0);
-			if (this.getVerAngle() > 89) {
-				this.verAngle = 89;
-			} else if (this.getVerAngle() < -89) {
-				this.verAngle = -89;
-			}
-
-			
-			if (control.forward) {
-				locationX -= Math.sin(Math.toRadians(getHorAngle())) * speed
-						* deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle())) * speed
-						* deltaTime;
-//				System.out.println(locationX+"  "+locationZ);
-			}
-			if (control.back) {
-				locationX -= Math.sin(Math.toRadians(getHorAngle() + 180))
-						* speed * deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle() + 180))
-						* speed * deltaTime;
-			}
-			if (control.left) {
-				locationX -= Math.sin(Math.toRadians(getHorAngle() + 90))
-						* speed * deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle() + 90))
-						* speed * deltaTime;
-			}
-			if (control.right) {
-				locationX -= Math.sin(Math.toRadians(getHorAngle() + 270))
-						* speed * deltaTime;
-				locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270))
-						* speed * deltaTime;
-			}
-			if (control.up) {
-				locationY += speed * deltaTime;
-			}
-			if (control.down) {
-				locationY -= speed * deltaTime;
-				if (locationY < 2.5) {
-					locationY = 2.5;
+				if (control.forward) {
+					locationX -= Math.sin(Math.toRadians(getHorAngle()))
+							* speed * deltaTime;
+					locationZ -= Math.cos(Math.toRadians(getHorAngle()))
+							* speed * deltaTime;
+					// System.out.println(locationX+"  "+locationZ);
+				}
+				if (control.back) {
+					locationX -= Math.sin(Math.toRadians(getHorAngle() + 180))
+							* speed * deltaTime;
+					locationZ -= Math.cos(Math.toRadians(getHorAngle() + 180))
+							* speed * deltaTime;
+				}
+				if (control.left) {
+					locationX -= Math.sin(Math.toRadians(getHorAngle() + 90))
+							* speed * deltaTime;
+					locationZ -= Math.cos(Math.toRadians(getHorAngle() + 90))
+							* speed * deltaTime;
+				}
+				if (control.right) {
+					locationX -= Math.sin(Math.toRadians(getHorAngle() + 270))
+							* speed * deltaTime;
+					locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270))
+							* speed * deltaTime;
+				}
+				if (control.up) {
+					locationY += speed * deltaTime;
+				}
+				if (control.down) {
+					locationY -= speed * deltaTime;
+					if (locationY < 2.5) {
+						locationY = 2.5;
+					}
+				}
+				boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
+				if (playerCollide[0] || playerCollide[2]) {
+					this.setLocationX(previousX);
+				}
+				if (playerCollide[1] || playerCollide[3]) {
+					this.setLocationZ(previousZ);
 				}
 			}
-			boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
-			if (playerCollide[0] || playerCollide[2]) {
-				this.setLocationX(previousX);
-			}
-			if (playerCollide[1] || playerCollide[3]) {
-				this.setLocationZ(previousZ);
-			}
-		}
 
-		if (control.itemUse) {
-			PlayerState.getState(playerStateInt).itemUse();
-			control.itemUse = false;
+			if (control.itemUse) {
+				PlayerState.getState(playerStateInt).itemUse();
+				control.itemUse = false;
+			}
+		}else{
+			if (control.itemUse) {
+				PlayerState.getState(playerStateInt).itemUse();
+				control.itemUse = false;
+			}
 		}
 	}
 
@@ -249,11 +258,11 @@ public class Player extends GameObject {
 		setHorAngle(begH);
 		setVerAngle(begV);
 	}
-	
+
 	public void noMousechange() {
-	control.setdX(0);
-	control.setdY(0);
-	
+		control.setdX(0);
+		control.setdY(0);
+
 	}
 
 }

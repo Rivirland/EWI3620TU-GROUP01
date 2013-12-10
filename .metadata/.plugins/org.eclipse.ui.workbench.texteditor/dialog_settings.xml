@@ -13,9 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="currentMaze" key="selection"/>
+		<item value="rNr" key="selection"/>
 		<list key="findhistory">
-			<item value="currentMaze"/>
+			<item value="rNr"/>
+			<item value="Jump"/>
+			<item value="= 3"/>
+			<item value="light"/>
+			<item value="materia"/>
+			<item value="lightP"/>
+			<item value="getScre"/>
+			<item value="screenWidth"/>
 		</list>
 		<list key="replacehistory">
 		</list>

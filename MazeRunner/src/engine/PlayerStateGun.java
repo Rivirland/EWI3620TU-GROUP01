@@ -1,6 +1,9 @@
 package engine;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+
+import menu.Teken;
 
 import com.sun.opengl.util.GLUT;
 
@@ -9,6 +12,7 @@ public class PlayerStateGun extends PlayerState{
 	@Override
 	public void itemUse() {
 		if(Player.nrOfBullets > 0){
+			Sound.gunfire.play();
 			Player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
@@ -19,6 +23,9 @@ public class PlayerStateGun extends PlayerState{
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
 		}
+		else{
+			Sound.noBullets.play();
+		}
 		System.out.println(Player.nrOfBullets);
 
 		//Shoot bullet if nrOfBullets > 0
@@ -27,7 +34,7 @@ public class PlayerStateGun extends PlayerState{
 	@Override
 	public void entering() {
 
-		System.out.println("Entering GunMode");
+Sound.reload.play();
 		// TODO Auto-generated method stub
 		
 	}
@@ -38,6 +45,11 @@ public class PlayerStateGun extends PlayerState{
 		System.out.println("Leaving GunMode");
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
+		Teken.textDraw(autodrawable, gl, "Number of bullets: " + Player.nrOfBullets, 0.8f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
 	}
 
 	@Override

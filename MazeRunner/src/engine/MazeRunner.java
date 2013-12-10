@@ -19,6 +19,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import menu.Teken;
 import model.Model;
 import model.OBJLoader;
 
@@ -55,7 +56,7 @@ public class MazeRunner {
 	 * * Local variables * **********************************************
 	 */
 
-	private int screenWidth, screenHeight; // Screen size.
+	public static int screenWidth, screenHeight; // Screen size.
 	public static ArrayList<VisibleObject> visibleObjects = new ArrayList<VisibleObject>(); // A
 																							// list
 																							// of
@@ -68,6 +69,7 @@ public class MazeRunner {
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	public static ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	public static ArrayList<Roof> roofList = new ArrayList<Roof>();
+	public static ArrayList<Portal> portalList = new ArrayList<Portal>();
 	// private int enemyListLength;
 	private Camera camera; // The camera object.
 	// private UserInput input; // The user input object that controls the
@@ -80,7 +82,7 @@ public class MazeRunner {
 
 	private long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel;
+	public static Model spookyModel, m21Model, torchModel, trapModel;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
@@ -146,11 +148,17 @@ public class MazeRunner {
 		this.level = level;
 		// Roof roof = new Roof(0.5, 5, 0.5, 1);
 		// roofList.add(roof);
-		portal1 = new Portal(106, 2, 106, 2);
+		
+		
+//		portal1 = new Portal(106, 2, 106, 2);
+//
+//		portal2 = new Portal(160, 2, 160, 2);
 
-		portal2 = new Portal(160, 2, 160, 2);
-
-		Portal.portalConnection(portal1, portal2);
+		for (int i = 0; i < portalList.size(); i++){
+			Portal.portalConnection(portalList.get(i), portalList.get(portalList.get(i).portalConnectionID-1));
+		}
+		
+//		Portal.portalConnection(portal1, portal2);
 		for (int i = 0; i < level.getAantal(); i++) {
 			visibleObjects.add(level.getMaze(i));
 		}
@@ -297,6 +305,7 @@ public class MazeRunner {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
+//		level.getMaze(0).WALL_WIDTH = level.getMaze(0).WALL_WIDTH*1.001;
 
 		ChangeGL.GLto3D(gl);
 
@@ -348,9 +357,11 @@ public class MazeRunner {
 				visibleObjects.remove(next);
 				System.out.println("removed TrapDropped");
 			} else if (next instanceof EnemySmart && ((EnemySmart) next).getDead()) {
+				player.score += 100;
 				visibleObjects.remove(next);
 				System.out.println("removed EnemySmart");
 			} else if (next instanceof EnemySpooky && ((EnemySpooky) next).getDead()){
+				player.score += 100;
 				visibleObjects.remove(next);
 				System.out.println("removed EnemySpooky");
 			} else if (next instanceof Roof && !((Roof) next).getLegal()){
@@ -365,18 +376,26 @@ public class MazeRunner {
 
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(Player.playerStateInt).displayItem(gl);
-
-		portal1.displayPortal(glut, gl);
-		portal2.displayPortal(glut, gl);
+		
+		for(int i = 0; i < portalList.size(); i++){
+			portalList.get(i).displayPortal(glut,gl);
+			portalList.get(i).calcPortaltoPlayer(player);
+		}
+//		portal1.displayPortal(glut, gl);
+//		portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
-		portal1.calcPortaltoPlayer(player);
-		portal2.calcPortaltoPlayer(player);
+//		portal1.calcPortaltoPlayer(player);
+//		portal2.calcPortaltoPlayer(player);
+		
+		Teken.textDraw(drawable, gl, "Score: " + player.score, (float)(0.05*screenHeight),(float)(0.05 * screenWidth),(float)(0.05*screenHeight));
+		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 		// portal1.createCamera(glut, gl);
 		// portal2.createCamera(glut, gl);
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 
 		gl.glFlush();
+		
 
 	}
 
@@ -586,6 +605,15 @@ public class MazeRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\cuboid.obj";
+			trapModel = OBJLoader.loadTexturedModel(new File(filename));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
@@ -699,6 +727,7 @@ public class MazeRunner {
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
 				if (r.locationY < maze.mazeY + 0.5) {
+					Sound.roofCrash.play();
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -706,20 +735,24 @@ public class MazeRunner {
 						if (e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX()) == r.matrixX
 								&& maze.coordToMatrixElement(e.getGlobalZ()) == r.matrixZ) {
 							enemyList.remove(e);
-							visibleObjects.remove(e);
+							player.score += 400;
+							e.setDead(true);
 						}
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX
 							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ) {
-						player.playerStateInt = 3;
+						PlayerState.getState(Player.playerStateInt).leaving();
+						Player.playerStateInt = 3;
+						PlayerState.getState(Player.playerStateInt).entering();
 					}
 				}
 			}
 		}
 
 		if (Player.canTeleport) {
-			portal1.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
-			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			for(int i = 0; i < portalList.size(); i++)
+			portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+//			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
 		} else {
 			Player.canTeleport = true;
 		}

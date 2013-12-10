@@ -79,7 +79,6 @@ public abstract class Animator {
 		}
 		if (e.TOD + shouldbeGone < cT) {
 			e.setDead(true);
-
 		}
 	}
 
