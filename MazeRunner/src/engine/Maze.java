@@ -164,7 +164,7 @@ public class Maze implements VisibleObject {
 						BulletHolder bh = new BulletHolder(objectX, mazeY,
 								objectZ, mazeID, amount);
 						itemList.add(bh);
-//						MazeRunner.visibleObjects.add(bh);
+						MazeRunner.visibleObjects.add(bh);
 //						System.out.println("Maakt " + amount + " bullets op: "
 //								+ objectX + ", " + objectZ);
 					} else if (objectNumber == 5) {

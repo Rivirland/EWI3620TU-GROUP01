@@ -12,13 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Point2D;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
@@ -32,11 +26,11 @@ import levelEditor.LevelEditor;
 import levelEditor.LevelEditorWorld;
 
 import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
 
-import engine.*;
+import engine.Database;
+import engine.Level;
+import engine.MazeRunner;
+import engine.UserInput;
 
 
 
@@ -93,6 +87,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	Settings settings;
 	UserInput userinput;
 	MazeRunner mazerunner;
+	public static Database db;
 	
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
@@ -209,8 +204,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		//mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
-		
-		
+		db = new Database();
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the
 		 * active matrix. In this case, a simple 2D projection is performed,
