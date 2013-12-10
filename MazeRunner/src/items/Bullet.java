@@ -1,8 +1,13 @@
-package engine;
+package items;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
+
+import enemies.EnemySmart;
+import engine.GameObject;
+import engine.Player;
+import engine.VisibleObject;
 
 public class Bullet extends GameObject implements VisibleObject {
 	public double horAngle;
@@ -32,5 +37,16 @@ public class Bullet extends GameObject implements VisibleObject {
 				* deltaTime;
 		locationZ -= Math.cos(Math.toRadians(horAngle)) * Math.cos(Math.toRadians(verAngle)) * speed
 				* deltaTime;
+	}
+
+	public boolean touches(GameObject object) {
+		double diffX = object.getGlobalX() - this.getGlobalX();
+		double diffY = object.getGlobalY() - this.getGlobalY();
+		double diffZ = object.getGlobalZ() - this.getGlobalZ();
+		
+		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 1) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -8,6 +8,7 @@ import engine.Animator;
 import engine.Maze;
 import engine.MazeRunner;
 import engine.Player;
+import engine.PlayerState;
 import engine.VisibleObject;
 
 public class EnemySpooky extends Enemy implements VisibleObject {
@@ -47,7 +48,9 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 					this.locationZ += this.speed * deltaTime;
 				}
 				if (Math.sqrt(Math.pow(locationZ - playerZ, 2) + Math.pow(locationX - playerX, 2)) < 1) {
+					PlayerState.getState(Player.playerStateInt).leaving();
 					Player.playerStateInt = 3;
+					PlayerState.getState(Player.playerStateInt).entering();
 				}
 			}
 

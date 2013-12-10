@@ -23,6 +23,9 @@ public abstract class PlayerState {
 		if(input == 3){
 			return new PlayerStateDead();
 		}
+		if(input == 4){
+			return new PlayerStateVictory();
+		}
 		return null;
 	}
 

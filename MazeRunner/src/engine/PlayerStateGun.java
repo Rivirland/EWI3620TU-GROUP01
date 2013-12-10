@@ -1,5 +1,7 @@
 package engine;
 
+import items.Bullet;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 

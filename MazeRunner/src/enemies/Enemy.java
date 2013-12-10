@@ -20,7 +20,10 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	protected boolean trapped;
 	protected boolean dead;
 	protected double size;
-
+	private double trappedX;
+	private double trappedY;
+	private double trappedZ;
+	
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
 		this.begX = x;
@@ -215,6 +218,28 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 
 	public void setSize(double size) {
 		this.size = size;
+	}
+
+	public void setTrappedX(double locationX) {
+		this.trappedX=locationX;
+		
+	}
+	public void setTrappedZ(double locationZ){
+		this.trappedZ=locationZ;
+	}
+	public double getTrappedX(){
+		return this.trappedX;
+	}
+	public double getTrappedZ(){
+		return this.trappedZ;
+	}
+
+	public void setTrappedY(double locationY) {
+		this.trappedY=locationY;
+		
+	}
+	public double getTrappedY(){
+		return this.trappedY;
 	}
 
 }

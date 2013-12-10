@@ -82,7 +82,7 @@ public class MazeRunner {
 	// final private long startTime =
 	// Calendar.getInstance().getTimeInMillis();// Used
 
-	private long previousTime = Calendar.getInstance().getTimeInMillis();
+	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture;
@@ -90,6 +90,8 @@ public class MazeRunner {
 	private Portal portal1, portal2;
 	private UserInput input;
 	public static long currentTime;
+	public static long playingTime;
+	public static int deltaTime;
 
 	/*
 	 * **********************************************
@@ -370,7 +372,7 @@ public class MazeRunner {
 		Calendar now = Calendar.getInstance();
 		currentTime = now.getTimeInMillis() - startTime;
 
-		int deltaTime = (int) (currentTime - previousTime);
+		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
 		if (deltaTime > 33) {
@@ -386,6 +388,7 @@ public class MazeRunner {
 		// Update any movement since last frame.
 		updateMovement(deltaTime, drawable);
 		updateCamera();
+		updatePlayingTime();
 
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -427,18 +430,19 @@ public class MazeRunner {
 
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(Player.playerStateInt).displayItem(gl);
-		
-		for(int i = 0; i < portalList.size(); i++){
-			portalList.get(i).displayPortal(glut,gl);
+
+		for (int i = 0; i < portalList.size(); i++) {
+			portalList.get(i).displayPortal(glut, gl);
 			portalList.get(i).calcPortaltoPlayer(player);
 		}
-//		portal1.displayPortal(glut, gl);
-//		portal2.displayPortal(glut, gl);
+		// portal1.displayPortal(glut, gl);
+		// portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
-//		portal1.calcPortaltoPlayer(player);
-//		portal2.calcPortaltoPlayer(player);
-		
-		Teken.textDraw(drawable, gl, "Score: " + player.score, (float)(0.05*screenHeight),(float)(0.05 * screenWidth),(float)(0.05*screenHeight));
+		// portal1.calcPortaltoPlayer(player);
+		// portal2.calcPortaltoPlayer(player);
+
+		Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight),
+				(float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
 		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 		// portal1.createCamera(glut, gl);
 		// portal2.createCamera(glut, gl);
@@ -478,6 +482,14 @@ public class MazeRunner {
 	 * **********************************************
 	 * * Methods * **********************************************
 	 */
+
+	private void updatePlayingTime() {
+		if (player.playerStateInt == 3) {
+		} else if (player.playerStateInt == 4) {
+		} else {
+		}
+
+	}
 
 	/**
 	 * updateCamera() updates the camera position and orientation.
@@ -715,10 +727,14 @@ public class MazeRunner {
 						enemy.setSpeed(0);
 						enemy.setTrapped(true);
 						enemy.setTOD(currentTime);
+						enemy.setTrappedX(item.locationX);
+						enemy.setTrappedY(item.locationY);
+						enemy.setTrappedZ(item.locationZ);
 
 						// Item - TrapDropped
 						((TrapDropped) item).setTimeUsed(currentTime);
 						((TrapDropped) item).setUsed(true);
+
 						// Item - TrapDropped - remove from itemlist in maze
 						MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(enemy)).itemList.remove(item);
 
@@ -757,11 +773,7 @@ public class MazeRunner {
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 				Enemy e = enemyList.get(eNr);
-				double diffX = b.getGlobalX() - e.getGlobalX();
-				double diffY = b.getGlobalY() - e.getGlobalY();
-				double diffZ = b.getGlobalZ() - e.getGlobalZ();
-
-				if (e instanceof EnemySmart && Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 1) {
+				if (b.touches(e) && e instanceof EnemySmart) {
 					e.setDead(true);
 					visibleObjects.remove(b);
 					bulletList.remove(b);
@@ -801,25 +813,28 @@ public class MazeRunner {
 		}
 
 		if (Player.canTeleport) {
-			for(int i = 0; i < portalList.size(); i++)
-			portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
-//			portal2.checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			for (int i = 0; i < portalList.size(); i++)
+				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+			// portal2.checkteleportation(player, (float) previousX, (float)
+			// previousY, (float) previousZ);
 		} else {
 			Player.canTeleport = true;
 		}
-//		
-		for (Maze m : level.mazelist){
-			for (Item i : m.itemList){
-				if (i instanceof Exit){
-					if(i.touches(player)){
-						System.out.println("Victory! Score: " + player.score);						
+		//
+		for (Maze m : level.mazelist) {
+			for (Item i : m.itemList) {
+				if (i instanceof Exit) {
+					if (i.touches(player)) {
+						PlayerState.getState(Player.playerStateInt).leaving();
+						Player.playerStateInt = 4;
+						PlayerState.getState(Player.playerStateInt).entering();
 					}
 				}
 			}
 		}
-//		if(exit.touches(player)){
-//			System.out.println("Victory! Score: " + player.score);
-//		}
+		// if(exit.touches(player)){
+		// System.out.println("Victory! Score: " + player.score);
+		// }
 		// if (maze.isExit(player.locationX, player.locationZ)) {
 		// Sound.applause.play();
 		// player.locationX = maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;

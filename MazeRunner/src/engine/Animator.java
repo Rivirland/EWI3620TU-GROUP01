@@ -63,12 +63,26 @@ public abstract class Animator {
 		double shouldbeGone = TrapDroppedGBS.animationTime3;
 		long cT = MazeRunner.currentTime;
 		if (e.TOD + shouldbeGone > cT && cT > e.TOD + startSuck) {
-			// naar beneden translaten
-			double gewenstH = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(e)).mazeY + 0.1;
-			double curH = e.locationY;
-			double deltaH = gewenstH - curH;
-			double h = e.locationY + deltaH * (cT - startSuck - e.TOD) / shouldbeGone;
-			e.setLocationY(h);
+			// x translaten
+			double gewenstX = e.getTrappedX();
+			double curX = e.locationX;
+			double deltaX = gewenstX - curX;
+			double x = e.locationX + deltaX * (cT - startSuck - e.TOD) / shouldbeGone;
+			e.setLocationX(x);
+
+			// y translaten
+			double gewenstY = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(e)).mazeY + 0.1;
+			double curY = e.locationY;
+			double deltaY = gewenstY - curY;
+			double y = e.locationY + deltaY * (cT - startSuck - e.TOD) / shouldbeGone;
+			e.setLocationY(y);
+
+			// z translaten
+			double gewenstZ = e.getTrappedZ();
+			double curZ = e.locationZ;
+			double deltaZ = gewenstZ - curZ;
+			double z = e.locationZ + deltaZ * (cT - startSuck - e.TOD) / shouldbeGone;
+			e.setLocationZ(z);
 
 			// Down-scalen
 			double gewenstS = 0;
@@ -88,21 +102,22 @@ public abstract class Animator {
 		double i = 0.003;
 		if (t.inair) {
 			Maze curMaze = MazeRunner.level.getMaze(t.mazeID);
-			t.setLocationX(t.getLocationX()- (Math.sin(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
+			t.setLocationX(t.getLocationX() - (Math.sin(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
 			t.setLocationY(t.getLocationY() + TrapDropped.vy0 * dT * i + TrapDropped.ay * dT * dT * i * i);
-			
+
 			t.setLocationZ(t.getLocationZ() - (Math.cos(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
 			if (t.getLocationY() < curMaze.mazeY) {
 				t.inair = false;
 				t.setLocationY(curMaze.mazeY);
-				t.onground=true;
+				t.onground = true;
 			}
-		} else if (t.onground){
+		} else if (t.onground) {
 			// TODO: rotate
 			// TODO: also rotate according to horangle
 		}
-//		System.out.println("y; " + t.getLocationY() + "  vy0: " + t.vy0 * dT * i + " ay " + t.ay * dT * dT * i * i + " dT " + dT
-//				+ " " + t.inair);
+		// System.out.println("y; " + t.getLocationY() + "  vy0: " + t.vy0 * dT
+		// * i + " ay " + t.ay * dT * dT * i * i + " dT " + dT
+		// + " " + t.inair);
 
 	}
 }
