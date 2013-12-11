@@ -29,7 +29,7 @@ public class TrapHolder extends Item {
 		// Apply texture.
 		if (MazeRunner.trapHolderTexture != null) {
 			MazeRunner.trapHolderTexture.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
 		}
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, 0, super.locationZ);

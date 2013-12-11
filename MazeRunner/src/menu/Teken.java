@@ -112,5 +112,15 @@ public static void lineOnScreen(GL gl, float x1, float y1, float x2, float y2) {
 		gl.glVertex2f(x2, y2);
 		gl.glEnd();
 	}
-	
+
+public static void kruis(GL gl, float x1, float y1, float x2, float y2) {
+	gl.glBegin(GL.GL_LINES);
+	gl.glVertex2f(x1, y1);
+	gl.glVertex2f(x2, y2);
+	gl.glEnd();
+	gl.glBegin(GL.GL_LINES);
+	gl.glVertex2f(x1, y2);
+	gl.glVertex2f(x2, y1);
+	gl.glEnd();
+}
 }

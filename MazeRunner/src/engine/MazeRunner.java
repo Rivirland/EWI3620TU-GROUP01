@@ -87,7 +87,7 @@ public class MazeRunner {
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel;
-	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture;
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 	private UserInput input;
@@ -586,6 +586,57 @@ public class MazeRunner {
 			woodTexture = TextureIO.newTexture(data5);
 		} catch (IOException exc) {
 			System.out.println("niet gevonden - woodTexture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\cataloguskolom1.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			cataloguskolom1 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - cataloguskolom1");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\cataloguskolom2.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			cataloguskolom2 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - cataloguskolom2");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\catalogusdak1.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			catalogusdak1 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - catalogusdak1");
 			exc.printStackTrace();
 			System.exit(1);
 		}

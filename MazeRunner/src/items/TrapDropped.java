@@ -56,7 +56,7 @@ public class TrapDropped extends Item {
 		// Apply texture.
 		if (MazeRunner.trapHolderTexture != null) {
 			MazeRunner.trapHolderTexture.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
 		}
 //		Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
 		gl.glPushMatrix();
