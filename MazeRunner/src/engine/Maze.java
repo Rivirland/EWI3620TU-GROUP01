@@ -1000,5 +1000,11 @@ public static void drawColumnFromQuad(GL gl, double h){
 	gl.glEnd();
 }
 
+public static double getItemHeight(){
+	return ITEM_HEIGHT;
+}
 
+public static double getColumnWidth(){
+	return COLUMN_WIDTH;
+}
 }
