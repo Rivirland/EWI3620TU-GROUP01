@@ -195,7 +195,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glLoadIdentity();
 
 		mainmenu = new MainMenu(screenWidth, screenHeight);
-		try{leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));}
+		try{leveleditor=new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));}
 		catch (FileNotFoundException e){System.out.println("file niet gevonden: " + System.getProperty("user.dir") + "\\worlds\\world.txt");}
 		gamemenu = new GameMenu(screenWidth, screenHeight);
 		quit = new Quit(screenWidth, screenHeight);
@@ -349,13 +349,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		break;
 	
 	case LOADGAME:			
-			KiesFileUitBrowser kfub = new KiesFileUitBrowser();
-			String filename = kfub.loadFile(new Frame(), "Open...", ".\\", "*.txt");
-			//String currentdir = System.getProperty("user.dir");
-			//filename = currentdir + "\\levels\\" + filename;
-			System.out.println(filename.substring(0, filename.length()-6));
-			mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length()-4)));
-			//-6 moet veranderen naar -4 hierboven, nadat Level.java in orde is
+		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+		String currentdir = System.getProperty("user.dir");
+		String filename = kfub.loadFile(new Frame(), "Open...", currentdir + "\\worlds\\", "*.txt");
+		//filename = currentdir + "\\levels\\" + filename;
+		System.out.println(filename.substring(0, filename.length()-6));
+		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length()-4)));
 		gamestate = INGAME;
 		break;
 		
@@ -363,11 +362,11 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
 			
-			try{leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));}
-			catch (FileNotFoundException e){System.out.println("file niet gevonden");}
+			//try{leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));}
+			//catch (FileNotFoundException e){System.out.println("file niet gevonden");}
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 			//leveleditor.setScreen(screenWidth, screenHeight);
 		}
 		//gl.glLoadIdentity();
@@ -387,15 +386,15 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		//leveleditor = new LevelEditor(screenWidth, screenHeight);
 		if (currentstate != gamestate){
 			KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
-			String filename2 = kfub2.loadFile(new Frame(), "Open...", ".\\", "*.txt");
 			String currentdir2 = System.getProperty("user.dir");
+			String filename2 = kfub2.loadFile(new Frame(), "Open world...", currentdir2 + "\\worlds\\", "*.txt");
 			filename = currentdir2 + "\\worlds\\" + filename2;
 			System.out.println(filename);
-			try {leveleditor=new LevelEditor(screenWidth, screenHeight, LevelEditorWorld.readWorld(filename));}
+			try {leveleditor=new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(filename));}
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 		}
 		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
@@ -532,7 +531,6 @@ public void mouseReleased(MouseEvent me) {
 			leveleditor.setScreen(screenWidth, screenHeight);
 			leveleditor.mouseReleased(me);
 		}
-		
 	}
 
 	@Override
@@ -607,10 +605,13 @@ public void mouseReleased(MouseEvent me) {
 			
 			break;
 		case LEVELEDITOR:
-			leveleditor.mousePressed(e);
+			try {leveleditor.mousePressed(e);} catch (FileNotFoundException e1) {e1.printStackTrace();}
 			break;
 		case PAUZE:
 			
+			break;
+		case LOADLEVEL:
+			try {leveleditor.mousePressed(e);} catch (FileNotFoundException e1) {e1.printStackTrace();}
 			break;
 		}
 		

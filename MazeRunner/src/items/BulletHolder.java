@@ -2,9 +2,10 @@ package items;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.GLUT;
-
-import engine.*;
+import menu.Teken;
+import engine.GameObject;
+import engine.MazeRunner;
+import engine.Player;
 
 public class BulletHolder extends Item {
 	public final int amount; 
@@ -27,15 +28,10 @@ public class BulletHolder extends Item {
 		// Setting the trapHolder color and material.
 	
 
-		// Apply texture.
-		if (MazeRunner.trapHolderTexture != null) {
-			MazeRunner.trapHolderTexture.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
-		}
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, 0, super.locationZ);
 		// drawCuboid
-		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,4);
 		gl.glPopMatrix();
 		
 	}

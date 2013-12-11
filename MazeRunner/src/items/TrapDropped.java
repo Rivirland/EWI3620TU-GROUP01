@@ -2,10 +2,10 @@ package items;
 
 import javax.media.opengl.GL;
 
+import menu.Teken;
 import enemies.Enemy;
 import engine.Animator;
 import engine.GameObject;
-import engine.Maze;
 import engine.MazeRunner;
 
 public class TrapDropped extends Item {
@@ -52,18 +52,12 @@ public class TrapDropped extends Item {
 		double ymax = sizeY;
 		double zmin = 0;
 		double zmax = sizeZ;
-		// Setting the trapHolder color and material.
-
-		// Apply texture.
-		if (MazeRunner.trapHolderTexture != null) {
-			MazeRunner.trapHolderTexture.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
-		}
+		
 //		Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
 		gl.glPushMatrix();
 		gl.glTranslated(getGlobalX() - sizeX / 2, getGlobalY(), getGlobalZ() - sizeZ / 2);
 		// drawCuboid
-		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,4);
 		gl.glPopMatrix();
 	}
 
