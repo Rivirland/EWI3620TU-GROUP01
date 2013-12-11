@@ -497,271 +497,42 @@ public class MazeRunner {
 
 	// 4: trapHolderTexture
 
-	public void loadTextures(GL gl) {
+	public void loadTextures(GL gl){
 		gl.glEnable(GL.GL_TEXTURE_2D);
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\texture.jpg";
-
-			filename = currentdir + filename;
-			File file2 = new File(filename);
-			TextureData data2 = TextureIO.newTextureData(file2, false,
-
-			"jpg");
-			earthTexture = TextureIO.newTexture(data2);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - texture");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\walltexture2.jpg";
-
-			filename = currentdir + filename;
-			File file1 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data1 = TextureIO.newTextureData(file1, false,
-
-			"jpg");
-			wallTexture = TextureIO.newTexture(data1);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - walltexture2");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\rooftexture.jpg";
-
-			filename = currentdir + filename;
-			File file3 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data3 = TextureIO.newTextureData(file3, false,
-
-			"jpg");
-			roofTexture = TextureIO.newTexture(data3);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - roofTexture");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\trapHolderTexture.jpg";
-
-			filename = currentdir + filename;
-			File file4 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data4 = TextureIO.newTextureData(file4, false,
-
-			"jpg");
-			trapHolderTexture = TextureIO.newTexture(data4);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - trapHolderTexture");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\oildrum_col.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			oildrumTexture = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - oildrumTexture");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\woodtexture.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			woodTexture = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - woodTexture");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-
-			String filename = "\\textures\\cataloguskolom1.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-
-			cataloguskolom1 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - cataloguskolom1");
-
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-
-			String filename = "\\textures\\cataloguskolom2.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			cataloguskolom2 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - cataloguskolom2");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\catalogusdak1.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			catalogusdak1 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - catalogusdak1");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\sb1.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			sb1 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - sb1");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\sb2.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			sb2 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - sb2");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\sb3.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			sb3 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - sb3");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\sb4.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			sb4 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - sb4");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\sb5.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			sb5 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - sb5");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = "\\textures\\sb6.jpg";
-
-			filename = currentdir + filename;
-			File file5 = new File(filename);
-			// InputStream stream =
-			// getClass().getResourceAsStream("texture.jpg");
-			TextureData data5 = TextureIO.newTextureData(file5, false,
-
-			"jpg");
-			sb6 = TextureIO.newTexture(data5);
-		} catch (IOException exc) {
-			System.out.println("niet gevonden - sb6");
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		gl.glDisable(GL.GL_TEXTURE_2D);
-
+		String curDir = System.getProperty("user.dir") + "\\textures";
+		
+		File f = new File(curDir);
+	    File[] files = f.listFiles();
+	    TextureData[] datas = new TextureData[(int) f.length()];
+	    
+	    for (int i = 0; i<files.length;i++){
+	    	try {
+				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	System.out.println(files[i]);
+	    }
+	    
+	    catalogusdak1 = TextureIO.newTexture(datas[0]);
+	    cataloguskolom1 = TextureIO.newTexture(datas[1]);
+	    cataloguskolom2 = TextureIO.newTexture(datas[2]);
+	    earthTexture = TextureIO.newTexture(datas[3]);
+	    oildrumTexture = TextureIO.newTexture(datas[4]);
+	    roofTexture = TextureIO.newTexture(datas[5]);
+	    sb1 = TextureIO.newTexture(datas[6]);
+	    sb2 = TextureIO.newTexture(datas[7]);
+	    sb3 = TextureIO.newTexture(datas[8]);
+	    sb4 = TextureIO.newTexture(datas[9]);
+	    sb5 = TextureIO.newTexture(datas[10]);
+	    sb6 = TextureIO.newTexture(datas[11]);
+	    trapHolderTexture = TextureIO.newTexture(datas[12]);
+	    wallTexture = TextureIO.newTexture(datas[13]);
+	    woodTexture = TextureIO.newTexture(datas[14]);
+	    gl.glDisable(GL.GL_TEXTURE_2D);
 	}
-
+	
 	public void loadModels(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
