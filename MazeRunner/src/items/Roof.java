@@ -9,7 +9,7 @@ import engine.MazeRunner;
 public class Roof extends Item {
 
 	public int matrixX, matrixZ;
-	public double WALL_LENGTH;
+	public static double WALL_LENGTH;
 	public double fallingSpeed;
 	public boolean legal;
 
@@ -48,6 +48,30 @@ public class Roof extends Item {
 		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
+	public static void drawRoof(GL gl) {
+		gl.glDisable(GL.GL_CULL_FACE);
+
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+
+		gl.glTexCoord2d(0.5, 1.0);
+		gl.glVertex3d(0+WALL_LENGTH / 2, 0 + 2, 0+WALL_LENGTH / 2);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0+WALL_LENGTH, 0, 0+WALL_LENGTH);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0, 0, 0+WALL_LENGTH);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0, 0, 0);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0+WALL_LENGTH, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0+WALL_LENGTH, 0, 0+WALL_LENGTH);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
+	}
+	
 	@Override
 	public double getGlobalX() {
 		// TODO Auto-generated method stub

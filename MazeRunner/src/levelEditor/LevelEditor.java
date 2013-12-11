@@ -70,6 +70,8 @@ public class LevelEditor {
 	private int[][] textures;
 	
 	private int selectedlevel=0;
+	
+	LevelEditorModelViewer modelviewer;
 
 	/*private int [][] wereld =  new int[gridrows][gridcolumns];
 	
@@ -101,6 +103,7 @@ public class LevelEditor {
 		this.textures = levels.get(0).getTextures();
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
+		modelviewer= new LevelEditorModelViewer(screenWidth, screenHeight,(int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
 	}
 	
 	
@@ -108,6 +111,7 @@ public class LevelEditor {
 	public void setScreen(int screenWidth, int screenHeight){
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+		modelviewer.reshape(screenWidth, screenHeight,(int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
 	}
 	
 
@@ -140,10 +144,8 @@ public class LevelEditor {
 	public void display(GLAutoDrawable drawable, GL gl){
 		// Set the clear color and clear the screen.
 		ChangeGL.GLto2D(gl);
-		gl.glClearColor(0, 0, 0, 0);
+		//gl.glClearColor(0, 0, 0, 0);
 		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		gl.glScissor(0, 0, screenWidth, screenHeight);
 				gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
 				gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 				
@@ -152,59 +154,17 @@ public class LevelEditor {
 				drawGridInhoud(drawable, gl);
 				
 				veranderMatrixVolgensKlikInGrid(gl);
+				modelviewer.display(gl, catalogus, drawMode, textureMode, hoogteMode);
 				
 				drawCatalogus(gl);
 				
-				//drawFigure(gl);
-				//gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
-				displayFigure(gl);
-				gl.glDisable(GL.GL_SCISSOR_TEST);
-				gl.glViewport(0,0, screenWidth, screenHeight);
+				
+				//gl.glViewport(0,0, screenWidth, screenHeight);
 				gl.glFlush();
 				
 				
 	}
-	public void displayFigure(GL gl){
-		// de juiste coordinaten zijn:
-		//rechthoek(gl, 90f/1920f*screenWidth, 90f/1080f*screenHeight, 589f/1920f*screenWidth, 860f/1080f*screenHeight);
-		gl.glScissor((int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
-		//gl.glViewport((int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
-		gl.glColor3d(1, 1, 1);
-		gl.glViewport((int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
-		Teken.rechthoek(gl, 0, 0, screenWidth, screenHeight);
-		
-		//gl.glColor3d(1, 1, 1);
-		//Teken.rechthoek(gl, 300, 150, screenWidth, screenHeight);
-		if (!catalogus){
-			switch (drawMode) {
-			case NIETS:
-				break;
-			case KOLOM:
-				switch (textureMode) {
-				case 1:
-					
-				case 2:
-					
-				}
-				break;
-			case MUUR:
-				switch (textureMode) {
-				case 1:
-					tekenFakeMuur(gl);
-				case 2:
-					tekenFakeMuur(gl);
-				}
-				break;
-			case DAK:
-				
-				break;
-			case GEBOUW:
-				
-				break;
-			}
-		}
-	}
-	
+
 	/**
 	 * A method that draws the top left buttons on the screen.
 	 * 
@@ -453,7 +413,7 @@ public class LevelEditor {
 	 */
 	public void mouseReleased(MouseEvent me) {
 			// Check if the coordinates correspond to any of the top left buttons
-		
+		modelviewer.mouseReleased(me);
 		//afmetingen grid
 		//klikken op grid
 		float xmin = 830f/1920f*screenWidth;
@@ -1230,5 +1190,15 @@ public class LevelEditor {
 		gl.glEnd();
 
 	}
+
+	public void mouseDragged(MouseEvent e) {
+		modelviewer.mouseDragged(e);
+		
+	}
+
+	public void mousePressed(MouseEvent e) {
+		modelviewer.mousePressed(e);
+	}
+	
 
 }

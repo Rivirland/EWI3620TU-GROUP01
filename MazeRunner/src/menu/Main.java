@@ -210,7 +210,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		 * active matrix. In this case, a simple 2D projection is performed,
 		 * matching the viewing frustum to the screen size.
 		 */
-		gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 
 		// Set the matrix mode to GL_MODELVIEW, allowing us to manipulate the
 		// model-view matrix.
@@ -367,7 +367,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 			//leveleditor.setScreen(screenWidth, screenHeight);
 		}
 		//gl.glLoadIdentity();
@@ -395,7 +395,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 		}
 		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
@@ -463,7 +463,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			// Update the projection to an orthogonal projection using the new screen size
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 
 			break;
 		case PAUZE:
@@ -607,7 +607,7 @@ public void mouseReleased(MouseEvent me) {
 			
 			break;
 		case LEVELEDITOR:
-
+			leveleditor.mousePressed(e);
 			break;
 		case PAUZE:
 			
@@ -624,6 +624,9 @@ public void mouseReleased(MouseEvent me) {
 	public void mouseDragged(MouseEvent e) {
 		if (gamestate == INGAME){
 			userinput.mouseDragged(e);
+		}
+		if (gamestate == LEVELEDITOR){
+			leveleditor.mouseDragged(e);
 		}
 		
 	}
