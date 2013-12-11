@@ -1,11 +1,12 @@
 package menu;
 
 import java.awt.MouseInfo;
-
 import java.awt.event.MouseEvent;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 public class MainMenu {
 	
@@ -14,6 +15,8 @@ public class MainMenu {
 	final byte LEVELMENU = 2;
 	final byte SETTINGS = 3;
 	final byte QUIT = 4;
+	
+	TextRenderer renderer;
 	
 	private boolean StartGameEntered = false;
 	
@@ -31,12 +34,15 @@ public class MainMenu {
 	
 	public void display(GLAutoDrawable drawable, GL gl){
 		
-		
-		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, 200f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Start Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Level Editor", 750f/1920f*screenWidth, 530f/1080f*screenHeight, 80f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Settings", 750f/1920f*screenWidth, 380f/1080f*screenHeight, 80f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Quit Game", 750f/1920f*screenWidth, 230f/1080f*screenHeight, 80f/1080f*screenHeight);
+		renderer =Teken.startText(drawable, "Agency FB", 200f/1080f*screenHeight); 
+		Teken.textDraw(gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, renderer);
+		Teken.endText(renderer);
+		renderer =Teken.startText(drawable, "Agency FB", 80f/1080f*screenHeight);
+		Teken.textDraw(  gl, "Start Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, renderer);
+		Teken.textDraw(  gl, "Level Editor", 750f/1920f*screenWidth, 530f/1080f*screenHeight, renderer);
+		Teken.textDraw(  gl, "Settings", 750f/1920f*screenWidth, 380f/1080f*screenHeight, renderer);
+		Teken.textDraw(  gl, "Quit Game", 750f/1920f*screenWidth, 230f/1080f*screenHeight, renderer);
+		Teken.endText(renderer);
 		
 		//ik beweeg over de eerste knop => deze licht rood op
 				if (750f/1920f*screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f/1920f*screenWidth){

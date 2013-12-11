@@ -51,8 +51,7 @@ public class TrapDropped extends Item {
 		double ymax = sizeY;
 		double zmin = 0;
 		double zmax = sizeZ;
-		// Setting the trapHolder color and material.
-
+		
 //		Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX - sizeX / 2, super.locationY, super.locationZ - sizeZ / 2);

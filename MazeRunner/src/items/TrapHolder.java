@@ -24,9 +24,6 @@ public class TrapHolder extends Item {
 		double ymax = sizeY;
 		double zmin = 0;
 		double zmax = sizeZ;
-		// Setting the trapHolder color and material.
-	
-
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, 0, super.locationZ);
 		// drawCuboid

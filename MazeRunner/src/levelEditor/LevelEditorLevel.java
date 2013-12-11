@@ -1,21 +1,27 @@
 package levelEditor;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
+
+import menu.KiesFileUitBrowser;
 
 public class LevelEditorLevel {
 	
+	private String name;
 	private int[][] gebouwen;
 	private int[][] textures;
 	
-	public LevelEditorLevel(int[][] gebouwen, int[][] textures){
+	public LevelEditorLevel(String name, int[][] gebouwen, int[][] textures){
+		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
 	}
 	
-	public static LevelEditorLevel readLevel(String filename) throws FileNotFoundException{
-		return new LevelEditorLevel(readGebouwen(filename), readTextures(filename));
+	public static LevelEditorLevel readLevel(String naam, String filename) throws FileNotFoundException{
+		return new LevelEditorLevel(naam, readGebouwen(filename), readTextures(filename));
 	}
 	
 	public static int[][] readGebouwen(String filename) throws FileNotFoundException{
@@ -86,6 +92,55 @@ public class LevelEditorLevel {
 		}
 		System.out.println("file ingelezen");
 		return res;
+	}
+	
+	public void saveAs() throws FileNotFoundException{
+		//PrintWriter bestand = new PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
+		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+		String currentdir = System.getProperty("user.dir");
+		String filename = kfub.saveFile(new Frame(), "Save level as...", currentdir + "\\levels\\", "*");
+		//als de bestandsnaam al eindigt op .txt , knip dat er dan af
+		if (filename.substring(filename.length()-4, filename.length()).equals(".txt")){
+			filename = filename.substring(0, filename.length()-4);
+		}
+		setName(filename);
+		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
+		bestand.println("0,0,0,");
+		for (int i = 0; i != gebouwen.length; i++){
+			for (int j = 0; j!=gebouwen[0].length; j++){
+				bestand.print(gebouwen[i][j] + ",");
+			}
+			bestand.println();
+		}
+		bestand.close();
+
+		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
+		for (int i = 0; i != textures.length; i++){
+			for (int j = 0; j!=textures[0].length; j++){
+				bestand2.print(textures[i][j] + ",");
+			}
+			bestand2.println();
+		}
+		bestand2.close();
+	}
+	
+	public void open() throws FileNotFoundException {
+		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+		String currentdir = System.getProperty("user.dir");
+		String filename = kfub.loadFile(new Frame(), "Open level...", currentdir + "\\levels\\", "*.txt");
+		name = filename.substring(0, filename.length()-4);
+		filename = currentdir + "\\levels\\" + filename;
+		System.out.println(filename);
+		gebouwen = readGebouwen(filename);
+		textures = readTextures(filename);
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int[][] getTextures() {

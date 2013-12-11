@@ -27,6 +27,7 @@ public class BulletHolder extends Item {
 		double zmax = sizeZ;
 		// Setting the trapHolder color and material.
 	
+
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, 0, super.locationZ);
 		// drawCuboid
