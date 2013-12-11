@@ -12,7 +12,6 @@ import items.TrapHolder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -22,7 +21,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
-import menu.Main;
 import menu.Teken;
 import model.Model;
 import model.OBJLoader;
@@ -88,6 +86,7 @@ public class MazeRunner {
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture;
+	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 	private UserInput input;
@@ -237,15 +236,11 @@ public class MazeRunner {
 		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
 		// Set and enable the lighting.
 		gl.glEnable(GL.GL_LIGHTING);
-		float lightPosition[] = { 5.0f, 20.0f, 7.0f, 1.0f }; // High up in the
+		float lightPosition[] = { 3.25f, 8.0f, 30.0f, 1.0f }; // High up in the
 		// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // White light!
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0); // Note
-		// that
-		// we're
-		// setting
-		// Light0.
+		float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // White light
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, lightColour, 1);
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_LIGHT0);
@@ -312,7 +307,6 @@ public class MazeRunner {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
-		// level.getMaze(0).WALL_WIDTH = level.getMaze(0).WALL_WIDTH*1.001;
 
 		ChangeGL.GLto3D(gl);
 
@@ -347,6 +341,7 @@ public class MazeRunner {
 
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
+		Skybox.displaySkybox(gl);
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
 				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
@@ -378,6 +373,7 @@ public class MazeRunner {
 				System.out.println("removed Roof");
 			}
 		}
+
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
@@ -407,6 +403,8 @@ public class MazeRunner {
 		gl.glFlush();
 
 	}
+
+	
 
 	/**
 	 * reshape(GLAutoDrawable, int, int, int, int, int) is called upon whenever
@@ -588,7 +586,108 @@ public class MazeRunner {
 			exc.printStackTrace();
 			System.exit(1);
 		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\sb1.jpg";
 
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			sb1 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - sb1");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\sb2.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			sb2 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - sb2");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\sb3.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			sb3 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - sb3");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\sb4.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			sb4 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - sb4");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\sb5.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			sb5 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - sb5");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\sb6.jpg";
+
+			filename = currentdir + filename;
+			File file5 = new File(filename);
+			// InputStream stream =
+			// getClass().getResourceAsStream("texture.jpg");
+			TextureData data5 = TextureIO.newTextureData(file5, false,
+
+			"jpg");
+			sb6 = TextureIO.newTexture(data5);
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - sb6");
+			exc.printStackTrace();
+			System.exit(1);
+		}
 		gl.glDisable(GL.GL_TEXTURE_2D);
 
 	}

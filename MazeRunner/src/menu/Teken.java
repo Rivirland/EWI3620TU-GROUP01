@@ -94,5 +94,98 @@ public static void lineOnScreen(GL gl, float x1, float y1, float x2, float y2) {
 		gl.glVertex2f(x2, y2);
 		gl.glEnd();
 	}
+
+
+public static void drawCuboid(GL gl, double xmin, double xmax, double ymin,
+		double ymax, double zmin, double zmax, int tex) {
+	drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, new int[] {tex,tex,tex,tex,tex,tex});
+}
+
+public static void drawCuboid(GL gl, double xmin, double xmax, double ymin,
+		double ymax, double zmin, double zmax, int[] texList) {
+//	 Floor plane
+	gl.glBindTexture(GL.GL_TEXTURE_2D, texList[0]);
+		
+	gl.glBegin(GL.GL_QUADS);
+	gl.glNormal3d(0, -1, 0);
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(xmin, ymin, zmin);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(xmin, ymin, zmax);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(xmax, ymin, zmax);
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(xmax, ymin, zmin);
+	gl.glEnd();
+
+	gl.glBindTexture(GL.GL_TEXTURE_2D, texList[1]);
+//	 Top plane
+	gl.glBegin(GL.GL_QUADS);
+	gl.glNormal3d(0, 1, 0);
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(xmin, ymax, zmin);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(xmin, ymax, zmax);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(xmax, ymax, zmax);
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(xmax, ymax, zmin);
+	gl.glEnd();
+
+	gl.glBindTexture(GL.GL_TEXTURE_2D, texList[2]);
+	gl.glBegin(GL.GL_QUADS);
+
+//	 Back plane
+	gl.glNormal3d(0, 0, -1);
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(xmax, ymin, zmin);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(xmax, ymax, zmin);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(xmax, ymax, zmax);
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(xmax, ymin, zmax);
+
+	gl.glEnd();
+	
+	gl.glBindTexture(GL.GL_TEXTURE_2D, texList[3]);
+	gl.glBegin(GL.GL_QUADS);
+//	 Right side plane
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(xmax, ymin, zmax);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(xmax, ymax, zmax);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(xmin, ymax, zmax);
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(xmin, ymin, zmax);
+	gl.glEnd();
+
+	gl.glBindTexture(GL.GL_TEXTURE_2D, texList[4]);
+	gl.glBegin(GL.GL_QUADS);
+//	 Front plane
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(xmin, ymax, zmax);
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(xmin, ymin, zmax);
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(xmin, ymin, zmin);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(xmin, ymax, zmin);
+	gl.glEnd();
+
+	gl.glBindTexture(GL.GL_TEXTURE_2D, texList[5]);
+	gl.glBegin(GL.GL_QUADS);	
+//	 Left plane
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(xmin, ymax, zmin);
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(xmin, ymin, zmin);
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(xmax, ymin, zmin);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(xmax, ymax, zmin);
+	gl.glEnd();
+}
 	
 }

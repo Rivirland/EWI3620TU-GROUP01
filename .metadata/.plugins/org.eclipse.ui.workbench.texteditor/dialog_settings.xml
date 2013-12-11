@@ -3,28 +3,33 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="185" key="DIALOG_Y_ORIGIN"/>
-		<item value="680" key="DIALOG_X_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
+		<item value="680" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="= 3" key="selection"/>
+		<item value="try" key="selection"/>
 		<list key="findhistory">
-			<item value="= 3"/>
-			<item value="= 4"/>
-			<item value="checktele"/>
-			<item value="Victory!"/>
-			<item value="initObjects"/>
-			<item value="new Level"/>
-			<item value="world"/>
-			<item value=":"/>
+			<item value="try"/>
+			<item value="GL_TE"/>
+			<item value="displaySkyBox"/>
+			<item value="player"/>
+			<item value="skyBox"/>
+			<item value="calculateVRP"/>
+			<item value="gluLookAt"/>
+			<item value="gluLook"/>
 		</list>
 		<list key="replacehistory">
+			<item value="MazeRunner.player"/>
+			<item value="200"/>
+			<item value="GL.GL"/>
+			<item value=""/>
+			<item value="gl.gl"/>
 		</list>
 	</section>
 </section>
