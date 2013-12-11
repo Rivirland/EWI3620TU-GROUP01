@@ -13,9 +13,24 @@ public abstract class Item extends GameObject implements VisibleObject{
 		mazeID = i;
 	}
 	
-	public abstract double getGlobalX();
-	public abstract double getGlobalY();
-	public abstract double getGlobalZ();
+	public double getGlobalX(){
+		return this.locationX;
+	}
+	public double getGlobalY(){
+		return this.locationY;
+	}
+	public double getGlobalZ(){
+		return this.locationZ;
+	}
+	public double getLocalX(){
+		return this.locationX-MazeRunner.level.getMaze(mazeID).mazeX;
+	}
+	public double getLocalY(){
+		return this.locationY-MazeRunner.level.getMaze(mazeID).mazeY;
+	}
+	public double getLocalZ(){
+		return this.locationZ-MazeRunner.level.getMaze(mazeID).mazeZ;
+	}
 	public abstract void display(GL gl);
 	public abstract boolean touches(GameObject object);
 	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin,

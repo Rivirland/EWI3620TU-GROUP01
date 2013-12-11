@@ -27,9 +27,10 @@ public class TrapDropped extends Item {
 		this.legal = true;
 		this.used = false;
 		this.horAngle=MazeRunner.player.getHorAngle();
-		this.locationY=2.5;
-		this.inair=true;
+		this.inair=true; 
 		this.onground=false;
+//		System.out.println("TrapDropped@global: x: " + this.getGlobalX() + " y: " + this.getGlobalY() + " z: "+ this.getGlobalZ());
+//		System.out.println("TrapDropped@local: x: " + this.getLocalX() + " y: " + this.getLocalY() + " z: "+ this.getLocalZ());
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class TrapDropped extends Item {
 		}
 //		Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
 		gl.glPushMatrix();
-		gl.glTranslated(super.locationX - sizeX / 2, super.locationY, super.locationZ - sizeZ / 2);
+		gl.glTranslated(getGlobalX() - sizeX / 2, getGlobalY(), getGlobalZ() - sizeZ / 2);
 		// drawCuboid
 		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax);
 		gl.glPopMatrix();
@@ -86,21 +87,7 @@ public class TrapDropped extends Item {
 		return false;
 	}
 
-	@Override
-	public double getGlobalX() {
-		// System.out.println(MazeRunner.level.getMaze(mazeID).getMazeX());
-		return locationX + MazeRunner.level.getMaze(this.mazeID).getMazeX();
-	}
-
-	@Override
-	public double getGlobalY() {
-		return locationY + MazeRunner.level.getMaze(this.mazeID).getMazeY();
-	}
-
-	@Override
-	public double getGlobalZ() {
-		return locationZ + MazeRunner.level.getMaze(this.mazeID).getMazeZ();
-	}
+	
 
 	public void setUsed(boolean b) {
 		this.used = b;
