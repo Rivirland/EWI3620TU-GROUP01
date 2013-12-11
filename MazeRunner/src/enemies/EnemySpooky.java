@@ -47,7 +47,7 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 				if (locationZ < playerZ) {
 					this.locationZ += this.speed * deltaTime;
 				}
-				if (Math.sqrt(Math.pow(locationZ - playerZ, 2) + Math.pow(locationX - playerX, 2)) < 1) {
+				if (Math.sqrt(Math.pow(locationZ - playerZ, 2) + Math.pow(locationX - playerX, 2)) < 1 && player.playerStateInt != 4) {
 					PlayerState.getState(Player.playerStateInt).leaving();
 					Player.playerStateInt = 3;
 					PlayerState.getState(Player.playerStateInt).entering();

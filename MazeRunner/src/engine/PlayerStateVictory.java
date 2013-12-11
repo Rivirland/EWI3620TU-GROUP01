@@ -26,7 +26,7 @@ public class PlayerStateVictory extends PlayerState{
 		Player.canMove = false;
 //		System.out.println("Victory! Score: " + MazeRunner.player.score);	
 		try {
-//			Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + MazeRunner.level.getNaam());
+			Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + MazeRunner.level.getNaam());
 			// stat.executeUpdate("CREATE TABLE students (studentnumber INT, name STRING);");
 			Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS highscores" + MazeRunner.level.getNaam()
 					+ " (naam STRING, score INT);");

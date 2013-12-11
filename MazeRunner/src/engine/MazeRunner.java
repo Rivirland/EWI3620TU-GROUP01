@@ -217,6 +217,7 @@ public class MazeRunner {
 		 * // Now we set up our viewpoint. gl.glMatrixMode(GL.GL_PROJECTION); //
 		 * We'll use orthogonal projection. gl.glLoadIdentity(); // Reset the
 		 * current matrix.
+		 * 
 		 */
 		// @gamestate switch
 		glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
@@ -329,7 +330,7 @@ public class MazeRunner {
 		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		if (deltaTime > 33) {
+		if (deltaTime > 10000) {
 			deltaTime = 0;
 		}
 
@@ -758,7 +759,7 @@ public class MazeRunner {
 						}
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX
-							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ) {
+							&& maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ && player.playerStateInt != 4) {
 						PlayerState.getState(Player.playerStateInt).leaving();
 						Player.playerStateInt = 3;
 						PlayerState.getState(Player.playerStateInt).entering();

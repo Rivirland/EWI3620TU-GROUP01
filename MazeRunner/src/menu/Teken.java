@@ -9,6 +9,24 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class Teken {
 
+	
+	public static TextRenderer startText(GLAutoDrawable drawable,String font, double size){
+		int sizeint = (int) size;
+		TextRenderer renderer = new TextRenderer(new Font(font, Font.BOLD, sizeint));
+		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+		return renderer;
+	}
+	
+	public static void textDraw ( GL gl, String str, double x, double y, TextRenderer renderer){
+		int xint = (int) x;
+		int yint = (int) y;
+		renderer.setColor(1.0f, 1f, 1f, 1f);
+	    renderer.draw(str, xint, yint);
+		
+	}
+	public static void endText (TextRenderer renderer){
+		renderer.endRendering();
+	}
 
 	public static void textDraw (GLAutoDrawable drawable, GL gl, String str, float x, float y, float size){
 		int xint = (int) x;
