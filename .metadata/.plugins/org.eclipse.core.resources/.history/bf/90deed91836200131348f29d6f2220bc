@@ -32,7 +32,7 @@ public class Roof extends Item {
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 
 		gl.glTexCoord2d(0.5, 1.0);
-		gl.glVertex3d(locationX+WALL_LENGTH / 2, locationY + 2, locationZ+WALL_LENGTH / 2);
+		gl.glVertex3d(locationX+WALL_LENGTH+0.25 / 2, locationY + 2, locationZ+WALL_LENGTH / 2);
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(locationX+WALL_LENGTH+0.25, locationY, locationZ+WALL_LENGTH+0.25);
 		gl.glTexCoord2d(1.0, 0.0);

@@ -2,8 +2,8 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="508" key="DIALOG_Y_ORIGIN"/>
-		<item value="1082" key="DIALOG_X_ORIGIN"/>
+		<item value="435" key="DIALOG_Y_ORIGIN"/>
+		<item value="1351" key="DIALOG_X_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Texture" key="selection"/>
+		<item value="delta" key="selection"/>
 		<list key="findhistory">
-			<item value="texture"/>
-			<item value="woodtexture"/>
-			<item value="mousepressed"/>
-			<item value="light"/>
-			<item value="setscreen"/>
-			<item value="scissor"/>
-			<item value="ortho"/>
-			<item value="glortho"/>
+			<item value="delta"/>
+			<item value="33"/>
+			<item value="d"/>
+			<item value="drawRoof"/>
+			<item value="dak"/>
+			<item value="drawgrid"/>
+			<item value="tekengrid"/>
+			<item value="tekengridi"/>
 		</list>
 		<list key="replacehistory">
 		</list>

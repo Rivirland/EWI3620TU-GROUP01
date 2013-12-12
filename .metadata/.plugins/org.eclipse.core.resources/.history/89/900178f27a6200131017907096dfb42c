@@ -1050,11 +1050,11 @@ public static Texture wallTexture1;
 		}
 		
 		//teken dak
-		for (int rij=1; rij < wereld.length-1; rij=rij+2){
-			for (int kolom=1; kolom < wereld[0].length-1; kolom=kolom+2){
-				if (textures[rij][kolom]==1){
+		for (int rij=1; rij <= wereld.length-1; rij=rij+2){
+			for (int kolom=1; kolom <= wereld[0].length-1; kolom=kolom+2){
+				if (textures[rij][kolom] > 0){
 					//onderstaande moet veranderen in een daktexture
-					tekenButtonMetKleur(gl, xmin+(kolom/2)*distance, ymax-rij/2*distance ,xmin+(kolom/2+1)*distance, ymax-(rij/2+1)*distance, 147f/255f, 80f/255f, 51f/255f);
+					tekenButton(gl, xmin+(kolom/2)*distance, ymax-rij/2*distance ,xmin+(kolom/2+1)*distance, ymax-(rij/2+1)*distance);
 				}
 				if (wereld[rij][kolom]!=0 && heightsOn){
 					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin+(kolom/2)*distance+distance/2, ymax-(rij/2+1)*distance+distance/2, 20f/1080f*screenHeight, 1f, 1f, 1f);
@@ -1067,11 +1067,11 @@ public static Texture wallTexture1;
 			for (int kolom=0; kolom <= wereld[0].length; kolom=kolom+2){
 				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een kolomtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 1f, 0f, 0f);
 				}
 				else if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een kolomtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 0f, 1f, 0f);
 				}
 			}
 		}	
@@ -1081,11 +1081,11 @@ public static Texture wallTexture1;
 			for (int kolom=0; kolom <= wereld[0].length; kolom=kolom+2){
 				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 135f/255f, 22f/255f, 16f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 1f ,0f, 0f);
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 156f/255f, 133f/255f, 95f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 0f, 1f, 0f);
 				}
 			}
 		}
@@ -1095,11 +1095,11 @@ public static Texture wallTexture1;
 			for (int kolom=1; kolom <= wereld[0].length-1; kolom=kolom+2){
 				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 1f, 0f, 0f);
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 0f, 1f, 0f);
 				}
 			}
 		}

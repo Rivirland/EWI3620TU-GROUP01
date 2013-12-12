@@ -54,7 +54,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final byte DELETEGAME = 9;
 	final byte LOADLEVEL = 10;
 	
-	final boolean fullscreenboolean= true;
+	final boolean fullscreenboolean= false;
 	
 	private boolean activate=false;
 	
@@ -366,7 +366,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			//catch (FileNotFoundException e){System.out.println("file niet gevonden");}
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 			//leveleditor.setScreen(screenWidth, screenHeight);
 		}
 		//gl.glLoadIdentity();
@@ -394,7 +394,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 		}
 		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
@@ -475,7 +475,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			// Update the projection to an orthogonal projection using the new screen size
 						gl.glMatrixMode(GL.GL_PROJECTION);
 						gl.glLoadIdentity();
-						gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+						gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 						
 			break;
 		}
