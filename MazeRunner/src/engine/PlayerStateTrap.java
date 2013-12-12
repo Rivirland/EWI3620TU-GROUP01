@@ -15,11 +15,9 @@ public class PlayerStateTrap extends PlayerState {
 		if (Player.nrOfTraps > 0) {
 			Player.nrOfTraps--;
 
-//			Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(MazeRunner.player));
-			double trapX=MazeRunner.player.getLocationX();
-			double trapY=MazeRunner.player.getLocationY();
-			double trapZ=MazeRunner.player.getLocationZ();
-
+			double trapX=MazeRunner.player.getGlobalX();
+			double trapY=MazeRunner.player.getGlobalY();
+			double trapZ=MazeRunner.player.getGlobalZ(); 
 			TrapDropped trapDropped = new TrapDropped(trapX, trapY, trapZ, MazeRunner.level.getCurrentMaze(MazeRunner.player));
 			trapDropped.setThrown(true);
 			trapDropped.setT0(MazeRunner.currentTime);
@@ -75,7 +73,7 @@ public class PlayerStateTrap extends PlayerState {
 		gl.glDisable(GL.GL_CULL_FACE);
 		
 		
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 14);
 		MazeRunner.trapModel.display(gl);
 		gl.glPopMatrix();
 

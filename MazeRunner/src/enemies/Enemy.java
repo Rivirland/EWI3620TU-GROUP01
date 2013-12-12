@@ -173,17 +173,17 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 
 	@Override
 	public double getGlobalX() {
-		return locationX + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
+		return locationX;// + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
 	}
 
 	@Override
 	public double getGlobalY() {
-		return locationY + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+		return locationY;// + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
 	}
 
 	@Override
 	public double getGlobalZ() {
-		return locationZ + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+		return locationZ;// + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
 	}
 
 	public void setTOD(long currentTime) {
