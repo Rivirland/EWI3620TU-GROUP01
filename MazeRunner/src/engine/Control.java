@@ -32,6 +32,8 @@ public abstract class Control
 	protected boolean itemUse = false;
 	protected boolean playerStateDown = false;
 	protected boolean playerStateUp = false;
+	protected boolean toggleMinimap = false;
+	protected boolean minimap = false;
 	protected int dX = 0;
 	protected int dY = 0;
 	

@@ -350,11 +350,12 @@ public class MazeRunner {
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		Skybox.displaySkybox(gl);
+		if (player.getControl().minimap) {
+			Minimap.displayMinimap(gl);
+		}
 		gl.glLoadIdentity();
-		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
-				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
-				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
-				camera.getVuvZ());
+		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
+				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
 
 		// gl.glLoadIdentity();
 
@@ -512,7 +513,7 @@ public class MazeRunner {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(files[i]);
+			// System.out.println(files[i]);
 		}
 
 		catalogusdak1 = TextureIO.newTexture(datas[0]);

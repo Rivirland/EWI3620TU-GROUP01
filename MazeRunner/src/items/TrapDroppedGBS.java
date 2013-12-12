@@ -40,6 +40,7 @@ public class TrapDroppedGBS extends TrapDropped {
 	
 	public void drawTrap(GL gl){
 		GLUT glut = new GLUT();
+		gl.glLineWidth(1);
 		glut.glutWireCone(getRadius(), getHeight(), 15, 15);
 	}
 

@@ -58,6 +58,7 @@ public class Maze implements VisibleObject {
 	public ArrayList<Item> itemList = new ArrayList<Item>();
 	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	public int[][] visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 
 	public Maze(String filename, int i) {
 		mazeID = i - 1;
@@ -240,6 +241,7 @@ public class Maze implements VisibleObject {
 		
 		maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 		textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+		visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	}
 
 	public double getMaxX() {

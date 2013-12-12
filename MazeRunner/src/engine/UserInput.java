@@ -287,6 +287,9 @@ public class UserInput extends Control implements Runnable {
 		if(event.getKeyCode() == KeyEvent.VK_DOWN){
 			playerStateDown = true;
 		}
+		if(event.getKeyCode() == KeyEvent.VK_NUMPAD0){
+			toggleMinimap = true;
+		}
 	}
 
 	public void setmouselookMode (boolean mouselookMode){

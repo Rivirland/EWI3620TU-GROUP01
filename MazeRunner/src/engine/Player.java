@@ -152,7 +152,7 @@ public class Player extends GameObject {
 	 *            The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime, GLAutoDrawable drawable) {
-		
+		minimapUpdate();
 		if (canMove) {
 			playerStateUpdate();
 			double previousX = this.getLocationX();
@@ -232,6 +232,32 @@ public class Player extends GameObject {
 		}
 	}
 
+	public void minimapUpdate() {
+		if (control.toggleMinimap) {
+			control.minimap = !control.minimap;
+			control.toggleMinimap = false;
+			System.out.println("minimap:  " + control.minimap);
+		}
+
+		int mazeID = MazeRunner.level.getCurrentMaze(this);
+		if (mazeID != -1) {
+			Maze curMaze = MazeRunner.level.getMaze(mazeID);
+			int playerXM = curMaze.coordToMatrixElement(getLocalX());
+			int playerZM = curMaze.coordToMatrixElement(getLocalZ());
+			if (curMaze.visitedMatrix[playerXM][playerZM] != 1) {
+				curMaze.visitedMatrix[playerXM-1][playerZM+1] = 1;
+				curMaze.visitedMatrix[playerXM][playerZM+1] = 1;
+				curMaze.visitedMatrix[playerXM+1][playerZM+1] = 1;
+				curMaze.visitedMatrix[playerXM-1][playerZM] = 1;
+				curMaze.visitedMatrix[playerXM][playerZM] = 1;
+				curMaze.visitedMatrix[playerXM+1][playerZM] = 1;
+				curMaze.visitedMatrix[playerXM-1][playerZM-1] = 1;
+				curMaze.visitedMatrix[playerXM][playerZM-1] = 1;
+				curMaze.visitedMatrix[playerXM+1][playerZM-1] = 1;
+			}
+		}
+	}
+
 	public void playerStateUpdate() {
 		if (control.playerStateUp) {
 			control.playerStateUp = false;
@@ -263,6 +289,15 @@ public class Player extends GameObject {
 		control.setdX(0);
 		control.setdY(0);
 
+	}
+	public double getLocalX(){
+		return this.locationX-MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
+	}
+	public double getLocalY(){
+		return this.locationY-MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+	}
+	public double getLocalZ(){
+		return this.locationZ-MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
 	}
 
 }
