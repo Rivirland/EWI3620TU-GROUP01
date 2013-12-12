@@ -49,7 +49,7 @@ public class LevelEditorLevel {
 		File file = new File(filename);
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
-		//sc.nextLine(); ???vreemd
+		//sc.nextLine();
 		
 		//tel het aantal rijen en kolommen in de matrix
 		int rows=-1;
