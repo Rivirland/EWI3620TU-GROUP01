@@ -1,5 +1,7 @@
 package levelEditor;
 
+import items.*;
+
 import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +12,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import enemies.Enemy;
+import enemies.EnemySmart;
+import enemies.EnemySpooky;
+import engine.MazeRunner;
+import engine.Portal;
 
 import menu.KiesFileUitBrowser;
 
@@ -22,17 +30,18 @@ public class LevelEditorLevel {
 	public ArrayList<double[]> itemlist;
 
 	
-	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
-		this.setLocation(location);
+	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<Portal> portalList, ArrayList<Enemy> enemyList, ArrayList<Item> itemList){
 		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
+		this.setPortalList(portalList);
+		this.setEnemyList(enemyList);
 		this.setItemList(itemList);
 	}
 	
 	public static LevelEditorLevel readLevel(String naam, String filename) throws FileNotFoundException{
 
-		return new LevelEditorLevel(readLocation(filename), naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
+		return new LevelEditorLevel(readLocation(filename), naam, readGebouwen(filename), readTextures(filename), itemlist);
 	}
 	
 	public static int[] readLocation(String filename) throws FileNotFoundException{
@@ -49,7 +58,7 @@ public class LevelEditorLevel {
 		File file = new File(filename);
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
-		//sc.nextLine(); ???vreemd
+		sc.nextLine();
 		
 		//tel het aantal rijen en kolommen in de matrix
 		int rows=-1;
@@ -257,12 +266,28 @@ public class LevelEditorLevel {
 		this.gebouwen = gebouwen;
 	}
 	
-	public ArrayList<double[]> getItemList() {
-		return itemlist;
+	public ArrayList<Portal> getPortalList() {
+		return portalList;
 	}
 
-	public void setItemList(ArrayList<double[]> itemlist) {
-		this.itemlist = itemlist;
+	public void setPortalList(ArrayList<Portal> portalList) {
+		this.portalList = portalList;
+	}
+	
+	public ArrayList<Enemy> getEnemyList() {
+		return enemyList;
+	}
+
+	public void setEnemyList(ArrayList<Enemy> portalList) {
+		this.enemyList = enemyList;
+	}
+	
+	public ArrayList<Item> getItemList() {
+		return itemList;
+	}
+
+	public void setItemList(ArrayList<Item> itemList) {
+		this.itemList = itemList;
 	}
 	
 }

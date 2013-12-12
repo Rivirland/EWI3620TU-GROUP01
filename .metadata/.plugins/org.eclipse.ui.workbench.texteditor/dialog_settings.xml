@@ -2,46 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-<<<<<<< HEAD
-		<item value="435" key="DIALOG_Y_ORIGIN"/>
-		<item value="1351" key="DIALOG_X_ORIGIN"/>
-=======
-		<item value="185" key="DIALOG_Y_ORIGIN"/>
-		<item value="680" key="DIALOG_X_ORIGIN"/>
->>>>>>> ee3185dfd6d82a4e8c69d357983c02e480962a5b
+		<item value="210" key="DIALOG_Y_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
+		<item value="1100" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="delta" key="selection"/>
+		<item value="System.out" key="selection"/>
 		<list key="findhistory">
-			<item value="delta"/>
-			<item value="33"/>
-			<item value="d"/>
-			<item value="drawRoof"/>
-			<item value="dak"/>
-			<item value="drawgrid"/>
-			<item value="tekengrid"/>
-			<item value="tekengridi"/>
-=======
-		<item value="enemy" key="selection"/>
-		<list key="findhistory">
-			<item value="Enemy"/>
-			<item value="enemy"/>
-			<item value="ambient"/>
-			<item value="paintSingleFloorTile"/>
-			<item value="singleFloor"/>
-			<item value="listFiles"/>
-			<item value="loadText"/>
->>>>>>> ee3185dfd6d82a4e8c69d357983c02e480962a5b
+			<item value="system.out"/>
+			<item value="default"/>
+			<item value="bullet"/>
+			<item value="load"/>
+			<item value="loadobj"/>
+			<item value="loadobjects"/>
+			<item value="readobjects"/>
+			<item value="paintcolumn"/>
 		</list>
 		<list key="replacehistory">
+			<item value="item"/>
 		</list>
 	</section>
 </section>

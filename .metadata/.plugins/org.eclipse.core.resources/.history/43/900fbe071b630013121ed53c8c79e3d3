@@ -1,5 +1,7 @@
 package levelEditor;
 
+import items.*;
+
 import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +13,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import enemies.Enemy;
+import enemies.EnemySmart;
+import enemies.EnemySpooky;
+import engine.MazeRunner;
+import engine.Portal;
+
 import menu.KiesFileUitBrowser;
 
 public class LevelEditorLevel {
@@ -19,20 +27,22 @@ public class LevelEditorLevel {
 	private int[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
-	public ArrayList<double[]> itemlist;
+	public static ArrayList<Portal> portalList = new ArrayList<Portal>();
+	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
+	public static ArrayList<Item> itemList = new ArrayList<Item>();
 
 	
-	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
-		this.setLocation(location);
+	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<Portal> portalList, ArrayList<Enemy> enemyList, ArrayList<Item> itemList){
 		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
+		this.setPortalList(portalList);
+		this.setEnemyList(enemyList);
 		this.setItemList(itemList);
 	}
 	
 	public static LevelEditorLevel readLevel(String naam, String filename) throws FileNotFoundException{
-
-		return new LevelEditorLevel(readLocation(filename), naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
+		return new LevelEditorLevel(naam, readGebouwen(filename), readTextures(filename));
 	}
 	
 	public static int[] readLocation(String filename) throws FileNotFoundException{
@@ -49,7 +59,7 @@ public class LevelEditorLevel {
 		File file = new File(filename);
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
-		//sc.nextLine(); ???vreemd
+		sc.nextLine();
 		
 		//tel het aantal rijen en kolommen in de matrix
 		int rows=-1;
@@ -113,64 +123,59 @@ public class LevelEditorLevel {
 		return res;
 	}
 	
-	public static ArrayList<double[]> readObjects(String filename){
-		ArrayList<double[]> itemlist = new ArrayList<double[]>();
-		
+	private void readObjects(File objectsFile) {
 		BufferedReader bufRdrTex = null;
 		try {
-			bufRdrTex = new BufferedReader(new FileReader(new File(filename.substring(0, filename.length()-4) + "_o.txt")));
+			bufRdrTex = new BufferedReader(new FileReader(objectsFile));
 			String line = null;
 			try {
 				while ((line = bufRdrTex.readLine()) != null) {
 					StringTokenizer st = new StringTokenizer(line, ",");
-					double objectNumber = Double.parseDouble(st.nextToken());
+					int objectNumber = Integer.parseInt(st.nextToken());
 					if (objectNumber == 1) {
-						// Portal
-						double[] portal = new double[6];
-						portal[0] = objectNumber;
-						portal[1] = Double.parseDouble(st.nextToken()); //objectX
-						portal[2] = Double.parseDouble(st.nextToken()); //objectZ
-						portal[3] = Double.parseDouble(st.nextToken()); //facing direction
-						portal[4] = Double.parseDouble(st.nextToken()); //portalID
-						portal[5] = Double.parseDouble(st.nextToken()); //portalConID
-						itemlist.add(portal);
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						int fd = Integer.parseInt(st.nextToken());
+						int portalID = Integer.parseInt(st.nextToken());
+						int portalConID = Integer.parseInt(st.nextToken());
+						Portal portal = new Portal((float)objectX, mazeY, (float)objectZ, fd, portalID, portalConID);
+						// Portal portal = new Portal((float)objectX,
+						// (float)objectY, objectZ, fd);
+						// System.out.println("Maakt portal " + portalID +
+						// " naar " + portalConnectionID + " op " + objectX +
+						// ", " + objectZ);
 						continue;
 					} else if (objectNumber == 2) {
 						// EnemySpooky
-						double[] enemyspooky = new double[3];
-						enemyspooky[0] = objectNumber;
-						enemyspooky[1] = Double.parseDouble(st.nextToken()); //objectX
-						enemyspooky[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(enemyspooky);
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						EnemySpooky es = new EnemySpooky(objectX, mazeY + 2.5,
+								objectZ, 0.0015, mazeID);
 					} else if (objectNumber == 3) {
 						// EnemySmart
-						double[] enemysmart = new double[3];
-						enemysmart[0] = objectNumber;
-						enemysmart[1] = Double.parseDouble(st.nextToken()); //objectX
-						enemysmart[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(enemysmart);
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						EnemySmart es = new EnemySmart(objectX, mazeY + 2.5,
+								objectZ, 0.005, mazeID);
 					} else if (objectNumber == 4) {
-						// Bullets
-						double[] bullets = new double[4];
-						bullets[0] = objectNumber;
-						bullets[1] = Double.parseDouble(st.nextToken()); //objectX
-						bullets[2] = Double.parseDouble(st.nextToken()); //objectZ
-						bullets[3] = Integer.parseInt(st.nextToken()); //amount
-						itemlist.add(bullets);
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						int amount = Integer.parseInt(st.nextToken());
+						itemHolder bh = new itemHolder(objectX, mazeY,
+								objectZ, mazeID, amount);
+						itemList.add(bh);
 					} else if (objectNumber == 5) {
-						// Trapholder
-						double[] trapholder = new double[3];
-						trapholder[0] = objectNumber;
-						trapholder[1] = Double.parseDouble(st.nextToken()); //objectX
-						trapholder[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(trapholder);
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ,
+								mazeID);
+						itemList.add(th);
 					} else if (objectNumber == 6){
-						// Exit
-						double[] exit = new double[3];
-						exit[0] = objectNumber;
-						exit[1] = Double.parseDouble(st.nextToken()); //objectX
-						exit[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(exit);
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectY = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						Exit e = new Exit(objectX, objectY, objectZ, mazeID);
+						itemList.add(e);
 					}
 				}
 			} catch (IOException e) {
@@ -181,7 +186,6 @@ public class LevelEditorLevel {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		return itemlist;
 	}
 	
 	public void saveAs() throws FileNotFoundException{
@@ -257,12 +261,28 @@ public class LevelEditorLevel {
 		this.gebouwen = gebouwen;
 	}
 	
-	public ArrayList<double[]> getItemList() {
-		return itemlist;
+	public ArrayList<Portal> getPortalList() {
+		return portalList;
 	}
 
-	public void setItemList(ArrayList<double[]> itemlist) {
-		this.itemlist = itemlist;
+	public void setPortalList(ArrayList<Portal> portalList) {
+		this.portalList = portalList;
+	}
+	
+	public ArrayList<Enemy> getEnemyList() {
+		return enemyList;
+	}
+
+	public void setEnemyList(ArrayList<Enemy> portalList) {
+		this.enemyList = enemyList;
+	}
+	
+	public ArrayList<Item> getItemList() {
+		return itemList;
+	}
+
+	public void setItemList(ArrayList<Item> itemList) {
+		this.itemList = itemList;
 	}
 	
 }

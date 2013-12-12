@@ -145,9 +145,9 @@ public class LevelEditorModelViewer {
 	
 	public void mousePressed(MouseEvent e){
 		if (e.getX()>x1 && e.getX()<x2 && e.getY()>y1 && e.getY()<y2){
-			//System.out.println("partystyle");
-			//System.out.println(e.getX());
-			//System.out.println(e.getY());
+			System.out.println("partystyle");
+			System.out.println(e.getX());
+			System.out.println(e.getY());
 		x1mouse = e.getX();
 		y1mouse = e.getY();
 		x2mouse = x1;
@@ -156,7 +156,7 @@ public class LevelEditorModelViewer {
 	}
 	
 	public void update (){
-		//System.out.println(dX);
+		System.out.println(dX);
 		dX = x1mouse - x2mouse;
 		dY = y1mouse - y2mouse;
 		x1mouse = x2mouse;

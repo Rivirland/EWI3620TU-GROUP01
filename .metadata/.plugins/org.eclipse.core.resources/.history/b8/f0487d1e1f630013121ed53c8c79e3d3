@@ -1,5 +1,7 @@
 package levelEditor;
 
+import items.*;
+
 import java.awt.Frame;
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +12,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import enemies.Enemy;
+import enemies.EnemySmart;
+import enemies.EnemySpooky;
+import engine.MazeRunner;
+import engine.Portal;
 
 import menu.KiesFileUitBrowser;
 
@@ -22,8 +30,7 @@ public class LevelEditorLevel {
 	public ArrayList<double[]> itemlist;
 
 	
-	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
-		this.setLocation(location);
+	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<Portal> portalList, ArrayList<Enemy> enemyList, ArrayList<Item> itemList){
 		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
@@ -49,7 +56,7 @@ public class LevelEditorLevel {
 		File file = new File(filename);
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
-		//sc.nextLine(); ???vreemd
+		sc.nextLine();
 		
 		//tel het aantal rijen en kolommen in de matrix
 		int rows=-1;

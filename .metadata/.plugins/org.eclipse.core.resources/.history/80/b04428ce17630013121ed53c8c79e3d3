@@ -1,55 +1,36 @@
 package levelEditor;
 
 import java.awt.Frame;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 import menu.KiesFileUitBrowser;
 
 public class LevelEditorLevel {
 	
 	private String name;
-	private int[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
-	public ArrayList<double[]> itemlist;
-
 	
-	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
-		this.setLocation(location);
+	public LevelEditorLevel(String name, int[][] gebouwen, int[][] textures){
 		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
-		this.setItemList(itemList);
 	}
 	
 	public static LevelEditorLevel readLevel(String naam, String filename) throws FileNotFoundException{
-
-		return new LevelEditorLevel(readLocation(filename), naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
-	}
-	
-	public static int[] readLocation(String filename) throws FileNotFoundException{
-		int[] location = new int[3];
-		Scanner sc = new Scanner(new File(filename));
-		sc.useDelimiter("\\s*,\\s*");
-		location[0] = sc.nextInt();
-		location[1] = sc.nextInt();
-		location[2] = sc.nextInt();
-		return location;
+		return new LevelEditorLevel(naam, readGebouwen(filename), readTextures(filename));
 	}
 	
 	public static int[][] readGebouwen(String filename) throws FileNotFoundException{
 		File file = new File(filename);
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
-		//sc.nextLine(); ???vreemd
+		int x = sc.nextInt();
+		int y = sc.nextInt();
+		int z = sc.nextInt();
 		
 		//tel het aantal rijen en kolommen in de matrix
 		int rows=-1;
@@ -113,77 +94,6 @@ public class LevelEditorLevel {
 		return res;
 	}
 	
-	public static ArrayList<double[]> readObjects(String filename){
-		ArrayList<double[]> itemlist = new ArrayList<double[]>();
-		
-		BufferedReader bufRdrTex = null;
-		try {
-			bufRdrTex = new BufferedReader(new FileReader(new File(filename.substring(0, filename.length()-4) + "_o.txt")));
-			String line = null;
-			try {
-				while ((line = bufRdrTex.readLine()) != null) {
-					StringTokenizer st = new StringTokenizer(line, ",");
-					double objectNumber = Double.parseDouble(st.nextToken());
-					if (objectNumber == 1) {
-						// Portal
-						double[] portal = new double[6];
-						portal[0] = objectNumber;
-						portal[1] = Double.parseDouble(st.nextToken()); //objectX
-						portal[2] = Double.parseDouble(st.nextToken()); //objectZ
-						portal[3] = Double.parseDouble(st.nextToken()); //facing direction
-						portal[4] = Double.parseDouble(st.nextToken()); //portalID
-						portal[5] = Double.parseDouble(st.nextToken()); //portalConID
-						itemlist.add(portal);
-						continue;
-					} else if (objectNumber == 2) {
-						// EnemySpooky
-						double[] enemyspooky = new double[3];
-						enemyspooky[0] = objectNumber;
-						enemyspooky[1] = Double.parseDouble(st.nextToken()); //objectX
-						enemyspooky[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(enemyspooky);
-					} else if (objectNumber == 3) {
-						// EnemySmart
-						double[] enemysmart = new double[3];
-						enemysmart[0] = objectNumber;
-						enemysmart[1] = Double.parseDouble(st.nextToken()); //objectX
-						enemysmart[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(enemysmart);
-					} else if (objectNumber == 4) {
-						// Bullets
-						double[] bullets = new double[4];
-						bullets[0] = objectNumber;
-						bullets[1] = Double.parseDouble(st.nextToken()); //objectX
-						bullets[2] = Double.parseDouble(st.nextToken()); //objectZ
-						bullets[3] = Integer.parseInt(st.nextToken()); //amount
-						itemlist.add(bullets);
-					} else if (objectNumber == 5) {
-						// Trapholder
-						double[] trapholder = new double[3];
-						trapholder[0] = objectNumber;
-						trapholder[1] = Double.parseDouble(st.nextToken()); //objectX
-						trapholder[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(trapholder);
-					} else if (objectNumber == 6){
-						// Exit
-						double[] exit = new double[3];
-						exit[0] = objectNumber;
-						exit[1] = Double.parseDouble(st.nextToken()); //objectX
-						exit[2] = Double.parseDouble(st.nextToken()); //objectZ
-						itemlist.add(exit);
-					}
-				}
-			} catch (IOException e) {
-				System.out.println("Fout in readObjects");
-				e.printStackTrace();
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return itemlist;
-	}
-	
 	public void saveAs() throws FileNotFoundException{
 		//PrintWriter bestand = new PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
@@ -225,14 +135,6 @@ public class LevelEditorLevel {
 		textures = readTextures(filename);
 	}
 	
-	public int[] getLocation() {
-		return location;
-	}
-
-	public void setLocation(int[] location) {
-		this.location = location;
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -256,13 +158,4 @@ public class LevelEditorLevel {
 	public void setGebouwen(int[][] gebouwen) {
 		this.gebouwen = gebouwen;
 	}
-	
-	public ArrayList<double[]> getItemList() {
-		return itemlist;
-	}
-
-	public void setItemList(ArrayList<double[]> itemlist) {
-		this.itemlist = itemlist;
-	}
-	
 }

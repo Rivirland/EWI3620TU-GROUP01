@@ -1207,11 +1207,6 @@ public static Texture wallTexture1;
 	  return defaultmatrix;
 	}
 	
-	public static int[] defaultLocation(){
-		int[] defaultlocation = {0, 0, 0};
-		return defaultlocation;
-	}
-	
 	public void loadTextures(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_1D);
 		
