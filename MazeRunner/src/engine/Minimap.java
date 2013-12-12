@@ -6,8 +6,8 @@ import javax.media.opengl.glu.GLU;
 import menu.Teken;
 
 public class Minimap {
-	private static int minimapX = (int) (.6 * MazeRunner.screenWidth);
-	private static int minimapZ = (int) (.6 * MazeRunner.screenHeight);
+	private static int minimapX = (int) (.4 * MazeRunner.screenWidth);
+	private static int minimapZ = (int) (.4 * MazeRunner.screenHeight);
 	static double columnPercentageX, columnPercentageZ;
 	static double wallPercentageX, wallPercentageZ;
 
@@ -22,11 +22,14 @@ public class Minimap {
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_TEXTURE_2D);
 		// gl.glDisable(GL.GL_DEPTH_TEST);
+		
 		iterateOverMatrix(gl);
-
+		drawBackground(gl);
+		
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
-		glu.gluPerspective(60, MazeRunner.screenWidth / MazeRunner.screenHeight, .1, 200);
+		glu.gluPerspective(60,
+				MazeRunner.screenWidth / MazeRunner.screenHeight, .1, 200);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_TEXTURE_2D);
@@ -47,8 +50,7 @@ public class Minimap {
 			wallPercentageX = curMaze.WALL_LENGTH / totalX;
 			wallPercentageZ = curMaze.WALL_LENGTH / totalZ;
 			// System.out.println(wallPercentageX+ " " + wallPercentageZ);
-			// drawBackground(gl);
-
+			
 			for (int i = 0; i < curMaze.visitedMatrix.length; i++) {
 				for (int j = 0; j < curMaze.visitedMatrix[0].length; j++) {
 					if (curMaze.visitedMatrix[i][j] == 1) {
@@ -59,9 +61,12 @@ public class Minimap {
 						// System.out.println(xtrans + " " + ztrans);
 
 						gl.glPushMatrix();
-						gl.glColor3d(1, 1, 1);
 						// gl.glTranslated(xtrans, 0.0, ztrans);
 						if (curMaze.maze[i][j] > 0) {
+							gl.glColor3d(205f/255f,133f/255f,63f/255f);
+						}else{
+							gl.glColor3d(222f/255f,184f/255f,135f/255f);
+						}
 							// If it's (even,even), you paint a column
 							if (i % 2 == 0 && j % 2 == 0) {
 								// System.out.println("paint column");
@@ -76,17 +81,16 @@ public class Minimap {
 							if (i % 2 == 0 && j % 2 != 0) {
 
 								drawWallx(gl, xtrans, ztrans);
-							}
+							
 						}
 						if (i % 2 != 0 && j % 2 != 0 && curMaze.maze[i][j] == 0) {
-							gl.glColor3d(1, 0, 0);
+							gl.glColor3d(222f/255f,184f/255f,135f/255f);
 
 							drawFloor(gl, xtrans, ztrans);
 						}
 					}
 					double x = MazeRunner.player.getLocalX() / totalX * minimapX;
 					double z = MazeRunner.player.getLocalZ() / totalZ * minimapZ;
-					gl.glColor3d(0, 1, 1);
 					drawPlayer(gl, x, z);
 					gl.glColor3d(1, 1, 1);
 					gl.glPopMatrix();
@@ -104,7 +108,8 @@ public class Minimap {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
 		gl.glVertex2d(columnPercentageX * minimapX + x, z);
-		gl.glVertex2d(columnPercentageX * minimapX + x, columnPercentageZ * minimapZ + z);
+		gl.glVertex2d(columnPercentageX * minimapX + x, columnPercentageZ
+				* minimapZ + z);
 		gl.glVertex2d(x, columnPercentageZ * minimapZ + z);
 		gl.glEnd();
 	}
@@ -113,7 +118,8 @@ public class Minimap {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
 		gl.glVertex2d(wallPercentageX * minimapX + x, z);
-		gl.glVertex2d(wallPercentageX * minimapX + x, columnPercentageZ * minimapZ + z);
+		gl.glVertex2d(wallPercentageX * minimapX + x, columnPercentageZ
+				* minimapZ + z);
 		gl.glVertex2d(x, columnPercentageZ * minimapZ + z);
 		gl.glEnd();
 	}
@@ -122,7 +128,8 @@ public class Minimap {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
 		gl.glVertex2d(columnPercentageX * minimapX + x, z);
-		gl.glVertex2d(columnPercentageX * minimapX + x, wallPercentageZ * minimapZ + z);
+		gl.glVertex2d(columnPercentageX * minimapX + x, wallPercentageZ
+				* minimapZ + z);
 		gl.glVertex2d(x, wallPercentageZ * minimapZ + z);
 		gl.glEnd();
 	}
@@ -131,19 +138,31 @@ public class Minimap {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
 		gl.glVertex2d(wallPercentageX * minimapX + x, z);
-		gl.glVertex2d(wallPercentageX * minimapX + x, wallPercentageX * minimapZ + z);
-		gl.glVertex2d(x, wallPercentageX * minimapZ + z);
+		gl.glVertex2d(wallPercentageX * minimapX + x, wallPercentageZ
+				* minimapZ + z);
+		gl.glVertex2d(x, wallPercentageZ * minimapZ + z);
 		gl.glEnd();
 	}
 
 	public static void drawPlayer(GL gl, double x, double z) {
-		System.out.println(x + " " + z);
+		// System.out.println(x + " " + z);
 		gl.glColor3d(0, 0, 1);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2d(x-5, z-5);
-		gl.glVertex2d(5+ x, z-5);
+		gl.glVertex2d(x - 5, z - 5);
+		gl.glVertex2d(5 + x, z - 5);
 		gl.glVertex2d(5 + x, 5 + z);
-		gl.glVertex2d(x-5, 5 + z);
+		gl.glVertex2d(x - 5, 5 + z);
 		gl.glEnd();
+	}
+	
+	public static void drawBackground(GL gl){
+		gl.glColor3d(0,0,0);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2d(0, 0);
+		gl.glVertex2d(minimapX, 0);
+		gl.glVertex2d(minimapX, minimapZ);
+		gl.glVertex2d(0, minimapZ);
+		gl.glEnd();
+
 	}
 }

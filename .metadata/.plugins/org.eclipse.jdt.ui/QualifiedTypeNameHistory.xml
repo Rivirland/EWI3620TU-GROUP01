@@ -8,4 +8,5 @@
 <fullyQualifiedTypeName name="menu.Main"/>
 <fullyQualifiedTypeName name="engine.Maze"/>
 <fullyQualifiedTypeName name="items.Item"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
 </qualifiedTypeNameHistroy>

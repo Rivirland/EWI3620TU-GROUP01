@@ -1,14 +1,13 @@
 package engine;
 
 import java.awt.Cursor;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.util.Collections;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -71,6 +70,10 @@ public class UserInput extends Control implements Runnable {
 	 *            The GLCanvas to which to add the listeners.
 	 */
 	public UserInput(GLCanvas canvas) {
+		KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+
+		kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
+		kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		//canvas.addMouseListener(this);
 		//canvas.addMouseMotionListener(this);
 		//canvas.addKeyListener(this);
@@ -287,7 +290,7 @@ public class UserInput extends Control implements Runnable {
 		if(event.getKeyCode() == KeyEvent.VK_DOWN){
 			playerStateDown = true;
 		}
-		if(event.getKeyCode() == KeyEvent.VK_NUMPAD0){
+		if(event.getKeyCode() == KeyEvent.VK_TAB){
 			toggleMinimap = true;
 		}
 	}

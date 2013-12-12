@@ -409,12 +409,11 @@ public class MazeRunner {
 		// portal1.calcPortaltoPlayer(player);
 		// portal2.calcPortaltoPlayer(player);
 
-		Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: "
-				+ playingTime / 1000, (float) (0.05 * screenHeight),
-				(float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
-		// portal1.createCamera(glut, gl);
-		// portal2.createCamera(glut, gl);
+//		Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: "
+//				+ playingTime / 1000, (float) (0.05 * screenHeight),
+//				(float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
+//		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
+		
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 
@@ -698,9 +697,10 @@ public class MazeRunner {
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 						Enemy e = enemyList.get(eNr);
+						System.out.println(maze.coordToMatrixElement(e.getGlobalX()-maze.mazeX) +" " + r.matrixX + " " +  maze.coordToMatrixElement(e.getGlobalZ()-maze.mazeZ) + " " + r.matrixZ);
 						if (e instanceof EnemySmart
-								&& maze.coordToMatrixElement(e.getGlobalX()) == r.matrixX
-								&& maze.coordToMatrixElement(e.getGlobalZ()) == r.matrixZ) {
+								&& maze.coordToMatrixElement(e.getGlobalX()-maze.mazeX) == r.matrixX
+								&& maze.coordToMatrixElement(e.getGlobalZ()-maze.mazeZ) == r.matrixZ) {
 							enemyList.remove(e);
 							player.score += 400;
 							e.setDead(true);
