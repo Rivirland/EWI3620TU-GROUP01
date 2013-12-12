@@ -47,7 +47,7 @@ public class PlayerStateTorch extends PlayerState{
 		gl.glRotated(MazeRunner.player.getHorAngle(),0,1,0);
 		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
 		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
 		MazeRunner.torchModel.display(gl);
 		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glPopMatrix();	

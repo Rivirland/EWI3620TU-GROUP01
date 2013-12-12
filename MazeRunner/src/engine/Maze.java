@@ -506,7 +506,7 @@ public class Maze implements VisibleObject {
 
 	private void paintDebrisXFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		drawDebrisXFromQuad(gl);
@@ -549,7 +549,7 @@ public class Maze implements VisibleObject {
 	
 	private void paintDebrisColumnFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		drawDebrisColumnFromQuad(gl);
@@ -597,7 +597,7 @@ public class Maze implements VisibleObject {
 
 	private void paintDebrisZFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 		drawDebrisZFromQuad(gl);
 		
@@ -666,7 +666,7 @@ public class Maze implements VisibleObject {
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
 
 		// Apply texture.
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
 
 		// Calculate coordinates and the corresponding texture coordinates.
 		gl.glNormal3d(0, 1, 0);
@@ -687,9 +687,9 @@ public class Maze implements VisibleObject {
 	private void paintWallZFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		if (textureMatrix[i][j] == 1) {
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		} else if (textureMatrix[i][j] == 2) {
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		}
 		drawWallZFromQuad(gl,h);
 	}
@@ -732,7 +732,7 @@ public class Maze implements VisibleObject {
 		gl.glNormal3d(-1, 0, 0);
 
 		gl.glEnd();
-		gl.glBegin(GL.GL_QUAD_STRIP);
+		gl.glBegin(GL.GL_QUADS);
 
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
@@ -751,7 +751,7 @@ public class Maze implements VisibleObject {
 		gl.glDisable(GL.GL_CULL_FACE);
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		// TODO: light shading on walls
@@ -795,7 +795,7 @@ public class Maze implements VisibleObject {
 		gl.glEnd();
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		// TODO: light shading on walls
@@ -830,7 +830,7 @@ public class Maze implements VisibleObject {
 
 		// boven de deur
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		gl.glTexCoord2d(0.0, 0.0);
@@ -861,7 +861,7 @@ public class Maze implements VisibleObject {
 
 		// bovenkant wall
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
@@ -881,9 +881,9 @@ public class Maze implements VisibleObject {
 	private void paintWallXFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		if (textureMatrix[i][j] == 1) {
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		} else if (textureMatrix[i][j] == 2) {
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		}
 		drawWallXFromQuad(gl,h);
 	}
@@ -943,9 +943,9 @@ public static void drawWallXFromQuad(GL gl, double h){
 private void paintColumnFromQuad(GL gl, double h, int i, int j) {
 	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 	if (textureMatrix[i][j] == 1) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 	} else if (textureMatrix[i][j] == 2) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 	}
 	drawColumnFromQuad(gl,h);
 }
@@ -1007,5 +1007,9 @@ public static double getItemHeight(){
 
 public static double getColumnWidth(){
 	return COLUMN_WIDTH;
+}
+
+public static double getWallWidth(){
+	return WALL_LENGTH;
 }
 }

@@ -58,9 +58,7 @@ public class Database {
 				// name.
 				Teken.textDraw(autodrawable, gl, rs.getString("naam"), 0.35f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
 				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.65f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
-//				System.out.println("Score = "
-//						+ rs.getInt("score"));
-//				System.out.println("Name = " + rs.getString("naam"));
+
 				h-=0.1;
 			}
 		} catch (Exception e) {

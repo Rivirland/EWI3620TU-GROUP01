@@ -19,6 +19,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
+
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
@@ -99,7 +100,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	GLU glu;
 	GLAutoDrawable drawable;
 	
-
+	
 	public long getTime (){
 		return time;
 	}
@@ -145,6 +146,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		GLCapabilities caps = new GLCapabilities();
 		caps.setDoubleBuffered(true);
 		caps.setHardwareAccelerated(true);
+		caps.setStencilBits(8);
 
 		// Create a GLCanvas with the specified capabilities and add it to this
 		// frame. Now, we have a canvas to draw on using JOGL.
@@ -366,7 +368,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			//catch (FileNotFoundException e){System.out.println("file niet gevonden");}
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 			//leveleditor.setScreen(screenWidth, screenHeight);
 		}
 		//gl.glLoadIdentity();

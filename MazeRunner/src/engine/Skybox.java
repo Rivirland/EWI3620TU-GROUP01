@@ -29,12 +29,13 @@ public class Skybox {
 	    gl.glDisable(GL.GL_LIGHTING);
 	    gl.glDisable(GL.GL_BLEND);
 	 
+	    
 	    // Just in case we set all vertices to white.
 	    gl.glColor4f(1,1,1,1);
 	 
 	    // Render the front quad
 	    
-	    Teken.drawCuboid(gl,-1,1,-1,1,-1,1,new int[] {9,10,11,12,13,14});
+	    Teken.drawCuboid(gl,-1,1,-1,1,-1,1,new int[] {8,9,10,11,12,13});
 //	    gl.glBegin(GL.GL_QUADS);
 //	        gl.glTexCoord2f(0, 0); gl.glVertex3f(  0.5f, -0.5f, -0.5f );
 //	        gl.glTexCoord2f(1, 0); gl.glVertex3f( -0.5f, -0.5f, -0.5f );

@@ -159,15 +159,17 @@ public static Texture wallTexture1;
 		
 		levels.drawLevelList(drawable, gl, 622f/1920f*screenWidth, 90f/1080f*screenHeight, 740f/1920f*screenWidth, 776f/1080f*screenHeight, screenWidth, screenHeight, selectedLevel);
 		
+		// als er geen level is geselecteerd dan komt er geen grid
 		if (selectedLevel >= 0){
 			updateLevel();
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			veranderMatrixVolgensKlikInGrid(gl);
 		}
+		
 		modelviewer.display(gl, catalogus, drawMode, textureMode, hoogteMode);
 		Catalogus.drawCatalogus(gl, catalogus, drawMode, screenWidth, screenHeight, this);
-		drawFigure(gl);
+		
 		//gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);			
 				
 	}
