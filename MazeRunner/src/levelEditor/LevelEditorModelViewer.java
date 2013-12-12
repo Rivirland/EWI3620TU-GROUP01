@@ -84,20 +84,20 @@ public class LevelEditorModelViewer {
 			case KOLOM: //kolom
 				switch (textureMode) {
 				case 1:
-					Maze.paintColumnFromQuad(gl, 1,2);
+					Maze.paintColumnFromQuad(gl, 1,3);
 					break;
 				case 2:
-					Maze.paintColumnFromQuad(gl, 1,6);
+					Maze.paintColumnFromQuad(gl, 1,7);
 					break;
 				}
 				break;
 			case MUUR: //dak
 				switch (textureMode) {
 				case 1:
-					Maze.paintWallZFromQuad(gl,1,2);
+					Maze.paintWallZFromQuad(gl,1,3);
 					break;
 				case 2:
-					Maze.paintWallZFromQuad(gl, 1, 6);
+					Maze.paintWallZFromQuad(gl, 1, 7);
 					break;
 				}
 				break;
