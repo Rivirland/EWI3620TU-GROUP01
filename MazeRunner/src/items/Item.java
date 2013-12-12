@@ -13,61 +13,25 @@ public abstract class Item extends GameObject implements VisibleObject{
 		mazeID = i;
 	}
 	
-	public abstract double getGlobalX();
-	public abstract double getGlobalY();
-	public abstract double getGlobalZ();
+	public double getGlobalX(){
+		return this.locationX;
+	}
+	public double getGlobalY(){
+		return this.locationY;
+	}
+	public double getGlobalZ(){
+		return this.locationZ;
+	}
+	public double getLocalX(){
+		return this.locationX-MazeRunner.level.getMaze(mazeID).mazeX;
+	}
+	public double getLocalY(){
+		return this.locationY-MazeRunner.level.getMaze(mazeID).mazeY;
+	}
+	public double getLocalZ(){
+		return this.locationZ-MazeRunner.level.getMaze(mazeID).mazeZ;
+	}
 	public abstract void display(GL gl);
 	public abstract boolean touches(GameObject object);
-	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin,
-			double ymax, double zmin, double zmax) {
-//		 Floor plane
-		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3d(0, -1, 0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(xmin, ymin, zmin);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(xmin, ymin, zmax);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(xmax, ymin, zmax);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(xmax, ymin, zmin);
-//		 Top plane
-		gl.glNormal3d(0, 1, 0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(xmin, ymax, zmin);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(xmin, ymax, zmax);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(xmax, ymax, zmax);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(xmax, ymax, zmin);
-		gl.glEnd();
-		gl.glBegin(GL.GL_QUAD_STRIP);
-//		 Back plane
-		gl.glNormal3d(0, 0, -1);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(xmax, ymin, zmin);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(xmax, ymax, zmin);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(xmax, ymin, zmax);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(xmax, ymax, zmax);
-//		 Right side plane
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(xmin, ymin, zmax);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(xmin, ymax, zmax);
-//		 Front plane
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(xmin, ymin, zmin);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(xmin, ymax, zmin);
-//		 Left plane
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(xmax, ymin, zmin);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(xmax, ymax, zmin);
-		gl.glEnd();
-	}
+	
 }

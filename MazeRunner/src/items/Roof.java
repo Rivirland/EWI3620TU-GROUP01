@@ -28,7 +28,7 @@ public class Roof extends Item {
 		gl.glDisable(GL.GL_CULL_FACE);
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 
 		gl.glTexCoord2d(0.5, 1.0);
