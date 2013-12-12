@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="javax.media.opengl.GLAutoDrawable"/>
-<fullyQualifiedTypeName name="engine.ChangeGL"/>
-<fullyQualifiedTypeName name="items.TrapHolder"/>
-<fullyQualifiedTypeName name="java.sql.DriverManager"/>
-<fullyQualifiedTypeName name="menu.Main"/>
-<fullyQualifiedTypeName name="engine.Maze"/>
-<fullyQualifiedTypeName name="items.Item"/>
-<fullyQualifiedTypeName name="enemies.EnemySpooky"/>
-</qualifiedTypeNameHistroy>
+<qualifiedTypeNameHistroy/>

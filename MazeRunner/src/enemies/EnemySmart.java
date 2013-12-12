@@ -21,33 +21,33 @@ public class EnemySmart extends Enemy implements VisibleObject {
 		int currentMazeID = MazeRunner.level.getCurrentMaze(this);
 		Maze currentMaze = MazeRunner.level.getMaze(currentMazeID);
 		if (MazeRunner.level.inSameMaze(this, player) != -1) {
-			int enemyMatrixX = currentMaze.coordToMatrixElement(locationX);
-			int enemyMatrixZ = currentMaze.coordToMatrixElement(locationZ);
+			int enemyMatrixX = currentMaze.coordToMatrixElement(locationX-currentMaze.mazeX);
+			int enemyMatrixZ = currentMaze.coordToMatrixElement(locationZ-currentMaze.mazeZ);
 
-			double playerX = player.getLocationX();
-			double playerZ = player.getLocationZ();
+			double playerX = player.getLocalX();
+			double playerZ = player.getLocalZ();
 
 			int playerMatrixX = currentMaze.coordToMatrixElement(playerX);
 			int playerMatrixZ = currentMaze.coordToMatrixElement(playerZ);
-
+			
 			if (enemyMatrixX != playerMatrixX && enemyMatrixZ != playerMatrixZ) {
 				this.updateMovementPatrol();
 			}
 			if (enemyMatrixX == playerMatrixX && enemyMatrixZ == playerMatrixZ) {
-				if (locationX > playerX) {
+				if (locationX-currentMaze.mazeX > playerX) {
 					this.locationX -= this.speed * deltaTime;
 				}
-				if (locationX < playerX) {
+				if (locationX-currentMaze.mazeX < playerX) {
 					this.locationX += this.speed * deltaTime;
 				}
-				if (locationZ > playerZ) {
+				if (locationZ-currentMaze.mazeZ > playerZ) {
 					this.locationZ -= this.speed * deltaTime;
 				}
-				if (locationZ < playerZ) {
+				if (locationZ-currentMaze.mazeZ < playerZ) {
 					this.locationZ += this.speed * deltaTime;
 				}
-				if (Math.sqrt(Math.pow(locationZ - playerZ, 2)
-						+ Math.pow(locationX - playerX, 2)) < 1 && player.playerStateInt != 4) {
+				if (Math.sqrt(Math.pow(locationZ-currentMaze.mazeZ - playerZ, 2)
+						+ Math.pow(locationX-currentMaze.mazeX- playerX, 2)) < 1 && player.playerStateInt != 4) {
 					PlayerState.getState(Player.playerStateInt).leaving();
 					Player.playerStateInt = 3;
 					PlayerState.getState(Player.playerStateInt).entering();
@@ -58,7 +58,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				if (diffZ > 0) {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixZ; i > playerMatrixZ; i--) {
-						if (currentMaze.getCoords(enemyMatrixX, i) != 0
+						if (currentMaze.getCoords(enemyMatrixX, i) > 0
 								&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
@@ -71,7 +71,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				} else {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixZ; i < playerMatrixZ; i++) {
-						if (currentMaze.getCoords(enemyMatrixX, i) != 0
+						if (currentMaze.getCoords(enemyMatrixX, i) > 0
 								&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
@@ -88,7 +88,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				if (diffX > 0) {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixX; i > playerMatrixX; i--) {
-						if (currentMaze.getCoords(i, enemyMatrixZ) != 0
+						if (currentMaze.getCoords(i, enemyMatrixZ) > 0
 								&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
@@ -101,7 +101,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				} else {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixX; i < playerMatrixX; i++) {
-						if (currentMaze.getCoords(i, enemyMatrixZ) != 0
+						if (currentMaze.getCoords(i, enemyMatrixZ) > 0
 								&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
