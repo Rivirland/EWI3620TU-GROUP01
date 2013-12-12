@@ -106,7 +106,7 @@ public abstract class Animator {
 			t.setLocationY(t.getLocationY() + TrapDropped.vy0 * dT * i + TrapDropped.ay * dT * dT * i * i);
 
 			t.setLocationZ(t.getLocationZ() - (Math.cos(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
-			if (t.getLocationY() < curMaze.mazeY) {
+			if (t.getLocationY() <= curMaze.mazeY) {
 				t.inair = false;
 				t.setLocationY(curMaze.mazeY);
 				t.onground = true;

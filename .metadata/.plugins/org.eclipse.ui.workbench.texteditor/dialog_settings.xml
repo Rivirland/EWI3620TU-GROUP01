@@ -2,52 +2,28 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-<<<<<<< HEAD
 		<item value="185" key="DIALOG_Y_ORIGIN"/>
-=======
-		<item value="508" key="DIALOG_Y_ORIGIN"/>
-		<item value="1082" key="DIALOG_X_ORIGIN"/>
->>>>>>> 40553091a062391f7b23e0d621cc78f86f10bbc0
-		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="680" key="DIALOG_X_ORIGIN"/>
+		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
-		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="try" key="selection"/>
+		<item value="enemy" key="selection"/>
 		<list key="findhistory">
-			<item value="try"/>
-			<item value="GL_TE"/>
-			<item value="displaySkyBox"/>
-			<item value="player"/>
-			<item value="skyBox"/>
-			<item value="calculateVRP"/>
-			<item value="gluLookAt"/>
-			<item value="gluLook"/>
-=======
-		<item value="Texture" key="selection"/>
-		<list key="findhistory">
-			<item value="texture"/>
-			<item value="woodtexture"/>
-			<item value="mousepressed"/>
-			<item value="light"/>
-			<item value="setscreen"/>
-			<item value="scissor"/>
-			<item value="ortho"/>
-			<item value="glortho"/>
->>>>>>> 40553091a062391f7b23e0d621cc78f86f10bbc0
+			<item value="Enemy"/>
+			<item value="enemy"/>
+			<item value="ambient"/>
+			<item value="paintSingleFloorTile"/>
+			<item value="singleFloor"/>
+			<item value="listFiles"/>
+			<item value="loadText"/>
 		</list>
 		<list key="replacehistory">
-			<item value="MazeRunner.player"/>
-			<item value="200"/>
-			<item value="GL.GL"/>
-			<item value=""/>
-			<item value="gl.gl"/>
 		</list>
 	</section>
 </section>

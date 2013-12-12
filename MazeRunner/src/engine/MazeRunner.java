@@ -497,42 +497,42 @@ public class MazeRunner {
 
 	// 4: trapHolderTexture
 
-	public void loadTextures(GL gl){
+	public void loadTextures(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures";
-		
+
 		File f = new File(curDir);
-	    File[] files = f.listFiles();
-	    TextureData[] datas = new TextureData[(int) f.length()];
-	    
-	    for (int i = 0; i<files.length;i++){
-	    	try {
+		File[] files = f.listFiles();
+		TextureData[] datas = new TextureData[(int) f.length()];
+
+		for (int i = 0; i < files.length; i++) {
+			try {
 				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	    	System.out.println(files[i]);
-	    }
-	    
-	    catalogusdak1 = TextureIO.newTexture(datas[0]);
-	    cataloguskolom1 = TextureIO.newTexture(datas[1]);
-	    cataloguskolom2 = TextureIO.newTexture(datas[2]);
-	    earthTexture = TextureIO.newTexture(datas[3]);
-	    oildrumTexture = TextureIO.newTexture(datas[4]);
-	    roofTexture = TextureIO.newTexture(datas[5]);
-	    sb1 = TextureIO.newTexture(datas[6]);
-	    sb2 = TextureIO.newTexture(datas[7]);
-	    sb3 = TextureIO.newTexture(datas[8]);
-	    sb4 = TextureIO.newTexture(datas[9]);
-	    sb5 = TextureIO.newTexture(datas[10]);
-	    sb6 = TextureIO.newTexture(datas[11]);
-	    trapHolderTexture = TextureIO.newTexture(datas[12]);
-	    wallTexture = TextureIO.newTexture(datas[13]);
-	    woodTexture = TextureIO.newTexture(datas[14]);
-	    gl.glDisable(GL.GL_TEXTURE_2D);
+			System.out.println(files[i]);
+		}
+
+		catalogusdak1 = TextureIO.newTexture(datas[0]);
+		cataloguskolom1 = TextureIO.newTexture(datas[1]);
+		cataloguskolom2 = TextureIO.newTexture(datas[2]);
+		earthTexture = TextureIO.newTexture(datas[3]);
+		oildrumTexture = TextureIO.newTexture(datas[4]);
+		roofTexture = TextureIO.newTexture(datas[5]);
+		sb1 = TextureIO.newTexture(datas[6]);
+		sb2 = TextureIO.newTexture(datas[7]);
+		sb3 = TextureIO.newTexture(datas[8]);
+		sb4 = TextureIO.newTexture(datas[9]);
+		sb5 = TextureIO.newTexture(datas[10]);
+		sb6 = TextureIO.newTexture(datas[11]);
+		trapHolderTexture = TextureIO.newTexture(datas[12]);
+		wallTexture = TextureIO.newTexture(datas[13]);
+		woodTexture = TextureIO.newTexture(datas[14]);
+		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
-	
+
 	public void loadModels(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		try {
@@ -616,28 +616,31 @@ public class MazeRunner {
 				for (int i = 0; i < currentMaze.itemList.size(); i++) {
 					Item item = currentMaze.itemList.get(i);
 					if (item.touches(enemy) && item instanceof TrapDropped) {
-						// Enemy
-						enemyList.remove(enemy);
-						enemy.setSpeed(0);
-						enemy.setTrapped(true);
-						enemy.setTOD(currentTime);
-						enemy.setTrappedX(item.locationX);
-						enemy.setTrappedY(item.locationY);
-						enemy.setTrappedZ(item.locationZ);
+						if (!((TrapDropped) item).inair) {
+							// Enemy
+							enemyList.remove(enemy);
+							enemy.setSpeed(0);
+							enemy.setTrapped(true);
+							enemy.setTOD(currentTime);
+							enemy.setTrappedX(item.locationX);
+							enemy.setTrappedY(item.locationY);
+							enemy.setTrappedZ(item.locationZ);
 
-						// Item - TrapDropped
-						((TrapDropped) item).setTimeUsed(currentTime);
-						((TrapDropped) item).setUsed(true);
+							// Item - TrapDropped
+							((TrapDropped) item).setTimeUsed(currentTime);
+							((TrapDropped) item).setUsed(true);
 
-						// Item - TrapDropped - remove from itemlist in maze
-						MazeRunner.level.getMaze(MazeRunner.level
-								.getCurrentMaze(enemy)).itemList.remove(item);
+							// Item - TrapDropped - remove from itemlist in maze
+							MazeRunner.level.getMaze(MazeRunner.level
+									.getCurrentMaze(enemy)).itemList
+									.remove(item);
 
-						// Create trap GBS
-						TrapDroppedGBS tdGBS = new TrapDroppedGBS(
-								item.locationX, item.locationY, item.locationZ,
-								item.mazeID, currentTime);
-						visibleObjects.add(tdGBS);
+							// Create trap GBS
+							TrapDroppedGBS tdGBS = new TrapDroppedGBS(
+									item.locationX, item.locationY,
+									item.locationZ, item.mazeID, currentTime);
+							visibleObjects.add(tdGBS);
+						}
 					}
 				}
 			}

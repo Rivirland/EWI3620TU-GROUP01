@@ -73,7 +73,7 @@ public class PlayerStateTrap extends PlayerState {
 		gl.glDisable(GL.GL_CULL_FACE);
 		
 		
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 14);
 		MazeRunner.trapModel.display(gl);
 		gl.glPopMatrix();
 
