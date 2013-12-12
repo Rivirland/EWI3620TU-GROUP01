@@ -12,6 +12,8 @@ import menu.Teken;
 import engine.ChangeGL;
 import engine.Maze;
 
+import enemies.EnemySpooky;
+
 public class LevelEditorModelViewer {
 
 	private static final byte NIETS = 0;
@@ -20,8 +22,15 @@ public class LevelEditorModelViewer {
 	private static final byte DAK = 3;
 	private static final byte ITEM = 4;
 	
+	private static final byte DRAAIMODE = 0;
+	private static final byte ZOOMMODE = 1;
+	
+	private static int mousemode= DRAAIMODE;
+	
 	double rotationX;
 	double rotationY;
+	
+	double scalef;
 	
 	
 	GLUT glut;
@@ -41,6 +50,8 @@ public class LevelEditorModelViewer {
 		this.x2=x2;
 		this.y2=y2;
 		
+		scalef = screenWidth*50/782;
+		
 	}
 	
 	private void init(GL gl){
@@ -51,6 +62,8 @@ public class LevelEditorModelViewer {
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_TEXTURE_2D);
+		
+		
 	}
 	
 	private void stencilCut(GL gl){
@@ -100,8 +113,7 @@ public class LevelEditorModelViewer {
 		double height;
 		double width;
 		double length;
-		System.out.println(screenWidth); // 782
-		double scalef = screenWidth*50/782;
+		//double scalef = screenWidth*50/782;
 
 		
 		if (!catalogus){
@@ -147,11 +159,27 @@ public class LevelEditorModelViewer {
 					break;
 				}
 				break;
+				
+				
 			case DAK: //gebouw
+				height = Roof.getRoofHeight();
+				length= Roof.getRoofLength();
+				gl.glTranslated(length/2, height/2, length/2);
+				gl.glRotated(rotationY, 0.25,0,0);
+				gl.glRotated(rotationX,0,1,0);
+				gl.glScaled(scalef/2,scalef/2,scalef/2);
+				gl.glTranslated(-length/2, -height/2, -length/2);
+				
 					items.Roof.drawRoof(gl);
 				break;
 			case ITEM:
+				gl.glTranslated(0, -scalef, 0);
 				
+				gl.glRotated(rotationY, 0.25,0,0);
+				gl.glRotated(rotationX,0,1,0);
+				
+				gl.glScaled(scalef*2,scalef*2,scalef*2);
+				EnemySpooky.showEnemy(gl);
 				break;
 			}
 		} 
@@ -181,6 +209,7 @@ public class LevelEditorModelViewer {
 	}
 	
 	public void mouseReleased(MouseEvent e){
+		mousemode = DRAAIMODE;
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -194,15 +223,24 @@ public class LevelEditorModelViewer {
 	
 	public void mousePressed(MouseEvent e){
 		if (e.getX()>x1 && e.getX()<x2 && e.getY()>y1 && e.getY()<y2){
-			
+
 		x1mouse = e.getX();
 		y1mouse = e.getY();
 		x2mouse = x1mouse;
 		y2mouse = y1mouse;
+		
+		if (e.getButton()==2 || e.getButton()==3){
+			mousemode = ZOOMMODE;
+		}
+		
+		if (e.getClickCount()>=2 && e.getButton()==2 || e.getButton()==3) {
+			scalef=screenWidth*50/782;
+		}
 		}
 	}
 	
 	public void update (){
+
 		dX = x1mouse - x2mouse;
 		dY = y1mouse - y2mouse;
 		x1mouse = x2mouse;
@@ -212,15 +250,18 @@ public class LevelEditorModelViewer {
 	
 	public void rotateObject (){
 		if (dX>0){
-		System.out.println("x"+dX);
-		System.out.println("y"+dY);
 		}
 		
+		if (mousemode==DRAAIMODE){
 		rotationX= rotationX+dX;
 		
 		rotationY= rotationY+dY;
-		
-		
+		}
+		if (mousemode ==ZOOMMODE){
+			//scalef=scalef+dX;
+			scalef=scalef+dY;
+			if (scalef<0){scalef=0;}
+		}
 		dX=0;
 		dY=0;
 		

@@ -30,6 +30,7 @@ import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
+import engine.Maze;
 
 public class LevelEditor {
 	static final long serialVersionUID = 7526471155622776147L;
@@ -46,7 +47,7 @@ public class LevelEditor {
 	private static final byte KOLOM = 1;
 	private static final byte MUUR = 2;
 	private static final byte DAK = 3;
-	private static final byte GEBOUW = 4;
+	private static final byte ITEM = 4;
 	private byte drawMode = NIETS;
 	
 	private byte textureMode = 0;
@@ -169,9 +170,7 @@ public static Texture wallTexture1;
 		
 		modelviewer.display(gl, catalogus, drawMode, textureMode, hoogteMode);
 		Catalogus.drawCatalogus(gl, catalogus, drawMode, screenWidth, screenHeight, this);
-		
-		//gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);			
-				
+
 	}
 
 	/**
@@ -479,8 +478,8 @@ public static Texture wallTexture1;
 				}
 				else if (489f/1920f*screenWidth < me.getX() && me.getX() < 589f/1920f*screenWidth) {
 					// The fourth button is clicked
-					drawMode = GEBOUW;
-					System.out.println("Mode: GEBOUW");
+					drawMode = ITEM;
+					System.out.println("Mode: ITEM");
 					catalogus = true;
 				}
 
@@ -991,37 +990,6 @@ public static Texture wallTexture1;
 		return res;
 	}
 	
-	private void drawFigure(GL gl) {
-		if (!catalogus){
-			switch (drawMode) {
-			case NIETS:
-				break;
-			case KOLOM:
-				switch (textureMode) {
-				case 1:
-					tekenFakeKolom(gl);
-				case 2:
-					tekenFakeKolom(gl);
-				}
-				break;
-			case MUUR:
-				switch (textureMode) {
-				case 1:
-					tekenFakeMuur(gl);
-				case 2:
-					tekenFakeMuur(gl);
-				}
-				break;
-			case DAK:
-				
-				break;
-			case GEBOUW:
-				
-				break;
-			}
-		}
-	}
-	
 	private void drawGridInhoud(GLAutoDrawable drawable, GL gl){
 		float xmin = 830f/1920f*screenWidth;
 		float ymin = 90f/1080f*screenHeight;
@@ -1047,11 +1015,11 @@ public static Texture wallTexture1;
 		}
 		
 		//teken dak
-		for (int rij=1; rij <= wereld.length-1; rij=rij+2){
-			for (int kolom=1; kolom <= wereld[0].length-1; kolom=kolom+2){
-				if (textures[rij][kolom] > 0){
+		for (int rij=1; rij < wereld.length-1; rij=rij+2){
+			for (int kolom=1; kolom < wereld[0].length-1; kolom=kolom+2){
+				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een daktexture
-					tekenButton(gl, xmin+(kolom/2)*distance, ymax-rij/2*distance ,xmin+(kolom/2+1)*distance, ymax-(rij/2+1)*distance);
+					tekenButtonMetKleur(gl, xmin+(kolom/2)*distance, ymax-rij/2*distance ,xmin+(kolom/2+1)*distance, ymax-(rij/2+1)*distance, 147f/255f, 80f/255f, 51f/255f);
 				}
 				if (wereld[rij][kolom]!=0 && heightsOn){
 					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin+(kolom/2)*distance+distance/2, ymax-(rij/2+1)*distance+distance/2, 20f/1080f*screenHeight, 1f, 1f, 1f);
@@ -1064,11 +1032,11 @@ public static Texture wallTexture1;
 			for (int kolom=0; kolom <= wereld[0].length; kolom=kolom+2){
 				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een kolomtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 1f, 0f, 0f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
 				}
 				else if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een kolomtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 0f, 1f, 0f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
 			}
 		}	
@@ -1078,11 +1046,11 @@ public static Texture wallTexture1;
 			for (int kolom=0; kolom <= wereld[0].length; kolom=kolom+2){
 				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 1f ,0f, 0f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 135f/255f, 22f/255f, 16f/255f);
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 0f, 1f, 0f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
 			}
 		}
@@ -1092,11 +1060,11 @@ public static Texture wallTexture1;
 			for (int kolom=1; kolom <= wereld[0].length-1; kolom=kolom+2){
 				if (textures[rij][kolom]==1){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 1f, 0f, 0f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 0f, 1f, 0f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
 			}
 		}
@@ -1202,6 +1170,11 @@ public static Texture wallTexture1;
 					{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 					};
 	  return defaultmatrix;
+	}
+	
+	public static int[] defaultLocation(){
+		int[] defaultlocation = {0, 0, 0};
+		return defaultlocation;
 	}
 	
 	public void loadTextures(GL gl) {

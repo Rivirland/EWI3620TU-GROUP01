@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
@@ -19,7 +21,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
-
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
@@ -35,7 +36,7 @@ import engine.UserInput;
 
 
 
-public class Main extends Frame implements GLEventListener, MouseListener, KeyListener, MouseMotionListener {
+public class Main extends Frame implements GLEventListener, MouseListener, MouseWheelListener, KeyListener, MouseMotionListener {
 	static final long serialVersionUID = 7526471155622776147L;
 
 	// Screen size.
@@ -396,7 +397,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			catch (FileNotFoundException e){System.out.println("file niet gevonden");}	
 			gl.glMatrixMode(GL.GL_PROJECTION);
 			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 		}
 		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
@@ -477,7 +478,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			// Update the projection to an orthogonal projection using the new screen size
 						gl.glMatrixMode(GL.GL_PROJECTION);
 						gl.glLoadIdentity();
-						gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
+						gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 						
 			break;
 		}
@@ -608,6 +609,7 @@ public void mouseReleased(MouseEvent me) {
 			break;
 		case LEVELEDITOR:
 			try {leveleditor.mousePressed(e);} catch (FileNotFoundException e1) {e1.printStackTrace();}
+			System.out.println(e.getButton());
 			break;
 		case PAUZE:
 			
@@ -669,6 +671,13 @@ public void mouseReleased(MouseEvent me) {
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		System.out.println("ÿeah");
+		System.out.println(e.getWheelRotation());
 		
 	}
 }

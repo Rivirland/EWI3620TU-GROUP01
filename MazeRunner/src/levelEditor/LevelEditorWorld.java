@@ -68,7 +68,7 @@ public class LevelEditorWorld {
 	}
 	
 	public void addLevel(){
-		levels.add(new LevelEditorLevel("nieuw", LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix()));
+		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix(), new ArrayList<double[]>()));
 	}
 	
 	public int mouseReleased(float x, float y, float xmin, float ymin, float xmax, float ymax, int selectedLevel){
