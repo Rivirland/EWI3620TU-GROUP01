@@ -91,7 +91,7 @@ public class Level {
 					&& object.locationZ > maze.getMinZ()
 					&& object.locationZ < maze.getMaxZ()
 					&& object.locationY >= maze.getMazeY()
-					&& object.locationY <= maze.getMazeY() + Maze.ITEM_HEIGHT*maze.maxHeight) {
+					&& object.locationY <= maze.getMazeY() + 500) {
 				return i;
 			}
 		}

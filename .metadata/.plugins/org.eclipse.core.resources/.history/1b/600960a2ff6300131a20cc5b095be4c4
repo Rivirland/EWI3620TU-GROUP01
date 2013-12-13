@@ -661,7 +661,7 @@ public class MazeRunner {
 				if (MazeRunner.level.collides(b, 0)[0]) {
 					if (maze.textureMatrix[maze
 							.coordToMatrixElement(b.locationX - maze.mazeX)][maze
-							.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 2  && b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT*maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
+							.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 2  && b.locationY <= Maze.ITEM_HEIGHT*maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
 						maze.maze[maze.coordToMatrixElement(b.locationX
 								- maze.mazeX)][maze
 								.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;

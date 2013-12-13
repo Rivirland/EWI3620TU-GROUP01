@@ -59,7 +59,6 @@ public class Maze implements VisibleObject {
 	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int[][] visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
-	public int maxHeight;
 
 	public Maze(String filename, int i) {
 		mazeID = i - 1;
@@ -311,9 +310,6 @@ public class Maze implements VisibleObject {
 				// System.out.println(Integer.parseInt(st.nextToken()) +
 				// " en row: " + row + " en col: " + col);
 				maze[row][col] = Integer.parseInt(st.nextToken());
-				if(maze[row][col] > maxHeight){
-					maxHeight = maze[row][col];
-				}
 				// System.out.println(maze[col][row]);
 				col++;
 			}
