@@ -431,7 +431,7 @@ public class MazeRunner {
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
 		} else {
 			System.out.println("1");
-			float lightColour[] = { 1.0f, 0.0f, 0.0f, 0.0f };
+			float lightColour[] = { 0.5f, 0.5f, 0.5f, 0.5f };
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
 		}
 	}

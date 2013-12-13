@@ -431,8 +431,8 @@ public class MazeRunner {
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
 		} else {
 			System.out.println("1");
-			float lightColour[] = { 1.0f, 0.0f, 0.0f, 0.0f };
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
+			float lightColour[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, lightColour, 1);
 		}
 	}
 
@@ -775,7 +775,7 @@ public class MazeRunner {
 		}
 	}
 
-	private void reticle(GL gl) {
+	private void reticlebla(GL gl) {
 		ChangeGL.GLto2D(gl);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
