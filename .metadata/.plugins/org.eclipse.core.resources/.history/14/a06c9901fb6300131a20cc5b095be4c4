@@ -29,9 +29,7 @@ public class PlayerStateTrap extends PlayerState {
 					+ Player.nrOfTraps);
 		} else if (MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1){
 			System.out.println("out of traps");
-		} else {
-			System.out.println("Not in a maze");
-		}
+		}// Drop trap
 			// TODO Auto-generated method stub
 
 	}
