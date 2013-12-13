@@ -16,8 +16,11 @@ public class Model {
 	public void display(GL gl) {
 		gl.glBegin(GL.GL_TRIANGLES);
 		for (Face face : this.getFaces()) {
-			Vector3d n1 = this.getNormals().get(face.getNormalIndices()[0] - 1);
-			gl.glNormal3d(n1.x, n1.y, n1.z);
+			if (hasNormals()) {
+				Vector3d n1 = this.getNormals().get(
+						face.getNormalIndices()[0] - 1);
+				gl.glNormal3d(n1.x, n1.y, n1.z);
+			}
 			if (face.hasTextureCoordinates()) {
 				Vector2d t1 = this.getTextureCoordinates().get(
 						face.getTextureCoordinateIndices()[0] - 1);
@@ -26,8 +29,11 @@ public class Model {
 			Vector3d v1 = this.getVertices()
 					.get(face.getVertexIndices()[0] - 1);
 			gl.glVertex3d(v1.x, v1.y, v1.z);
-			Vector3d n2 = this.getNormals().get(face.getNormalIndices()[1] - 1);
-			gl.glNormal3d(n2.x, n2.y, n2.z);
+			if (hasNormals()) {
+				Vector3d n2 = this.getNormals().get(
+						face.getNormalIndices()[1] - 1);
+				gl.glNormal3d(n2.x, n2.y, n2.z);
+			}
 			if (face.hasTextureCoordinates()) {
 				Vector2d t2 = this.getTextureCoordinates().get(
 						face.getTextureCoordinateIndices()[1] - 1);
@@ -36,8 +42,11 @@ public class Model {
 			Vector3d v2 = this.getVertices()
 					.get(face.getVertexIndices()[1] - 1);
 			gl.glVertex3d(v2.x, v2.y, v2.z);
-			Vector3d n3 = this.getNormals().get(face.getNormalIndices()[2] - 1);
-			gl.glNormal3d(n3.x, n3.y, n3.z);
+			if (hasNormals()) {
+				Vector3d n3 = this.getNormals().get(
+						face.getNormalIndices()[2] - 1);
+				gl.glNormal3d(n3.x, n3.y, n3.z);
+			}
 			if (face.hasTextureCoordinates()) {
 				Vector2d t3 = this.getTextureCoordinates().get(
 						face.getTextureCoordinateIndices()[2] - 1);

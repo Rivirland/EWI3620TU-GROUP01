@@ -413,10 +413,10 @@ public class MazeRunner {
 		// portal1.calcPortaltoPlayer(player);
 		// portal2.calcPortaltoPlayer(player);
 
-		// Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: "
-		// + playingTime / 1000, (float) (0.05 * screenHeight),
-		// (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-		// PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
+		 Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: "
+		 + playingTime / 1000, (float) (0.05 * screenHeight),
+		 (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
+		 PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
