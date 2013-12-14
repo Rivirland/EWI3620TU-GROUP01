@@ -416,6 +416,7 @@ public class MazeRunner {
 		
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
+		Reticle.reticle(gl);
 
 		gl.glFlush();
 

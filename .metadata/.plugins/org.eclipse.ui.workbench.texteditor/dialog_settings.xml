@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-<<<<<<< HEAD
 		<item value="305" key="DIALOG_WIDTH"/>
-		<item value="256" key="DIALOG_Y_ORIGIN"/>
-		<item value="1624" key="DIALOG_X_ORIGIN"/>
+		<item value="198" key="DIALOG_Y_ORIGIN"/>
+		<item value="1232" key="DIALOG_X_ORIGIN"/>
 		<item value="442" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-=======
-		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="185" key="DIALOG_Y_ORIGIN"/>
-		<item value="380" key="DIALOG_HEIGHT"/>
-		<item value="680" key="DIALOG_X_ORIGIN"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
->>>>>>> 25967e26cf5a2cd1e4b35a906dcc51e7d4532f02
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
@@ -21,36 +13,18 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="Minimap" key="selection"/>
+		<item value="itemUse" key="selection"/>
 		<list key="findhistory">
-			<item value="minimap"/>
-			<item value="DRAWMODE"/>
-			<item value="GEBOUW"/>
-			<item value="spooky"/>
-			<item value="system.out.println"/>
+			<item value="pla"/>
+			<item value="itemuse"/>
+			<item value="update("/>
 			<item value="mousepressed"/>
-			<item value="WALL_LENGTH"/>
-			<item value="WALL_HEIGHT"/>
+			<item value="forward"/>
+			<item value="itemus"/>
+			<item value="vk_space"/>
+			<item value="screenWidth"/>
 		</list>
 		<list key="replacehistory">
-			<item value="ROOF_LENGTH"/>
-			<item value="ROOF_HEIGHT"/>
-			<item value="WALL_HEIGHT"/>
-=======
-		<item value="&#x09;&#x09;display" key="selection"/>
-		<list key="findhistory">
-			<item value="&#x09;&#x09;display"/>
-			<item value="display"/>
-			<item value="numpad"/>
-			<item value="rNr"/>
-			<item value="enemySm"/>
-			<item value="local"/>
-			<item value="getLoc"/>
-			<item value="glColor"/>
-		</list>
-		<list key="replacehistory">
->>>>>>> 25967e26cf5a2cd1e4b35a906dcc51e7d4532f02
 		</list>
 	</section>
 </section>

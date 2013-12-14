@@ -15,7 +15,8 @@ import engine.Maze;
 import enemies.EnemySpooky;
 
 public class LevelEditorModelViewer {
-
+	
+	private static int previousMode=0;;
 	private static final byte NIETS = 0;
 	private static final byte KOLOM = 1;
 	private static final byte MUUR = 2;
@@ -114,13 +115,18 @@ public class LevelEditorModelViewer {
 		double width;
 		double length;
 		//double scalef = screenWidth*50/782;
-
+		
 		
 		if (!catalogus){
 			switch (drawMode) {
 			case NIETS: //niets
 				break;
 			case KOLOM: //kolom
+				if (previousMode != drawMode){
+					scalef = screenWidth*50/782;
+					previousMode = drawMode;
+				}
+				
 				height = Maze.getItemHeight();
 				width = Maze.getColumnWidth();
 				
@@ -141,6 +147,11 @@ public class LevelEditorModelViewer {
 				}
 				break;
 			case MUUR: 
+				if (previousMode != drawMode){
+					scalef = screenWidth*50/782;
+					previousMode = drawMode;
+				}
+				
 				height = Maze.getItemHeight();
 				width = Maze.getColumnWidth();
 				length = Maze.getWallWidth();
@@ -162,6 +173,12 @@ public class LevelEditorModelViewer {
 				
 				
 			case DAK: //gebouw
+				
+				if (previousMode != drawMode){
+					scalef = screenWidth*50/782;
+					previousMode = drawMode;
+				}
+				
 				height = Roof.getRoofHeight();
 				length= Roof.getRoofLength();
 				gl.glTranslated(length/2, height/2, length/2);
@@ -173,6 +190,12 @@ public class LevelEditorModelViewer {
 					items.Roof.drawRoof(gl);
 				break;
 			case ITEM:
+				
+				if (previousMode != drawMode){
+					scalef = screenWidth*50/782;
+					previousMode = drawMode;
+				}
+				
 				gl.glTranslated(0, -scalef, 0);
 				
 				gl.glRotated(rotationY, 0.25,0,0);
@@ -206,6 +229,8 @@ public class LevelEditorModelViewer {
 		this.y1=y1;
 		this.x2=x2;
 		this.y2=y2;
+		
+		scalef = screenWidth*50/782;
 	}
 	
 	public void mouseReleased(MouseEvent e){

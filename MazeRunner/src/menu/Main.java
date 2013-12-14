@@ -460,7 +460,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 			//ingame.setScreen(screenWidth,screenHeight);
 			break;
 		case LEVELEDITOR:
-			//leveleditor.setScreen(screenWidth, screenHeight);
+			
 			
 			// Update the projection to an orthogonal projection using the new screen size
 			gl.glMatrixMode(GL.GL_PROJECTION);
@@ -473,7 +473,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 			break;
 			
 		case LOADLEVEL:
-			//leveleditor.setScreen(screenWidth,screenHeight);
+			
 			
 			// Update the projection to an orthogonal projection using the new screen size
 						gl.glMatrixMode(GL.GL_PROJECTION);
@@ -496,17 +496,17 @@ public void mouseReleased(MouseEvent me) {
 			
 		switch(gamestate){
 		case MAINMENU: 
-			mainmenu.setScreen(screenWidth, screenHeight);
+			
 			gamestate = mainmenu.mouseReleased(me);
 			
 			
 			break;
 		case GAMEMENU:
-			gamemenu.setScreen(screenWidth, screenHeight);
+			
 			gamestate = gamemenu.MouseReleased(me);
 			break;
 		case LEVELMENU:
-			levelmenu.setScreen(screenWidth, screenHeight);
+			
 			gamestate = levelmenu.MouseReleased(me);
 			
 			break;
@@ -523,7 +523,7 @@ public void mouseReleased(MouseEvent me) {
 			
 			break;
 		case LEVELEDITOR:
-			leveleditor.setScreen(screenWidth, screenHeight);
+			
 			leveleditor.mouseReleased(me);
 			
 			break;
@@ -531,7 +531,7 @@ public void mouseReleased(MouseEvent me) {
 			
 			break;
 		case LOADLEVEL:
-			leveleditor.setScreen(screenWidth, screenHeight);
+			
 			leveleditor.mouseReleased(me);
 		}
 	}

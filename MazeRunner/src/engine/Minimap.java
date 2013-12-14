@@ -165,4 +165,8 @@ public class Minimap {
 		gl.glEnd();
 
 	}
+	
+	public static void reticle(GL gl){
+		
+	}
 }

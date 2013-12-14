@@ -224,11 +224,18 @@ public class Player extends GameObject {
 				PlayerState.getState(playerStateInt).itemUse();
 				control.itemUse = false;
 			}
-		}else{
+			
+			if(control.gunShoot && playerStateInt==2){
+				System.out.println(playerStateInt);
+				PlayerStateGun.shootGun();
+				control.gunShoot=false;
+			}
+			
+		/*}else{
 			if (control.itemUse) {
 				PlayerState.getState(playerStateInt).itemUse();
-				control.itemUse = false;
-			}
+				control.itemUse = false;}*/
+			
 		}
 	}
 
