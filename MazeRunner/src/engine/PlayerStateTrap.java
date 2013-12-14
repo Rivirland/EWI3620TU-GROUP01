@@ -12,7 +12,7 @@ public class PlayerStateTrap extends PlayerState {
 
 	@Override
 	public void itemUse() {
-		if (Player.nrOfTraps > 0) {
+		if (Player.nrOfTraps > 0 && MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1) {
 			Player.nrOfTraps--;
 
 			double trapX=MazeRunner.player.getGlobalX();
@@ -27,9 +27,11 @@ public class PlayerStateTrap extends PlayerState {
 			
 			System.out.println("Trap dropped, motherfucker! nrOfTraps: "
 					+ Player.nrOfTraps);
-		} else {
+		} else if (MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1){
 			System.out.println("out of traps");
-		}// Drop trap
+		} else {
+			System.out.println("Not in a maze");
+		}
 			// TODO Auto-generated method stub
 
 	}

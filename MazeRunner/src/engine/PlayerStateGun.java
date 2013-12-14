@@ -80,6 +80,7 @@ Sound.reload.play();
 		gl.glTranslated(x, y, z);
 		gl.glRotated(MazeRunner.player.getHorAngle(),0,1,0);
 		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
+		gl.glScaled(0.5,0.5,0.5);
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		MazeRunner.m21Model.display(gl);

@@ -376,10 +376,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 		//gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 		gl = drawable.getGL();
 		//gl.glLoadIdentity();
-		
 		leveleditor.display(drawable, gl);
 		currentstate = gamestate;
-		
 		break;
 	case PAUZE:
 		

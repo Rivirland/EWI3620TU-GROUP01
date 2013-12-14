@@ -59,6 +59,7 @@ public class Maze implements VisibleObject {
 	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int[][] visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
+	public int maxHeight;
 
 	public Maze(String filename, int i) {
 		mazeID = i - 1;
@@ -105,14 +106,15 @@ public class Maze implements VisibleObject {
 		}
 		File objectsFile = new File(filename + "_o.txt");
 		readObjects(objectsFile);
-		for(int row = 1; row < MAZE_SIZE_X; row += 2){
-			for(int col = 1; col < MAZE_SIZE_Z; col += 2){
-				if (maze[row][col] > 0){
+		for (int row = 1; row < MAZE_SIZE_X; row += 2) {
+			for (int col = 1; col < MAZE_SIZE_Z; col += 2) {
+				if (maze[row][col] > 0) {
 					double rx = Math.floor((row + 1) / 2) * COLUMN_WIDTH
 							+ Math.floor(row / 2) * WALL_LENGTH;
 					double rz = Math.floor((col + 1) / 2) * COLUMN_WIDTH
 							+ Math.floor(col / 2) * WALL_LENGTH;
-					Roof r = new Roof(rx+mazeX,ITEM_HEIGHT*maze[row][col]+mazeY,rz+mazeZ,mazeID, WALL_LENGTH, row, col);
+					Roof r = new Roof(rx + mazeX, ITEM_HEIGHT * maze[row][col]
+							+ mazeY, rz + mazeZ, mazeID, WALL_LENGTH, row, col);
 					MazeRunner.roofList.add(r);
 				}
 			}
@@ -134,7 +136,8 @@ public class Maze implements VisibleObject {
 						int fd = Integer.parseInt(st.nextToken());
 						int portalID = Integer.parseInt(st.nextToken());
 						int portalConID = Integer.parseInt(st.nextToken());
-						Portal portal = new Portal((float)objectX, mazeY, (float)objectZ, fd, portalID, portalConID);
+						Portal portal = new Portal((float) objectX, mazeY,
+								(float) objectZ, fd, portalID, portalConID);
 						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
 						// (float)objectY, objectZ, fd);
@@ -166,8 +169,9 @@ public class Maze implements VisibleObject {
 								objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
-//						System.out.println("Maakt " + amount + " bullets op: "
-//								+ objectX + ", " + objectZ);
+						// System.out.println("Maakt " + amount +
+						// " bullets op: "
+						// + objectX + ", " + objectZ);
 					} else if (objectNumber == 5) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
@@ -175,7 +179,7 @@ public class Maze implements VisibleObject {
 								mazeID);
 						itemList.add(th);
 						MazeRunner.visibleObjects.add(th);
-					} else if (objectNumber == 6){
+					} else if (objectNumber == 6) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
@@ -208,6 +212,7 @@ public class Maze implements VisibleObject {
 					textureMatrix[row][col] = Integer.parseInt(st.nextToken());
 					col++;
 				}
+
 				col = 0;
 				row++;
 			}
@@ -238,7 +243,7 @@ public class Maze implements VisibleObject {
 		bufRdr.close();
 		MAZE_SIZE_X = row;
 		MAZE_SIZE_Z = col;
-		
+
 		maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 		textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 		visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
@@ -316,6 +321,9 @@ public class Maze implements VisibleObject {
 				// System.out.println(Integer.parseInt(st.nextToken()) +
 				// " en row: " + row + " en col: " + col);
 				maze[row][col] = Integer.parseInt(st.nextToken());
+				if (maze[row][col] > maxHeight) {
+					maxHeight = maze[row][col];
+				}
 				// System.out.println(maze[col][row]);
 				col++;
 			}
@@ -341,7 +349,7 @@ public class Maze implements VisibleObject {
 	}
 
 	// Prints the maze.
-	public void printMatrix() {
+	public void printMaze() {
 		String res = "";
 		for (int i = 0; i < maze.length; i++) {
 			for (int j = 0; j < maze[0].length; j++) {
@@ -368,6 +376,14 @@ public class Maze implements VisibleObject {
 			return maze[x][z] > 0;
 		else
 			return false;
+	}
+
+	public boolean isDebris(int x, int z) {
+		if (maze[x][z] == -1) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	// Basically the same as isWall;
@@ -430,11 +446,11 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
-//		displayItems(gl);
+		// displayItems(gl);
 		// draw the grid with the current material
 		for (int i = 0; i < MAZE_SIZE_X; i++) {
 			for (int j = 0; j < MAZE_SIZE_Z; j++) {
-				if (maze[i][j] == -1) {
+				if (isDebris(i, j)) {
 					gl.glPushMatrix();
 					// Here you calculate the coordinates for which the
 					// bottom left point of the element has to be drawn
@@ -477,8 +493,8 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,even) paints a wall in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i,j);
-//							paintDoorZFromQuad(gl, height * ITEM_HEIGHT);
+							paintWallZFromQuad(gl, height * ITEM_HEIGHT, i, j);
+							// paintDoorZFromQuad(gl, height * ITEM_HEIGHT);
 						}
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {
@@ -486,7 +502,7 @@ public class Maze implements VisibleObject {
 						}
 						// (odd,odd) paints a roof
 						if (i % 2 != 0 && j % 2 != 0) {
-//							paintRoof(gl, (height + 1) * ITEM_HEIGHT);
+							// paintRoof(gl, (height + 1) * ITEM_HEIGHT);
 						}
 						gl.glPopMatrix();
 
@@ -513,8 +529,8 @@ public class Maze implements VisibleObject {
 
 		drawDebrisXFromQuad(gl);
 	}
-	
-	public static void drawDebrisXFromQuad(GL gl){
+
+	public static void drawDebrisXFromQuad(GL gl) {
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
@@ -548,7 +564,7 @@ public class Maze implements VisibleObject {
 		gl.glEnable(GL.GL_CULL_FACE);
 
 	}
-	
+
 	private void paintDebrisColumnFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
@@ -556,60 +572,60 @@ public class Maze implements VisibleObject {
 
 		drawDebrisColumnFromQuad(gl);
 	}
-	private static void paintDebrisFromQuad(GL gl,double h,int texture){
+
+	private static void paintDebrisFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 		drawDebrisColumnFromQuad(gl);
 	}
-	
-	public static void drawDebrisColumnFromQuad(GL gl){
-			gl.glTexCoord2d(0.0, 0.0);
-			gl.glVertex3d(0.0, 0, 0.0);
-			gl.glTexCoord2d(0.0, 1.0);
-			gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
 
-			gl.glTexCoord2d(1.0, 0.0);
-			gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
-			gl.glTexCoord2d(1.0, 1.0);
-			gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, 0.0);
-			gl.glNormal3d(0, 0, -1);
+	public static void drawDebrisColumnFromQuad(GL gl) {
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
 
-			gl.glTexCoord2d(0.0, 0.0);
-			gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
-			gl.glTexCoord2d(0.0, 1.0);
-			gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, COLUMN_WIDTH);
-			gl.glNormal3d(1, 0, 0);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, 0.0);
+		gl.glNormal3d(0, 0, -1);
 
-			gl.glTexCoord2d(1.0, 0.0);
-			gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
-			gl.glTexCoord2d(1.0, 1.0);
-			gl.glVertex3d(0.0, ITEM_HEIGHT / 10, COLUMN_WIDTH);
-			gl.glNormal3d(0, 0, -1);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, COLUMN_WIDTH);
+		gl.glNormal3d(1, 0, 0);
 
-			gl.glTexCoord2d(0.0, 0.0);
-			gl.glVertex3d(0.0, 0, 0.0);
-			gl.glTexCoord2d(0.0, 1.0);
-			gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-			gl.glNormal3d(-1, 0, 0);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, COLUMN_WIDTH);
+		gl.glNormal3d(0, 0, -1);
 
-			gl.glEnd();
-			gl.glEnable(GL.GL_CULL_FACE);
-	 }
-	 
-	 
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, 0, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
+		gl.glNormal3d(-1, 0, 0);
+
+		gl.glEnd();
+		gl.glEnable(GL.GL_CULL_FACE);
+	}
 
 	private void paintDebrisZFromQuad(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		gl.glBegin(GL.GL_QUAD_STRIP);
 		drawDebrisZFromQuad(gl);
-		
+
 	}
-	
-	private static void paintDebrisZFromQuad(GL gl,double h,int texture){
+
+	private static void paintDebrisZFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 		drawDebrisZFromQuad(gl);
 	}
-	public static void drawDebrisZFromQuad(GL gl){
+
+	public static void drawDebrisZFromQuad(GL gl) {
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, 0, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
@@ -642,14 +658,12 @@ public class Maze implements VisibleObject {
 		gl.glEnable(GL.GL_CULL_FACE);
 
 	}
-	
 
-
-//	private void displayItems(GL gl) {
-//		for (int i = 0; i < itemList.size(); i++) {
-////			itemList.get(i).display(gl);
-//		}
-//	}
+	// private void displayItems(GL gl) {
+	// for (int i = 0; i < itemList.size(); i++) {
+	// // itemList.get(i).display(gl);
+	// }
+	// }
 
 	/**
 	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent
@@ -663,9 +677,14 @@ public class Maze implements VisibleObject {
 
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
-		float wallColour[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
+		if (Player.playerStateInt == 0) {
+			float wallColour[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			gl.glMaterialfv(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT, wallColour, 0);
+		} 
+		else {
+			float wallColour[] = { 1.0f, 0.0f, 0.0f, 0.0f };
+			gl.glMaterialfv(GL.GL_FRONT_AND_BACK, GL.GL_DIFFUSE, wallColour, 0);
+		}
 
 		// Apply texture.
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
@@ -693,13 +712,14 @@ public class Maze implements VisibleObject {
 		} else if (textureMatrix[i][j] == 2) {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		}
-		drawWallZFromQuad(gl,h);
+		drawWallZFromQuad(gl, h);
 	}
-	public static void paintWallZFromQuad(GL gl,double h,int texture){
+
+	public static void paintWallZFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawWallZFromQuad(gl,h);
+		drawWallZFromQuad(gl, h);
 	}
-	
+
 	// Paints a roof using a trianglefan
 	public static void drawWallZFromQuad(GL gl, double h) {
 		gl.glBegin(GL.GL_QUAD_STRIP);
@@ -739,16 +759,13 @@ public class Maze implements VisibleObject {
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
 
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
 		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
+		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
 		gl.glNormal3d(0, 1, 0);
 
 		gl.glEnd();
 	}
 
-
-	
-	
 	private void paintDoorZFromQuad(GL gl, double h) {
 		gl.glDisable(GL.GL_CULL_FACE);
 
@@ -758,17 +775,17 @@ public class Maze implements VisibleObject {
 
 		// TODO: light shading on walls
 		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, wallColour, 0);
-		
-		drawDoorZFromQuad(gl,h);
-		
+
+		drawDoorZFromQuad(gl, h);
+
 	}
-	
-	private static void paintDoorZFromQuad(GL gl,double h,int texture){
+
+	private static void paintDoorZFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawDoorZFromQuad(gl,h);
+		drawDoorZFromQuad(gl, h);
 	}
-	
-	public static void drawDoorZFromQuad(GL gl, double h){
+
+	public static void drawDoorZFromQuad(GL gl, double h) {
 		gl.glTexCoord2d(0.0, 0.0);
 		gl.glVertex3d(0.0, h, 0.0);
 		gl.glTexCoord2d(0.0, 1.0);
@@ -875,9 +892,6 @@ public class Maze implements VisibleObject {
 
 		gl.glEnd();
 	}
-	
-
-
 
 	// Paints a wall in the X-direction
 	private void paintWallXFromQuad(GL gl, double h, int i, int j) {
@@ -887,16 +901,16 @@ public class Maze implements VisibleObject {
 		} else if (textureMatrix[i][j] == 2) {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
 		}
-		drawWallXFromQuad(gl,h);
+		drawWallXFromQuad(gl, h);
 	}
-	
-	private static void paintWallXFromQuad(GL gl,double h,int texture){
+
+	private static void paintWallXFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawWallXFromQuad(gl,h);
+		drawWallXFromQuad(gl, h);
 	}
-	
-public static void drawWallXFromQuad(GL gl, double h){
-		
+
+	public static void drawWallXFromQuad(GL gl, double h) {
+
 		gl.glBegin(GL.GL_QUAD_STRIP);
 
 		gl.glTexCoord2d(0.0, 0.0);
@@ -940,78 +954,79 @@ public static void drawWallXFromQuad(GL gl, double h){
 
 		gl.glEnd();
 	}
+
 	// Paints a column
 
-private void paintColumnFromQuad(GL gl, double h, int i, int j) {
-	gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-	if (textureMatrix[i][j] == 1) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-	} else if (textureMatrix[i][j] == 2) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
+	private void paintColumnFromQuad(GL gl, double h, int i, int j) {
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		if (textureMatrix[i][j] == 1) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
+		} else if (textureMatrix[i][j] == 2) {
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
+		}
+		drawColumnFromQuad(gl, h);
 	}
-	drawColumnFromQuad(gl,h);
-}
 
-public static void paintColumnFromQuad(GL gl,double h,int texture){
-	gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-	drawColumnFromQuad(gl,h);
-}
+	public static void paintColumnFromQuad(GL gl, double h, int texture) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+		drawColumnFromQuad(gl, h);
+	}
 
-public static void drawColumnFromQuad(GL gl, double h){
-	gl.glBegin(GL.GL_QUAD_STRIP);
+	public static void drawColumnFromQuad(GL gl, double h) {
+		gl.glBegin(GL.GL_QUAD_STRIP);
 
-	gl.glTexCoord2d(0.0, 0.0);
-	gl.glVertex3d(0.0, h, 0.0);
-	gl.glTexCoord2d(0.0, 1.0);
-	gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 
-	gl.glTexCoord2d(1.0, 0.0);
-	gl.glVertex3d(COLUMN_WIDTH, h, 0.0);
-	gl.glTexCoord2d(1.0, 1.0);
-	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
-	gl.glNormal3d(0, 0, -1);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, h, 0.0);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
+		gl.glNormal3d(0, 0, -1);
 
-	gl.glTexCoord2d(0.0, 0.0);
-	gl.glVertex3d(COLUMN_WIDTH, +h, COLUMN_WIDTH);
-	gl.glTexCoord2d(0.0, 1.0);
-	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
-	gl.glNormal3d(1, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, +h, COLUMN_WIDTH);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
+		gl.glNormal3d(1, 0, 0);
 
-	gl.glTexCoord2d(1.0, 0.0);
-	gl.glVertex3d(0.0, h, COLUMN_WIDTH);
-	gl.glTexCoord2d(1.0, 1.0);
-	gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
-	gl.glNormal3d(0, 0, -1);
+		gl.glTexCoord2d(1.0, 0.0);
+		gl.glVertex3d(0.0, h, COLUMN_WIDTH);
+		gl.glTexCoord2d(1.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
+		gl.glNormal3d(0, 0, -1);
 
-	gl.glTexCoord2d(0.0, 0.0);
-	gl.glVertex3d(0.0, h, 0.0);
-	gl.glTexCoord2d(0.0, 1.0);
-	gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-	gl.glNormal3d(-1, 0, 0);
+		gl.glTexCoord2d(0.0, 0.0);
+		gl.glVertex3d(0.0, h, 0.0);
+		gl.glTexCoord2d(0.0, 1.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glNormal3d(-1, 0, 0);
 
-	gl.glEnd();
+		gl.glEnd();
 
-	gl.glBegin(GL.GL_QUAD_STRIP);
+		gl.glBegin(GL.GL_QUAD_STRIP);
 
-	gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-	gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
 
-	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
-	gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
-	gl.glNormal3d(0, 1, 0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
+		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
+		gl.glNormal3d(0, 1, 0);
 
-	gl.glEnd();
-}
+		gl.glEnd();
+	}
 
-public static double getItemHeight(){
-	return ITEM_HEIGHT;
-}
+	public static double getItemHeight() {
+		return ITEM_HEIGHT;
+	}
 
-public static double getColumnWidth(){
-	return COLUMN_WIDTH;
-}
+	public static double getColumnWidth() {
+		return COLUMN_WIDTH;
+	}
 
-public static double getWallWidth(){
-	return WALL_LENGTH;
-}
+	public static double getWallWidth() {
+		return WALL_LENGTH;
+	}
 }

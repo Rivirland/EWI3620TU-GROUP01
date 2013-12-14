@@ -244,9 +244,10 @@ public class MazeRunner {
 		gl.glEnable(GL.GL_LIGHTING);
 		float lightPosition[] = { 3.25f, 8.0f, 30.0f, 1.0f }; // High up in the
 		// sky!
-		float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // White light
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
+		// White light=
+		float lightColour[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, lightColour, 1);
+
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_LIGHT0);
@@ -346,6 +347,7 @@ public class MazeRunner {
 		updateMovement(deltaTime, drawable);
 		updateCamera();
 		updatePlayingTime();
+		updateLighting(gl);
 
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
@@ -354,8 +356,10 @@ public class MazeRunner {
 			Minimap.displayMinimap(gl);
 		}
 		gl.glLoadIdentity();
-		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
-				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
+		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
+				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
+				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
+				camera.getVuvZ());
 
 		// gl.glLoadIdentity();
 
@@ -409,17 +413,28 @@ public class MazeRunner {
 		// portal1.calcPortaltoPlayer(player);
 		// portal2.calcPortaltoPlayer(player);
 
-//		Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: "
-//				+ playingTime / 1000, (float) (0.05 * screenHeight),
-//				(float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-//		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
-		
+		 Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: "
+		 + playingTime / 1000, (float) (0.05 * screenHeight),
+		 (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
+		 PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
+
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 		Reticle.reticle(gl);
 
 		gl.glFlush();
 
+	}
+
+	private void updateLighting(GL gl) {
+		if (Player.playerStateInt == 0) {
+			float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
+		} else {
+			System.out.println("1");
+			float lightColour[] = { 1.0f, 0.0f, 0.0f, 0.0f };
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
+		}
 	}
 
 	/**
@@ -540,7 +555,7 @@ public class MazeRunner {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\oildrum.obj";
 			spookyModel = OBJLoader.loadTexturedModel(new File(filename));
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -662,7 +677,14 @@ public class MazeRunner {
 				if (MazeRunner.level.collides(b, 0)[0]) {
 					if (maze.textureMatrix[maze
 							.coordToMatrixElement(b.locationX - maze.mazeX)][maze
-							.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 2) {
+							.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 2
+							&& b.locationY <= maze.mazeY
+									+ Maze.ITEM_HEIGHT
+									* maze.maze[maze
+											.coordToMatrixElement(b.locationX
+													- maze.mazeX)][maze
+											.coordToMatrixElement(b.locationZ
+													- maze.mazeZ)]) {
 						maze.maze[maze.coordToMatrixElement(b.locationX
 								- maze.mazeX)][maze
 								.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
@@ -699,10 +721,18 @@ public class MazeRunner {
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 						Enemy e = enemyList.get(eNr);
-						System.out.println(maze.coordToMatrixElement(e.getGlobalX()-maze.mazeX) +" " + r.matrixX + " " +  maze.coordToMatrixElement(e.getGlobalZ()-maze.mazeZ) + " " + r.matrixZ);
+						System.out.println(maze.coordToMatrixElement(e
+								.getGlobalX() - maze.mazeX)
+								+ " "
+								+ r.matrixX
+								+ " "
+								+ maze.coordToMatrixElement(e.getGlobalZ()
+										- maze.mazeZ) + " " + r.matrixZ);
 						if (e instanceof EnemySmart
-								&& maze.coordToMatrixElement(e.getGlobalX()-maze.mazeX) == r.matrixX
-								&& maze.coordToMatrixElement(e.getGlobalZ()-maze.mazeZ) == r.matrixZ) {
+								&& maze.coordToMatrixElement(e.getGlobalX()
+										- maze.mazeX) == r.matrixX
+								&& maze.coordToMatrixElement(e.getGlobalZ()
+										- maze.mazeZ) == r.matrixZ) {
 							enemyList.remove(e);
 							player.score += 400;
 							e.setDead(true);
@@ -745,37 +775,42 @@ public class MazeRunner {
 			}
 		}
 	}
-	
-	private void reticlebla(GL gl){
+
+	private void reticle(GL gl) {
 		ChangeGL.GLto2D(gl);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
-		//gl.glMatrixMode(GL.GL_PROJECTION);
+		// gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
 		gl.glViewport(0, 0, screenWidth, screenHeight);
 		gl.glColor3d(1, 1, 1);
-		//Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5, screenHeight+5);
+		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
+		// screenHeight+5);
 		Teken.rechthoek(gl, 0, 0, screenWidth, screenHeight);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		ChangeGL.GLto3D(gl);
 	}
-	
-	private void reticle2(GL gl){
+
+	private void reticle2(GL gl) {
 		ChangeGL.GLto2D(gl);
 		gl.glEnable(GL.GL_SCISSOR_TEST);
-		//gl.glMatrixMode(GL.GL_PROJECTION);
-		//gl.glScissor(screenWidth-5, screenHeight-5, screenWidth+5, screenHeight+5);
-		//gl.glScissor((screenWidth/2), (screenHeight/2), (screenWidth/2), (screenHeight/2));
-		
+		// gl.glMatrixMode(GL.GL_PROJECTION);
+		// gl.glScissor(screenWidth-5, screenHeight-5, screenWidth+5,
+		// screenHeight+5);
+		// gl.glScissor((screenWidth/2), (screenHeight/2), (screenWidth/2),
+		// (screenHeight/2));
+
 		gl.glViewport(0, 0, screenWidth, screenHeight);
 		gl.glColor3d(1, 1, 1);
-		Teken.rechthoek(gl, screenWidth/2-50, screenHeight/2-50, screenWidth/2+50, screenHeight/2+50);
-		//gl.glClearColor(1, 1, 1, 1);
-		//gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		//gl.glColor3d(1, 1, 1);
-		//Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5, screenHeight+5);
-		
-		//gl.glMatrixMode(GL.GL_MODELVIEW);
+		Teken.rechthoek(gl, screenWidth / 2 - 50, screenHeight / 2 - 50,
+				screenWidth / 2 + 50, screenHeight / 2 + 50);
+		// gl.glClearColor(1, 1, 1, 1);
+		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		// gl.glColor3d(1, 1, 1);
+		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
+		// screenHeight+5);
+
+		// gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glDisable(GL.GL_SCISSOR_TEST);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		ChangeGL.GLto3D(gl);

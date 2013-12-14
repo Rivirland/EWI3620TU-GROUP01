@@ -24,6 +24,8 @@ public class PlayerStateVictory extends PlayerState{
 	@Override
 	public void entering() {
 		Player.canMove = false;
+		InputDialog ID = new InputDialog();
+		String name = ID.getName();
 //		System.out.println("Victory! Score: " + MazeRunner.player.score);	
 		try {
 //			Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + MazeRunner.level.getNaam());
@@ -31,7 +33,7 @@ public class PlayerStateVictory extends PlayerState{
 			Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS highscores" + MazeRunner.level.getNaam()
 					+ " (naam STRING, score INT);");
 			Main.db.stat.executeUpdate("INSERT INTO highscores" + MazeRunner.level.getNaam()
-					+ " (naam, score) values ('Joris', " + MazeRunner.player.score + ");");
+					+ " (naam, score) values ('" + name + "', " + MazeRunner.player.score + ");");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,9 +49,8 @@ public class PlayerStateVictory extends PlayerState{
 
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
-		String st= "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC LIMIT 0,4";
+		String st= "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC LIMIT 0,5";
 		Main.db.printHighscores(autodrawable, gl, st);
-
 	}
 
 	@Override
