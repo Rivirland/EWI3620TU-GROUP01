@@ -362,8 +362,6 @@ public static Texture wallTexture1;
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		rechthoek(gl, 622f/1920f*screenWidth, 948f/1080f*screenHeight, 740f/1920f*screenWidth, 990f/1080f*screenHeight);
 		rechthoek(gl, 622f/1920f*screenWidth, 890f/1080f*screenHeight, 740f/1920f*screenWidth, 932f/1080f*screenHeight);
-		Teken.textDrawMetKleur(drawable, gl, (levels.get(selectedLevel).getLocation()[0] + ", " + levels.get(selectedLevel).getLocation()[1] + ", " + levels.get(selectedLevel).getLocation()[2]), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
-		
 		
 		//levelbuttons
 		tekenButton(gl, 622f/1920f*screenWidth, (860f-51f)/1080f*screenHeight, (622f+51f)/1920f*screenWidth, 860f/1080f*screenHeight);
