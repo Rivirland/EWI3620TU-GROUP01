@@ -244,6 +244,7 @@ public class Player extends GameObject {
 		if (control.toggleMinimap) {
 			control.minimap = !control.minimap;
 			control.toggleMinimap = false;
+			System.out.println("minimap:  " + control.minimap);
 		}
 
 		int mazeID = MazeRunner.level.getCurrentMaze(this);
