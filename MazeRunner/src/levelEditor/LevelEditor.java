@@ -30,6 +30,7 @@ import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
+import engine.InputDialog;
 import engine.Maze;
 
 public class LevelEditor {
@@ -67,6 +68,7 @@ public class LevelEditor {
 	private Texture backTexture;
 	
 	private LevelEditorWorld levels;
+	private int[] location;
 	private int[][] wereld;
 	private int[][] textures;
 	private ArrayList<double[]> items;
@@ -106,6 +108,7 @@ public static Texture wallTexture1;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.levels = levels;
+		this.location = levels.get(0).getLocation();
 		this.wereld = levels.get(0).getGebouwen();
 		this.textures = levels.get(0).getTextures();
 		this.items = levels.get(0).getItemList();
@@ -144,6 +147,7 @@ public static Texture wallTexture1;
 		
 		// als er geen level is geselecteerd dan komt er geen grid
 		if (selectedLevel >= 0){
+			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			veranderMatrixVolgensKlikInGrid(gl);
@@ -362,8 +366,6 @@ public static Texture wallTexture1;
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		rechthoek(gl, 622f/1920f*screenWidth, 948f/1080f*screenHeight, 740f/1920f*screenWidth, 990f/1080f*screenHeight);
 		rechthoek(gl, 622f/1920f*screenWidth, 890f/1080f*screenHeight, 740f/1920f*screenWidth, 932f/1080f*screenHeight);
-		Teken.textDrawMetKleur(drawable, gl, (levels.get(selectedLevel).getLocation()[0] + ", " + levels.get(selectedLevel).getLocation()[1] + ", " + levels.get(selectedLevel).getLocation()[2]), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
-		
 		
 		//levelbuttons
 		tekenButton(gl, 622f/1920f*screenWidth, (860f-51f)/1080f*screenHeight, (622f+51f)/1920f*screenWidth, 860f/1080f*screenHeight);
@@ -386,6 +388,7 @@ public static Texture wallTexture1;
 
 	public void updateLevel(){
 		if ((selectedLevelPrevious != selectedLevel || open ||(remove && levels.getSize() != selectedLevel)) && levels.getSize() > 0){
+			this.location = levels.get(selectedLevel).getLocation();
 			this.wereld = levels.get(selectedLevel).getGebouwen();
 			this.textures = levels.get(selectedLevel).getTextures();
 			this.items = levels.get(selectedLevel).getItemList();
@@ -394,9 +397,11 @@ public static Texture wallTexture1;
 			selectedLevelPrevious = selectedLevel;
 			remove=false;
 			open=false;
+			System.out.println("update");
 		}
 		else{
 			try{
+			levels.get(selectedLevel).setLocation(this.location);
 			levels.get(selectedLevel).setGebouwen(this.wereld);
 			levels.get(selectedLevel).setTextures(this.textures);
 			levels.get(selectedLevel).setItemList(this.items);}
@@ -597,6 +602,14 @@ public static Texture wallTexture1;
 				gridklikx = me.getX();
 				gridkliky = screenHeight - me.getY();
 				gridklik = true;
+			}
+			
+			//locatie knop
+			if ((1-932f/1080f)*screenHeight < me.getY() && me.getY() < (1-890f/1080f)*screenHeight){
+				if (622f/1920f*screenWidth < me.getX() && me.getX() < 740f/1920f*screenWidth){
+					InputLocation il = new InputLocation();
+					this.location = il.getLocation();
+				}
 			}
 			
 			//level knoppen
@@ -1076,13 +1089,13 @@ public static Texture wallTexture1;
 		for (int item=0; item < items.size(); item++){
 			//System.out.println(item);
 			if (items.get(item)[0] == 2){
-				float x = (float) levels.get(selectedLevel).getItem(item)[1];
-				float z = (float) levels.get(selectedLevel).getItem(item)[2];
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 17);
 			}
 			if (items.get(item)[0] == 3){
-				float x = (float) levels.get(selectedLevel).getItem(item)[1];
-				float z = (float) levels.get(selectedLevel).getItem(item)[2];
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 18);
 			}
 		}

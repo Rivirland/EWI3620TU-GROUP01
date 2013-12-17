@@ -196,7 +196,10 @@ public class LevelEditorLevel {
 		setName(filename);
 		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
-		bestand.println("0,0,0,");
+		for (int i=0; i!=3; i++){
+			bestand.print(location[i] + ",");
+		}
+		bestand.println();
 		for (int i = 0; i != gebouwen.length; i++){
 			for (int j = 0; j!=gebouwen[0].length; j++){
 				bestand.print(gebouwen[i][j] + ",");
