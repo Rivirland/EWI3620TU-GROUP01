@@ -129,7 +129,7 @@ public class Maze implements VisibleObject {
 			try {
 				while ((line = bufRdrTex.readLine()) != null) {
 					StringTokenizer st = new StringTokenizer(line, ",");
-					int objectNumber = Integer.parseInt(st.nextToken());
+					double objectNumber = Double.parseDouble(st.nextToken());
 					if (objectNumber == 1) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
