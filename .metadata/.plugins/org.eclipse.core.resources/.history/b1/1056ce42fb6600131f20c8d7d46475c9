@@ -221,7 +221,6 @@ public class LevelEditorLevel {
 			}
 			bestand3.println();
 		}
-		bestand3.close();
 	}
 	
 	public void open() throws FileNotFoundException {
