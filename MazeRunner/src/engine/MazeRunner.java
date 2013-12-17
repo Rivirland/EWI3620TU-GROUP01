@@ -195,6 +195,10 @@ public class MazeRunner {
 		this.input = input;
 		player.setControl(input);
 	}
+	
+	public ArrayList<VisibleObject> getVisibleObjects(){
+		return MazeRunner.visibleObjects;
+	}
 
 	/*
 	 * **********************************************

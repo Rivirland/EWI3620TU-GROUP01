@@ -194,6 +194,7 @@ public class LevelEditorLevel {
 			filename = filename.substring(0, filename.length()-4);
 		}
 		setName(filename);
+		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
 		bestand.println("0,0,0,");
 		for (int i = 0; i != gebouwen.length; i++){
@@ -212,6 +213,15 @@ public class LevelEditorLevel {
 			bestand2.println();
 		}
 		bestand2.close();
+		
+		PrintWriter bestand3 = new PrintWriter(currentdir + "\\levels\\" + filename + "_o.txt");
+		for (int item = 0; item != itemlist.size(); item++){
+			for (int itemcontent = 0; itemcontent != itemlist.get(item).length; itemcontent++){
+				bestand3.print(itemlist.get(item)[itemcontent] + ",");
+			}
+			bestand3.println();
+		}
+		bestand3.close();
 	}
 	
 	public void open() throws FileNotFoundException {

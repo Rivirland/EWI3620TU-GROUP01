@@ -22,6 +22,8 @@ public class LevelEditorModelViewer {
 	private static final byte MUUR = 2;
 	private static final byte DAK = 3;
 	private static final byte ITEM = 4;
+	private static final byte WORLD = 5;
+	
 	
 	private static final byte DRAAIMODE = 0;
 	private static final byte ZOOMMODE = 1;
@@ -204,9 +206,14 @@ public class LevelEditorModelViewer {
 				gl.glScaled(scalef*2,scalef*2,scalef*2);
 				EnemySpooky.showEnemy(gl);
 				break;
+			case WORLD:
+				
+				
+				
+				break;
 			}
-		} 
-		
+		}
+	
 		gl.glPopMatrix();
 		gl.glPopMatrix();
 		//gl.glOrtho(0,0,screenWidth,screenHeight, -1, 1);

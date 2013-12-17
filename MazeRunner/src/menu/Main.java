@@ -148,6 +148,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 		caps.setDoubleBuffered(true);
 		caps.setHardwareAccelerated(true);
 		caps.setStencilBits(8);
+		
 
 		// Create a GLCanvas with the specified capabilities and add it to this
 		// frame. Now, we have a canvas to draw on using JOGL.

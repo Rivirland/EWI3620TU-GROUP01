@@ -362,6 +362,8 @@ public static Texture wallTexture1;
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		rechthoek(gl, 622f/1920f*screenWidth, 948f/1080f*screenHeight, 740f/1920f*screenWidth, 990f/1080f*screenHeight);
 		rechthoek(gl, 622f/1920f*screenWidth, 890f/1080f*screenHeight, 740f/1920f*screenWidth, 932f/1080f*screenHeight);
+		Teken.textDrawMetKleur(drawable, gl, (levels.get(selectedLevel).getLocation()[0] + ", " + levels.get(selectedLevel).getLocation()[1] + ", " + levels.get(selectedLevel).getLocation()[2]), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
+		
 		
 		//levelbuttons
 		tekenButton(gl, 622f/1920f*screenWidth, (860f-51f)/1080f*screenHeight, (622f+51f)/1920f*screenWidth, 860f/1080f*screenHeight);
@@ -621,7 +623,9 @@ public static Texture wallTexture1;
 			//saveWorldAs (tijdelijk)
 			if (10f/1080f*screenHeight < me.getY() && me.getY() < 80f/1080f*screenHeight)
 			if (15f/1920f*screenWidth < me.getX() && me.getX() < 85f/1920f*screenWidth){
-				System.out.println("save");
+				try{levels.saveAs();}
+				catch(FileNotFoundException e) {e.printStackTrace();}
+				System.out.println("World saved");
 			}
 		}
 		
@@ -773,10 +777,10 @@ public static Texture wallTexture1;
 			//plaats item
 			if (drawMode == ITEM){
 				if (textureMode ==2){
-					items.add(new double[]{textureMode, (gridklikx-xmin)*7f/distance, (gridkliky-ymin)*7f/distance});
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
 				}
 				if (textureMode ==3){
-					items.add(new double[]{textureMode, (gridklikx-xmin)*7f/distance, (gridkliky-ymin)*7f/distance});
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
 				}
 			}
 			
@@ -1074,12 +1078,12 @@ public static Texture wallTexture1;
 			if (items.get(item)[0] == 2){
 				float x = (float) levels.get(selectedLevel).getItem(item)[1];
 				float z = (float) levels.get(selectedLevel).getItem(item)[2];
-				plaatsTexture2(gl, xmin+x/7f*distance-distance/4, ymin+z/7f*distance-distance/4, xmin+x/7f*distance+distance/4, ymin+z/7f*distance+distance/4, 17);
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 17);
 			}
 			if (items.get(item)[0] == 3){
 				float x = (float) levels.get(selectedLevel).getItem(item)[1];
 				float z = (float) levels.get(selectedLevel).getItem(item)[2];
-				plaatsTexture2(gl, xmin+x/7f*distance-distance/4, ymin+z/7f*distance-distance/4, xmin+x/7f*distance+distance/4, ymin+z/7f*distance+distance/4, 18);
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 18);
 			}
 		}
 		

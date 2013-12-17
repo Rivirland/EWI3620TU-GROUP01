@@ -1,5 +1,6 @@
 package levelEditor;
 
+import java.awt.Frame;
 import java.awt.MouseInfo;
 import java.io.*;
 import java.util.*;
@@ -7,6 +8,7 @@ import java.util.*;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import menu.KiesFileUitBrowser;
 import menu.Teken;
 
 public class LevelEditorWorld {
@@ -69,6 +71,23 @@ public class LevelEditorWorld {
 	
 	public void addLevel(){
 		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix(), new ArrayList<double[]>()));
+	}
+	
+	public void saveAs() throws FileNotFoundException{
+		//PrintWriter bestand = new PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
+		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+		String currentdir = System.getProperty("user.dir");
+		String filename = kfub.saveFile(new Frame(), "Save world as...", currentdir + "\\worlds\\", "*");
+		//als de bestandsnaam al eindigt op .txt , knip dat er dan af
+		if (filename.substring(filename.length()-4, filename.length()).equals(".txt")){
+			filename = filename.substring(0, filename.length()-4);
+		}
+		
+		PrintWriter bestand = new PrintWriter(currentdir + "\\worlds\\" + filename + ".txt");
+		for (int i = 0; i != levels.size(); i++){
+			bestand.println(levels.get(i).getName());
+		}
+		bestand.close();
 	}
 	
 	public int mouseReleased(float x, float y, float xmin, float ymin, float xmax, float ymax, int selectedLevel){
