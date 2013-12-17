@@ -209,7 +209,7 @@ public class Maze implements VisibleObject {
 			while ((line = bufRdrTex.readLine()) != null && row < MAZE_SIZE_Z) {
 				StringTokenizer st = new StringTokenizer(line, ",");
 				while (st.hasMoreTokens()) {
-					textureMatrix[row][col] = Integer.parseInt(st.nextToken());
+					textureMatrix[MAZE_SIZE_X-1-row][col] = Integer.parseInt(st.nextToken());
 					col++;
 				}
 
@@ -320,9 +320,9 @@ public class Maze implements VisibleObject {
 			while (st.hasMoreTokens()) {
 				// System.out.println(Integer.parseInt(st.nextToken()) +
 				// " en row: " + row + " en col: " + col);
-				maze[row][col] = Integer.parseInt(st.nextToken());
-				if (maze[row][col] > maxHeight) {
-					maxHeight = maze[row][col];
+				maze[MAZE_SIZE_X-1-row][col] = Integer.parseInt(st.nextToken());
+				if (maze[MAZE_SIZE_X-1-row][col] > maxHeight) {
+					maxHeight = maze[MAZE_SIZE_X-1-row][col];
 				}
 				// System.out.println(maze[col][row]);
 				col++;

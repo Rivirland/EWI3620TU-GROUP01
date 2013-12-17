@@ -224,18 +224,19 @@ public class Player extends GameObject {
 				PlayerState.getState(playerStateInt).itemUse();
 				control.itemUse = false;
 			}
-			
-			if(control.gunShoot && playerStateInt==2){
+
+			if (control.gunShoot && playerStateInt == 2) {
 				System.out.println(playerStateInt);
 				PlayerStateGun.shootGun();
-				control.gunShoot=false;
+				control.gunShoot = false;
 			}
-			
-		/*}else{
-			if (control.itemUse) {
-				PlayerState.getState(playerStateInt).itemUse();
-				control.itemUse = false;}*/
-			
+
+			/*
+			 * }else{ if (control.itemUse) {
+			 * PlayerState.getState(playerStateInt).itemUse(); control.itemUse =
+			 * false;}
+			 */
+
 		}
 	}
 
@@ -243,24 +244,39 @@ public class Player extends GameObject {
 		if (control.toggleMinimap) {
 			control.minimap = !control.minimap;
 			control.toggleMinimap = false;
-			System.out.println("minimap:  " + control.minimap);
 		}
 
 		int mazeID = MazeRunner.level.getCurrentMaze(this);
 		if (mazeID != -1) {
 			Maze curMaze = MazeRunner.level.getMaze(mazeID);
+			int MSX = curMaze.MAZE_SIZE_X;
+			int MSZ = curMaze.MAZE_SIZE_Z;
 			int playerXM = curMaze.coordToMatrixElement(getLocalX());
 			int playerZM = curMaze.coordToMatrixElement(getLocalZ());
-			if (curMaze.visitedMatrix[playerXM][playerZM] != 1) {
-				curMaze.visitedMatrix[playerXM-1][playerZM+1] = 1;
-				curMaze.visitedMatrix[playerXM][playerZM+1] = 1;
-				curMaze.visitedMatrix[playerXM+1][playerZM+1] = 1;
-				curMaze.visitedMatrix[playerXM-1][playerZM] = 1;
-				curMaze.visitedMatrix[playerXM][playerZM] = 1;
-				curMaze.visitedMatrix[playerXM+1][playerZM] = 1;
-				curMaze.visitedMatrix[playerXM-1][playerZM-1] = 1;
-				curMaze.visitedMatrix[playerXM][playerZM-1] = 1;
-				curMaze.visitedMatrix[playerXM+1][playerZM-1] = 1;
+			if (playerXM > 0 && playerZM < MSZ - 1) {
+				curMaze.visitedMatrix[playerXM - 1][playerZM + 1] = 1;
+			}
+			if (playerZM < MSZ - 1) {
+				curMaze.visitedMatrix[playerXM][playerZM + 1] = 1;
+			}
+			if (playerXM < MSX - 1 && playerZM < MSZ - 1) {
+				curMaze.visitedMatrix[playerXM + 1][playerZM + 1] = 1;
+			}
+			if (playerXM > 0) {
+				curMaze.visitedMatrix[playerXM - 1][playerZM] = 1;
+			}
+			curMaze.visitedMatrix[playerXM][playerZM] = 1;
+			if (playerXM < MSX - 1) {
+				curMaze.visitedMatrix[playerXM + 1][playerZM] = 1;
+			}
+			if (playerXM > 0 && playerZM > 0) {
+				curMaze.visitedMatrix[playerXM - 1][playerZM - 1] = 1;
+			}
+			if (playerZM > 0) {
+				curMaze.visitedMatrix[playerXM][playerZM - 1] = 1;
+			}
+			if (playerXM < MSX - 1 && playerZM > 0) {
+				curMaze.visitedMatrix[playerXM + 1][playerZM - 1] = 1;
 			}
 		}
 	}
@@ -297,14 +313,23 @@ public class Player extends GameObject {
 		control.setdY(0);
 
 	}
-	public double getLocalX(){
-		return this.locationX-MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
+
+	public double getLocalX() {
+		return this.locationX
+				- MazeRunner.level.getMaze(MazeRunner.level
+						.getCurrentMaze(this)).mazeX;
 	}
-	public double getLocalY(){
-		return this.locationY-MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+
+	public double getLocalY() {
+		return this.locationY
+				- MazeRunner.level.getMaze(MazeRunner.level
+						.getCurrentMaze(this)).mazeY;
 	}
-	public double getLocalZ(){
-		return this.locationZ-MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+
+	public double getLocalZ() {
+		return this.locationZ
+				- MazeRunner.level.getMaze(MazeRunner.level
+						.getCurrentMaze(this)).mazeZ;
 	}
 
 }
