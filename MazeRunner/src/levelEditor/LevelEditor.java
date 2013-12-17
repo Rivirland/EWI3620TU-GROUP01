@@ -69,6 +69,7 @@ public class LevelEditor {
 	private LevelEditorWorld levels;
 	private int[][] wereld;
 	private int[][] textures;
+	private ArrayList<double[]> items;
 	
 public static Texture wallTexture1;
 	
@@ -107,6 +108,7 @@ public static Texture wallTexture1;
 		this.levels = levels;
 		this.wereld = levels.get(0).getGebouwen();
 		this.textures = levels.get(0).getTextures();
+		this.items = levels.get(0).getItemList();
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
 		loadTextures(gl);
@@ -120,30 +122,8 @@ public static Texture wallTexture1;
 		this.screenHeight = screenHeight;
 		modelviewer.reshape(screenWidth, screenHeight,(int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
 	}
+
 	
-
-	public void loadTextures(GL gl, String filename){
-		gl.glEnable(GL.GL_TEXTURE_1D);
-		Texture backTexture = null;
-		try {
-			String currentdir = System.getProperty("user.dir");
-			//String filename = "EditorBackground.png";
-			
-			filename = currentdir+filename;
-			File file = new File(filename);
-			System.out.println(filename);
-            //InputStream stream = getClass().getResourceAsStream("texture.jpg");
-            TextureData data = TextureIO.newTextureData(file, false, "jpg");
-            backTexture = TextureIO.newTexture(data);
-        }
-        catch (IOException exc) {
-        	System.out.println("niet gevonden");
-            exc.printStackTrace();
-            System.exit(1);
-        }
-	}
-
-
 	/**
 	 * A function defined in GLEventListener. This function is called many times per second and should 
 	 * contain the rendering code.
@@ -156,13 +136,14 @@ public static Texture wallTexture1;
 		gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		
+		plaatsTexture(gl, 0f, 0f, 1920f, 1080f, 19);
 		tekenLevelEditorAchtergrond(drawable, gl);
 		
 		levels.drawLevelList(drawable, gl, 622f/1920f*screenWidth, 90f/1080f*screenHeight, 740f/1920f*screenWidth, 776f/1080f*screenHeight, screenWidth, screenHeight, selectedLevel);
+		updateLevel();
 		
 		// als er geen level is geselecteerd dan komt er geen grid
 		if (selectedLevel >= 0){
-			updateLevel();
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			veranderMatrixVolgensKlikInGrid(gl);
@@ -405,6 +386,7 @@ public static Texture wallTexture1;
 		if ((selectedLevelPrevious != selectedLevel || open ||(remove && levels.getSize() != selectedLevel)) && levels.getSize() > 0){
 			this.wereld = levels.get(selectedLevel).getGebouwen();
 			this.textures = levels.get(selectedLevel).getTextures();
+			this.items = levels.get(selectedLevel).getItemList();
 			gridrows= (wereld.length-1)/2;
 			gridcolumns = (wereld[0].length-1)/2;
 			selectedLevelPrevious = selectedLevel;
@@ -414,7 +396,8 @@ public static Texture wallTexture1;
 		else{
 			try{
 			levels.get(selectedLevel).setGebouwen(this.wereld);
-			levels.get(selectedLevel).setTextures(this.textures);}
+			levels.get(selectedLevel).setTextures(this.textures);
+			levels.get(selectedLevel).setItemList(this.items);}
 			catch(IndexOutOfBoundsException e){
 				selectedLevel--;
 				selectedLevelPrevious = selectedLevel;
@@ -498,6 +481,12 @@ public static Texture wallTexture1;
 						// The second button is clicked
 						textureMode = 2;
 						System.out.println("Catalogus: TEXTURE 2");
+						catalogus = false;
+					}
+					if (349.4f/1920*screenWidth < me.getX() && me.getX() < 449.4f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 3;
+						System.out.println("Catalogus: TEXTURE 3");
 						catalogus = false;
 					}
 				}
@@ -778,6 +767,16 @@ public static Texture wallTexture1;
 							
 						}
 					}
+				}
+			}
+			
+			//plaats item
+			if (drawMode == ITEM){
+				if (textureMode ==2){
+					items.add(new double[]{textureMode, (gridklikx-xmin)*7f/distance, (gridkliky-ymin)*7f/distance});
+				}
+				if (textureMode ==3){
+					items.add(new double[]{textureMode, (gridklikx-xmin)*7f/distance, (gridkliky-ymin)*7f/distance});
 				}
 			}
 			
@@ -1068,6 +1067,22 @@ public static Texture wallTexture1;
 				}
 			}
 		}
+		
+		//teken items
+		for (int item=0; item < items.size(); item++){
+			//System.out.println(item);
+			if (items.get(item)[0] == 2){
+				float x = (float) levels.get(selectedLevel).getItem(item)[1];
+				float z = (float) levels.get(selectedLevel).getItem(item)[2];
+				plaatsTexture2(gl, xmin+x/7f*distance-distance/4, ymin+z/7f*distance-distance/4, xmin+x/7f*distance+distance/4, ymin+z/7f*distance+distance/4, 17);
+			}
+			if (items.get(item)[0] == 3){
+				float x = (float) levels.get(selectedLevel).getItem(item)[1];
+				float z = (float) levels.get(selectedLevel).getItem(item)[2];
+				plaatsTexture2(gl, xmin+x/7f*distance-distance/4, ymin+z/7f*distance-distance/4, xmin+x/7f*distance+distance/4, ymin+z/7f*distance+distance/4, 18);
+			}
+		}
+		
 	}
 
 	public void tekenFakeKolom(GL gl){
@@ -1224,6 +1239,38 @@ public static Texture wallTexture1;
 		gl.glVertex2f(xmax/1920*screenWidth, ymax/1080*screenHeight);
 		gl.glTexCoord2f(0.0f,0.0f);
 		gl.glVertex2f(xmin/1920*screenWidth, ymax/1080*screenHeight);
+		
+		gl.glEnd();
+
+	}
+	
+public void plaatsTexture2(GL gl, float xmin, float ymin, float xmax, float ymax, int i) {
+		
+		// Setting the floor color and material.
+        //float[] rgba = {1f, 1f, 1f};
+		//gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
+        //gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
+        //gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
+
+        // Apply texture.
+        if(wallTexture1 != null){
+        	wallTexture1.enable();
+        	gl.glBindTexture (GL.GL_TEXTURE_2D, i);
+        }
+		
+	//	gl.glNormal3d(0, 1, 0);
+//        float wallColour[] = { 0.0f, 1.0f, 1.0f, 1.0f };
+//    	gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);
+        
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(0.0f,1.0f);
+		gl.glVertex2f(xmin, ymin); 
+		gl.glTexCoord2f(1.0f,1.0f);
+		gl.glVertex2f(xmax, ymin);
+		gl.glTexCoord2f(1.0f,0.0f);
+		gl.glVertex2f(xmax, ymax);
+		gl.glTexCoord2f(0.0f,0.0f);
+		gl.glVertex2f(xmin, ymax);
 		
 		gl.glEnd();
 

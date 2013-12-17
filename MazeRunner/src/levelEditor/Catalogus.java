@@ -9,7 +9,7 @@ public class Catalogus {
 	private static final byte KOLOM = 1;
 	private static final byte MUUR = 2;
 	private static final byte DAK = 3;
-	private static final byte GEBOUW = 4;
+	private static final byte ITEM = 4;
 	
 	public static void drawCatalogus(GL gl, boolean catalogus, byte drawMode, float screenWidth, float screenHeight, LevelEditor leveleditor){
 		if (catalogus){
@@ -29,6 +29,11 @@ public class Catalogus {
 			if (drawMode == DAK){
 				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 2);
 				//leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 11);
+			}
+			if (drawMode == ITEM){
+				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 17);
+				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 17);
+				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 18);
 			}
 		}
 	}

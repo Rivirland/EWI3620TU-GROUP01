@@ -89,7 +89,7 @@ public class MazeRunner {
 
 	public static Texture earthTexture, wallTexture, roofTexture,
 			trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1,
-			cataloguskolom2, catalogusdak1;
+			cataloguskolom2, catalogusdak1, z15levelEditorSpooky, z16levelEditorSmart, z17MenuBackGround;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 	private UserInput input;
@@ -546,6 +546,9 @@ public class MazeRunner {
 		trapHolderTexture = TextureIO.newTexture(datas[12]);
 		wallTexture = TextureIO.newTexture(datas[13]);
 		woodTexture = TextureIO.newTexture(datas[14]);
+		z15levelEditorSpooky = TextureIO.newTexture(datas[15]);
+		z16levelEditorSmart = TextureIO.newTexture(datas[16]);
+		z17MenuBackGround = TextureIO.newTexture(datas[17]);
 		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
 

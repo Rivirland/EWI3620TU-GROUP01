@@ -223,6 +223,7 @@ public class LevelEditorLevel {
 		System.out.println(filename);
 		gebouwen = readGebouwen(filename);
 		textures = readTextures(filename);
+		itemlist = readObjects(filename);
 	}
 	
 	public int[] getLocation() {
@@ -265,4 +266,7 @@ public class LevelEditorLevel {
 		this.itemlist = itemlist;
 	}
 	
+	public double[] getItem(int i){
+		return itemlist.get(i);
+	}
 }

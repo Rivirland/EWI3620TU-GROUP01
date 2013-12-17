@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 3 elements to &apos;textures&apos;&#x0D;&#x0A;- Original project: &apos;MazeRunnerOLD&apos;&#x0D;&#x0A;- Destination element: &apos;textures&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     z16levelEditorSmart.jpg&#x0D;&#x0A;     z15levelEditorSpooky.jpg&#x0D;&#x0A;     z17MenuBackGround.jpg" description="Copy files" element1="textures/z16levelEditorSmart.jpg" element2="textures/z15levelEditorSpooky.jpg" element3="textures/z17MenuBackGround.jpg" files="3" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1387268823335" target="/MazeRunner/textures" units="0" version="1.0"/>
+</session>
