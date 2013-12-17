@@ -37,7 +37,7 @@ public class MainMenu {
 	public void display(GLAutoDrawable drawable, GL gl){
 		
 		
-		Skybox.displaySkybox(gl);
+		
 		renderer =Teken.startText(drawable, "Agency FB", 200f/1080f*screenHeight); 
 		Teken.textDraw(gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, renderer);
 		Teken.endText(renderer);

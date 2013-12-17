@@ -5,6 +5,7 @@ import javax.media.opengl.GL;
 import com.sun.opengl.util.GLUT;
 
 import engine.GameObject;
+import engine.MazeRunner;
 import engine.Player;
 
 public class Exit extends Item {
@@ -18,7 +19,15 @@ public class Exit extends Item {
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		GLUT glut = new GLUT();
-		glut.glutSolidSphere(2, 10, 10);
+		//glut.glutSolidSphere(2, 10, 10);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 20);
+		
+		gl.glScaled(2, 2, 2);
+		gl.glRotated(-90, 1, 0, 0);
+		gl.glDisable(GL.GL_CULL_FACE);
+		
+		MazeRunner.copterModel.display(gl);
+		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glPopMatrix();
 
 	}

@@ -84,12 +84,13 @@ public class MazeRunner {
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel, trapModel;
+	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 
 	public static Texture earthTexture, wallTexture, roofTexture,
 			trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1,
-			cataloguskolom2, catalogusdak1, z15levelEditorSpooky, z16levelEditorSmart, z17MenuBackGround;
+			cataloguskolom2, catalogusdak1, z15levelEditorSpooky, z16levelEditorSmart, z17MenuBackGround
+			,z18coptertexture;
 	public int mazeX, mazeY, mazeZ;
 	private Portal portal1, portal2;
 	private UserInput input;
@@ -526,6 +527,7 @@ public class MazeRunner {
 				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			// System.out.println(files[i]);
@@ -549,11 +551,27 @@ public class MazeRunner {
 		z15levelEditorSpooky = TextureIO.newTexture(datas[15]);
 		z16levelEditorSmart = TextureIO.newTexture(datas[16]);
 		z17MenuBackGround = TextureIO.newTexture(datas[17]);
+		z18coptertexture = TextureIO.newTexture(datas[18]);
 		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
 
 	public void loadModels(GL gl) {
+		
+		
 		gl.glEnable(GL.GL_TEXTURE_2D);
+		
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60.obj";
+			copterModel = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\oildrum.obj";
