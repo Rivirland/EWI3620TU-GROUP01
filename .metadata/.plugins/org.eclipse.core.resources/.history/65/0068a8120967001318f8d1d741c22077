@@ -1,0 +1,30 @@
+package engine;
+
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class InputDialog
+{
+	public JFrame frame;
+	public InputLocation(){
+		frame = new JFrame("Name");
+	}
+	
+	public String getName(){
+		String res = JOptionPane.showInputDialog(frame, "What's your name?");
+		return res;
+	}
+//  public static void main(String[] args)
+//  {
+//    // a jframe here isn't strictly necessary, but it makes the example a little more real
+//    JFrame 
+//
+//    // prompt the user to enter their name
+//    String name = JOptionPane.showInputDialog(frame, "What's your name?");
+//
+//    // get the user's input. note that if they press Cancel, 'name' will be null
+//    System.exit(0);
+//  }
+}

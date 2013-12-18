@@ -77,7 +77,8 @@ public class MazeRunner {
 	// private UserInput input; // The user input object that controls the
 	// player.
 	private EnemyControl enemyControl;
-	public static Level level;
+	public static Level level; // hier wordt world bedoeld
+	
 	// private long previousTime = Calendar.getInstance().getTimeInMillis();
 	// final private long startTime =
 	// Calendar.getInstance().getTimeInMillis();// Used
@@ -196,9 +197,7 @@ public class MazeRunner {
 		player.setControl(input);
 	}
 	
-	public ArrayList<VisibleObject> getVisibleObjects(){
-		return MazeRunner.visibleObjects;
-	}
+	
 
 	/*
 	 * **********************************************
@@ -435,11 +434,11 @@ public class MazeRunner {
 		if (Player.playerStateInt == 0) {
 			float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
-		} else {
+		} /*else {
 			System.out.println("1");
 			float lightColour[] = { 1.0f, 0.0f, 0.0f, 0.0f };
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
-		}
+		}*/
 	}
 
 	/**
@@ -840,4 +839,12 @@ public class MazeRunner {
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		ChangeGL.GLto3D(gl);
 	}
+	
+	public static void visibleIterator( GL gl){
+		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
+				.hasNext();) {
+			it.next().display(gl);
+		}
+	}
+
 }

@@ -648,10 +648,13 @@ public void mouseReleased(MouseEvent me) {
 		
 		if (gamestate == INGAME){
 			userinput.keyPressed(e);
-			
-			
 		}
+		else if(gamestate == LEVELEDITOR){
+			leveleditor.keyPressed(e);
+		}
+			
 	}
+		
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -663,7 +666,6 @@ public void mouseReleased(MouseEvent me) {
 		if (gamestate == INGAME){
 			userinput.keyReleased(e);
 		}
-		
 		
 	}
 

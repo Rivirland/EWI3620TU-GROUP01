@@ -36,6 +36,10 @@ public class Level {
 	public String getNaam(){
 		return naam;
 	}
+	
+	public ArrayList<Maze> getMazeList(){
+		return this.mazelist;
+	}
 
 	public Maze getMaze(int i) {
 		return this.mazelist.get(i);

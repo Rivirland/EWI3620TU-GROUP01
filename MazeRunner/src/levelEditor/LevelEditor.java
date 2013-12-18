@@ -2,6 +2,7 @@ package levelEditor;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -30,6 +31,7 @@ import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
+import engine.InputDialog;
 import engine.Maze;
 
 public class LevelEditor {
@@ -67,6 +69,7 @@ public class LevelEditor {
 	private Texture backTexture;
 	
 	private LevelEditorWorld levels;
+	private int[] location;
 	private int[][] wereld;
 	private int[][] textures;
 	private ArrayList<double[]> items;
@@ -77,8 +80,11 @@ public static Texture wallTexture1;
 	private int selectedLevelPrevious=0;
 	private boolean remove=false;
 	private boolean open=false;
+	private boolean worldview = false;
 	
 	LevelEditorModelViewer modelviewer;
+	LevelEditorWorldViewer worldviewer;
+
 
 	/*private int [][] wereld =  new int[gridrows][gridcolumns];
 	
@@ -106,13 +112,16 @@ public static Texture wallTexture1;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.levels = levels;
+		this.location = levels.get(0).getLocation();
 		this.wereld = levels.get(0).getGebouwen();
 		this.textures = levels.get(0).getTextures();
 		this.items = levels.get(0).getItemList();
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
 		loadTextures(gl);
-		modelviewer= new LevelEditorModelViewer(screenWidth, screenHeight,(int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
+		modelviewer= new LevelEditorModelViewer(screenWidth, screenHeight,(90f/1920f*screenWidth), (90f/1080f*screenHeight),  (589f/1920f*screenWidth), (860f/1080f*screenHeight));
+		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775)/1920f*screenWidth,  (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,  1050/1080f*screenHeight);
+		//worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, screenWidth/2, screenHeight/2, screenWidth, screenHeight);
 	}
 	
 	
@@ -120,7 +129,8 @@ public static Texture wallTexture1;
 	public void setScreen(int screenWidth, int screenHeight){
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-		modelviewer.reshape(screenWidth, screenHeight,(int) (90f/1920f*screenWidth),(int)  (90f/1080f*screenHeight),(int)  (589f/1920f*screenWidth),(int)  (860f/1080f*screenHeight));
+		modelviewer.reshape(screenWidth, screenHeight, (90f/1920f*screenWidth),  (90f/1080f*screenHeight),  (589f/1920f*screenWidth), (860f/1080f*screenHeight));
+		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775)/1920f*screenWidth,  (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,  1050/1080f*screenHeight);
 	}
 
 	
@@ -143,7 +153,8 @@ public static Texture wallTexture1;
 		updateLevel();
 		
 		// als er geen level is geselecteerd dan komt er geen grid
-		if (selectedLevel >= 0){
+		if (selectedLevel >= 0 && worldview==false){
+			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			veranderMatrixVolgensKlikInGrid(gl);
@@ -151,7 +162,12 @@ public static Texture wallTexture1;
 		
 		modelviewer.display(gl, catalogus, drawMode, textureMode, hoogteMode);
 		Catalogus.drawCatalogus(gl, catalogus, drawMode, screenWidth, screenHeight, this);
-
+		
+		if (worldview){
+			worldviewer.display(gl);
+		}
+		//Teken.rechthoek(gl, (775)/1920f*screenWidth,  (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,  1050/1080f*screenHeight);
+		gl.glFlush();
 	}
 
 	/**
@@ -362,8 +378,6 @@ public static Texture wallTexture1;
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
 		rechthoek(gl, 622f/1920f*screenWidth, 948f/1080f*screenHeight, 740f/1920f*screenWidth, 990f/1080f*screenHeight);
 		rechthoek(gl, 622f/1920f*screenWidth, 890f/1080f*screenHeight, 740f/1920f*screenWidth, 932f/1080f*screenHeight);
-		Teken.textDrawMetKleur(drawable, gl, (levels.get(selectedLevel).getLocation()[0] + ", " + levels.get(selectedLevel).getLocation()[1] + ", " + levels.get(selectedLevel).getLocation()[2]), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
-		
 		
 		//levelbuttons
 		tekenButton(gl, 622f/1920f*screenWidth, (860f-51f)/1080f*screenHeight, (622f+51f)/1920f*screenWidth, 860f/1080f*screenHeight);
@@ -386,6 +400,7 @@ public static Texture wallTexture1;
 
 	public void updateLevel(){
 		if ((selectedLevelPrevious != selectedLevel || open ||(remove && levels.getSize() != selectedLevel)) && levels.getSize() > 0){
+			this.location = levels.get(selectedLevel).getLocation();
 			this.wereld = levels.get(selectedLevel).getGebouwen();
 			this.textures = levels.get(selectedLevel).getTextures();
 			this.items = levels.get(selectedLevel).getItemList();
@@ -394,9 +409,11 @@ public static Texture wallTexture1;
 			selectedLevelPrevious = selectedLevel;
 			remove=false;
 			open=false;
+			System.out.println("update");
 		}
 		else{
 			try{
+			levels.get(selectedLevel).setLocation(this.location);
 			levels.get(selectedLevel).setGebouwen(this.wereld);
 			levels.get(selectedLevel).setTextures(this.textures);
 			levels.get(selectedLevel).setItemList(this.items);}
@@ -413,6 +430,11 @@ public static Texture wallTexture1;
 	public void mouseReleased(MouseEvent me) {
 			// Check if the coordinates correspond to any of the top left buttons
 		modelviewer.mouseReleased(me);
+		if (worldview){
+			worldviewer.mouseReleased(me);
+		}
+		
+		
 		//afmetingen grid
 		//klikken op grid
 		float xmin = 830f/1920f*screenWidth;
@@ -599,6 +621,14 @@ public static Texture wallTexture1;
 				gridklik = true;
 			}
 			
+			//locatie knop
+			if ((1-932f/1080f)*screenHeight < me.getY() && me.getY() < (1-890f/1080f)*screenHeight){
+				if (622f/1920f*screenWidth < me.getX() && me.getX() < 740f/1920f*screenWidth){
+					InputLocation il = new InputLocation();
+					this.location = il.getLocation();
+				}
+			}
+			
 			//level knoppen
 			if (622f/1920f*screenWidth < me.getX() && me.getX() < (622f+51f)/1920f*screenWidth){
 				//add level
@@ -645,7 +675,7 @@ public static Texture wallTexture1;
 				}
 			}
 		}
-	
+		
 	}
 	
 	public void mousePressed(MouseEvent me) throws FileNotFoundException{
@@ -656,10 +686,17 @@ public static Texture wallTexture1;
 		
 		//modelviewer
 		modelviewer.mousePressed(me);
+		if (worldview){
+			worldviewer.mousePressed(me);
+		}
 	}
 	
 	public void mouseDragged(MouseEvent me) {
 		modelviewer.mouseDragged(me);
+		if (worldview){
+			worldviewer.mouseDragged(me);
+		}
+		
 	}
 	
 	public void veranderMatrixVolgensKlikInGrid(GL gl){
@@ -1076,66 +1113,20 @@ public static Texture wallTexture1;
 		for (int item=0; item < items.size(); item++){
 			//System.out.println(item);
 			if (items.get(item)[0] == 2){
-				float x = (float) levels.get(selectedLevel).getItem(item)[1];
-				float z = (float) levels.get(selectedLevel).getItem(item)[2];
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 17);
 			}
 			if (items.get(item)[0] == 3){
-				float x = (float) levels.get(selectedLevel).getItem(item)[1];
-				float z = (float) levels.get(selectedLevel).getItem(item)[2];
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 18);
 			}
 		}
 		
 	}
 
-	public void tekenFakeKolom(GL gl){
-		gl.glColor3f(0.71f, 0.90f, 0.11f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(248f/1920f*screenWidth, 124f/1080f*screenHeight);
-		gl.glVertex2f(348f/1920f*screenWidth, 124f/1080f*screenHeight);
-		gl.glVertex2f(348f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glVertex2f(248f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glEnd();
-		gl.glColor3f(0.13f, 0.69f, 0.30f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(248f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glVertex2f(348f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glVertex2f(415f/1920f*screenWidth, 572f/1080f*screenHeight);
-		gl.glVertex2f(315f/1920f*screenWidth, 572f/1080f*screenHeight);
-		gl.glEnd();
-		gl.glColor3f(0.42f, 0.68f, 0.14f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(348f/1920f*screenWidth, 124f/1080f*screenHeight);
-		gl.glVertex2f(415f/1920f*screenWidth, 192f/1080f*screenHeight);
-		gl.glVertex2f(415f/1920f*screenWidth, 572f/1080f*screenHeight);
-		gl.glVertex2f(348f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glEnd();
-	}
 	
-	public void tekenFakeMuur(GL gl){
-		gl.glColor3f(0.71f, 0.90f, 0.11f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(135f/1920f*screenWidth, 123f/1080f*screenHeight);
-		gl.glVertex2f(489f/1920f*screenWidth, 123f/1080f*screenHeight);
-		gl.glVertex2f(489f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glVertex2f(135f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glEnd();
-		gl.glColor3f(0.13f, 0.69f, 0.30f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(135f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glVertex2f(489f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glVertex2f(557f/1920f*screenWidth, 570f/1080f*screenHeight);
-		gl.glVertex2f(203f/1920f*screenWidth, 570f/1080f*screenHeight);
-		gl.glEnd();
-		gl.glColor3f(0.42f, 0.68f, 0.14f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(489f/1920f*screenWidth, 123f/1080f*screenHeight);
-		gl.glVertex2f(557f/1920f*screenWidth, 192f/1080f*screenHeight);
-		gl.glVertex2f(557f/1920f*screenWidth, 570f/1080f*screenHeight);
-		gl.glVertex2f(489f/1920f*screenWidth, 510f/1080f*screenHeight);
-		gl.glEnd();
-	}
 	
 	private void saveAs() throws FileNotFoundException{
 		//PrintWriter bestand = new PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
@@ -1280,7 +1271,23 @@ public void plaatsTexture2(GL gl, float xmin, float ymin, float xmax, float ymax
 
 	}
 
+
+
+
+public void keyPressed(KeyEvent e){
+
+	if (e.getKeyCode() == KeyEvent.VK_TAB){
+		this.worldview = !worldview;
+	}
+
+}
+
+
+
+
+}
+
 	
 	
 
-}
+

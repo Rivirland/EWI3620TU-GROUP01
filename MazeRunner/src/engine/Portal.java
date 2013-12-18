@@ -128,18 +128,17 @@ public class Portal {
 	}
 	
 	public void displayPortal (GLUT glut, GL gl){
+		gl.glColor4d(1,1,1,1);
 		gl.glPushMatrix();
-		
+		gl.glClearColor(0, 0, 0, 0);
 		gl.glTranslatef(this.x, (float) (this.y), this.z);
 	
 		//lineOnScreen(gl, this.x, (float) (this.y+0.5*hoogte), this.z, this.x+5, (float) (this.y+0.5*hoogte), this.z);
 		
-		
-		
 		gl.glRotatef(facingdirection*90, 0, 1, 0); 
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-gl.glDisable(GL.GL_CULL_FACE);
+		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 		
 		
@@ -164,8 +163,10 @@ gl.glDisable(GL.GL_CULL_FACE);
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		//gl.glCullFace(GL.GL_BACK);
-	gl.glEnable(GL.GL_CULL_FACE);
+		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glColor4d(0,0,0,0);
 		gl.glPopMatrix();
+		
 		//gl.glLoadIdentity();
 		
 	}

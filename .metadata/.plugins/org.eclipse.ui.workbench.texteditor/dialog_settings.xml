@@ -2,29 +2,31 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="305" key="DIALOG_WIDTH"/>
-		<item value="599" key="DIALOG_Y_ORIGIN"/>
-		<item value="479" key="DIALOG_X_ORIGIN"/>
+		<item value="247" key="DIALOG_Y_ORIGIN"/>
 		<item value="442" key="DIALOG_HEIGHT"/>
+		<item value="1249" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="visibleObjects" key="selection"/>
+		<item value="max" key="selection"/>
 		<list key="findhistory">
-			<item value="visibleObjects"/>
-			<item value="visibleobjects"/>
-			<item value="display("/>
-			<item value="DISPLAY("/>
-			<item value="tank"/>
-			<item value="copterModel"/>
-			<item value="loadtexture"/>
-			<item value="coptertexture"/>
+			<item value="min"/>
+			<item value="maxX"/>
+			<item value="iterator"/>
+			<item value="MazeRunner"/>
+			<item value="level"/>
+			<item value="mousereleased"/>
+			<item value="mousepressed"/>
+			<item value="keyreleased"/>
 		</list>
 		<list key="replacehistory">
+			<item value="max"/>
+			<item value="double"/>
 		</list>
 	</section>
 </section>
