@@ -58,7 +58,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				if (diffZ > 0) {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixZ; i > playerMatrixZ; i--) {
-						if (currentMaze.getCoords(enemyMatrixX, i) > 0
+						if (currentMaze.getElementOnCoords(enemyMatrixX, i) > 0
 								&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
@@ -71,7 +71,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				} else {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixZ; i < playerMatrixZ; i++) {
-						if (currentMaze.getCoords(enemyMatrixX, i) > 0
+						if (currentMaze.getElementOnCoords(enemyMatrixX, i) > 0
 								&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
@@ -88,7 +88,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				if (diffX > 0) {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixX; i > playerMatrixX; i--) {
-						if (currentMaze.getCoords(i, enemyMatrixZ) > 0
+						if (currentMaze.getElementOnCoords(i, enemyMatrixZ) > 0
 								&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
@@ -101,7 +101,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				} else {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixX; i < playerMatrixX; i++) {
-						if (currentMaze.getCoords(i, enemyMatrixZ) > 0
+						if (currentMaze.getElementOnCoords(i, enemyMatrixZ) > 0
 								&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}

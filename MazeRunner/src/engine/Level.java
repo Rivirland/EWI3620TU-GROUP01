@@ -32,8 +32,8 @@ public class Level {
 	public int getAantal() {
 		return this.aantal;
 	}
-	
-	public String getNaam(){
+
+	public String getNaam() {
 		return naam;
 	}
 
@@ -49,11 +49,10 @@ public class Level {
 		String currentdir = System.getProperty("user.dir");
 
 		filename = currentdir + "\\worlds\\" + filename;
-//		System.out.println(filename);
+		// System.out.println(filename);
 		File worldFile = new File(filename + ".txt");
 		try {
-			bufRdr = new BufferedReader(
-					new FileReader(worldFile));
+			bufRdr = new BufferedReader(new FileReader(worldFile));
 		} catch (FileNotFoundException e) {
 			System.out.println("WorldFile not found!");
 			e.printStackTrace();
@@ -62,8 +61,8 @@ public class Level {
 		int i = 1;
 		String line = null;
 		try {
-			while ((line = bufRdr.readLine()) != null){
-				Maze maze = new Maze(line,i);
+			while ((line = bufRdr.readLine()) != null) {
+				Maze maze = new Maze(line, i);
 				this.voegToe(maze);
 				i++;
 			}
@@ -86,12 +85,8 @@ public class Level {
 		for (int i = 0; i < this.getAantal(); i++) {
 			Maze maze = this.getMaze(i);
 			// You check if you are actually in the maze
-			if (object.locationX > maze.getMinX()
-					&& object.locationX < maze.getMaxX()
-					&& object.locationZ > maze.getMinZ()
-					&& object.locationZ < maze.getMaxZ()
-					&& object.locationY >= maze.getMazeY()
-					&& object.locationY <= maze.getMazeY() + Maze.ITEM_HEIGHT*maze.maxHeight) {
+			if (object.locationX > maze.getMinX() && object.locationX < maze.getMaxX() && object.locationZ > maze.getMinZ() && object.locationZ < maze.getMaxZ() && object.locationY >= maze.getMazeY()
+					&& object.locationY <= maze.getMazeY() + Maze.ITEM_HEIGHT * maze.maxHeight) {
 				return i;
 			}
 		}
@@ -121,22 +116,73 @@ public class Level {
 			int newZ2 = maze.coordToMatrixElement(z);
 			int newX3 = maze.coordToMatrixElement(x);
 			int newZ3 = maze.coordToMatrixElement(z + margin);
-			if (!(newX0 % 2 == 1 && newZ0 % 2 == 1)
-					&& (maze.getCoords(newX0, newZ0) > 0)) {
-				res[0] = true;
-			}
-			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1)
-					&& (maze.getCoords(newX1, newZ1) > 0)) {
-				res[1] = true;
-			}
-			if (!(newX2 % 2 == 1 && newZ2 % 2 == 1)
-					&& (maze.getCoords(newX2, newZ2) > 0)) {
-				res[2] = true;
-			}
+			if (!(newX0 % 2 == 1 && newZ0 % 2 == 1) && (maze.getElementOnCoords(newX0, newZ0) > 0)) {
+				// System.out.println("hier0");
 
-			if (!(newX3 % 2 == 1 && newZ3 % 2 == 1)
-					&& (maze.getCoords(newX3, newZ3) > 0)) {
-				res[3] = true;
+				// Checks if it's a wall
+				if (maze.getTextureElementOnCoords(newX0, newZ0) % 2 == 1) {
+					res[0] = true;
+				}// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX0, newZ0) % 2 == 0) {
+					double globX = object.locationX + margin;
+					double globZ = object.locationZ;
+					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
+					// Wall in X-direction
+					if(!(globZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[0] = true;
+					}
+
+				}
+			}
+			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getElementOnCoords(newX1, newZ1) > 0)) {
+				if (maze.getTextureElementOnCoords(newX1, newZ1) % 2 == 1) {
+					res[1] = true;
+				}// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX1, newZ1) % 2 == 0) {
+
+					double globX = object.locationX;
+					double globZ = object.locationZ - margin;
+					double[] wallXZ = maze.MatrixElementToCoords(newX1, newZ1);
+					// System.out.println(globX + " " + globZ + ", " +
+					// (wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2))
+					// + ", "
+					// + (wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH -
+					// Maze.DOOR_WIDTH) / 2));
+					if (!(globX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[1] = true;
+					}
+				}
+			}
+			if (!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze.getElementOnCoords(newX2, newZ2) > 0)) {
+				if (maze.getTextureElementOnCoords(newX2, newZ2) % 2 == 1) {
+					res[2] = true;
+				}// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX2, newZ2) % 2 == 0) {
+					double globX = object.locationX - margin;
+					double globZ = object.locationZ;
+					double[] wallXZ = maze.MatrixElementToCoords(newX2, newZ2);
+					// System.out.println(wallXZ[0] + " " + wallXZ[1]);
+					// Wall in X-direction
+					if (!(globZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[2] = true;
+					}
+				}
+			}
+			if (!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze.getElementOnCoords(newX3, newZ3) > 0)) {
+				if (maze.getTextureElementOnCoords(newX3, newZ3) % 2 == 1) {
+					res[3] = true;
+				}// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX3, newZ3) % 2 == 0) {
+					double globX = object.locationX;
+					double globZ = object.locationZ + margin;
+					double[] wallXZ = maze.MatrixElementToCoords(newX3, newZ3);
+					// Wall in X-direction
+
+					if (!(globX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[3] = true;
+					}
+
+				}
 			}
 		}
 		return res;
