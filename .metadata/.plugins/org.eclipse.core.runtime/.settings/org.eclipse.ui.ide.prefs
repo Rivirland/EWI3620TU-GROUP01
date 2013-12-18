@@ -1,10 +1,16 @@
-=\=\=\=\=\=\=
-<<<<<<<=HEAD
+#Tue Dec 17 11:17:18 CET 2013
 >>>>>>>=25967e26cf5a2cd1e4b35a906dcc51e7d4532f02
 IMPORT_FILES_AND_FOLDERS_RELATIVE=true
-IMPORT_FILES_AND_FOLDERS_TYPE=23,1
 PROBLEMS_FILTERS_MIGRATE=true
+<<<<<<< HEAD
 eclipse.preferences.version=1
 platformState=1385025546484
+=======
+<<<<<<<=HEAD
+>>>>>>> a762975d47c63d9605b65af004680b7b415d48d3
 quickStart=false
 tipsAndTricks=true
+eclipse.preferences.version=1
+platformState=1378467212186
+IMPORT_FILES_AND_FOLDERS_TYPE=23,1
+=\=\=\=\=\=\=
