@@ -23,12 +23,14 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	private double ycenter;
 	private double zcenter;
 	
+	private boolean run = true;
+	
 	private int minX, minZ, maxX, maxZ, minY, maxY;	
 	
 	public LevelEditorWorldViewer(int screenWidth, int screenHeight, double x1,
 			double y1, double x2, double y2) {
 		super(screenWidth, screenHeight, x1, y1, x2, y2);
-		scalef=1;
+		//this.scalef=20;
 	}
 
 	
@@ -105,20 +107,29 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			this.maxY = maxY;
 		}
 		
+		
 		this.xcenter = (minX+maxX)/2;
 		this.ycenter = (minY+maxY)/2;
 		this.zcenter = (minZ+maxZ)/2;
+		
+		this.scalef = maxX+minX;
 	}
 
 	
 	public void display(GL gl){
+		
+		if (run){
+		centerLength();
+		run = false;
+		}
 		init(gl);
 		
 		gl.glPushMatrix();
 		
 		gl.glTranslated(xmidden, ymidden, 0);
-		gl.glTranslated(2*panX,2*panY, 0);
+		gl.glTranslated(-2*panX,2*panY, 0);
 		//gl.glTranslated(2*panX,2*panY, 0);
+		
 		gl.glTranslated(xcenter*2, ycenter*2, zcenter*2); // center van rotatie veranderen
 		
 		gl.glRotated(rotationY, 0.25, 0, 0);
@@ -144,7 +155,6 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		if (e.getClickCount()>=2 && e.getButton()==2 || e.getButton()==3) {
 			mousemode = PANMODE;
 		}
-		System.out.println(mousemode +" this");
 	}
 }
 

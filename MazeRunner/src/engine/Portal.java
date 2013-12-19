@@ -50,6 +50,13 @@ public class Portal {
 		this.portalConnectionID = cID;
 	}
 	
+	public static void connectPortals(int[] mazes){
+		for(int i = 0; i < mazes.length-1; i++){
+			portalConnection(MazeRunner.portalList.get(i*2+1), MazeRunner.portalList.get((i+1)*2));
+		}
+		portalConnection(MazeRunner.portalList.get(mazes.length*2-1), MazeRunner.portalList.get(0));
+	}
+	
 	/*public Player toteleport (Player player, boolean teleportation){
 		if (teleportation){
 			
@@ -73,6 +80,9 @@ public class Portal {
 		}
 	}
 		
+	public void setPortalID(int i){
+		portalID = i;
+	}
 	
 	// deze functie moet voor een bepaalde portal in klasse MazeRunner, methode updatemovement
 	public void checkteleportation (Player player, float previousX, float previousY, float previousZ){

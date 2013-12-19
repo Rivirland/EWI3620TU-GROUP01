@@ -40,6 +40,9 @@ public class LevelEditorViewer {
 		this.x2=(int) x2;
 		this.y2=(int) y2;
 		
+		xmidden= (int) (((x2-x1)/2)+x1);
+		ymidden= (int) (((y2-y1)/2)+y1);
+		
 		//scalef = screenWidth*50/782;
 		
 	}
@@ -133,8 +136,8 @@ public class LevelEditorViewer {
 		this.x2=(int) x2;
 		this.y2=(int) y2;
 		
-		xmidden= (int) ((x2+x1)/2);
-		ymidden= (int) ((y2+y1)/2);
+		xmidden= (int) (((x2-x1)/2)+x1);
+		ymidden= (int) (((y2-y1)/2)+y1);
 		
 		
 	}	

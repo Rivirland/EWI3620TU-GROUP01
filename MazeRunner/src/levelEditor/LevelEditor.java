@@ -153,8 +153,14 @@ public static Texture wallTexture1;
 		updateLevel();
 		
 		// als er geen level is geselecteerd dan komt er geen grid
+
 		if (selectedLevel >= 0 && worldview==false){
+
+			Teken.textDrawMetKleur(drawable, gl, (gridcolumns + " x " + gridrows), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
+
 			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			veranderMatrixVolgensKlikInGrid(gl);
@@ -562,6 +568,9 @@ public static Texture wallTexture1;
 						System.out.println("Aantal rijen: " + gridrows);
 						wereld = veranderMatrixGrootte(wereld);
 						textures = veranderMatrixGrootte(textures);
+						for (int item=0; item!=items.size(); item++){
+							items.get(item)[1] -= 7d;
+						}
 					}
 				}
 				else if ((1330f+8f)/1920f*screenWidth < me.getX() && me.getX() < (1330f+28f)/1920f*screenWidth){
@@ -570,6 +579,9 @@ public static Texture wallTexture1;
 					System.out.println("Aantal rijen: " + gridrows);
 					wereld = veranderMatrixGrootte(wereld);
 					textures = veranderMatrixGrootte(textures);
+					for (int item=0; item!=items.size(); item++){
+						items.get(item)[1] += 7d;
+					}
 				}
 			}
 			
@@ -581,6 +593,9 @@ public static Texture wallTexture1;
 						System.out.println("Aantal kolommen: " + gridcolumns);
 						wereld = veranderMatrixGrootte2(wereld);
 						textures = veranderMatrixGrootte2(textures);
+						for (int item=0; item!=items.size(); item++){
+							items.get(item)[2] -= 7d;
+						}
 					}
 				}
 				else if ((1f-(540f-28f)/1080f)*screenHeight > me.getY() && me.getY() > (1f-(540f-8f)/1080f)*screenHeight){
@@ -589,6 +604,9 @@ public static Texture wallTexture1;
 					System.out.println("Aantal kolommen: " + gridcolumns);
 					wereld = veranderMatrixGrootte2(wereld);
 					textures = veranderMatrixGrootte2(textures);
+					for (int item=0; item!=items.size(); item++){
+						items.get(item)[2] += 7d;
+					}
 				}
 			}
 			
@@ -855,7 +873,7 @@ public static Texture wallTexture1;
 					for (int rij=1; rij <= gridrows+1; rij++){
 						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
 							wereld[2*rij-2][2*kolom-2]=0;
-							textures[2*rij-1][2*kolom-1]=0;
+							textures[2*rij-2][2*kolom-2]=0;
 							
 							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
 								for (int j=0 ; j!=wereld[0].length ; j++){

@@ -36,7 +36,7 @@ import engine.UserInput;
 
 
 
-public class Main extends Frame implements GLEventListener, MouseListener, MouseWheelListener, KeyListener, MouseMotionListener {
+public class Main extends Frame implements GLEventListener, MouseListener,  KeyListener, MouseMotionListener {
 	static final long serialVersionUID = 7526471155622776147L;
 
 	// Screen size.
@@ -62,10 +62,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 	
 	private Cursor normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	
-	private long previousTime = Calendar.getInstance().getTimeInMillis();
+//	private long previousTime = Calendar.getInstance().getTimeInMillis();
 	// begintijd vastgesteld
-	final private long startTime = Calendar.getInstance().getTimeInMillis();
-	private long time;
+//	final private long startTime = Calendar.getInstance().getTimeInMillis();
+//	private long time;
 	// is the delta of the time that pause is initaited to the time the game is resumed
 	private long ingamepausetime;
 	// time the pause is resumed
@@ -102,9 +102,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 	GLAutoDrawable drawable;
 	
 	
-	public long getTime (){
+	/*public long getTime (){
 		return time;
-	}
+	}*/
 	
 	public long getNewTime () {
 		return ingamepausetime;
@@ -269,7 +269,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, Mouse
 		
 		// over de tijd
 		
-		this.time = previousTime - startTime;
+		//this.time = previousTime - startTime;
 		
 		
 		// check of andere gamestate dan INGAME vanuit pauze wordt aangeroepen
@@ -675,10 +675,5 @@ public void mouseReleased(MouseEvent me) {
 		
 	}
 
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		System.out.println("ÿeah");
-		System.out.println(e.getWheelRotation());
-		
-	}
+
 }

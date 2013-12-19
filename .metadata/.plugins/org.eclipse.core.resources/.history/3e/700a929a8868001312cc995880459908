@@ -1,0 +1,15 @@
+package engine;
+
+import java.util.ArrayList;
+
+public class GeneticAlgorithm {
+	private ArrayList<Maze> mazes;
+	
+	
+	public GeneticAlgorithm(ArrayList<Maze> mazelist) {
+		mazes = mazelist;
+	}
+	
+	
+
+}
