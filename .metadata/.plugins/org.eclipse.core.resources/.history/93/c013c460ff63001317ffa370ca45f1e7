@@ -1,0 +1,10 @@
+package engine;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+
+public class Reticle {
+	public static void reticle(GL gl) {
+
+	}
+}

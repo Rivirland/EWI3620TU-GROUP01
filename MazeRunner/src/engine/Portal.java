@@ -50,6 +50,13 @@ public class Portal {
 		this.portalConnectionID = cID;
 	}
 	
+	public static void connectPortals(int[] mazes){
+		for(int i = 0; i < mazes.length-1; i++){
+			portalConnection(MazeRunner.portalList.get(i*2+1), MazeRunner.portalList.get((i+1)*2));
+		}
+		portalConnection(MazeRunner.portalList.get(mazes.length*2-1), MazeRunner.portalList.get(0));
+	}
+	
 	/*public Player toteleport (Player player, boolean teleportation){
 		if (teleportation){
 			
@@ -73,6 +80,9 @@ public class Portal {
 		}
 	}
 		
+	public void setPortalID(int i){
+		portalID = i;
+	}
 	
 	// deze functie moet voor een bepaalde portal in klasse MazeRunner, methode updatemovement
 	public void checkteleportation (Player player, float previousX, float previousY, float previousZ){
@@ -128,18 +138,17 @@ public class Portal {
 	}
 	
 	public void displayPortal (GLUT glut, GL gl){
+		gl.glColor4d(1,1,1,1);
 		gl.glPushMatrix();
-		
+		gl.glClearColor(0, 0, 0, 0);
 		gl.glTranslatef(this.x, (float) (this.y), this.z);
 	
 		//lineOnScreen(gl, this.x, (float) (this.y+0.5*hoogte), this.z, this.x+5, (float) (this.y+0.5*hoogte), this.z);
 		
-		
-		
 		gl.glRotatef(facingdirection*90, 0, 1, 0); 
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-gl.glDisable(GL.GL_CULL_FACE);
+		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 		
 		
@@ -164,8 +173,10 @@ gl.glDisable(GL.GL_CULL_FACE);
 		
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		//gl.glCullFace(GL.GL_BACK);
-	gl.glEnable(GL.GL_CULL_FACE);
+		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glColor4d(0,0,0,0);
 		gl.glPopMatrix();
+		
 		//gl.glLoadIdentity();
 		
 	}

@@ -1,0 +1,23 @@
+package engine;
+
+import java.util.ArrayList;
+
+public class GeneticAlgorithm {
+	private ArrayList<Maze> mazes;
+	
+	
+	public GeneticAlgorithm(ArrayList<Maze> mazelist) {
+		mazes = mazelist;
+	}
+	
+	public void assignPortalID(){
+		int i = 0;
+		for (Maze m : mazes){
+			for (Portal p : m.portalList){
+				p.setPortalID(i);
+				i++;
+			}
+		}
+	}
+
+}

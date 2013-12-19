@@ -11,8 +11,7 @@ import com.sun.opengl.util.GLUT;
 
 public class PlayerStateGun extends PlayerState{
 
-	@Override
-	public void itemUse() {
+	public static void shootGun(){
 		if(Player.nrOfBullets > 0){
 			Sound.gunfire.play();
 			Player.nrOfBullets--;
@@ -24,6 +23,20 @@ public class PlayerStateGun extends PlayerState{
 			Bullet bullet = new Bullet(x, y, z, hAngle, vAngle, 0.02);
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
+		}
+		else{
+			Sound.noBullets.play();
+		}
+		System.out.println(Player.nrOfBullets);
+
+		//Shoot bullet if nrOfBullets > 0
+	}
+	@Override
+	public void itemUse() { // kan dit een reload worden voor gun?
+		if(Player.nrOfBullets > 0){
+		System.out.println("RELOADING");
+		System.out.println("WE'VE BEEN OVERRUN!!!");
+		System.out.println("PRESS MOUSE BUTTON BEFORE TOO LATE!");
 		}
 		else{
 			Sound.noBullets.play();
@@ -67,6 +80,7 @@ Sound.reload.play();
 		gl.glTranslated(x, y, z);
 		gl.glRotated(MazeRunner.player.getHorAngle(),0,1,0);
 		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
+		gl.glScaled(0.5,0.5,0.5);
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		MazeRunner.m21Model.display(gl);

@@ -58,6 +58,7 @@ public class UserInput extends Control implements Runnable {
 
 	private GLCanvas canvas;
 
+
 	// TODO: Add fields to help calculate mouse movement
 
 	/**
@@ -159,7 +160,6 @@ public class UserInput extends Control implements Runnable {
 			cursorChange(mouselookMode);
 		}
 	}
-		// gamestate.doAction();
 		
 		public void cursorChange(boolean mouselookMode){
 			if (this.mouselookMode) {
@@ -180,7 +180,9 @@ public class UserInput extends Control implements Runnable {
 	 */
 
 	public void mousePressed(MouseEvent event) {
-
+		
+		gunShoot=true;
+	
 		if (!mouselookMode) {
 			x1 = event.getX();
 			y1 = event.getY();
