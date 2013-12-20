@@ -1,7 +1,10 @@
-package engine;
+package playerStates;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+
+import engine.MazeRunner;
+import engine.Sound;
 
 public class PlayerStateTorch extends PlayerState{
 

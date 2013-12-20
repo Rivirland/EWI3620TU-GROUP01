@@ -1,7 +1,8 @@
-package engine;
+package playerStates;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import engine.MazeRunner;
 import menu.Teken;
 
 public class PlayerStateDead extends PlayerState{
@@ -13,14 +14,14 @@ public class PlayerStateDead extends PlayerState{
 		for(int e = 0; e < MazeRunner.enemyList.size(); e++){
 			MazeRunner.enemyList.get(e).reset();
 		}
-		Player.canTeleport = false;
-		Player.playerStateInt = 0;
-		Player.canMove = true;
+		MazeRunner.player.canTeleport = false;
+		MazeRunner.player.playerStateInt = 0;
+		MazeRunner.player.canMove = true;
 	}
 
 	@Override
 	public void entering() {
-		Player.canMove = false;
+		MazeRunner.player.canMove = false;
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import playerStates.PlayerState;
 import menu.Teken;
 import model.Model;
 import model.OBJLoader;
@@ -269,12 +270,14 @@ public class MazeRunner {
 	}
 
 	private void updateLighting(GL gl) {
-		float lightAmbient0light[] = { 0.9f, 0.9f, 0.9f, 1.0f };
-		float lightAmbient0dark[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-		if (player.playerStateInt == 0) {
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0light, 0);
-		} else if (player.playerStateInt != 0) {
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0dark, 0);
+		long cT = currentTime;
+		float lI = 0.9f - (float) ((1+Math.cos(cT/600f))/2);
+		float lightAmbient0normal[] = { 0.9f, 0.9f, 0.9f, 1.0f };
+		float lightAmbient0cloak[] = { lI, lI, lI, 1.0f };
+		if (player.invisible) {
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0cloak, 0);
+		} else if (!player.invisible) {
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0normal, 0);
 		}
 	}
 
@@ -346,7 +349,7 @@ public class MazeRunner {
 		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		if (deltaTime > 10000) {
+		if (deltaTime > 10000 | deltaTime<0) {
 			deltaTime = 0;
 		}
 
@@ -406,7 +409,7 @@ public class MazeRunner {
 		}
 
 		gl.glDisable(GL.GL_CULL_FACE);
-		PlayerState.getState(Player.playerStateInt).displayItem(gl);
+		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
 		for (int i = 0; i < portalList.size(); i++) {
 			portalList.get(i).displayPortal(glut, gl);
@@ -619,12 +622,12 @@ public class MazeRunner {
 				Item item = currentMaze.itemList.get(i);
 				if (item.touches(player)) {
 					if (item instanceof TrapHolder) {
-						Player.nrOfTraps++;
+						MazeRunner.player.nrOfTraps++;
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
 					}
 					if (item instanceof BulletHolder) {
-						Player.nrOfBullets += ((BulletHolder) item).getAmount();
+						MazeRunner.player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
 					}
@@ -730,31 +733,31 @@ public class MazeRunner {
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ
 							&& player.playerStateInt != 4) {
-						PlayerState.getState(Player.playerStateInt).leaving();
-						Player.playerStateInt = 3;
-						PlayerState.getState(Player.playerStateInt).entering();
+						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
+						MazeRunner.player.playerStateInt = 3;
+						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
 					}
 				}
 			}
 		}
 
-		if (Player.canTeleport) {
+		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
 				// portal2.checkteleportation(player, (float) previousX, (float)
 				// previousY, (float) previousZ);
 			}
 		} else {
-			Player.canTeleport = true;
+			MazeRunner.player.canTeleport = true;
 		}
 		//
 		for (Maze m : level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
 					if (i.touches(player) && player.playerStateInt != 4) {
-						PlayerState.getState(Player.playerStateInt).leaving();
-						Player.playerStateInt = 4;
-						PlayerState.getState(Player.playerStateInt).entering();
+						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
+						MazeRunner.player.playerStateInt = 4;
+						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
 
 					}
 				}

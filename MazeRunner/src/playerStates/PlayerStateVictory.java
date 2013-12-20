@@ -1,9 +1,11 @@
-package engine;
+package playerStates;
 import java.sql.SQLException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import engine.InputDialog;
+import engine.MazeRunner;
 import menu.Main;
 import menu.Teken;
 
@@ -23,7 +25,7 @@ public class PlayerStateVictory extends PlayerState{
 
 	@Override
 	public void entering() {
-		Player.canMove = false;
+		MazeRunner.player.canMove = false;
 		InputDialog ID = new InputDialog();
 		String name = ID.getName();
 //		System.out.println("Victory! Score: " + MazeRunner.player.score);	

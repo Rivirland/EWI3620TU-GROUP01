@@ -1,7 +1,9 @@
-package engine;
+package playerStates;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+
+import engine.MazeRunner;
 
 public abstract class PlayerState {
 	
@@ -12,19 +14,19 @@ public abstract class PlayerState {
 	public abstract void drawInfo(GLAutoDrawable autodrawable, GL gl);
 	public static PlayerState getState(int input){
 		if(input == 0 ){
-			return new PlayerStateTorch();
+			return MazeRunner.player.PlayerStateCloak;
 		}
 		if(input == 1){
-			return new PlayerStateTrap();
+			return MazeRunner.player.PlayerStateTrap;
 		}
 		if(input == 2){
-			return new PlayerStateGun();
+			return MazeRunner.player.PlayerStateGun;
 		}
 		if(input == 3){
-			return new PlayerStateDead();
+			return MazeRunner.player.PlayerStateDead;
 		}
 		if(input == 4){
-			return new PlayerStateVictory();
+			return MazeRunner.player.PlayerStateVictory;
 		}
 		return null;
 	}

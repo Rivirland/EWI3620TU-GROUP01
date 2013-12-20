@@ -1,4 +1,4 @@
-package engine;
+package playerStates;
 
 import items.Item;
 import items.TrapDropped;
@@ -6,14 +6,15 @@ import items.TrapDropped;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import engine.MazeRunner;
 import menu.Teken;
 
 public class PlayerStateTrap extends PlayerState {
 
 	@Override
 	public void itemUse() {
-		if (Player.nrOfTraps > 0 && MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1) {
-			Player.nrOfTraps--;
+		if (MazeRunner.player.nrOfTraps > 0 && MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1) {
+			MazeRunner.player.nrOfTraps--;
 
 			double trapX=MazeRunner.player.getGlobalX();
 			double trapY=MazeRunner.player.getGlobalY();
@@ -26,7 +27,7 @@ public class PlayerStateTrap extends PlayerState {
 			MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(MazeRunner.player)).itemList.add(trapDropped);
 			
 			System.out.println("Trap dropped, motherfucker! nrOfTraps: "
-					+ Player.nrOfTraps);
+					+ MazeRunner.player.nrOfTraps);
 		} else if (MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1){
 			System.out.println("out of traps");
 		} else {
@@ -55,7 +56,7 @@ public class PlayerStateTrap extends PlayerState {
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl) {
 		Teken.textDraw(autodrawable, gl,
-				"Number of traps: " + Player.nrOfTraps,
+				"Number of traps: " + MazeRunner.player.nrOfTraps,
 				0.8f * MazeRunner.screenWidth, 0.05f * MazeRunner.screenHeight,
 				0.05f * Math.min(MazeRunner.screenHeight,
 						MazeRunner.screenWidth));

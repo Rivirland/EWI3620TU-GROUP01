@@ -2,6 +2,13 @@ package engine;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import playerStates.PlayerState;
+import playerStates.PlayerStateCloak;
+import playerStates.PlayerStateDead;
+import playerStates.PlayerStateGun;
+import playerStates.PlayerStateTrap;
+import playerStates.PlayerStateVictory;
+
 /**
  * Player represents the actual player in MazeRunner.
  * <p>
@@ -23,13 +30,17 @@ public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
 	public double begX, begY, begZ, begV, begH;
-	public static boolean canTeleport = true;
-	public static boolean canMove = true;
-	public static int nrOfTraps;
-	public static int nrOfBullets;
-	public static int playerStateInt;
+	public boolean canTeleport = true;
+	public boolean canMove = true;
+	public int nrOfTraps;
+	public int nrOfBullets;
+	public double cloakSeconds;
+	public int playerStateInt;
 	private Control control = null;
 	public int score;
+	public boolean invisible = false;
+	public long invisibleT;
+	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory;
 
 	/**
 	 * The Player constructor.
@@ -64,8 +75,14 @@ public class Player extends GameObject {
 		speed = .01;
 		nrOfTraps = 1000;
 		nrOfBullets = 200;
+		cloakSeconds=10000;
 		playerStateInt = 0;
 		score = 0;
+		this.PlayerStateCloak = new PlayerStateCloak();
+		this.PlayerStateDead = new PlayerStateDead();
+		this.PlayerStateGun = new PlayerStateGun();
+		this.PlayerStateTrap = new PlayerStateTrap();
+		this.PlayerStateVictory = new PlayerStateVictory();
 	}
 
 	/**
@@ -220,14 +237,8 @@ public class Player extends GameObject {
 				}
 			}
 
-			if (control.itemUse) {
-				PlayerState.getState(playerStateInt).itemUse();
-				control.itemUse = false;
-			}
-
 			if (control.gunShoot && playerStateInt == 2) {
-				System.out.println(playerStateInt);
-				PlayerStateGun.shootGun();
+				((PlayerStateGun) this.PlayerStateGun).shootGun();
 				control.gunShoot = false;
 			}
 
@@ -237,6 +248,10 @@ public class Player extends GameObject {
 			 * false;}
 			 */
 
+		}
+		if (control.itemUse) {
+			PlayerState.getState(playerStateInt).itemUse();
+			control.itemUse = false;
 		}
 	}
 
@@ -306,6 +321,7 @@ public class Player extends GameObject {
 		setLocationZ(begZ);
 		setHorAngle(begH);
 		setVerAngle(begV);
+		this.invisible=false;
 	}
 
 	public void noMousechange() {

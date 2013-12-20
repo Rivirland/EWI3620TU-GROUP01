@@ -545,7 +545,7 @@ public class Maze implements VisibleObject {
 
 	static void setMaterial(GL gl) {
 		// Set the ambient and diffuse properties
-		float matAmbient[] = { 0.5f,0.5f, 0.5f, 1.0f };
+		float matAmbient[] = { 0.8f,0.8f,0.8f, 1.0f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, matAmbient, 0);
 	}
 

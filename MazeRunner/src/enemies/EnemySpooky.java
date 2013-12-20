@@ -2,13 +2,14 @@ package enemies;
 
 import javax.media.opengl.GL;
 
+import playerStates.PlayerState;
+
 import com.sun.opengl.util.GLUT;
 
 import engine.Animator;
 import engine.Maze;
 import engine.MazeRunner;
 import engine.Player;
-import engine.PlayerState;
 import engine.VisibleObject;
 
 public class EnemySpooky extends Enemy implements VisibleObject {
@@ -18,7 +19,7 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 	}
 
 	public void update(int deltaTime, Player player) {
-		if (MazeRunner.level.inSameMaze(this, player) != -1) {
+		if (MazeRunner.level.inSameMaze(this, player) != -1 && player.canMove) {
 
 			int currentMazeID = MazeRunner.level.getCurrentMaze(this);
 			Maze currentMaze = MazeRunner.level.getMaze(currentMazeID);
@@ -31,27 +32,31 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 
 			int playerMatrixX = currentMaze.coordToMatrixElement(playerX);
 			int playerMatrixZ = currentMaze.coordToMatrixElement(playerZ);
-
-			this.updateMovementFollow(player);
-
-			if (enemyMatrixX == playerMatrixX && enemyMatrixZ == playerMatrixZ) {
-				if (locationX > playerX) {
-					this.locationX -= this.speed * deltaTime;
+			if (MazeRunner.player.invisible) {
+				this.updateMovementPatrol();
+			} else {
+				this.updateMovementFollow(player);
+				if (enemyMatrixX == playerMatrixX && enemyMatrixZ == playerMatrixZ) {
+					// Enemy speeds up if close to player.
+					if (locationX > playerX) {
+						this.locationX -= this.speed * deltaTime;
+					}
+					if (locationX < playerX) {
+						this.locationX += this.speed * deltaTime;
+					}
+					if (locationZ > playerZ) {
+						this.locationZ -= this.speed * deltaTime;
+					}
+					if (locationZ < playerZ) {
+						this.locationZ += this.speed * deltaTime;
+					}	
 				}
-				if (locationX < playerX) {
-					this.locationX += this.speed * deltaTime;
-				}
-				if (locationZ > playerZ) {
-					this.locationZ -= this.speed * deltaTime;
-				}
-				if (locationZ < playerZ) {
-					this.locationZ += this.speed * deltaTime;
-				}
-				if (Math.sqrt(Math.pow(locationZ - playerZ, 2) + Math.pow(locationX - playerX, 2)) < 1 && player.playerStateInt != 4) {
-					PlayerState.getState(Player.playerStateInt).leaving();
-					Player.playerStateInt = 3;
-					PlayerState.getState(Player.playerStateInt).entering();
-				}
+			}
+			if (Math.sqrt(Math.pow(locationZ - playerZ, 2) + Math.pow(locationX - playerX, 2)) < 1
+					&& player.playerStateInt != 4) {
+				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
+				MazeRunner.player.playerStateInt = 3;
+				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
 			}
 
 		} else {
@@ -106,8 +111,6 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 
 	}
 
-	
-
 	public void drawEnemy(GL gl) {
 		// GLUT glut = new GLUT();
 		// glut.glutSolidTeapot(1);
@@ -116,11 +119,10 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 		MazeRunner.spookyModel.display(gl);
 		gl.glEnable(GL.GL_CULL_FACE);
 	}
-	
-	public static void showEnemy(GL gl){
+
+	public static void showEnemy(GL gl) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
 		MazeRunner.spookyModel.display(gl);
 	}
 
-	
 }
