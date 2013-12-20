@@ -244,26 +244,38 @@ public class MazeRunner {
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 
 		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
-		// Set and enable the lighting.
-		gl.glEnable(GL.GL_LIGHTING);
-		float lightPosition[] = { 3.25f, 8.0f, 30.0f, 1.0f }; // High up in the
-		// sky!
-		// White light=
-		float lightColour[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, lightColour, 1);
 
-		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
-		gl.glEnable(GL.GL_LIGHTING);
-		gl.glEnable(GL.GL_LIGHT0);
+		initLighting(gl);
 
 		// Set the shading model.
-		gl.glShadeModel(GL.GL_SMOOTH);
-
+		 gl.glShadeModel(GL.GL_SMOOTH);
+//		gl.glShadeModel(GL.GL_FLAT);
 		// Set the shading model.
-		// gl.glShadeModel(GL.GL_SMOOTH);
+		//
 		loadTextures(gl);
 		loadModels(gl);
 		// @@
+	}
+
+	private void initLighting(GL gl) {
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT0);
+		float lightAmbient0[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+		float lightPosition0[] = { 0.0f, -1.0f, 0.0f, 0f };
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition0, 0);
+		gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0, 0);
+		float ambient_lighting[] = { 0.1f, 0.1f, 0.1f, 1.0f };
+		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, ambient_lighting, 0);
+	}
+
+	private void updateLighting(GL gl) {
+		float lightAmbient0light[] = { 0.9f, 0.9f, 0.9f, 1.0f };
+		float lightAmbient0dark[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+		if (player.playerStateInt == 0) {
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0light, 0);
+		} else if (player.playerStateInt != 0) {
+			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightAmbient0dark, 0);
+		}
 	}
 
 	public void setTime(long time) {
@@ -414,19 +426,9 @@ public class MazeRunner {
 		Reticle.reticle(gl);
 
 		gl.glFlush();
-
+		
 	}
 
-	private void updateLighting(GL gl) {
-		if (Player.playerStateInt == 0) {
-			float lightColour[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
-		} /*else {
-			System.out.println("1");
-			float lightColour[] = { 1.0f, 0.0f, 0.0f, 0.0f };
-			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 1);
-		}*/
-	}
 
 	/**
 	 * reshape(GLAutoDrawable, int, int, int, int, int) is called upon whenever
