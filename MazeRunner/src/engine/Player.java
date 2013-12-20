@@ -211,18 +211,23 @@ public class Player extends GameObject {
 						locationY = 2.5;
 					}
 				}
+				
 				boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
 				if (playerCollide[0] || playerCollide[2]) {
 					this.setLocationX(previousX);
 				}
+				
 				if (playerCollide[1] || playerCollide[3]) {
 					this.setLocationZ(previousZ);
 				}
 			}
 
+			//System.out.println(itemUse);
 			if (control.itemUse) {
+				System.out.println("yeah right");
 				PlayerState.getState(playerStateInt).itemUse();
 				control.itemUse = false;
+				
 			}
 
 			if (control.gunShoot && playerStateInt == 2) {

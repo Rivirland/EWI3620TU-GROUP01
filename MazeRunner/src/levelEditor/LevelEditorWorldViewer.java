@@ -5,11 +5,14 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import menu.Teken;
+
 import com.sun.opengl.util.GLUT;
 
 
-import engine.MazeRunner;
 
+
+import engine.MazeRunner;
 import engine.Maze;
 
 public class LevelEditorWorldViewer extends LevelEditorViewer{
@@ -30,7 +33,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	public LevelEditorWorldViewer(int screenWidth, int screenHeight, double x1,
 			double y1, double x2, double y2) {
 		super(screenWidth, screenHeight, x1, y1, x2, y2);
-		//this.scalef=20;
+	
 	}
 
 	
@@ -111,8 +114,17 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		this.xcenter = (minX+maxX)/2;
 		this.ycenter = (minY+maxY)/2;
 		this.zcenter = (minZ+maxZ)/2;
+		// 1000 normaal
 		
-		this.scalef = maxX+minX;
+		//(Math.abs(maxX) + Math.abs(minX))/(x2-x1)
+		// window is 500
+		
+		// dan scale=0.5
+		
+		//scalef = Math.abs((maxX + minX*-1)/(x2-x1)) ;
+		scalef = Math.abs((x2-x1)/(maxX + minX*-1));
+
+		
 	}
 
 	
@@ -140,6 +152,8 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		//gl.glTranslated(-2*panX,-2*panY, 0);
 		
 		MazeRunner.visibleIterator(gl);
+		gl.glColor3d(1, 1, 1);
+		Teken.rechthoek(gl, xmidden-5, ymidden-5, xmidden+5, ymidden+5);
 		
 		gl.glPopMatrix();
 		gl.glDisable(GL.GL_LIGHTING);
