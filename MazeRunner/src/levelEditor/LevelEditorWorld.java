@@ -25,10 +25,16 @@ public class LevelEditorWorld {
 		Scanner scannames = new Scanner(new File(filename));
 		String currentdir = System.getProperty("user.dir");
 		while (scannames.hasNext()){
-			String name = scannames.next();
+			String string = scannames.next();
+			StringTokenizer st = new StringTokenizer(string, ",");
+			String crap1 = st.nextToken();
+			String crap2 = st.nextToken();
+			String crap3 = st.nextToken();
+			String name = st.nextToken();
 			lijst.levels.add(LevelEditorLevel.readLevel(name, currentdir + "\\levels\\" + name + ".txt"));
 			System.out.println(name + " added");
 		}
+		scannames.close();
 		return lijst;
 	}
 	
@@ -85,6 +91,9 @@ public class LevelEditorWorld {
 		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\worlds\\" + filename + ".txt");
 		for (int i = 0; i != levels.size(); i++){
+			for(int j = 0; j < 3; j++){
+				bestand.print(levels.get(i).location[j] + ",");
+			}
 			bestand.println(levels.get(i).getName());
 		}
 		bestand.close();

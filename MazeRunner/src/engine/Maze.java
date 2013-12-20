@@ -61,8 +61,11 @@ public class Maze implements VisibleObject {
 	public int[][] visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int maxHeight;
 
-	public Maze(String filename, int i) {
+	public Maze(String filename, int i, int x, int y, int z) {
 		mazeID = i - 1;
+		mazeX = x;
+		mazeY = y;
+		mazeZ = z;
 		try {
 			loadMaze(filename, i);
 		} catch (FileNotFoundException e) {
@@ -133,7 +136,7 @@ public class Maze implements VisibleObject {
 						int fd = Integer.parseInt(st.nextToken());
 						int portalID = Integer.parseInt(st.nextToken());
 						int portalConID = Integer.parseInt(st.nextToken());
-						Portal portal = new Portal((float) objectX, mazeY, (float) objectZ, fd, portalID, portalConID);
+						Portal portal = new Portal((float) (mazeX + objectX), mazeY, (float) (mazeZ + objectZ), fd, portalID, portalConID);
 						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
 						// (float)objectY, objectZ, fd);
@@ -145,7 +148,7 @@ public class Maze implements VisibleObject {
 						// EnemySpooky
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						EnemySpooky es = new EnemySpooky(objectX, mazeY + 2.5, objectZ, 0.0015, mazeID);
+						EnemySpooky es = new EnemySpooky(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, 0.0015, mazeID);
 						MazeRunner.enemyList.add(es);
 						// System.out.println("Maakt enemySpooky op: " + objectX
 						// + ", " + objectZ);
@@ -153,29 +156,26 @@ public class Maze implements VisibleObject {
 						// EnemySmart
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						EnemySmart es = new EnemySmart(objectX, mazeY + 2.5, objectZ, 0.005, mazeID);
+						EnemySmart es = new EnemySmart(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, 0.005, mazeID);
 						MazeRunner.enemyList.add(es);
 					} else if (objectNumber == 4) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int amount = Integer.parseInt(st.nextToken());
-						BulletHolder bh = new BulletHolder(objectX, mazeY, objectZ, mazeID, amount);
+						BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
-						// System.out.println("Maakt " + amount +
-						// " bullets op: "
-						// + objectX + ", " + objectZ);
 					} else if (objectNumber == 5) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						TrapHolder th = new TrapHolder(objectX, mazeY, objectZ, mazeID);
+						TrapHolder th = new TrapHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID);
 						itemList.add(th);
 						MazeRunner.visibleObjects.add(th);
 					} else if (objectNumber == 6) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						Exit e = new Exit(objectX, objectY, objectZ, mazeID);
+						Exit e = new Exit(mazeX + objectX, mazeY + objectY, mazeZ + objectZ, mazeID);
 						itemList.add(e);
 						MazeRunner.visibleObjects.add(e);
 					}
@@ -217,7 +217,7 @@ public class Maze implements VisibleObject {
 	// Loads the maze's dimensions.
 	private void loadMazeSize(File file) throws NumberFormatException, IOException {
 
-		int row = -1;
+		int row = 0;
 		int col = 0;
 		BufferedReader bufRdr = new BufferedReader(new FileReader(file));
 		String line = null;
@@ -316,18 +316,13 @@ public class Maze implements VisibleObject {
 
 	// Fills maze[][] with the right elements.
 	private void buildMaze(File file) throws IOException {
-		int row = -1;
+		int row = 0;
 		int col = 0;
 		BufferedReader bufRdr = new BufferedReader(new FileReader(file));
 		String line = null;
 
 		while ((line = bufRdr.readLine()) != null && row < MAZE_SIZE_Z) {
 			StringTokenizer st = new StringTokenizer(line, ",");
-			if (row == -1) {
-				this.mazeX = Integer.parseInt(st.nextToken());
-				this.mazeY = Integer.parseInt(st.nextToken());
-				this.mazeZ = Integer.parseInt(st.nextToken());
-			}
 			while (st.hasMoreTokens()) {
 				// System.out.println(Integer.parseInt(st.nextToken()) +
 				// " en row: " + row + " en col: " + col);
