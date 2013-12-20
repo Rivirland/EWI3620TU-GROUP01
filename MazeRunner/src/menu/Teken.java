@@ -37,7 +37,7 @@ public class Teken {
 		int yint = (int) y;
 		int sizeint = (int) size;
 
-		TextRenderer renderer = new TextRenderer(new Font("Agency FB",
+		TextRenderer renderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, sizeint));
 		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
 		// optionally set the color
@@ -71,7 +71,7 @@ public class Teken {
 		int yint = (int) y;
 		int sizeint = (int) size;
 
-		TextRenderer renderer = new TextRenderer(new Font("Agency FB",
+		TextRenderer renderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, sizeint));
 		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
 		// optionally set the color

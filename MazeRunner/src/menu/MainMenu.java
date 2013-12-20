@@ -38,10 +38,10 @@ public class MainMenu {
 		
 		
 		
-		renderer =Teken.startText(drawable, "Agency FB", 200f/1080f*screenHeight); 
+		renderer =Teken.startText(drawable, "Arial", 200f/1080f*screenHeight); 
 		Teken.textDraw(gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, renderer);
 		Teken.endText(renderer);
-		renderer =Teken.startText(drawable, "Agency FB", 80f/1080f*screenHeight);
+		renderer =Teken.startText(drawable, "Arial", 80f/1080f*screenHeight);
 		Teken.textDraw(  gl, "Start Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, renderer);
 		Teken.textDraw(  gl, "Level Editor", 750f/1920f*screenWidth, 530f/1080f*screenHeight, renderer);
 		Teken.textDraw(  gl, "Settings", 750f/1920f*screenWidth, 380f/1080f*screenHeight, renderer);

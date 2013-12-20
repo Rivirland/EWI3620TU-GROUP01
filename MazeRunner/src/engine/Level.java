@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 //A level consists of several mazes. In this class, we can import mazes from a .txt file and store them into an ArrayList.
 //Because this class contains all the mazes, we also implemented the collision detection here.
@@ -36,13 +37,16 @@ public class Level {
 	public String getNaam() {
 		return naam;
 	}
-	
-	public ArrayList<Maze> getMazeList(){
+
+	public ArrayList<Maze> getMazeList() {
 		return this.mazelist;
 	}
 
 	public Maze getMaze(int i) {
-		return this.mazelist.get(i);
+		if (i != -1) {
+			return this.mazelist.get(i);
+		}
+		return null;
 	}
 
 	// Reads all the mazes from .txt files. If the base name is level1, it adds
@@ -66,7 +70,13 @@ public class Level {
 		String line = null;
 		try {
 			while ((line = bufRdr.readLine()) != null) {
-				Maze maze = new Maze(line, i);
+				StringTokenizer st = new StringTokenizer(line, ",");
+				int x = Integer.parseInt(st.nextToken());
+				int y = Integer.parseInt(st.nextToken());
+				int z = Integer.parseInt(st.nextToken());
+				String m = st.nextToken();
+				System.out.println(m + " " + x + y + z);
+				Maze maze = new Maze(m, i, x, y, z);
 				this.voegToe(maze);
 				i++;
 			}
@@ -132,7 +142,7 @@ public class Level {
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
 					// Wall in X-direction
-					if(!(globZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+					if (!(globZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
 						res[0] = true;
 					}
 

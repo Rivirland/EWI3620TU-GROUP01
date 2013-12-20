@@ -160,7 +160,7 @@ public class MazeRunner {
 		// Add the maze that we will be using
 		this.level = level;
 
-		GeneticAlgorithm GA = new GeneticAlgorithm(level.mazelist, 2);
+		GeneticAlgorithm GA = new GeneticAlgorithm(level.mazelist, 50);
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
 		

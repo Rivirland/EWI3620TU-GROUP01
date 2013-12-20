@@ -16,7 +16,7 @@ import menu.KiesFileUitBrowser;
 public class LevelEditorLevel {
 	
 	private String name;
-	private int[] location;
+	public int[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
 	public ArrayList<double[]> itemlist;
@@ -30,9 +30,9 @@ public class LevelEditorLevel {
 		this.setItemList(itemList);
 	}
 	
-	public static LevelEditorLevel readLevel(String naam, String filename) throws FileNotFoundException{
+	public static LevelEditorLevel readLevel(String naam, int[] location, String filename) throws FileNotFoundException{
 
-		return new LevelEditorLevel(readLocation(filename), naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
+		return new LevelEditorLevel(location, naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
 	}
 	
 	public static int[] readLocation(String filename) throws FileNotFoundException{
@@ -196,9 +196,6 @@ public class LevelEditorLevel {
 		setName(filename);
 		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
-		for (int i=0; i!=3; i++){
-			bestand.print(location[i] + ",");
-		}
 		bestand.println();
 		for (int i = 0; i != gebouwen.length; i++){
 			for (int j = 0; j!=gebouwen[0].length; j++){

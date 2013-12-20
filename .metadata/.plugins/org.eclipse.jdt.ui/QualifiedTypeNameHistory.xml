@@ -7,6 +7,9 @@
 <fullyQualifiedTypeName name="javax.media.opengl.GL"/>
 <fullyQualifiedTypeName name="engine.MazeRunner"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyEvent"/>
-<fullyQualifiedTypeName name="menu.Teken"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Collections"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="menu.Teken"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
 </qualifiedTypeNameHistroy>

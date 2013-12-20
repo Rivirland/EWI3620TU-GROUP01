@@ -284,7 +284,8 @@ public class UserInput extends Control implements Runnable {
 			down = false;
 		}
 		if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-			itemUse = true;			
+			System.out.println("do it for realz");
+			itemUse = true;	
 		}
 		if(event.getKeyCode() == KeyEvent.VK_UP){
 			playerStateUp = true;
