@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 
+import menu.Teken;
 import enemies.EnemySmart;
 import enemies.EnemySpooky;
 
@@ -538,7 +539,7 @@ public class Maze implements VisibleObject {
 		gl.glPopMatrix();
 	}
 
-	static void setMaterial(GL gl) {
+	static void setLighting(GL gl) {
 		// Set the ambient and diffuse properties
 		float matAmbient[] = { 0.8f,0.8f,0.8f, 1.0f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, matAmbient, 0);
@@ -699,27 +700,12 @@ public class Maze implements VisibleObject {
 	// Paints the floor tile
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
 
-		setMaterial(gl);
+		setLighting(gl);
 
-
+		double thick=1.3;
 		// Apply texture.
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
-		Vertex v1 = new Vertex( 0,0,0);
-		Vertex v2 = new Vertex(0,0,size_z);
-		Vertex v3 = new Vertex(size_x,0,size_z);
-		Vertex v4 = new Vertex(size_x,0,0);
-		Vector n = Vector.calcNormal(v1, v2, v3);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3d(n.x, n.y, n.z);
-		gl.glTexCoord3d(v1.x,v1.y,v1.z);
-		gl.glVertex3d(0, 0, 0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v2.x,v2.y,v2.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v3.x,v3.y,v3.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v4.x,v4.y,v4.z);
-		gl.glEnd();
+		Teken.drawCuboid(gl, 0, size_x, -thick, 0, 0, size_z, 5);
+
 
 	}
 
@@ -741,7 +727,7 @@ public class Maze implements VisibleObject {
 
 	public static void drawWallZFromQuad(GL gl, double h) {
 
-		setMaterial(gl);
+		setLighting(gl);
 
 		Vertex v1 = new Vertex(0.0, h, 0.0);
 		Vertex v2 = new Vertex(0.0, ITEM_HEIGHT + h, 0.0);
@@ -952,7 +938,7 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawWallXFromQuad(GL gl, double h) {
-		setMaterial(gl);
+		setLighting(gl);
 		gl.glBegin(GL.GL_QUADS);
 		// Left
 		gl.glNormal3d(0, 0, -1);
@@ -1005,8 +991,8 @@ public class Maze implements VisibleObject {
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
 		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_LENGTH);
 
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
 		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, WALL_LENGTH);
+		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
 		// gl.glNormal3d(0, 1, 0);
 
 		gl.glEnd();
@@ -1030,7 +1016,7 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawColumnFromQuad(GL gl, double h) {
-		setMaterial(gl);
+		setLighting(gl);
 		
 		Vertex v1 = new Vertex(0.0, h, 0.0);
 		Vertex v2 = new Vertex(0.0, ITEM_HEIGHT + h, 0.0);
