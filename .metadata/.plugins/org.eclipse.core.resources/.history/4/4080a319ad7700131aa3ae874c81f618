@@ -292,10 +292,7 @@ public static Texture wallTexture1;
 		tekenButtonMetKleur(gl, 15f/1920f*screenWidth, 1000f/1080f*screenHeight, 85f/1920f*screenWidth, 1070f/1080f*screenHeight, 0.3f, 0.3f, 0.8f);
 		
 		//button1
-		if (drawMode == 1)
-			tekenButtonMetKleur(gl, columnbxmin, columnbymin, columnbxmax, columnbymax, 0.76f, 0.76f, 0.76f);
-		else
-			tekenButton(gl, columnbxmin, columnbymin, columnbxmax, columnbymax);
+		tekenButton(gl, columnbxmin, columnbymin, columnbxmax, columnbymax);
 		
 		gl.glColor3f(0.71f, 0.90f, 0.11f);
 		gl.glBegin(GL.GL_QUADS);
@@ -320,10 +317,7 @@ public static Texture wallTexture1;
 		gl.glEnd();
 		
 		//button2
-		if (drawMode == 2)
-			tekenButtonMetKleur(gl, wallbxmin, wallbymin, wallbxmax, wallbymax, 0.76f, 0.76f, 0.76f);
-		else
-			tekenButton(gl, wallbxmin, wallbymin, wallbxmax, wallbymax);
+		tekenButton(gl, wallbxmin, wallbymin, wallbxmax, wallbymax);
 		
 		gl.glColor3f(0.71f, 0.90f, 0.11f);
 		gl.glBegin(GL.GL_QUADS);
@@ -348,16 +342,10 @@ public static Texture wallTexture1;
 		gl.glEnd();
 		
 		//button3
-		if (drawMode == 3)
-			tekenButtonMetKleur(gl, roofbxmin, roofbymin, roofbxmax, roofbymax, 0.76f, 0.76f, 0.76f);
-		else
-			tekenButton(gl, roofbxmin, roofbymin, roofbxmax, roofbymax);
+		tekenButton(gl, roofbxmin, roofbymin, roofbxmax, roofbymax);
 		
 		//button4
-		if (drawMode == 4)
-			tekenButtonMetKleur(gl, buildbxmin, buildbymin, buildbxmax, buildbymax, 0.76f, 0.76f, 0.76f);
-		else
-			tekenButton(gl, buildbxmin, buildbymin, buildbxmax, buildbymax);
+		tekenButton(gl, buildbxmin, buildbymin, buildbxmax, buildbymax);
 		
 		//zwart onder de buttons
 		gl.glColor3f(0f, 0f, 0f);
