@@ -52,10 +52,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final byte DELETEGAME = 9;
 	final byte LOADLEVEL = 10;
 
+
 	final boolean fullscreenboolean = false;
 
-	private boolean activate = false;
-
+	boolean mousemode = false; // a parameter to correctly change when the mousecursor should appear
 	private Cursor normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	// private long previousTime = Calendar.getInstance().getTimeInMillis();
@@ -69,7 +69,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long pausedtime;
 
 	// private boolean mouselookMode;
-
 	// the gamestate
 	private int gamestate;
 	// to check if a gamestate was changed
@@ -197,8 +196,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		quit = new Quit(screenWidth, screenHeight); // quit
 		settings = new Settings(screenWidth, screenHeight); // menu
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
-		// mazerunner = new MazeRunner(screenWidth, screenHeight, canvas,
-		// drawable, gl, glu, userinput);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
 		db = new Database();
@@ -220,6 +217,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		// We have a simple 2D application, so we do not need to check for depth
 		// when rendering.
 		// gl.glDisable(GL.GL_DEPTH_TEST);
+		
+		userinput.setmouselookMode(false);
+		canvas.setCursor(normalCursor);
 
 	}
 
@@ -245,12 +245,15 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 */
 	public void display(GLAutoDrawable drawable) {
 
-		if (gamestate != INGAME) {
-
-			userinput.setmouselookMode(false);
-			canvas.setCursor(normalCursor);
-		}
-
+ if (currentstate != INGAME && mousemode == true){
+	 userinput.setmouselookMode(false);
+		canvas.setCursor(normalCursor);
+		
+		mousemode = false;
+	 
+	 
+ }
+		
 		// over de tijd
 
 		// this.time = previousTime - startTime;
@@ -273,40 +276,30 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		switch (gamestate) {
 		case MAINMENU:
-			if (currentstate != gamestate) {
-				mainmenu.setScreen(screenWidth, screenHeight);
-			}
+
 			mainmenu.display(drawable, gl);
 			currentstate = gamestate;
 
 			break;
 		case GAMEMENU:
-			if (currentstate != gamestate) {
-				gamemenu.setScreen(screenWidth, screenHeight);
-			}
+
 			gamemenu.display(drawable, gl);
 			currentstate = gamestate;
 			break;
 		case LEVELMENU:
-			if (currentstate != gamestate) {
-				gamemenu.setScreen(screenWidth, screenHeight);
-			}
+
 			levelmenu.display(drawable, gl);
 			currentstate = gamestate;
 
 			break;
 		case SETTINGS:
-			if (currentstate != gamestate) {
-				settings.setScreen(screenWidth, screenHeight);
-			}
+
 			settings.display(drawable, gl);
 			currentstate = gamestate;
 
 			break;
 		case QUIT:
-			if (currentstate != gamestate) {
-				quit.setScreen(screenWidth, screenHeight);
-			}
+
 			quit.display(drawable, gl);
 			currentstate = gamestate;
 
@@ -322,6 +315,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			}
 			if (currentstate != gamestate) {
 				userinput.setmouselookMode(true);
+				mousemode = true;
+				userinput.noMousechange();
 				mazerunner.setScreen(glu, gl, screenWidth, screenHeight);
 			}
 			gl = drawable.getGL();
@@ -351,13 +346,14 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 				gl.glMatrixMode(GL.GL_PROJECTION);
 				gl.glLoadIdentity();
 				gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
-				// leveleditor.setScreen(screenWidth, screenHeight);
+				
 			}
 			// gl.glLoadIdentity();
 			// gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 			gl = drawable.getGL();
 			// gl.glLoadIdentity();
 			leveleditor.display(drawable, gl);
+			//leveleditor.setScreen(screenWidth, screenHeight);
 			currentstate = gamestate;
 			break;
 		case PAUZE:
@@ -414,29 +410,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		settings.setScreen(screenWidth, screenHeight);
 		quit.setScreen(screenWidth, screenHeight);
 		mazerunner.setScreen(screenWidth, screenHeight);
-		// leveleditor.setScreen(screenWidth, screenHeight);
 		leveleditor.setScreen(screenWidth, screenHeight);
 
 		switch (gamestate) {
-		case MAINMENU:
-			mainmenu.setScreen(screenWidth, screenHeight);
 
-			break;
-		case GAMEMENU:
-			gamemenu.setScreen(screenWidth, screenHeight);
-			break;
-		case LEVELMENU:
-			levelmenu.setScreen(screenWidth, screenHeight);
-			break;
-		case SETTINGS:
-			settings.setScreen(screenWidth, screenHeight);
-			break;
-		case QUIT:
-			quit.setScreen(screenWidth, screenHeight);
-			break;
-		case INGAME:
-			// ingame.setScreen(screenWidth,screenHeight);
-			break;
 		case LEVELEDITOR:
 
 			// Update the projection to an orthogonal projection using the new
@@ -446,9 +423,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 
 			break;
-		case PAUZE:
 
-			break;
 
 		case LOADLEVEL:
 

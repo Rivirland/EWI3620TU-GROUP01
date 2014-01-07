@@ -14,11 +14,19 @@
 		<item value="1000" key="org.eclipse.jdt.search.resultpage.limit"/>
 	</section>
 	<section name="DialogBounds_SearchDialog">
+<<<<<<< HEAD
 		<item value="510" key="DIALOG_WIDTH"/>
 		<item value="190" key="DIALOG_Y_ORIGIN"/>
 		<item value="811" key="DIALOG_X_ORIGIN"/>
 		<item value="450" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+=======
+		<item value="1035" key="DIALOG_WIDTH"/>
+		<item value="270" key="DIALOG_Y_ORIGIN"/>
+		<item value="423" key="DIALOG_X_ORIGIN"/>
+		<item value="535" key="DIALOG_HEIGHT"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+>>>>>>> b412e656e6489c36003fd778ba40ccc3de088a69
 	</section>
 	<section name="Search">
 		<list key="Search.processedPageIds">
@@ -41,7 +49,11 @@
 		</list>
 	</section>
 	<section name="SearchDialog">
+<<<<<<< HEAD
 		<item value="org.eclipse.search.internal.ui.text.TextSearchPage" key="PREVIOUS_PAGE"/>
+=======
+		<item value="org.eclipse.jdt.ui.JavaSearchPage" key="PREVIOUS_PAGE"/>
+>>>>>>> b412e656e6489c36003fd778ba40ccc3de088a69
 	</section>
 	<section name="org.eclipse.search.text.FileSearchResultPage">
 		<item value="1000" key="org.eclipse.search.resultpage.limit"/>
@@ -93,7 +105,11 @@
 		</section>
 		<section name="HISTORY10">
 			<item value="false" key="isRegExSearch"/>
+<<<<<<< HEAD
 			<item value="gl.glNorm" key="textPattern"/>
+=======
+			<item value="drawCuboid" key="textPattern"/>
+>>>>>>> b412e656e6489c36003fd778ba40ccc3de088a69
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>
@@ -105,7 +121,11 @@
 		</section>
 		<section name="HISTORY0">
 			<item value="false" key="isRegExSearch"/>
+<<<<<<< HEAD
 			<item value="You went in po" key="textPattern"/>
+=======
+			<item value="setConnection" key="textPattern"/>
+>>>>>>> b412e656e6489c36003fd778ba40ccc3de088a69
 			<item value="0" key="scope"/>
 			<item value="true" key="ignoreCase"/>
 			<item value="false" key="isWholeWord"/>

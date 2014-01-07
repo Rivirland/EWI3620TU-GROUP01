@@ -13,6 +13,7 @@
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
+<<<<<<< HEAD
 		<item value="saveAs" key="selection"/>
 		<list key="findhistory">
 			<item value="saveAs"/>
@@ -23,6 +24,18 @@
 			<item value="getX"/>
 			<item value="calcDistances"/>
 			<item value="calcDistancers"/>
+=======
+		<item value="" key="selection"/>
+		<list key="findhistory">
+			<item value="stencil"/>
+			<item value="setscreen"/>
+			<item value="activate"/>
+			<item value="ACTIVATE"/>
+			<item value="normalcursor"/>
+			<item value="mouse"/>
+			<item value="scalef"/>
+			<item value="Agency FB"/>
+>>>>>>> b412e656e6489c36003fd778ba40ccc3de088a69
 		</list>
 		<list key="replacehistory">
 			<item value="Arial"/>
