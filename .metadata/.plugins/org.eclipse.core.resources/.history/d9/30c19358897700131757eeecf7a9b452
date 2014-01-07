@@ -305,6 +305,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 			break;
 		case INGAME:
+			System.out.println("IG");
 			selected = false;
 			if (!ingamestarted) {
 				ingamestarted = true;

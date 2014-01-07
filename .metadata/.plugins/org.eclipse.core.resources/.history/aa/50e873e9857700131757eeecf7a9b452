@@ -27,7 +27,7 @@ public class GameMenu {
 	
 	public void display(GLAutoDrawable drawable, GL gl){
 		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, 200f/1080f*screenHeight);
-		Teken.textDraw(drawable, gl, "Resume Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight);
+		Teken.textDraw(drawable, gl, "New Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight);
 		Teken.textDraw(drawable, gl, "Load Game", 750f/1920f*screenWidth, 530f/1080f*screenHeight, 80f/1080f*screenHeight);
 		Teken.textDraw(drawable, gl, "Delete Game", 750f/1920f*screenWidth, 380f/1080f*screenHeight, 80f/1080f*screenHeight);
 		//Teken.textDraw(drawable, gl, "Quit Game", 750f/1920f*screenWidth, 230f/1080f*screenHeight, 80f/1080f*screenHeight);
@@ -35,7 +35,7 @@ public class GameMenu {
 		//ik beweeg over de eerste knop => deze licht rood op
 				if (750f/1920f*screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f/1920f*screenWidth){
 					if (350f/1080f*screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f/1080f*screenHeight) {
-						Teken.textDrawMetKleur(drawable, gl, "Resume Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight, 1f, 0f, 0f);	
+						Teken.textDrawMetKleur(drawable, gl, "New Game", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 80f/1080f*screenHeight, 1f, 0f, 0f);	
 					}
 				}
 
@@ -59,6 +59,12 @@ public class GameMenu {
 			if (750f/1920f*screenWidth < me.getX() && me.getX() < 1170f/1920f*screenWidth) {
 				if (300f/1080f*screenHeight < me.getY() && me.getY() < 400f/1080f*screenHeight) {
 					// The first button is clicked
+					MazeRunner.visibleObjects.clear();
+					MazeRunner.portalList.clear();
+					MazeRunner.enemyList.clear();
+					MazeRunner.bulletList.clear();
+					MazeRunner.roofList.clear();
+					MazeRunner.playingTime = 0;
 					gamestate = INGAME;
 				}
 				else if (450f/1080f*screenHeight < me.getY() && me.getY() < 550f/1080f*screenHeight) {
