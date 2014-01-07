@@ -757,10 +757,9 @@ public static Texture wallTexture1;
 		//rechtermuisknop
 		else if (me.getButton()==3){
 			if (xmin-distance/5 < me.getX() && me.getX() < xmax+distance/5 && screenHeight-ymax-distance/5 < me.getY() && me.getY() < screenHeight-ymin+distance/5){
-				//gridklikxrechts = me.getX();
-				//gridklikyrechts = screenHeight - me.getY();
+				gridklikxrechts = me.getX();
+				gridklikyrechts = screenHeight - me.getY();
 				gridklik = true;
-				veranderMatrixVolgensKlikInGridrechts(me.getX(), screenHeight - me.getY());
 			}
 			else{
 				if (heightsOn){
@@ -938,135 +937,93 @@ public static Texture wallTexture1;
 				}
 			}
 			
-			gridklik = false;
-		}
-	}
-	
-	public void veranderMatrixVolgensKlikInGridrechts(float gridklikxrechts, float gridklikyrechts){
-		while (gridklik){
-			float xmin = 830f/1920f*screenWidth;
-			float ymin = 90f/1080f*screenHeight;
-			float xmax = 1830f/1920f*screenWidth;
-			float ymax = 990f/1080f*screenHeight;
-			
-			float xmidden = (xmax+xmin)/2;
-			float ymidden = (ymax+ymin)/2;
-			
-			float columndist = (xmax-xmin)/(gridcolumns);
-			float rowdist = (ymax-ymin)/(gridrows);
-			float distance = 1; //willekeurig
-			
-			if (columndist < rowdist){
-				distance = columndist;
-				ymin = ymidden-distance*gridrows/2;
-				ymax = ymidden+distance*gridrows/2;
-			}
-			else if (columndist > rowdist){
-				distance = rowdist;
-				xmin = xmidden-(distance*gridcolumns)/2;
-				xmax = xmidden+(distance*gridcolumns)/2;
-			}
-			System.out.println("gridklik is " + gridklik);
-			
-			//RECHTERMUISKNOP: verwijder iets uit de matrix
+			//teken kolom als 2 muren aan elkaar grenzen bij het plaatsen van een MUUR
+			if (drawMode == MUUR)
 
-			if (drawMode != ITEM){
-				//verander matrix tijdens mode DAK
-				
-					for (int kolom=1; kolom <= gridcolumns; kolom++){
-						for (int rij=1; rij <= gridrows; rij++){
-							if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
-								wereld[2*rij-1][2*kolom-1]=0;
-								textures[2*rij-1][2*kolom-1]=0;
-								
-								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-									for (int j=0 ; j!=wereld[0].length ; j++){
-										System.out.print(wereld[i][j] + " ");
-									}
-									System.out.println();
+			//RECHTERMUISKNOP: verwijder iets uit de matrix
+			
+			//verander matrix tijdens mode DAK
+			
+				for (int kolom=1; kolom <= gridcolumns; kolom++){
+					for (int rij=1; rij <= gridrows; rij++){
+						if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
+							wereld[2*rij-1][2*kolom-1]=0;
+							textures[2*rij-1][2*kolom-1]=0;
+							
+							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+								for (int j=0 ; j!=wereld[0].length ; j++){
+									System.out.print(wereld[i][j] + " ");
 								}
-								
+								System.out.println();
 							}
+							
 						}
-					}
-				
-				
-				//verander matrix tijdens mode KOLOM
-				
-					for (int kolom=1; kolom <= gridcolumns+1; kolom++){
-						for (int rij=1; rij <= gridrows+1; rij++){
-							if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
-								wereld[2*rij-2][2*kolom-2]=0;
-								textures[2*rij-2][2*kolom-2]=0;
-								
-								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-									for (int j=0 ; j!=wereld[0].length ; j++){
-										System.out.print(wereld[i][j] + " ");
-									}
-									System.out.println();
-								}
-								
-							}
-						}
-					}
-				
-				
-				//verander matrix tijdens mode MUUR (verticaal)
-				
-					for (int kolom=1; kolom <= gridcolumns+1; kolom++){
-						for (int rij=1; rij <= gridrows+1; rij++){
-							if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
-								wereld[2*rij-1][2*kolom-2]=0;
-								textures[2*rij-1][2*kolom-2]=0;
-								
-								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-									for (int j=0 ; j!=wereld[0].length ; j++){
-										System.out.print(wereld[i][j] + " ");
-									}
-									System.out.println();
-								}
-								
-							}
-						}
-					}
-				
-				
-				//verander matrix tijdens mode MUUR (horizontaal)
-				
-					for (int kolom=1; kolom <= gridcolumns+1; kolom++){
-						for (int rij=1; rij <= gridrows+1; rij++){
-							if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
-								wereld[2*rij-2][2*kolom-1]=0;
-								textures[2*rij-2][2*kolom-1]=0;
-								
-								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-									for (int j=0 ; j!=wereld[0].length ; j++){
-										System.out.print(wereld[i][j] + " ");
-									}
-									System.out.println();
-								}
-								
-							}
-						}
-					}
-			}
-			else{
-				//verwijder items
-				System.out.println("hoi");
-				for (int item=0; item != items.size(); item++){
-					float x = (float) items.get(item)[1];
-					float z = (float) items.get(item)[2];
-					if (xmin+z/7f*distance-distance/4 < gridklikxrechts && gridklikxrechts < xmin+z/7f*distance+distance/4){
-						System.out.println("x is goed");
-							if (ymin+x/7f*distance-distance/4 < gridklikyrechts && gridklikyrechts < ymin+x/7f*distance+distance/4){
-								System.out.println("y is goed");
-								items.remove(item);
-								item--;
-							}
 					}
 				}
-			}
-		gridklik = false;
+			
+			
+			//verander matrix tijdens mode KOLOM
+			
+				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
+					for (int rij=1; rij <= gridrows+1; rij++){
+						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
+							wereld[2*rij-2][2*kolom-2]=0;
+							textures[2*rij-2][2*kolom-2]=0;
+							
+							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+								for (int j=0 ; j!=wereld[0].length ; j++){
+									System.out.print(wereld[i][j] + " ");
+								}
+								System.out.println();
+							}
+							
+						}
+					}
+				}
+			
+			
+			//verander matrix tijdens mode MUUR (verticaal)
+			
+				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
+					for (int rij=1; rij <= gridrows+1; rij++){
+						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
+							wereld[2*rij-1][2*kolom-2]=0;
+							textures[2*rij-1][2*kolom-2]=0;
+							
+							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+								for (int j=0 ; j!=wereld[0].length ; j++){
+									System.out.print(wereld[i][j] + " ");
+								}
+								System.out.println();
+							}
+							
+						}
+					}
+				}
+			
+			
+			//verander matrix tijdens mode MUUR (horizontaal)
+			
+				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
+					for (int rij=1; rij <= gridrows+1; rij++){
+						if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
+							wereld[2*rij-2][2*kolom-1]=0;
+							textures[2*rij-2][2*kolom-1]=0;
+							
+							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+								for (int j=0 ; j!=wereld[0].length ; j++){
+									System.out.print(wereld[i][j] + " ");
+								}
+								System.out.println();
+							}
+							
+						}
+					}
+				}
+			
+			gridklikxrechts = 10000;
+			gridklikyrechts = 10000;
+			gridklik = false;
 		}
 	}
 	

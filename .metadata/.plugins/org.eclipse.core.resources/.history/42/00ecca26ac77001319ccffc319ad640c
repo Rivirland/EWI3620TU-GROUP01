@@ -1061,7 +1061,6 @@ public static Texture wallTexture1;
 							if (ymin+x/7f*distance-distance/4 < gridklikyrechts && gridklikyrechts < ymin+x/7f*distance+distance/4){
 								System.out.println("y is goed");
 								items.remove(item);
-								item--;
 							}
 					}
 				}
