@@ -67,7 +67,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long ingamepausetime;
 	// time the pause is resumed
 	private long pausedtime;
-	private boolean selected = false;
+	private boolean selected;
 
 	// private boolean mouselookMode;
 	// the gamestate
@@ -305,6 +305,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 			break;
 		case INGAME:
+			System.out.println("IG");
 			selected = false;
 			if (!ingamestarted) {
 				ingamestarted = true;
@@ -326,9 +327,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			break;
 
 		case LOADGAME:
-			System.out.println("Selected: " + selected);
+			System.out.println("LG");
 			if (!selected) {
-				selected = true;
 				KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 				String currentdir = System.getProperty("user.dir");
 				String filename = kfub.loadFile(new Frame(), "Open...", currentdir + "\\worlds\\", "*.txt");
@@ -336,6 +336,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 				System.out.println(filename.substring(0, filename.length() - 6));
 				mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length() - 4)));
 				gamestate = INGAME;
+				selected = true;
 			}
 			break;
 
