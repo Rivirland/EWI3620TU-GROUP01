@@ -52,7 +52,7 @@ public class LevelEditorLevel {
 		//sc.nextLine(); ???vreemd
 		
 		//tel het aantal rijen en kolommen in de matrix
-		int rows=-1;
+		int rows=0;
 		int columns=0;
 		String string = "";
 		while (sc.hasNextLine()){
@@ -69,7 +69,7 @@ public class LevelEditorLevel {
 		//lees de matrix
 		Scanner sc2 = new Scanner(file);
 		sc2.useDelimiter("\\s*,\\s*");
-		sc2.nextLine();
+//		sc2.nextLine();
 		int[][] res = new int[rows][columns];
 		for (int i=0; i<rows; i++){
 			for (int j=0; j<columns; j++){

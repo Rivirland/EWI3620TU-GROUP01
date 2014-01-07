@@ -78,6 +78,7 @@ public class Player extends GameObject {
 		cloakSeconds=10000;
 		playerStateInt = 0;
 		score = 0;
+		System.out.println("CREATING NEW PLAYER");
 		this.PlayerStateCloak = new PlayerStateCloak();
 		this.PlayerStateDead = new PlayerStateDead();
 		this.PlayerStateGun = new PlayerStateGun();
@@ -94,6 +95,10 @@ public class Player extends GameObject {
 	 */
 	public void setControl(Control control) {
 		this.control = control;
+		control.forward = false;
+		control.back = false;
+		control.right = false;
+		control.left = false;
 	}
 
 	/**
@@ -347,5 +352,6 @@ public class Player extends GameObject {
 				- MazeRunner.level.getMaze(MazeRunner.level
 						.getCurrentMaze(this)).mazeZ;
 	}
+
 
 }

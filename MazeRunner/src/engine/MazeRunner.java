@@ -80,7 +80,7 @@ public class MazeRunner {
 	// player.
 	private EnemyControl enemyControl;
 	public static Level level; // hier wordt world bedoeld
-	
+
 	// private long previousTime = Calendar.getInstance().getTimeInMillis();
 	// final private long startTime =
 	// Calendar.getInstance().getTimeInMillis();// Used
@@ -90,13 +90,10 @@ public class MazeRunner {
 	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 
-	public static Texture earthTexture, wallTexture, roofTexture,
-			trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1,
-			cataloguskolom2, catalogusdak1, z15levelEditorSpooky, z16levelEditorSmart, z17MenuBackGround
-			,z18coptertexture;
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
+			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture;
 
 	public int mazeX, mazeY, mazeZ;
-	private Portal portal1, portal2;
 	private UserInput input;
 	public static long currentTime;
 
@@ -159,11 +156,10 @@ public class MazeRunner {
 		// displayed by MazeRunner.
 		// Add the maze that we will be using
 		this.level = level;
-
 		GeneticAlgorithm GA = new GeneticAlgorithm(level.mazelist, 50);
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
-		
+
 		System.out.println(Arrays.toString(worldConnection));
 		// Roof roof = new Roof(0.5, 5, 0.5, 1);
 		// roofList.add(roof);
@@ -171,8 +167,6 @@ public class MazeRunner {
 		// portal1 = new Portal(106, 2, 106, 2);
 		//
 		// portal2 = new Portal(160, 2, 160, 2);
-
-		
 
 		// Portal.portalConnection(portal1, portal2);
 		for (int i = 0; i < level.getAantal(); i++) {
@@ -197,8 +191,6 @@ public class MazeRunner {
 		this.input = input;
 		player.setControl(input);
 	}
-	
-	
 
 	/*
 	 * **********************************************
@@ -249,8 +241,8 @@ public class MazeRunner {
 		initLighting(gl);
 
 		// Set the shading model.
-		 gl.glShadeModel(GL.GL_SMOOTH);
-//		gl.glShadeModel(GL.GL_FLAT);
+		gl.glShadeModel(GL.GL_SMOOTH);
+		// gl.glShadeModel(GL.GL_FLAT);
 		// Set the shading model.
 		//
 		loadTextures(gl);
@@ -271,7 +263,7 @@ public class MazeRunner {
 
 	private void updateLighting(GL gl) {
 		long cT = currentTime;
-		float lI = 0.9f - (float) ((1+Math.cos(cT/600f))/2);
+		float lI = 0.9f - (float) ((1 + Math.cos(cT / 600f)) / 2);
 		float lightAmbient0normal[] = { 0.9f, 0.9f, 0.9f, 1.0f };
 		float lightAmbient0cloak[] = { lI, lI, lI, 1.0f };
 		if (player.invisible) {
@@ -349,7 +341,7 @@ public class MazeRunner {
 		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		if (deltaTime > 10000 | deltaTime<0) {
+		if (deltaTime > 10000 | deltaTime < 0) {
 			deltaTime = 0;
 		}
 
@@ -429,9 +421,8 @@ public class MazeRunner {
 		Reticle.reticle(gl);
 
 		gl.glFlush();
-		
-	}
 
+	}
 
 	/**
 	 * reshape(GLAutoDrawable, int, int, int, int, int) is called upon whenever
@@ -522,7 +513,7 @@ public class MazeRunner {
 				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				
+
 				e.printStackTrace();
 			}
 			// System.out.println(files[i]);
@@ -547,15 +538,18 @@ public class MazeRunner {
 		z16levelEditorSmart = TextureIO.newTexture(datas[16]);
 		z17MenuBackGround = TextureIO.newTexture(datas[17]);
 		z18coptertexture = TextureIO.newTexture(datas[18]);
+		smartEnemyNormalTexture = TextureIO.newTexture(datas[19]);
+		spookyEnemyNormalTexture = TextureIO.newTexture(datas[20]);
+		spookyEnemyAlertTexture = TextureIO.newTexture(datas[21]);
+		smartEnemyAlertTexture = TextureIO.newTexture(datas[22]);
+		gunTexture = TextureIO.newTexture(datas[23]);
 		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
 
 	public void loadModels(GL gl) {
-		
-		
+
 		gl.glEnable(GL.GL_TEXTURE_2D);
-		
-		
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60.obj";
@@ -566,10 +560,10 @@ public class MazeRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\oildrum.obj";
+			String filename = currentdir + "\\models\\eva.obj";
 			spookyModel = OBJLoader.loadTexturedModel(new File(filename));
 
 		} catch (FileNotFoundException e) {
@@ -803,10 +797,9 @@ public class MazeRunner {
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		ChangeGL.GLto3D(gl);
 	}
-	
-	public static void visibleIterator( GL gl){
-		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
-				.hasNext();) {
+
+	public static void visibleIterator(GL gl) {
+		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
 	}
