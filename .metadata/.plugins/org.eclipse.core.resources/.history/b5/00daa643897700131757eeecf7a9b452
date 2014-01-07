@@ -305,6 +305,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 			break;
 		case INGAME:
+			System.out.println("IG");
 			selected = false;
 			if (!ingamestarted) {
 				ingamestarted = true;
@@ -326,7 +327,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			break;
 
 		case LOADGAME:
-			System.out.println("Selected: " + selected);
+			System.out.println(selected);
 			if (!selected) {
 				selected = true;
 				KiesFileUitBrowser kfub = new KiesFileUitBrowser();
