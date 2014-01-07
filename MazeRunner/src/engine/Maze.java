@@ -553,37 +553,7 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawDebrisXFromQuad(GL gl) {
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_WIDTH, 0, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_WIDTH, 0, WALL_LENGTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT / 10, WALL_LENGTH);
-		gl.glNormal3d(1, 0, 0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, 0, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, WALL_LENGTH);
-		gl.glNormal3d(0, 0, 1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(-1, 0, 0);
-
-		gl.glEnd();
-		gl.glEnable(GL.GL_CULL_FACE);
+		Teken.drawCuboid(gl,0.0,WALL_WIDTH,0.0,ITEM_HEIGHT/10,0.0,WALL_LENGTH);
 
 	}
 
@@ -601,37 +571,8 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawDebrisColumnFromQuad(GL gl) {
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, 0, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(COLUMN_WIDTH, 0, COLUMN_WIDTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(COLUMN_WIDTH, ITEM_HEIGHT / 10, COLUMN_WIDTH);
-		gl.glNormal3d(1, 0, 0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, 0, COLUMN_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, COLUMN_WIDTH);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(-1, 0, 0);
-
-		gl.glEnd();
-		gl.glEnable(GL.GL_CULL_FACE);
+		Teken.drawCuboid(gl,0.0,COLUMN_WIDTH,0.0,ITEM_HEIGHT/10,0.0,COLUMN_WIDTH);
+		
 	}
 
 	private void paintDebrisZFromQuad(GL gl) {
@@ -648,56 +589,11 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawDebrisZFromQuad(GL gl) {
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, 0, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT / 10 + 0, 0.0);
-		gl.glNormal3d(0, 0, -1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, 0, WALL_WIDTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT / 10, WALL_WIDTH);
-		gl.glNormal3d(1, 0, 0);
-
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, 0, WALL_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, WALL_WIDTH);
-		gl.glNormal3d(0, 0, 1);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, 0, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT / 10, 0.0);
-		gl.glNormal3d(-1, 0, 0);
-		gl.glEnd();
-		gl.glEnable(GL.GL_CULL_FACE);
-
+		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, 0.0, ITEM_HEIGHT/10, 0.0, WALL_WIDTH);
 	}
 
-	// private void displayItems(GL gl) {
-	// for (int i = 0; i < itemList.size(); i++) {
-	// // itemList.get(i).display(gl);
-	// }
-	// }
 
-	/**
-	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent
-	 * the floor of the entire maze.
-	 * 
-	 * @param gl
-	 *            the GL context in which should be drawn
-	 * @param size_x
-	 *            the size of the tile
-	 */
-
-	// Paints the floor tile
+	
 	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
 
 		setLighting(gl);
@@ -728,70 +624,8 @@ public class Maze implements VisibleObject {
 	public static void drawWallZFromQuad(GL gl, double h) {
 
 		setLighting(gl);
-
-		Vertex v1 = new Vertex(0.0, h, 0.0);
-		Vertex v2 = new Vertex(0.0, ITEM_HEIGHT + h, 0.0);
-		Vertex v3 = new Vertex(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
-		Vertex v4 = new Vertex(WALL_LENGTH, h, 0.0);
-		Vertex v5 = new Vertex(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
-		Vertex v6 = new Vertex(WALL_LENGTH, h, WALL_WIDTH);
-		Vertex v7 = new Vertex(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
-		Vertex v8 = new Vertex(0.0, h, WALL_WIDTH);
-
-		Vector n1 = Vector.calcNormal(v1, v2, v3);
-		Vector n2 = Vector.calcNormal(v3, v4, v5);
-		Vector n3 = Vector.calcNormal(v5, v6, v7);
-		Vector n4 = Vector.calcNormal(v1, v2, v7);
-		Vector n5 = Vector.calcNormal(v2, v3, v5);
-		gl.glBegin(GL.GL_QUADS);
-		// Back-face
-		gl.glNormal3d(n1.x, n1.y, n1.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v1.x, v1.y, v1.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v2.x, v2.y, v2.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v3.x, v3.y, v3.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v4.x, v4.y, v4.z);
-		// Left-face
-		gl.glNormal3d(n2.x, n2.y, n2.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v5.x, v5.y, v5.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v6.x, v6.y, v6.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v4.x, v4.y, v4.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v3.x, v3.y, v3.z);
-		// Back-face
-		gl.glNormal3d(n3.x, n3.y, n3.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v6.x, v6.y, v6.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v5.x, v5.y, v5.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v7.x, v7.y, v7.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v8.x, v8.y, v8.z);
-		// Right-face
-		gl.glNormal3d(n4.x, n4.y, n4.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v7.x, v7.y, v7.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v2.x, v2.y, v2.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v1.x, v1.y, v1.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v8.x, v8.y, v8.z);
-		// Top-face
-		gl.glNormal3d(n5.x, n5.y, n5.z);
-		gl.glVertex3d(v2.x, v2.y, v2.z);
-		gl.glVertex3d(v7.x, v7.y, v7.z);
-		gl.glVertex3d(v5.x, v5.y, v5.z);
-		gl.glVertex3d(v3.x, v3.y, v3.z);
+		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
 		
-		gl.glEnd();
 	}
 
 	private void paintDoorXFromQuad(GL gl, double h, int i, int j) {
@@ -939,66 +773,11 @@ public class Maze implements VisibleObject {
 
 	public static void drawWallXFromQuad(GL gl, double h) {
 		setLighting(gl);
-		gl.glBegin(GL.GL_QUADS);
-		// Left
-		gl.glNormal3d(0, 0, -1);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_WIDTH, h, 0.0);
+		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, h, ITEM_HEIGHT+h, 0.0, WALL_LENGTH);
 		
-		// Front
-		gl.glNormal3d(1, 0, 0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_WIDTH, h, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, WALL_LENGTH);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_WIDTH, +h, WALL_LENGTH);
-		
-		// Right
-		gl.glNormal3d(0, 0, -1);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_WIDTH, +h, WALL_LENGTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, h, WALL_LENGTH);
-		
-		// Back
-		gl.glNormal3d(-1, 0, 0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, h, WALL_LENGTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_LENGTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		
-		gl.glEnd();
-
-		gl.glBegin(GL.GL_QUADS);
-
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_LENGTH);
-
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, WALL_LENGTH);
-		gl.glVertex3d(WALL_WIDTH, ITEM_HEIGHT + h, 0.0);
-		// gl.glNormal3d(0, 1, 0);
-
-		gl.glEnd();
 	}
 
-	// Paints a column
+	
 
 	private void paintColumnFromQuad(GL gl, double h, int i, int j) {
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
@@ -1017,66 +796,7 @@ public class Maze implements VisibleObject {
 
 	public static void drawColumnFromQuad(GL gl, double h) {
 		setLighting(gl);
-		
-		Vertex v1 = new Vertex(0.0, h, 0.0);
-		Vertex v2 = new Vertex(0.0, ITEM_HEIGHT + h, 0.0);
-		Vertex v3 = new Vertex(COLUMN_WIDTH, h, 0.0);
-		Vertex v4 = new Vertex(COLUMN_WIDTH, ITEM_HEIGHT + h, 0.0);
-		Vertex v5 = new Vertex(COLUMN_WIDTH, +h, COLUMN_WIDTH);
-		Vertex v6 = new Vertex(COLUMN_WIDTH, ITEM_HEIGHT + h, COLUMN_WIDTH);
-		Vertex v7 = new Vertex(0.0, h, COLUMN_WIDTH);
-		Vertex v8 = new Vertex(0.0, ITEM_HEIGHT + h, COLUMN_WIDTH);
-		Vector n1 = Vector.calcNormal(v1,v2,v4);
-		Vector n2 = Vector.calcNormal(v3,v4,v6);
-		Vector n3 = Vector.calcNormal(v5,v6,v8);
-		Vector n4 = Vector.calcNormal(v7, v8, v2);
-		Vector n5 = Vector.calcNormal(v2, v8, v6);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3d(n1.x,n1.y,n1.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v1.x,v1.y,v1.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v2.x,v2.y,v2.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v4.x,v4.y,v4.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v3.x,v3.y,v3.z);
-		
-		gl.glNormal3d(n2.x,n2.y,n2.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v3.x,v3.y,v3.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v4.x,v4.y,v4.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v6.x,v6.y,v6.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v5.x,v5.y,v5.z);
-		
-		gl.glNormal3d(n3.x,n3.y,n3.z);
-		gl.glVertex3d(v5.x,v5.y,v5.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v6.x,v6.y,v6.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v8.x,v8.y,v8.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v7.x,v7.y,v7.z);
-		
-		gl.glNormal3d(n4.x,n4.y,n4.z);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(v7.x,v7.y,v7.z);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(v8.x,v8.y,v8.z);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(v2.x,v2.y,v2.z);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(v1.x,v1.y,v1.z);
-		
-		gl.glNormal3d(n5.x, n5.y, n5.z);
-		gl.glVertex3d(v2.x,v2.y,v2.z);
-		gl.glVertex3d(v8.x,v8.y,v8.z);
-		gl.glVertex3d(v6.x,v6.y,v6.z);
-		gl.glVertex3d(v4.x,v4.y,v4.z);
-		gl.glEnd();
+		Teken.drawCuboid(gl, 0.0, COLUMN_WIDTH, h, ITEM_HEIGHT+h, 0.0, COLUMN_WIDTH);
 	}
 
 	public static double getItemHeight() {
