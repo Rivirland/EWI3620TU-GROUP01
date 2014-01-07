@@ -23,6 +23,7 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	private double trappedX;
 	private double trappedY;
 	private double trappedZ;
+	protected boolean alert;
 	
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
@@ -35,7 +36,7 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		this.trapped = false;
 		this.dead = false;
 		this.size = 1;
-
+		this.alert = false;
 	}
 
 	public void reset() {

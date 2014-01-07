@@ -118,7 +118,7 @@ public static Texture wallTexture1;
 		this.items = levels.get(0).getItemList();
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
-//		loadTextures(gl);
+		loadTextures(gl);
 		modelviewer= new LevelEditorModelViewer(screenWidth, screenHeight,(90f/1920f*screenWidth), (90f/1080f*screenHeight),  (589f/1920f*screenWidth), (860f/1080f*screenHeight));
 		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775)/1920f*screenWidth,  (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,  1050/1080f*screenHeight);
 		//worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, screenWidth/2, screenHeight/2, screenWidth, screenHeight);
@@ -1205,25 +1205,25 @@ public static Texture wallTexture1;
 		return defaultlocation;
 	}
 	
-//	public void loadTextures(GL gl) {
-//		gl.glEnable(GL.GL_TEXTURE_1D);
-//		
-//		try {
-//			String currentdir = System.getProperty("user.dir");
-//			String filename = "\\textures\\cataloguskolom1.jpg";
-//
-//			filename = currentdir + filename;
-//			File file2 = new File(filename);
-//			TextureData data2 = TextureIO.newTextureData(file2, false,"jpg");
-//			wallTexture1 = TextureIO.newTexture(data2);
-//			System.out.println("gelukt");
-//		} catch (IOException exc) {
-//			System.out.println("niet gevonden - texture");
-//			exc.printStackTrace();
-//			System.exit(1);
-//		}
-//		gl.glDisable(GL.GL_TEXTURE_1D);
-//	}
+	public void loadTextures(GL gl) {
+		gl.glEnable(GL.GL_TEXTURE_1D);
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = "\\textures\\cataloguskolom1.jpg";
+
+			filename = currentdir + filename;
+			File file2 = new File(filename);
+			TextureData data2 = TextureIO.newTextureData(file2, false,"jpg");
+			wallTexture1 = TextureIO.newTexture(data2);
+			System.out.println("gelukt");
+		} catch (IOException exc) {
+			System.out.println("niet gevonden - texture");
+			exc.printStackTrace();
+			System.exit(1);
+		}
+		gl.glDisable(GL.GL_TEXTURE_1D);
+	}
 	
 	public void plaatsTexture(GL gl, float xmin, float ymin, float xmax, float ymax, int i) {
 		

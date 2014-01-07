@@ -85,7 +85,7 @@ public class PlayerStateGun extends PlayerState{
 		gl.glRotated(MazeRunner.player.getVerAngle(),1,0,0);
 		gl.glScaled(0.5,0.5,0.5);
 		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 25);
 		MazeRunner.m21Model.display(gl);
 		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glPopMatrix();	

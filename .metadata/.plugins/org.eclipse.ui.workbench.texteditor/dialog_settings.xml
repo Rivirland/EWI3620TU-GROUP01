@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="305" key="DIALOG_WIDTH"/>
+		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="482" key="DIALOG_Y_ORIGIN"/>
-		<item value="442" key="DIALOG_HEIGHT"/>
+		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1278" key="DIALOG_X_ORIGIN"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
@@ -13,16 +13,16 @@
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="scalef" key="selection"/>
+		<item value="saveAs" key="selection"/>
 		<list key="findhistory">
-			<item value="scalef"/>
-			<item value="Agency FB"/>
-			<item value="UPDATE"/>
-			<item value="ITEMUSE"/>
-			<item value="reshape("/>
-			<item value="init"/>
-			<item value="System.out.println"/>
-			<item value="initObjects"/>
+			<item value="saveAs"/>
+			<item value="loadTextures"/>
+			<item value="loadTex"/>
+			<item value="cont"/>
+			<item value="playerStateInt"/>
+			<item value="getX"/>
+			<item value="calcDistances"/>
+			<item value="calcDistancers"/>
 		</list>
 		<list key="replacehistory">
 			<item value="Arial"/>

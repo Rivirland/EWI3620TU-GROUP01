@@ -38,7 +38,7 @@ public class Portal {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.facingdirection = facingdirection % 3; // als hoger dan 3 dan komt
+		this.facingdirection = facingdirection % 4; // als hoger dan 3 dan komt
 													// het toch goed
 		this.setisConnected(false);
 	}
@@ -47,7 +47,7 @@ public class Portal {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.facingdirection = facingdirection % 3; // als hoger dan 3 dan komt
+		this.facingdirection = facingdirection % 4; // als hoger dan 3 dan komt
 													// het toch goed
 		this.setisConnected(false);
 		this.portalID = ID;
@@ -56,6 +56,7 @@ public class Portal {
 
 	public static void connectPortals(int[] mazes) {
 		if (MazeRunner.portalList.size() > 0) {
+			System.out.println(MazeRunner.portalList.size());
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
 			}
@@ -110,53 +111,26 @@ public class Portal {
 
 		// if()
 		if (MazeRunner.level.getCurrentMaze(player) != -1) {
-			if (playery > 0 && playery < hoogte - MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(player)).mazeY) {
-			}
-			if (facingdirection == 0 || facingdirection == 2) {
-
-				if (playerz > this.z - range && playerz < this.z + range) {
-
-					if (previousX < x && playerx > x || previousX > x && playerx < x) { // kijken
-																						// of
-																						// bij
-																						// van
-																						// x<
-																						// x
-																						// van
-																						// portal
-																						// naar
-																						// x
-																						// >
-																						// x
-																						// van
-																						// portal
-																						// is
-																						// gegaan
-																						// terwijl
-																						// z
-																						// binnen
-																						// de
-																						// boundary
-																						// is
-						teleportation = true;
-						// System.out.println(teleportation);
+			if (Math.abs(player.locationY - this.y) < 5) {
+				if (facingdirection == 0 || facingdirection == 2) {
+					if (playerz > this.z - range && playerz < this.z + range) {
+						if (previousX < x && playerx > x || previousX > x && playerx < x) {
+							teleportation = true;
+						}
 					}
+				} else {
+					if (playerx > this.x - range && playerx < this.x + range) {
+						if (previousZ < z && playerz > z || previousZ > z && playerz < z) {
+
+							teleportation = true;
+							// System.out.println(teleportation);
+						}
+					}
+					// kijken of bij van z< z van portal naar z > z van portal
+					// is
+					// gegaan terwijl x binnen de boundary is
 
 				}
-
-			} else {
-
-				if (playerx > this.x - range && playerx < this.x + range) {
-
-					if (previousZ < z && playerz > z || previousZ > z && playerz < z) {
-
-						teleportation = true;
-						// System.out.println(teleportation);
-					}
-				}
-				// kijken of bij van z< z van portal naar z > z van portal is
-				// gegaan terwijl x binnen de boundary is
-
 			}
 		}
 		// hier wordt toteleport aangeroepen na elke check, als teleportation
@@ -240,6 +214,7 @@ public class Portal {
 		if (!Equals(p1, p2)) {
 			p1.setconnectedTo(p2);
 			p2.setconnectedTo(p1);
+			System.out.println("Connected " + p1.portalID + "and " + p2.portalID);
 			p1.setisConnected(true);
 			p2.setisConnected(true);
 
