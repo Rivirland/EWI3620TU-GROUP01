@@ -91,7 +91,7 @@ public class MazeRunner {
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
-			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture;
+			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture;
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
@@ -543,6 +543,7 @@ public class MazeRunner {
 		spookyEnemyAlertTexture = TextureIO.newTexture(datas[21]);
 		smartEnemyAlertTexture = TextureIO.newTexture(datas[22]);
 		gunTexture = TextureIO.newTexture(datas[23]);
+		z24portaltexture = TextureIO.newTexture(datas[24]);
 		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
 

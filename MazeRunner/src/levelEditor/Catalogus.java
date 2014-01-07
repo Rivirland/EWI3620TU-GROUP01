@@ -31,9 +31,13 @@ public class Catalogus {
 				//leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 11);
 			}
 			if (drawMode == ITEM){
-				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 17);
+				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 26);
 				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 17);
 				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 18);
+				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 14);
+				
+				leveleditor.plaatsTexture(gl, 109.8f, 642.50f, 209.8f, 742.50f, 14);
+				leveleditor.plaatsTexture(gl, 229.6f, 642.50f, 329.6f, 742.50f, 20);
 			}
 		}
 	}

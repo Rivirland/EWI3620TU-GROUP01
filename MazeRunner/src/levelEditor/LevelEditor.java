@@ -2,6 +2,7 @@ package levelEditor;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -81,6 +82,10 @@ public static Texture wallTexture1;
 	private boolean remove=false;
 	private boolean open=false;
 	private boolean worldview = false;
+	
+	private boolean addportaldirection=false;
+	private float xportal;
+	private float yportal;
 	
 	LevelEditorModelViewer modelviewer;
 	LevelEditorWorldViewer worldviewer;
@@ -163,7 +168,7 @@ public static Texture wallTexture1;
 			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
-			veranderMatrixVolgensKlikInGrid(gl);
+			//veranderMatrixVolgensKlikInGrid(gl);
 		}
 		
 		modelviewer.display(gl, catalogus, drawMode, textureMode, hoogteMode);
@@ -519,7 +524,40 @@ public static Texture wallTexture1;
 						System.out.println("Catalogus: TEXTURE 3");
 						catalogus = false;
 					}
+					if (469.2f/1920*screenWidth < me.getX() && me.getX() < 569.2f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 4;
+						System.out.println("Catalogus: TEXTURE 4");
+						catalogus = false;
+					}
 				}
+				if ((1-742.50f/1080)*screenHeight < me.getY() && me.getY() < (1-642.50f/1080)*screenHeight) {
+					if (109.8f/1920*screenWidth < me.getX() && me.getX() < 209.8f/1920*screenWidth) {
+						// The first button is clicked
+						textureMode = 5;
+						System.out.println("Catalogus: TEXTURE 5");
+						catalogus = false;
+					}
+					if (229.6f/1920*screenWidth < me.getX() && me.getX() < 329.6f/1920*screenWidth) {
+						// The second button is clicked
+						textureMode = 6;
+						System.out.println("Catalogus: TEXTURE 6");
+						catalogus = false;
+					}
+					if (349.4f/1920*screenWidth < me.getX() && me.getX() < 449.4f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 7;
+						System.out.println("Catalogus: TEXTURE 7");
+						catalogus = false;
+					}
+					if (469.2f/1920*screenWidth < me.getX() && me.getX() < 569.2f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 8;
+						System.out.println("Catalogus: TEXTURE 8");
+						catalogus = false;
+					}
+				}
+				
 			}
 			
 			//hoogte knoppen
@@ -631,12 +669,51 @@ public static Texture wallTexture1;
 			
 			
 			
-			//gridklik
-			
-			if (xmin-distance/5 < me.getX() && me.getX() < xmax+distance/5 && screenHeight-ymax-distance/5 < me.getY() && me.getY() < screenHeight-ymin+distance/5){
-				gridklikx = me.getX();
-				gridkliky = screenHeight - me.getY();
-				gridklik = true;
+			//portaldirection klik
+			if (addportaldirection){
+				double portalID=1;
+				double connectionID=1;
+				if (Math.abs(me.getX()-xportal) >= Math.abs(screenHeight-me.getY()-yportal)){
+					//links
+					if ((me.getX()-xportal) < 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 3, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=2;
+					}
+					//rechts
+					else if ((me.getX()-xportal) >= 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 1, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=0;
+					}
+				}
+				else if (Math.abs(me.getX()-xportal) < Math.abs(screenHeight-me.getY()-yportal)){
+					//onder
+					if ((screenHeight-me.getY()-yportal) < 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 2, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=1;
+					}
+					//boven
+					else if ((screenHeight-me.getY()-yportal) >= 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 0, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=3;
+					}
+				}
+			}
+			else{
+				//gridklik
+				if (xmin-distance/5 < me.getX() && me.getX() < xmax+distance/5 && screenHeight-ymax-distance/5 < me.getY() && me.getY() < screenHeight-ymin+distance/5){
+					float gridklikx = me.getX();
+					float gridkliky = screenHeight - me.getY();
+					gridklik = true;
+					veranderMatrixVolgensKlikInGrid(gridklikx, gridkliky);
+				}
 			}
 			
 			//locatie knop
@@ -717,7 +794,7 @@ public static Texture wallTexture1;
 		
 	}
 	
-	public void veranderMatrixVolgensKlikInGrid(GL gl){
+	public void veranderMatrixVolgensKlikInGrid(float gridklikx, float gridkliky){
 		while (gridklik){
 			float xmin = 830f/1920f*screenWidth;
 			float ymin = 90f/1080f*screenHeight;
@@ -831,20 +908,38 @@ public static Texture wallTexture1;
 			
 			//plaats item
 			if (drawMode == ITEM){
+				if (textureMode ==1 && !addportaldirection){
+					//double direction = 0;
+					//double portalID = 1;
+					//double connectionID = 1;
+					//drawportal
+					xportal = gridklikx;
+					yportal = gridkliky;
+					addportaldirection = true;
+					System.out.println("ik ben true: " + addportaldirection);
+				}
 				if (textureMode ==2){
 					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
 				}
 				if (textureMode ==3){
 					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
 				}
+				if (textureMode ==4){
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance, hoogteMode});
+				}
+				if (textureMode ==5){
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
+					//items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance, hoogteMode});
+				}
+				if (textureMode ==6){
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
+					//items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance, hoogteMode});
+				}
 			}
 			
 			//teken kolom als 2 muren aan elkaar grenzen bij het plaatsen van een MUUR
 			if (drawMode == MUUR)
-				
-			gridklikx = 10000;
-			gridkliky = 10000;
-			
+
 			//RECHTERMUISKNOP: verwijder iets uit de matrix
 			
 			//verander matrix tijdens mode DAK
@@ -1130,6 +1225,19 @@ public static Texture wallTexture1;
 		//teken items
 		for (int item=0; item < items.size(); item++){
 			//System.out.println(item);
+			if (items.get(item)[0] == 1){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 26);
+					if (items.get(item)[3] == 0)
+						Teken.pijlboven(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);	
+					else if (items.get(item)[3] == 1)
+						Teken.pijlrechts(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);
+					else if (items.get(item)[3] == 2)
+						Teken.pijlonder(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);	
+					else if (items.get(item)[3] == 3)
+						Teken.pijllinks(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);
+			}
 			if (items.get(item)[0] == 2){
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
@@ -1140,7 +1248,41 @@ public static Texture wallTexture1;
 				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 18);
 			}
+			if (items.get(item)[0] == 4){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 14);
+			}
+			if (items.get(item)[0] == 5){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 14);
+			}
+			if (items.get(item)[0] == 6){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 20);
+			}
 		}
+		
+		//teken portal pijl
+				if (addportaldirection){
+					plaatsTexture2(gl, xportal-distance/4, yportal-distance/4, xportal+distance/4, yportal+distance/4, 26);
+					float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX())-xportal);
+					float dY = (float) (screenHeight+30f-MouseInfo.getPointerInfo().getLocation().getY()-yportal); 
+					if (Math.abs(dX) >= Math.abs(dY)){
+						if (dX>0)
+							Teken.pijlrechts(gl, xportal, yportal, distance);
+						else
+							Teken.pijllinks(gl, xportal, yportal, distance);
+					}
+					else if (Math.abs(dY) > Math.abs(dX)){
+						if (dY>0)
+							Teken.pijlboven(gl, xportal, yportal, distance);
+						else
+							Teken.pijlonder(gl, xportal, yportal, distance);
+					}
+				}
 		
 	}
 
