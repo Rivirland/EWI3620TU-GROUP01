@@ -472,15 +472,15 @@ public class Maze implements VisibleObject {
 					double ztrans = Math.floor(((double) j + 1) / 2) * COLUMN_WIDTH + Math.floor((double) j / 2) * WALL_LENGTH;
 					gl.glTranslated(xtrans, 0.0, ztrans);
 					if (i % 2 == 0 && j % 2 == 0) {
-						paintDebrisColumnFromQuad(gl);
+						drawDebrisColumnFromQuad(gl);
 					}
 					// (odd,even) paints debris in the Z-direction
 					if (i % 2 != 0 && j % 2 == 0) {
-						paintDebrisZFromQuad(gl);
+						drawDebrisColumnFromQuad(gl);
 					}
 					// (even,odd) paints debris in the X-direction
 					if (i % 2 == 0 && j % 2 != 0) {
-						paintDebrisXFromQuad(gl);
+						drawDebrisXFromQuad(gl);
 					}
 					gl.glPopMatrix();
 				}
@@ -507,9 +507,9 @@ public class Maze implements VisibleObject {
 						// (odd,even) paints a wall/door in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
 							if (height == 0 && textureMatrix[i][j] % 2 == 0) {
-								paintDoorZFromQuad(gl, height * ITEM_HEIGHT, i, j);
+								drawDoorZFromQuad(gl, height * ITEM_HEIGHT);
 							} else {
-								paintWallZFromQuad(gl, height * ITEM_HEIGHT, i, j);
+								drawWallZFromQuad(gl, height * ITEM_HEIGHT);
 							}
 						}
 
@@ -518,7 +518,7 @@ public class Maze implements VisibleObject {
 							if (height == 0 && textureMatrix[i][j] % 2 == 0) {
 								paintDoorXFromQuad(gl, height * ITEM_HEIGHT, i, j);
 							} else {
-								paintWallXFromQuad(gl, height * ITEM_HEIGHT, i, j);
+								drawWallXFromQuad(gl, height * ITEM_HEIGHT);
 							}
 						}
 						// (odd,odd) paints a roof
@@ -545,48 +545,24 @@ public class Maze implements VisibleObject {
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, matAmbient, 0);
 	}
 
-	private void paintDebrisXFromQuad(GL gl) {
-		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBegin(GL.GL_QUAD_STRIP);
 
-		drawDebrisXFromQuad(gl);
-	}
 
 	public static void drawDebrisXFromQuad(GL gl) {
 		Teken.drawCuboid(gl,0.0,WALL_WIDTH,0.0,ITEM_HEIGHT/10,0.0,WALL_LENGTH);
 
 	}
 
-	private void paintDebrisColumnFromQuad(GL gl) {
-		gl.glDisable(GL.GL_CULL_FACE);
-		// gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
-		gl.glBegin(GL.GL_QUAD_STRIP);
 
-		drawDebrisColumnFromQuad(gl);
-	}
-
-	private static void paintDebrisFromQuad(GL gl, double h, int texture) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawDebrisColumnFromQuad(gl);
-	}
+	
 
 	public static void drawDebrisColumnFromQuad(GL gl) {
 		Teken.drawCuboid(gl,0.0,COLUMN_WIDTH,0.0,ITEM_HEIGHT/10,0.0,COLUMN_WIDTH);
 		
 	}
 
-	private void paintDebrisZFromQuad(GL gl) {
-		gl.glDisable(GL.GL_CULL_FACE);
-		// gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
-		gl.glBegin(GL.GL_QUAD_STRIP);
-		drawDebrisZFromQuad(gl);
 
-	}
 
-	private static void paintDebrisZFromQuad(GL gl, double h, int texture) {
-		// gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawDebrisZFromQuad(gl);
-	}
+
 
 	public static void drawDebrisZFromQuad(GL gl) {
 		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, 0.0, ITEM_HEIGHT/10, 0.0, WALL_WIDTH);
@@ -605,16 +581,7 @@ public class Maze implements VisibleObject {
 
 	}
 
-	// Paints a wall in the z-direction
-	private void paintWallZFromQuad(GL gl, double h, int i, int j) {
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		if (textureMatrix[i][j] == 1) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		} else if (textureMatrix[i][j] == 3) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
-		}
-		drawWallZFromQuad(gl, h);
-	}
+	
 
 	public static void paintWallZFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
@@ -622,7 +589,6 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawWallZFromQuad(GL gl, double h) {
-
 		setLighting(gl);
 		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
 		
@@ -632,144 +598,24 @@ public class Maze implements VisibleObject {
 		gl.glPushMatrix();
 		gl.glRotated(90, 0, 1, 0);
 		gl.glTranslated(-WALL_LENGTH, 0, 0);
-		paintDoorZFromQuad(gl, h, i, j);
+		drawDoorZFromQuad(gl, h);
 		gl.glPopMatrix();
 	}
 
-	private void paintDoorZFromQuad(GL gl, double h, int i, int j) {
-		gl.glDisable(GL.GL_CULL_FACE);
 
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		if (textureMatrix[i][j] == 2) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		} else if (textureMatrix[i][j] == 4) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
-		}
-		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		drawDoorZFromQuad(gl, h);
-
-	}
-
-	private static void paintDoorZFromQuad(GL gl, double h, int texture) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawDoorZFromQuad(gl, h);
-	}
 
 	public static void drawDoorZFromQuad(GL gl, double h) {
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(0.0, h, WALL_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(-1, 0, 0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, h, WALL_WIDTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(0, 0, 1);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, h, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
-		gl.glNormal3d(1, 0, 0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(0.0, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glNormal3d(0, 0, -1);
-		gl.glEnd();
+//		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
+		// Links van de deur
+		Teken.drawCuboid(gl, 0.0, (WALL_LENGTH-DOOR_WIDTH)/2, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
+		// Rechts van de deur
+		Teken.drawCuboid(gl, (WALL_LENGTH+DOOR_WIDTH)/2, WALL_LENGTH, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
+		// Boven de deur
+		Teken.drawCuboid(gl, (WALL_LENGTH-DOOR_WIDTH)/2, (WALL_LENGTH+DOOR_WIDTH)/2, DOOR_HEIGHT+h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
 
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, WALL_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(1, 0, 0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, h, WALL_WIDTH);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(0, 0, 1);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, h, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
-		gl.glNormal3d(-1, 0, 0);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d(WALL_LENGTH, h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
-		gl.glNormal3d(0, 0, -1);
-		gl.glEnd();
-
-		// boven de deur
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, DOOR_HEIGHT + h, 0.0);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, DOOR_HEIGHT + h, 0.0);
-		gl.glNormal3d(0, 0, -1);
-		gl.glTexCoord2d(0.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, DOOR_HEIGHT + h, WALL_WIDTH);
-		gl.glTexCoord2d(1.0, 0.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, DOOR_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(0, 0, 1);
-		gl.glTexCoord2d(0.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH - DOOR_WIDTH) / 2, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glTexCoord2d(1.0, 1.0);
-		gl.glVertex3d((WALL_LENGTH + DOOR_WIDTH) / 2, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(0, -1, 0);
-
-		gl.glEnd();
-
-		// bovenkant wall
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		gl.glBegin(GL.GL_QUAD_STRIP);
-
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, 0.0);
-		gl.glVertex3d(0.0, ITEM_HEIGHT + h, WALL_WIDTH);
-
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, 0.0);
-		gl.glVertex3d(WALL_LENGTH, ITEM_HEIGHT + h, WALL_WIDTH);
-		gl.glNormal3d(0, 1, 0);
-
-		gl.glEnd();
 	}
 
-	// Paints a wall in the X-direction
-	private void paintWallXFromQuad(GL gl, double h, int i, int j) {
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		if (textureMatrix[i][j] == 1) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		} else if (textureMatrix[i][j] == 3) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
-		}
-		drawWallXFromQuad(gl, h);
-	}
 
-	private static void paintWallXFromQuad(GL gl, double h, int texture) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
-		drawWallXFromQuad(gl, h);
-	}
 
 	public static void drawWallXFromQuad(GL gl, double h) {
 		setLighting(gl);
