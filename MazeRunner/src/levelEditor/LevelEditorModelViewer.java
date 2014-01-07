@@ -33,14 +33,61 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 		super(screenWidth, screenHeight, x1, y1, x2, y2);
 		scalef = screenWidth*50/782;
 	}
+	
+	public void stencil(GL gl){
+		 gl.glEnable(GL.GL_STENCIL_TEST);
+		 gl.glColorMask(false,false,false,false);
+		 gl.glDepthMask(false);
+		 gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
+		 gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
+		 
+		 gl.glStencilMask(0xFF);
+		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT); 
+		  
+		 // Teken.rechthoek(gl, x1, y1, x2, y2);
+	
+		 
+		 gl.glBegin(GL.GL_TRIANGLE_FAN);
+		 
+		 gl.glVertex2f(x1,y1);
+		 gl.glVertex2f(x1,y2);
+		 gl.glVertex2f(x2,y2);
+		 gl.glVertex2f(x2,y1);
+		 
+		 gl.glEnd();
+		 
+		/* gl.glBegin(GL.GL_TRIANGLE_FAN);
+		 gl.glVertex2f((x2+x1)/2,(y2+y1)/2);
+		 
+		 for (angle=1.0f; angle <Math.PI; angle=0.2f+angle){
+			 xc = (float) ((x2+x1)/2+Math.sin(angle)*0.2);
+			 yc = (float) ((float) ((y2+y1)/2)+Math.cos(angle)*0.2);
+			 
+			 gl.glVertex2f(xc,yc);
+		 }
+		 
+		 gl.glEnd();
+		 */
+		  
+		  gl.glColorMask(true,true,true,true);
+		  gl.glDepthMask(true);
+		  gl.glStencilMask(0x00);
+		  
+		  gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
+		  
+		  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
+	}
 
 	public void display(GL gl, boolean catalogus, byte drawMode, byte textureMode, int hoogteMode){
 		//init(gl);
 		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		gl.glScissor(x1,y1,(int) (x2*0.85),(int) (y2*0.89));
+		//gl.glEnable(GL.GL_SCISSOR_TEST);
+		
+		stencil(gl);
+		gl.glClear(GL.GL_DEPTH_BUFFER_BIT); // zat eerst hieronder
+		//gl.glScissor(x1,y1,(int) (x2*0.85),(int) (y2*0.89));
 
-	gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+	//gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 	update();
 		
 		gl.glPushMatrix();
@@ -176,14 +223,10 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 	public void reshape(int screenWidth, int screenHeight, int x1, int y1, int x2, int y2){
 		this.screenWidth=screenWidth;
 		this.screenHeight=screenHeight;
-		
 		this.x1=x1;
 		this.y1=y1;
 		this.x2=x2;
 		this.y2=y2;
-		System.out.println("goed");
-		
-		
 		xmidden= (x2+x1)/2;
 		ymidden= (y2+y1)/2;
 		
