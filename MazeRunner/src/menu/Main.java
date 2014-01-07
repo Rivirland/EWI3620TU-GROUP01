@@ -55,8 +55,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 	final boolean fullscreenboolean = false;
 
-	private boolean activate = false;
-
 	boolean mousemode = false; // a parameter to correctly change when the mousecursor should appear
 	private Cursor normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
