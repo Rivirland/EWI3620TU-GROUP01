@@ -39,6 +39,8 @@ public class Player extends GameObject {
 	private Control control = null;
 	public int score;
 	public boolean invisible = false;
+	public boolean falling = false;
+	public double fallingSpeed;
 	public long invisibleT;
 	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory;
 
@@ -77,6 +79,7 @@ public class Player extends GameObject {
 		nrOfBullets = 200;
 		cloakSeconds = 10000;
 		playerStateInt = 0;
+		fallingSpeed = 0.5;
 		score = 0;
 		System.out.println("CREATING NEW PLAYER");
 		this.PlayerStateCloak = new PlayerStateCloak();
@@ -189,7 +192,31 @@ public class Player extends GameObject {
 			}
 		}
 		minimapUpdate();
-
+		
+		if(MazeRunner.level.getCurrentMaze(this) == -1){
+			falling = true;
+			locationY -= fallingSpeed*deltaTime;
+			fallingSpeed = fallingSpeed * 1.007;
+		}else{
+			Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
+			if(locationY>curMaze.mazeY+2.5){
+				falling = true;
+				locationY = Math.max(curMaze.mazeY+2.5, locationY-fallingSpeed*deltaTime);
+				fallingSpeed = fallingSpeed * 1.007;
+			}else{
+				fallingSpeed = 0.01;
+				falling = false;
+			}
+		}
+		
+		if(locationY < MazeRunner.level.minGlobalY){
+			PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
+			MazeRunner.player.playerStateInt = 3;
+			PlayerState.getState(MazeRunner.player.playerStateInt).entering();
+		}
+		
+		
+		
 		if (canMove) {
 			playerStateUpdate();
 			double previousX = this.getLocationX();
@@ -232,13 +259,13 @@ public class Player extends GameObject {
 					locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270)) * speed * deltaTime;
 				}
 				if (control.up) {
-					locationY += speed * deltaTime;
+//					locationY += speed * deltaTime;
 				}
 				if (control.down) {
-					locationY -= speed * deltaTime;
-					if (locationY < 2.5) {
-						locationY = 2.5;
-					}
+//					locationY -= speed * deltaTime;
+//					if (locationY < 2.5) {
+//						locationY = 2.5;
+//					}
 				}
 				boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
 				if (playerCollide[0] || playerCollide[2]) {
@@ -330,6 +357,7 @@ public class Player extends GameObject {
 		setHorAngle(begH);
 		setVerAngle(begV);
 		this.invisible = false;
+		this.falling = false;
 	}
 
 	public void noMousechange() {
