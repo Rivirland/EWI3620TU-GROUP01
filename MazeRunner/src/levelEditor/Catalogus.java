@@ -16,17 +16,19 @@ public class Catalogus {
 			if (drawMode == KOLOM){
 				//Teken.tekenButtonMetKleur(gl, 109.8f/1920*screenWidth, 751.25f/1080*screenHeight, 209.8f/1920*screenWidth, 851.25f/1080*screenHeight, 1f, 0f, 0f);
 				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 3);
-				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 4);
+				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 3);
+				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 4);
+				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 4);
 				//Teken.tekenButtonMetKleur(gl, 229.6f/1920*screenWidth, 751.25f/1080*screenHeight, 329.6f/1920*screenWidth, 851.25f/1080*screenHeight, 0f, 1f, 0f);
 			
 			}
 			if (drawMode == MUUR){
 				//Teken.tekenButtonMetKleur(gl, 109.8f/1920*screenWidth, 751.25f/1080*screenHeight, 209.8f/1920*screenWidth, 851.25f/1080*screenHeight, 1f, 0f, 0f);
 				//Teken.tekenButtonMetKleur(gl, 229.6f/1920*screenWidth, 751.25f/1080*screenHeight, 329.6f/1920*screenWidth, 851.25f/1080*screenHeight, 0f, 1f, 0f);
-				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 15);
-				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 16);
-				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 15);
-				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 16);
+				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 51);
+				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 52);
+				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 53);
+				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 54);
 				
 				leveleditor.plaatsTexture(gl, 109.8f, 642.50f, 209.8f, 742.50f, 27);
 				leveleditor.plaatsTexture(gl, 229.6f, 642.50f, 329.6f, 742.50f, 28);

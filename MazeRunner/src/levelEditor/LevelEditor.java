@@ -1372,12 +1372,17 @@ public static Texture wallTexture1;
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een kolomtexture
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
+				}
+				if (textures[rij][kolom]==3){
+					//onderstaande moet veranderen in een kolomtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
-				if (textures[rij][kolom]==5){
-					//onderstaande moet veranderen in een muurtexture
-					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 20f/255f, 20f/255f, 20f/255f);
+				if (textures[rij][kolom]==4){
+					//onderstaande moet veranderen in een kolomtexture
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
+				
 			}
 		}	
 		
@@ -1390,7 +1395,18 @@ public static Texture wallTexture1;
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance*6/10, 135f/255f, 22f/255f, 16f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*4/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 135f/255f, 22f/255f, 16f/255f);
+					
+				}
+				if (textures[rij][kolom]==3){
+					//onderstaande moet veranderen in een muurtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 156f/255f, 133f/255f, 95f/255f);
+				}
+				if (textures[rij][kolom]==4){
+					//onderstaande moet veranderen in een muurtexture
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*9/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance*6/10, 156f/255f, 133f/255f, 95f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance+distance*4/10 ,xmin+((kolom+1)/2)*distance+distance/10, ymax-(rij+1)/2*distance+distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
 				if (textures[rij][kolom]==5){
 					//onderstaande moet veranderen in een muurtexture
@@ -1500,7 +1516,17 @@ public static Texture wallTexture1;
 				}
 				if (textures[rij][kolom]==2){
 					//onderstaande moet veranderen in een muurtexture
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance*6/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*4/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f, 16f/255f);
+				}
+				if (textures[rij][kolom]==3){
+					//onderstaande moet veranderen in een muurtexture
 					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
+				}
+				if (textures[rij][kolom]==4){
+					//onderstaande moet veranderen in een muurtexture
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*9/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance*6/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
+					tekenButtonMetKleur(gl, xmin+((kolom+1)/2)*distance-distance*4/10, ymax-(rij+1)/2*distance+distance/10 ,xmin+((kolom+1)/2)*distance-distance/10, ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f, 95f/255f);
 				}
 				if (textures[rij][kolom]==5){
 					//onderstaande moet veranderen in een muurtexture

@@ -92,7 +92,7 @@ public class MazeRunner {
 
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
 			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture, z25dirtywalltexture,
-			z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12, z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21, z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28;
+			z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12, z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21, z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2, z51cataloguswall3, z52cataloguswall4;
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
@@ -573,6 +573,10 @@ public class MazeRunner {
 		z46cataloguswall26 = TextureIO.newTexture(datas[46]);
 		z47cataloguswall27 = TextureIO.newTexture(datas[47]);
 		z48cataloguswall28 = TextureIO.newTexture(datas[48]);
+		z49cataloguswall1 = TextureIO.newTexture(datas[49]);
+		z50cataloguswall2 = TextureIO.newTexture(datas[50]);
+		z51cataloguswall3 = TextureIO.newTexture(datas[51]);
+		z52cataloguswall4 = TextureIO.newTexture(datas[52]);
 		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
 
