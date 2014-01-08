@@ -155,7 +155,7 @@ public class LevelEditorLevel {
 						bullets[0] = objectNumber;
 						bullets[1] = Double.parseDouble(st.nextToken()); //objectX
 						bullets[2] = Double.parseDouble(st.nextToken()); //objectZ
-						bullets[3] = Integer.parseInt(st.nextToken()); //amount
+						bullets[3] = Double.parseDouble(st.nextToken()); //amount
 						itemlist.add(bullets);
 					} else if (objectNumber == 5) {
 						// Trapholder
@@ -196,7 +196,6 @@ public class LevelEditorLevel {
 		setName(filename);
 		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
-		bestand.println();
 		for (int i = 0; i != gebouwen.length; i++){
 			for (int j = 0; j!=gebouwen[0].length; j++){
 				bestand.print(gebouwen[i][j] + ",");

@@ -9,13 +9,16 @@ import items.TrapDropped;
 import items.TrapDroppedGBS;
 import items.TrapHolder;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -92,7 +95,7 @@ public class MazeRunner {
 
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
 			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture;
-
+	public static ArrayList<Texture> textureList = null;
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
 	public static long currentTime;
@@ -492,18 +495,63 @@ public class MazeRunner {
 	 * Program entry point
 	 * 
 	 * @param args
+	 * @throws IOException 
 	 */
 
 	// Loads all the texture and stores them into the memory. We have to keep
 	// track of the order ourselves.
-	// Right now, it is stored like this:
-	// 1: earthTexture
-	// 2: wallTexture
-	// 3: roofTexture
-
-	// 4: trapHolderTexture
-
-	public void loadTextures(GL gl) {
+	
+	public void loadTextures(GL gl){
+		System.out.println("Texture loading... ");
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		String curDir = System.getProperty("user.dir") + "\\textures\\";
+		File f = new File(curDir + "_textures.txt");
+		try{
+		BufferedReader bufRdr = new BufferedReader(new FileReader(f));
+		String line = null;
+		
+		// Check size
+		int i=0;
+		while ((line = bufRdr.readLine()) != null) {
+			i++;
+		}
+		bufRdr.close();
+		
+		textureList = new ArrayList<Texture>();
+		ArrayList<File> fileList = new ArrayList<File>();
+		for (int j=0;j<i+2;j++){
+			textureList.add(null);
+			fileList.add(null);
+		}
+		System.out.println("TextureList size: " + textureList.size());
+		
+		bufRdr = new BufferedReader(new FileReader(f));
+		while ((line = bufRdr.readLine()) != null){
+			StringTokenizer st = new StringTokenizer(line, ": ");
+			int nummer = Integer.parseInt(st.nextToken());
+			String string = curDir + st.nextToken();
+			File file = new File(string);
+			fileList.set(nummer, file);
+//			System.out.println(nummer + " " + file);
+		}
+		for(int z=0; z< fileList.size(); z++){
+			File file = fileList.get(z);
+			try {
+			TextureData textureData = TextureIO.newTextureData(file, false, "jpg");
+			Texture texture = TextureIO.newTexture(textureData);
+			textureList.set(z, texture);
+			System.out.println("Texture succesfully loaded: " + z + ": " + file);
+			}catch (Exception e){
+				System.out.println("fout: " + e.getMessage());
+			}
+		}
+		}catch (Exception e){
+			System.out.println("fout: " + e.getMessage());
+		}
+		System.out.println("Textures loaded");
+	}
+	// Onderstaande methode nog even niet weggooien
+	public void loadTextures2(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures";
 
@@ -515,11 +563,9 @@ public class MazeRunner {
 			try {
 				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-
 				e.printStackTrace();
 			}
-			// System.out.println(files[i]);
+			
 		}
 
 		catalogusdak1 = TextureIO.newTexture(datas[0]);
@@ -547,7 +593,6 @@ public class MazeRunner {
 		smartEnemyAlertTexture = TextureIO.newTexture(datas[22]);
 		gunTexture = TextureIO.newTexture(datas[23]);
 		z24portaltexture = TextureIO.newTexture(datas[24]);
-		// gl.glDisable(GL.GL_TEXTURE_2D);
 	}
 
 	public void loadModels(GL gl) {
