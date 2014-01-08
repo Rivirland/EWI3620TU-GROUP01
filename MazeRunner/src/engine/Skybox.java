@@ -33,60 +33,9 @@ public class Skybox {
 	    // Just in case we set all vertices to white.
 	    gl.glColor4f(1,1,1,1);
 	 
-	    // Render the front quad
 	    
 	    Teken.drawCuboid(gl,-1,1,-1,1,-1,1,new int[] {8,9,10,11,12,13});
-//	    gl.glBegin(GL.GL_QUADS);
-//	        gl.glTexCoord2f(0, 0); gl.glVertex3f(  0.5f, -0.5f, -0.5f );
-//	        gl.glTexCoord2f(1, 0); gl.glVertex3f( -0.5f, -0.5f, -0.5f );
-//	        gl.glTexCoord2f(1, 1); gl.glVertex3f( -0.5f,  0.5f, -0.5f );
-//	        gl.glTexCoord2f(0, 1); gl.glVertex3f(  0.5f,  0.5f, -0.5f );
-//	    gl.glEnd();
-//	 
-//	    // Render the left quad
-//	    gl.glBindTexture(GL.GL_TEXTURE_2D, 2);
-//	    gl.glBegin(GL.GL_QUADS);
-//	        gl.glTexCoord2f(0, 0); gl.glVertex3f(  0.5f, -0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  0.5f, -0.5f, -0.5f );
-//	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  0.5f,  0.5f, -0.5f );
-//	        gl.glTexCoord2f(0, 1); gl.glVertex3f(  0.5f,  0.5f,  0.5f );
-//	    gl.glEnd();
-//	 
-//	    // Render the back quad
-//	    gl.glBindTexture(GL.GL_TEXTURE_2D, 3);
-//	    gl.glBegin(GL.GL_QUADS);
-//	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -0.5f, -0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  0.5f, -0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  0.5f,  0.5f,  0.5f );
-//	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -0.5f,  0.5f,  0.5f );
-//	 
-//	    gl.glEnd();
-//	 
-//	    // Render the right quad
-//	    gl.glBindTexture(GL.GL_TEXTURE_2D, 4);
-//	        gl.glTexCoord2f(0, 0); gl.glVertex3f( 10f, -0.5f, -0.5f );
-//	        gl.glTexCoord2f(1, 0); gl.glVertex3f( -0.5f, -0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 1); gl.glVertex3f( -0.5f,  0.5f,  0.5f );
-//	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -0.5f,  0.5f, -0.5f );
-//	    gl.glEnd();
-//	 
-//	    // Render the top quad
-//	    gl.glBindTexture(GL.GL_TEXTURE_2D, 5);
-//	    gl.glBegin(GL.GL_QUADS);
-//	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -0.5f,  0.5f, -0.5f );
-//	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -0.5f,  0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  0.5f,  0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  0.5f,  0.5f, -0.5f );
-//	    gl.glEnd();
-//	 
-//	    // Render the bottom quad
-//	    gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
-//	    gl.glBegin(GL.GL_QUADS);
-//	        gl.glTexCoord2f(0, 0); gl.glVertex3f( -0.5f, -0.5f, -0.5f );
-//	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -0.5f, -0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 1); gl.glVertex3f(  0.5f, -0.5f,  0.5f );
-//	        gl.glTexCoord2f(1, 0); gl.glVertex3f(  0.5f, -0.5f, -0.5f );
-//	    gl.glEnd();
+
 	 
 	    // Restore enable bits and matrix
 	    gl.glEnable(GL.GL_CULL_FACE);
