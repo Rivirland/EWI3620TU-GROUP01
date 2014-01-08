@@ -501,7 +501,7 @@ public class Maze implements VisibleObject {
 
 						// If it's (even,even), you paint a column
 						if (i % 2 == 0 && j % 2 == 0) {
-							paintColumnFromQuad(gl, height * ITEM_HEIGHT, i, j);
+							drawColumnFromQuad(gl, height * ITEM_HEIGHT);
 						}
 
 						// (odd,even) paints a wall/door in the Z-direction
@@ -535,7 +535,7 @@ public class Maze implements VisibleObject {
 		// Calculates the size of the maze and then draws the floor tile
 		double xsize = Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;
 		double zsize = Math.floor(((double) MAZE_SIZE_Z + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;
-		paintSingleFloorTile(gl, xsize, zsize); // Paint the floor.
+		drawSingleFloorTile(gl, xsize, zsize); // Paint the floor.
 		gl.glPopMatrix();
 	}
 
@@ -570,7 +570,7 @@ public class Maze implements VisibleObject {
 
 
 	
-	private void paintSingleFloorTile(GL gl, double size_x, double size_z) {
+	private void drawSingleFloorTile(GL gl, double size_x, double size_z) {
 
 		setLighting(gl);
 
@@ -591,7 +591,6 @@ public class Maze implements VisibleObject {
 	public static void drawWallZFromQuad(GL gl, double h) {
 		setLighting(gl);
 		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
-		
 	}
 
 	private void paintDoorXFromQuad(GL gl, double h, int i, int j) {
@@ -605,7 +604,6 @@ public class Maze implements VisibleObject {
 
 
 	public static void drawDoorZFromQuad(GL gl, double h) {
-//		gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
 		// Links van de deur
 		Teken.drawCuboid(gl, 0.0, (WALL_LENGTH-DOOR_WIDTH)/2, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
 		// Rechts van de deur
@@ -623,17 +621,7 @@ public class Maze implements VisibleObject {
 		
 	}
 
-	
 
-	private void paintColumnFromQuad(GL gl, double h, int i, int j) {
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		if (textureMatrix[i][j] == 1) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-		} else if (textureMatrix[i][j] == 3) {
-			// gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
-		}
-		drawColumnFromQuad(gl, h);
-	}
 
 	public static void paintColumnFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
