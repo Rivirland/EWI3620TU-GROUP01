@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 //A level consists of several mazes. In this class, we can import mazes from a .txt file and store them into an ArrayList.
@@ -16,6 +17,7 @@ public class Level {
 	private int aantal;
 	private String naam;
 	public double minGlobalY;
+	private int[] orderedMazes;
 
 	// The constructor.
 	public Level(String string) {
@@ -24,6 +26,27 @@ public class Level {
 		minGlobalY = Double.MAX_VALUE;
 		naam = string;
 		leesLevels(string);
+		orderedMazes = orderMazesOnHeight();
+	}
+
+	private int[] orderMazesOnHeight() {
+		int[] res = new int[this.aantal];
+		double[] temp = new double[this.aantal];
+		for (int i = 0; i < this.aantal; i++){
+			temp[i] = mazelist.get(i).mazeY;
+		}
+		Arrays.sort(temp);
+		
+		for(int i = 0; i < this.aantal; i++){
+			double height = temp[this.aantal-i-1];
+			for (int j = 0; j < this.aantal; j++){
+				if(mazelist.get(j).mazeY == height && !Arrays.asList(res).contains(j)){
+					res[i] = j;
+				}
+			}
+		}
+		System.out.println("RES: " + Arrays.toString(res));
+		return res;
 	}
 
 	// Adds a maze toe the mazelist.
@@ -102,11 +125,11 @@ public class Level {
 
 	public int getCurrentMaze(GameObject object) {
 		for (int i = 0; i < this.getAantal(); i++) {
-			Maze maze = this.getMaze(i);
+			Maze maze = this.getMaze(orderedMazes[i]);
 			// You check if you are actually in the maze
 			if (object.locationX > maze.getMinX() && object.locationX < maze.getMaxX() && object.locationZ > maze.getMinZ() && object.locationZ < maze.getMaxZ() && object.locationY >= maze.getMazeY()
 					&& object.locationY <= maze.getMazeY() + Maze.ITEM_HEIGHT * maze.maxHeight) {
-				return i;
+				return orderedMazes[i];
 			}
 		}
 		return -1;

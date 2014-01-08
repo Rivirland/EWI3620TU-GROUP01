@@ -163,6 +163,7 @@ public class Maze implements VisibleObject {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int amount = (int) Double.parseDouble(st.nextToken());
+						System.out.println(mazeY);
 						BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
