@@ -15,11 +15,13 @@ public class Level {
 	// The amount of mazes.
 	private int aantal;
 	private String naam;
+	public double minGlobalY;
 
 	// The constructor.
 	public Level(String string) {
 		this.mazelist = new ArrayList<Maze>();
 		this.aantal = 0;
+		minGlobalY = Double.MAX_VALUE;
 		naam = string;
 		leesLevels(string);
 	}
@@ -76,6 +78,9 @@ public class Level {
 				int z = Integer.parseInt(st.nextToken());
 				String m = st.nextToken();
 				System.out.println(m + " " + x + y + z);
+				if(y<minGlobalY){
+					minGlobalY = y;
+				}
 				Maze maze = new Maze(m, i, x, y, z);
 				this.voegToe(maze);
 				i++;
