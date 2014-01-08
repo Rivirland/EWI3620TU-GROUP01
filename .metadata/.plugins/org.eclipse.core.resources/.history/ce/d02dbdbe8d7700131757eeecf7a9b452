@@ -28,14 +28,14 @@ public abstract class Control
 	protected boolean right = false;
 	protected boolean up = false;
 	protected boolean down= false;
-	protected boolean tab = false;
 	protected boolean pause = false;
 	protected boolean itemUse = false;
 	protected boolean gunShoot = false;
 	protected boolean playerStateDown = false;
 	protected boolean playerStateUp = false;
-	public boolean minimap = false;
-	public boolean info = false;
+	protected boolean toggleMinimap = false;
+	protected boolean minimap = false;
+	protected boolean info = false;
 	protected int dX = 0;
 	protected int dY = 0;
 	

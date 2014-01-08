@@ -34,8 +34,8 @@ public abstract class Control
 	protected boolean gunShoot = false;
 	protected boolean playerStateDown = false;
 	protected boolean playerStateUp = false;
-	public boolean minimap = false;
-	public boolean info = false;
+	protected boolean minimap = false;
+	protected boolean info = false;
 	protected int dX = 0;
 	protected int dY = 0;
 	

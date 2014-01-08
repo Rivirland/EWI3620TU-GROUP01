@@ -364,7 +364,6 @@ public class MazeRunner {
 		if (player.getControl().minimap) {
 			Minimap.displayMinimap(gl);
 		}
-		
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
 
@@ -413,11 +412,9 @@ public class MazeRunner {
 		gl.glEnable(GL.GL_CULL_FACE);
 		// portal1.calcPortaltoPlayer(player);
 		// portal2.calcPortaltoPlayer(player);
-		if(player.getControl().info){
-			Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
-		}
-		
+
+		Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
+		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.

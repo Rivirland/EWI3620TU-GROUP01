@@ -177,12 +177,10 @@ public class Player extends GameObject {
 		if (control.tab) {
 			control.tab = false;
 			if (control.minimap) {
-				System.out.println("1");
+				System.ou.println("HOI");
 				control.minimap = false;
 				control.info = true;
-			}
-			else if (control.info) {
-				System.out.println("2");
+			} else if (control.info) {
 				control.info = false;
 			} else {
 				control.minimap = true;
