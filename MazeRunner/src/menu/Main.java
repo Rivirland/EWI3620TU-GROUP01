@@ -382,8 +382,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 				gl.glLoadIdentity();
 				gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 			}
-			leveleditor.display(drawable, gl);
-			currentstate = gamestate;
+			gamestate = LEVELEDITOR;
 			break;
 		}
 
@@ -430,13 +429,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			break;
 
 		case LOADLEVEL:
-
-			// Update the projection to an orthogonal projection using the new
-			// screen size
-			gl.glMatrixMode(GL.GL_PROJECTION);
-			gl.glLoadIdentity();
-			gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
-
 			break;
 		}
 
@@ -486,8 +478,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 			break;
 		case LOADLEVEL:
-
-			leveleditor.mouseReleased(me);
+			break;
 		}
 	}
 
@@ -574,11 +565,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 			break;
 		case LOADLEVEL:
-			try {
-				leveleditor.mousePressed(e);
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
 			break;
 		}
 

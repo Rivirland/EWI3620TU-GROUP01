@@ -2,6 +2,7 @@ package levelEditor;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -81,6 +82,10 @@ public static Texture wallTexture1;
 	private boolean remove=false;
 	private boolean open=false;
 	private boolean worldview = false;
+	
+	private boolean addportaldirection=false;
+	private float xportal;
+	private float yportal;
 	
 	LevelEditorModelViewer modelviewer;
 	LevelEditorWorldViewer worldviewer;
@@ -163,7 +168,7 @@ public static Texture wallTexture1;
 			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
-			veranderMatrixVolgensKlikInGrid(gl);
+			//veranderMatrixVolgensKlikInGrid(gl);
 		}
 		
 		modelviewer.display(gl, catalogus, drawMode, textureMode, hoogteMode);
@@ -287,7 +292,10 @@ public static Texture wallTexture1;
 		tekenButtonMetKleur(gl, 15f/1920f*screenWidth, 1000f/1080f*screenHeight, 85f/1920f*screenWidth, 1070f/1080f*screenHeight, 0.3f, 0.3f, 0.8f);
 		
 		//button1
-		tekenButton(gl, columnbxmin, columnbymin, columnbxmax, columnbymax);
+		if (drawMode == 1)
+			tekenButtonMetKleur(gl, columnbxmin, columnbymin, columnbxmax, columnbymax, 0.76f, 0.76f, 0.76f);
+		else
+			tekenButton(gl, columnbxmin, columnbymin, columnbxmax, columnbymax);
 		
 		gl.glColor3f(0.71f, 0.90f, 0.11f);
 		gl.glBegin(GL.GL_QUADS);
@@ -312,7 +320,10 @@ public static Texture wallTexture1;
 		gl.glEnd();
 		
 		//button2
-		tekenButton(gl, wallbxmin, wallbymin, wallbxmax, wallbymax);
+		if (drawMode == 2)
+			tekenButtonMetKleur(gl, wallbxmin, wallbymin, wallbxmax, wallbymax, 0.76f, 0.76f, 0.76f);
+		else
+			tekenButton(gl, wallbxmin, wallbymin, wallbxmax, wallbymax);
 		
 		gl.glColor3f(0.71f, 0.90f, 0.11f);
 		gl.glBegin(GL.GL_QUADS);
@@ -337,10 +348,16 @@ public static Texture wallTexture1;
 		gl.glEnd();
 		
 		//button3
-		tekenButton(gl, roofbxmin, roofbymin, roofbxmax, roofbymax);
+		if (drawMode == 3)
+			tekenButtonMetKleur(gl, roofbxmin, roofbymin, roofbxmax, roofbymax, 0.76f, 0.76f, 0.76f);
+		else
+			tekenButton(gl, roofbxmin, roofbymin, roofbxmax, roofbymax);
 		
 		//button4
-		tekenButton(gl, buildbxmin, buildbymin, buildbxmax, buildbymax);
+		if (drawMode == 4)
+			tekenButtonMetKleur(gl, buildbxmin, buildbymin, buildbxmax, buildbymax, 0.76f, 0.76f, 0.76f);
+		else
+			tekenButton(gl, buildbxmin, buildbymin, buildbxmax, buildbymax);
 		
 		//zwart onder de buttons
 		gl.glColor3f(0f, 0f, 0f);
@@ -519,7 +536,40 @@ public static Texture wallTexture1;
 						System.out.println("Catalogus: TEXTURE 3");
 						catalogus = false;
 					}
+					if (469.2f/1920*screenWidth < me.getX() && me.getX() < 569.2f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 4;
+						System.out.println("Catalogus: TEXTURE 4");
+						catalogus = false;
+					}
 				}
+				if ((1-742.50f/1080)*screenHeight < me.getY() && me.getY() < (1-642.50f/1080)*screenHeight) {
+					if (109.8f/1920*screenWidth < me.getX() && me.getX() < 209.8f/1920*screenWidth) {
+						// The first button is clicked
+						textureMode = 5;
+						System.out.println("Catalogus: TEXTURE 5");
+						catalogus = false;
+					}
+					if (229.6f/1920*screenWidth < me.getX() && me.getX() < 329.6f/1920*screenWidth) {
+						// The second button is clicked
+						textureMode = 6;
+						System.out.println("Catalogus: TEXTURE 6");
+						catalogus = false;
+					}
+					if (349.4f/1920*screenWidth < me.getX() && me.getX() < 449.4f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 7;
+						System.out.println("Catalogus: TEXTURE 7");
+						catalogus = false;
+					}
+					if (469.2f/1920*screenWidth < me.getX() && me.getX() < 569.2f/1920*screenWidth) {
+						// The third button is clicked
+						textureMode = 8;
+						System.out.println("Catalogus: TEXTURE 8");
+						catalogus = false;
+					}
+				}
+				
 			}
 			
 			//hoogte knoppen
@@ -631,12 +681,51 @@ public static Texture wallTexture1;
 			
 			
 			
-			//gridklik
-			
-			if (xmin-distance/5 < me.getX() && me.getX() < xmax+distance/5 && screenHeight-ymax-distance/5 < me.getY() && me.getY() < screenHeight-ymin+distance/5){
-				gridklikx = me.getX();
-				gridkliky = screenHeight - me.getY();
-				gridklik = true;
+			//portaldirection klik
+			if (addportaldirection){
+				double portalID=1;
+				double connectionID=1;
+				if (Math.abs(me.getX()-xportal) >= Math.abs(screenHeight-me.getY()-yportal)){
+					//links
+					if ((me.getX()-xportal) < 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 3, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=2;
+					}
+					//rechts
+					else if ((me.getX()-xportal) >= 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 1, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=0;
+					}
+				}
+				else if (Math.abs(me.getX()-xportal) < Math.abs(screenHeight-me.getY()-yportal)){
+					//onder
+					if ((screenHeight-me.getY()-yportal) < 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 2, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=1;
+					}
+					//boven
+					else if ((screenHeight-me.getY()-yportal) >= 0){
+						items.add(new double[]{textureMode, (yportal-ymin)*7f/distance, (xportal-xmin)*7f/distance, 0, portalID, connectionID});
+						addportaldirection=false;
+						System.out.println("ik ben false: " + addportaldirection);
+						//items.get(items.size()-1)[3]=3;
+					}
+				}
+			}
+			else{
+				//gridklik
+				if (xmin-distance/5 < me.getX() && me.getX() < xmax+distance/5 && screenHeight-ymax-distance/5 < me.getY() && me.getY() < screenHeight-ymin+distance/5){
+					float gridklikx = me.getX();
+					float gridkliky = screenHeight - me.getY();
+					gridklik = true;
+					veranderMatrixVolgensKlikInGrid(gridklikx, gridkliky);
+				}
 			}
 			
 			//locatie knop
@@ -680,9 +769,10 @@ public static Texture wallTexture1;
 		//rechtermuisknop
 		else if (me.getButton()==3){
 			if (xmin-distance/5 < me.getX() && me.getX() < xmax+distance/5 && screenHeight-ymax-distance/5 < me.getY() && me.getY() < screenHeight-ymin+distance/5){
-				gridklikxrechts = me.getX();
-				gridklikyrechts = screenHeight - me.getY();
+				//gridklikxrechts = me.getX();
+				//gridklikyrechts = screenHeight - me.getY();
 				gridklik = true;
+				veranderMatrixVolgensKlikInGridrechts(me.getX(), screenHeight - me.getY());
 			}
 			else{
 				if (heightsOn){
@@ -717,7 +807,7 @@ public static Texture wallTexture1;
 		
 	}
 	
-	public void veranderMatrixVolgensKlikInGrid(GL gl){
+	public void veranderMatrixVolgensKlikInGrid(float gridklikx, float gridkliky){
 		while (gridklik){
 			float xmin = 830f/1920f*screenWidth;
 			float ymin = 90f/1080f*screenHeight;
@@ -831,104 +921,164 @@ public static Texture wallTexture1;
 			
 			//plaats item
 			if (drawMode == ITEM){
+				if (textureMode ==1 && !addportaldirection){
+					//double direction = 0;
+					//double portalID = 1;
+					//double connectionID = 1;
+					//drawportal
+					xportal = gridklikx;
+					yportal = gridkliky;
+					addportaldirection = true;
+					System.out.println("ik ben true: " + addportaldirection);
+				}
 				if (textureMode ==2){
 					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
 				}
 				if (textureMode ==3){
 					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
 				}
+				if (textureMode ==4){
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance, hoogteMode});
+				}
+				if (textureMode ==5){
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
+					//items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance, hoogteMode});
+				}
+				if (textureMode ==6){
+					items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance});
+					//items.add(new double[]{textureMode, (gridkliky-ymin)*7f/distance, (gridklikx-xmin)*7f/distance, hoogteMode});
+				}
 			}
 			
-			//teken kolom als 2 muren aan elkaar grenzen bij het plaatsen van een MUUR
-			if (drawMode == MUUR)
-				
-			gridklikx = 10000;
-			gridkliky = 10000;
+			gridklik = false;
+		}
+	}
+	
+	public void veranderMatrixVolgensKlikInGridrechts(float gridklikxrechts, float gridklikyrechts){
+		while (gridklik){
+			float xmin = 830f/1920f*screenWidth;
+			float ymin = 90f/1080f*screenHeight;
+			float xmax = 1830f/1920f*screenWidth;
+			float ymax = 990f/1080f*screenHeight;
+			
+			float xmidden = (xmax+xmin)/2;
+			float ymidden = (ymax+ymin)/2;
+			
+			float columndist = (xmax-xmin)/(gridcolumns);
+			float rowdist = (ymax-ymin)/(gridrows);
+			float distance = 1; //willekeurig
+			
+			if (columndist < rowdist){
+				distance = columndist;
+				ymin = ymidden-distance*gridrows/2;
+				ymax = ymidden+distance*gridrows/2;
+			}
+			else if (columndist > rowdist){
+				distance = rowdist;
+				xmin = xmidden-(distance*gridcolumns)/2;
+				xmax = xmidden+(distance*gridcolumns)/2;
+			}
+			System.out.println("gridklik is " + gridklik);
 			
 			//RECHTERMUISKNOP: verwijder iets uit de matrix
-			
-			//verander matrix tijdens mode DAK
-			
-				for (int kolom=1; kolom <= gridcolumns; kolom++){
-					for (int rij=1; rij <= gridrows; rij++){
-						if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
-							wereld[2*rij-1][2*kolom-1]=0;
-							textures[2*rij-1][2*kolom-1]=0;
-							
-							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-								for (int j=0 ; j!=wereld[0].length ; j++){
-									System.out.print(wereld[i][j] + " ");
+
+			if (drawMode != ITEM){
+				//verander matrix tijdens mode DAK
+				
+					for (int kolom=1; kolom <= gridcolumns; kolom++){
+						for (int rij=1; rij <= gridrows; rij++){
+							if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
+								wereld[2*rij-1][2*kolom-1]=0;
+								textures[2*rij-1][2*kolom-1]=0;
+								
+								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+									for (int j=0 ; j!=wereld[0].length ; j++){
+										System.out.print(wereld[i][j] + " ");
+									}
+									System.out.println();
 								}
-								System.out.println();
+								
 							}
-							
 						}
 					}
-				}
-			
-			
-			//verander matrix tijdens mode KOLOM
-			
-				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
-					for (int rij=1; rij <= gridrows+1; rij++){
-						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
-							wereld[2*rij-2][2*kolom-2]=0;
-							textures[2*rij-2][2*kolom-2]=0;
-							
-							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-								for (int j=0 ; j!=wereld[0].length ; j++){
-									System.out.print(wereld[i][j] + " ");
+				
+				
+				//verander matrix tijdens mode KOLOM
+				
+					for (int kolom=1; kolom <= gridcolumns+1; kolom++){
+						for (int rij=1; rij <= gridrows+1; rij++){
+							if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
+								wereld[2*rij-2][2*kolom-2]=0;
+								textures[2*rij-2][2*kolom-2]=0;
+								
+								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+									for (int j=0 ; j!=wereld[0].length ; j++){
+										System.out.print(wereld[i][j] + " ");
+									}
+									System.out.println();
 								}
-								System.out.println();
+								
 							}
-							
 						}
 					}
-				}
-			
-			
-			//verander matrix tijdens mode MUUR (verticaal)
-			
-				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
-					for (int rij=1; rij <= gridrows+1; rij++){
-						if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
-							wereld[2*rij-1][2*kolom-2]=0;
-							textures[2*rij-1][2*kolom-2]=0;
-							
-							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-								for (int j=0 ; j!=wereld[0].length ; j++){
-									System.out.print(wereld[i][j] + " ");
+				
+				
+				//verander matrix tijdens mode MUUR (verticaal)
+				
+					for (int kolom=1; kolom <= gridcolumns+1; kolom++){
+						for (int rij=1; rij <= gridrows+1; rij++){
+							if (xmin+(kolom-1)*distance-distance/10 < gridklikxrechts && gridklikxrechts < xmin+(kolom-1)*distance+distance/10 && ymax-rij*distance+distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance-distance/10){
+								wereld[2*rij-1][2*kolom-2]=0;
+								textures[2*rij-1][2*kolom-2]=0;
+								
+								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+									for (int j=0 ; j!=wereld[0].length ; j++){
+										System.out.print(wereld[i][j] + " ");
+									}
+									System.out.println();
 								}
-								System.out.println();
+								
 							}
-							
 						}
 					}
-				}
-			
-			
-			//verander matrix tijdens mode MUUR (horizontaal)
-			
-				for (int kolom=1; kolom <= gridcolumns+1; kolom++){
-					for (int rij=1; rij <= gridrows+1; rij++){
-						if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
-							wereld[2*rij-2][2*kolom-1]=0;
-							textures[2*rij-2][2*kolom-1]=0;
-							
-							for (int i=0 ; i!=wereld.length ; i++){			//print matrix
-								for (int j=0 ; j!=wereld[0].length ; j++){
-									System.out.print(wereld[i][j] + " ");
+				
+				
+				//verander matrix tijdens mode MUUR (horizontaal)
+				
+					for (int kolom=1; kolom <= gridcolumns+1; kolom++){
+						for (int rij=1; rij <= gridrows+1; rij++){
+							if (xmin+(kolom-1)*distance+distance/10 < gridklikxrechts && gridklikxrechts < xmin+kolom*distance-distance/10 && ymax-(rij-1)*distance-distance/10 < gridklikyrechts && gridklikyrechts < ymax-(rij-1)*distance+distance/10){
+								wereld[2*rij-2][2*kolom-1]=0;
+								textures[2*rij-2][2*kolom-1]=0;
+								
+								for (int i=0 ; i!=wereld.length ; i++){			//print matrix
+									for (int j=0 ; j!=wereld[0].length ; j++){
+										System.out.print(wereld[i][j] + " ");
+									}
+									System.out.println();
 								}
-								System.out.println();
+								
 							}
-							
 						}
 					}
+			}
+			else{
+				//verwijder items
+				System.out.println("hoi");
+				for (int item=0; item != items.size(); item++){
+					float x = (float) items.get(item)[1];
+					float z = (float) items.get(item)[2];
+					if (xmin+z/7f*distance-distance/4 < gridklikxrechts && gridklikxrechts < xmin+z/7f*distance+distance/4){
+						System.out.println("x is goed");
+							if (ymin+x/7f*distance-distance/4 < gridklikyrechts && gridklikyrechts < ymin+x/7f*distance+distance/4){
+								System.out.println("y is goed");
+								items.remove(item);
+								item--;
+							}
+					}
 				}
-			
-			gridklikxrechts = 10000;
-			gridklikyrechts = 10000;
-			gridklik = false;
+			}
+		gridklik = false;
 		}
 	}
 	
@@ -1130,6 +1280,19 @@ public static Texture wallTexture1;
 		//teken items
 		for (int item=0; item < items.size(); item++){
 			//System.out.println(item);
+			if (items.get(item)[0] == 1){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 26);
+					if (items.get(item)[3] == 0)
+						Teken.pijlboven(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);	
+					else if (items.get(item)[3] == 1)
+						Teken.pijlrechts(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);
+					else if (items.get(item)[3] == 2)
+						Teken.pijlonder(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);	
+					else if (items.get(item)[3] == 3)
+						Teken.pijllinks(gl, xmin+z/7f*distance, ymin+x/7f*distance, distance);
+			}
 			if (items.get(item)[0] == 2){
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
@@ -1140,7 +1303,41 @@ public static Texture wallTexture1;
 				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 18);
 			}
+			if (items.get(item)[0] == 4){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 14);
+			}
+			if (items.get(item)[0] == 5){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 14);
+			}
+			if (items.get(item)[0] == 6){
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				plaatsTexture2(gl, xmin+z/7f*distance-distance/4, ymin+x/7f*distance-distance/4, xmin+z/7f*distance+distance/4, ymin+x/7f*distance+distance/4, 20);
+			}
 		}
+		
+		//teken portal pijl
+				if (addportaldirection){
+					plaatsTexture2(gl, xportal-distance/4, yportal-distance/4, xportal+distance/4, yportal+distance/4, 26);
+					float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX())-xportal);
+					float dY = (float) (screenHeight+30f-MouseInfo.getPointerInfo().getLocation().getY()-yportal); 
+					if (Math.abs(dX) >= Math.abs(dY)){
+						if (dX>0)
+							Teken.pijlrechts(gl, xportal, yportal, distance);
+						else
+							Teken.pijllinks(gl, xportal, yportal, distance);
+					}
+					else if (Math.abs(dY) > Math.abs(dX)){
+						if (dY>0)
+							Teken.pijlboven(gl, xportal, yportal, distance);
+						else
+							Teken.pijlonder(gl, xportal, yportal, distance);
+					}
+				}
 		
 	}
 

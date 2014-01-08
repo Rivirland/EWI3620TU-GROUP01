@@ -2,43 +2,29 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="482" key="DIALOG_Y_ORIGIN"/>
+		<item value="142" key="DIALOG_Y_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
-		<item value="1278" key="DIALOG_X_ORIGIN"/>
+		<item value="1002" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
 		<item value="false" key="isRegEx"/>
-		<item value="true" key="casesensitive"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="saveAs" key="selection"/>
+		<item value="button1" key="selection"/>
 		<list key="findhistory">
-			<item value="saveAs"/>
-			<item value="loadTextures"/>
-			<item value="loadTex"/>
-			<item value="cont"/>
-			<item value="playerStateInt"/>
-			<item value="getX"/>
-			<item value="calcDistances"/>
-			<item value="calcDistancers"/>
-=======
-		<item value="" key="selection"/>
-		<list key="findhistory">
-			<item value="stencil"/>
-			<item value="setscreen"/>
-			<item value="activate"/>
-			<item value="ACTIVATE"/>
-			<item value="normalcursor"/>
-			<item value="mouse"/>
-			<item value="scalef"/>
-			<item value="Agency FB"/>
->>>>>>> b412e656e6489c36003fd778ba40ccc3de088a69
+			<item value="button1"/>
+			<item value="achter"/>
+			<item value="verandermatrixv"/>
+			<item value="verandermatrix"/>
+			<item value="rechter"/>
+			<item value="mouserel"/>
+			<item value="remove"/>
+			<item value="teken item"/>
 		</list>
 		<list key="replacehistory">
-			<item value="Arial"/>
 		</list>
 	</section>
 </section>

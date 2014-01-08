@@ -221,4 +221,25 @@ public class Teken {
 		gl.glVertex2f(x2, y1);
 		gl.glEnd();
 	}
+	
+	public static void pijlboven(GL gl, float xportal, float yportal, float distance){
+		lineOnScreen(gl, xportal, yportal, xportal, yportal+distance/2);
+		lineOnScreen(gl, xportal-distance/10, yportal+distance/2-distance/10, xportal, yportal+distance/2);
+		lineOnScreen(gl, xportal+distance/10, yportal+distance/2-distance/10, xportal, yportal+distance/2);
+	}
+	public static void pijlonder(GL gl, float xportal, float yportal, float distance){
+		lineOnScreen(gl, xportal, yportal, xportal, yportal-distance/2);
+		lineOnScreen(gl, xportal-distance/10, yportal-distance/2+distance/10, xportal, yportal-distance/2);
+		lineOnScreen(gl, xportal+distance/10, yportal-distance/2+distance/10, xportal, yportal-distance/2);
+	}
+	public static void pijlrechts(GL gl, float xportal, float yportal, float distance){
+		lineOnScreen(gl, xportal, yportal, xportal+distance/2, yportal);
+		lineOnScreen(gl, xportal+distance/2-distance/10, yportal-distance/10, xportal+distance/2, yportal);
+		lineOnScreen(gl, xportal+distance/2-distance/10, yportal+distance/10, xportal+distance/2, yportal);
+	}
+	public static void pijllinks(GL gl, float xportal, float yportal, float distance){
+		lineOnScreen(gl, xportal, yportal, xportal-distance/2, yportal);
+		lineOnScreen(gl, xportal-distance/2+distance/10, yportal-distance/10, xportal-distance/2, yportal);
+		lineOnScreen(gl, xportal-distance/2+distance/10, yportal+distance/10, xportal-distance/2, yportal);
+	}
 }
