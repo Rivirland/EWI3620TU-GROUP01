@@ -25,6 +25,8 @@ public class PlayerStateVictory extends PlayerState{
 
 	@Override
 	public void entering() {
+		MazeRunner.player.getControl().info = true;
+		MazeRunner.player.getControl().minimap = false;
 		MazeRunner.player.canMove = false;
 		InputDialog ID = new InputDialog();
 		String name = ID.getName();

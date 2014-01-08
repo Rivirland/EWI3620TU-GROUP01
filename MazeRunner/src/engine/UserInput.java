@@ -294,7 +294,7 @@ public class UserInput extends Control implements Runnable {
 			playerStateDown = true;
 		}
 		if(event.getKeyCode() == KeyEvent.VK_TAB){
-			toggleMinimap = true;
+			tab = true;
 		}
 	}
 
