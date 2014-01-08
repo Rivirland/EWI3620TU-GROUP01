@@ -92,10 +92,12 @@ public class MazeRunner {
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
-
-	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
-			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture;
 	public static ArrayList<Texture> textureList = null;
+	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
+			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture, z25dirtywalltexture,
+			z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12, z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21, z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2, z51cataloguswall3, z52cataloguswall4;
+
+
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
 	public static long currentTime;
@@ -416,9 +418,12 @@ public class MazeRunner {
 		gl.glEnable(GL.GL_CULL_FACE);
 		// portal1.calcPortaltoPlayer(player);
 		// portal2.calcPortaltoPlayer(player);
-		if(player.getControl().info){
-			Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
+		if(player.getControl().info ){
 			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
+			if(!(player.playerStateInt == 3 || player.playerStateInt == 4)){
+				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
+				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player)+1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), (float) (0.05 * screenHeight));
+			}
 		}
 		
 
@@ -593,6 +598,36 @@ public class MazeRunner {
 		smartEnemyAlertTexture = TextureIO.newTexture(datas[22]);
 		gunTexture = TextureIO.newTexture(datas[23]);
 		z24portaltexture = TextureIO.newTexture(datas[24]);
+		z25dirtywalltexture = TextureIO.newTexture(datas[25]);
+		z26cataloguswall6 = TextureIO.newTexture(datas[26]);
+		z27cataloguswall7 = TextureIO.newTexture(datas[27]);
+		z28cataloguswall8 = TextureIO.newTexture(datas[28]);
+		z29cataloguswall9 = TextureIO.newTexture(datas[29]);
+		z30cataloguswall10 = TextureIO.newTexture(datas[30]);
+		z31cataloguswall11 = TextureIO.newTexture(datas[31]);
+		z32cataloguswall12 = TextureIO.newTexture(datas[32]);
+		z33cataloguswall13 = TextureIO.newTexture(datas[33]);
+		z34cataloguswall14 = TextureIO.newTexture(datas[34]);
+		z35cataloguswall15 = TextureIO.newTexture(datas[35]);
+		z36cataloguswall16 = TextureIO.newTexture(datas[36]);
+		z37cataloguswall17 = TextureIO.newTexture(datas[37]);
+		z38cataloguswall18 = TextureIO.newTexture(datas[38]);
+		z39cataloguswall19 = TextureIO.newTexture(datas[39]);
+		z40cataloguswall20 = TextureIO.newTexture(datas[40]);
+		z41cataloguswall21 = TextureIO.newTexture(datas[41]);
+		z42cataloguswall22 = TextureIO.newTexture(datas[42]);
+		z43cataloguswall23 = TextureIO.newTexture(datas[43]);
+		z44cataloguswall24 = TextureIO.newTexture(datas[44]);
+		z45cataloguswall25 = TextureIO.newTexture(datas[45]);
+		z46cataloguswall26 = TextureIO.newTexture(datas[46]);
+		z47cataloguswall27 = TextureIO.newTexture(datas[47]);
+		z48cataloguswall28 = TextureIO.newTexture(datas[48]);
+		z49cataloguswall1 = TextureIO.newTexture(datas[49]);
+		z50cataloguswall2 = TextureIO.newTexture(datas[50]);
+		z51cataloguswall3 = TextureIO.newTexture(datas[51]);
+		z52cataloguswall4 = TextureIO.newTexture(datas[52]);
+		// gl.glDisable(GL.GL_TEXTURE_2D);
+
 	}
 
 	public void loadModels(GL gl) {
