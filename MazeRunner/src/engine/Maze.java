@@ -174,9 +174,8 @@ public class Maze implements VisibleObject {
 						MazeRunner.visibleObjects.add(th);
 					} else if (objectNumber == 6) {
 						double objectX = Double.parseDouble(st.nextToken());
-						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						Exit e = new Exit(mazeX + objectX, mazeY + objectY, mazeZ + objectZ, mazeID);
+						Exit e = new Exit(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID);
 						itemList.add(e);
 						MazeRunner.visibleObjects.add(e);
 					}
@@ -476,7 +475,7 @@ public class Maze implements VisibleObject {
 					}
 					// (odd,even) paints debris in the Z-direction
 					if (i % 2 != 0 && j % 2 == 0) {
-						drawDebrisColumnFromQuad(gl);
+						drawDebrisZFromQuad(gl);
 					}
 					// (even,odd) paints debris in the X-direction
 					if (i % 2 == 0 && j % 2 != 0) {
@@ -574,7 +573,7 @@ public class Maze implements VisibleObject {
 
 		setLighting(gl);
 
-		double thick=1.3;
+		double thick=1.0;
 		// Apply texture.
 		Teken.drawCuboid(gl, 0, size_x, -thick, 0, 0, size_z, 5);
 

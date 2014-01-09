@@ -104,28 +104,28 @@ public class Roof extends Item {
 		
 		int nrOfCol=0;
 		int nrOfWalls=0;
-		if(maze.isWall(matrixX - 1, matrixZ - 1)){
+		if(maze.maze[matrixX - 1][matrixZ - 1]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfCol++;
 		}
-		if(maze.isWall(matrixX - 1, matrixZ + 1)){
+		if(maze.maze[matrixX - 1][ matrixZ + 1]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfCol++;
 		}
-		if(maze.isWall(matrixX + 1, matrixZ - 1)){
+		if(maze.maze[matrixX + 1][matrixZ - 1]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfCol++;
 		}
-		if(maze.isWall(matrixX + 1, matrixZ + 1)){
+		if(maze.maze[matrixX + 1][matrixZ + 1]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfCol++;
 		}
-		if(maze.isWall(matrixX + 1, matrixZ)){
+		if(maze.maze[matrixX + 1][matrixZ]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfWalls++;
 		}
-		if(maze.isWall(matrixX - 1, matrixZ)){
+		if(maze.maze[matrixX - 1][matrixZ]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfWalls++;
 		}
-		if(maze.isWall(matrixX, matrixZ + 1)){
+		if(maze.maze[matrixX][matrixZ + 1]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfWalls++;
 		}
-		if(maze.isWall(matrixX,	matrixZ - 1)){
+		if(maze.maze[matrixX][matrixZ - 1]*Maze.ITEM_HEIGHT + maze.getMazeY() == locationY){
 			nrOfWalls++;
 		}
 		return (nrOfCol>2 || nrOfWalls>1);

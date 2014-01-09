@@ -25,7 +25,7 @@ public class TrapHolder extends Item {
 		double zmin = 0;
 		double zmax = sizeZ;
 		gl.glPushMatrix();
-		gl.glTranslated(super.locationX, 0, super.locationZ);
+		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		// drawCuboid
 		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,14);
 		gl.glPopMatrix();

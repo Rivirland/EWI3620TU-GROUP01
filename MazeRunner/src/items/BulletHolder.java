@@ -29,9 +29,9 @@ public class BulletHolder extends Item {
 	
 
 		gl.glPushMatrix();
-		gl.glTranslated(super.locationX, 0, super.locationZ);
+		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		// drawCuboid
-		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,14);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,55);
 		gl.glPopMatrix();
 		
 	}
