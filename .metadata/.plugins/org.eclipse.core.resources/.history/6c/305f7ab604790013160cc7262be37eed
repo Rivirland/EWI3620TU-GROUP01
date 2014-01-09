@@ -210,7 +210,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
 		db = new Database();
-		loadTextures(gl);
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the
 		 * active matrix. In this case, a simple 2D projection is performed,

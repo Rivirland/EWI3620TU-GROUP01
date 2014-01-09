@@ -408,15 +408,15 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-//		for (int i = 0; i < portalList.size(); i++) {
-//			portalList.get(i).displayPortal(glut, gl);
-//			portalList.get(i).calcPortaltoPlayer(player);
-//		}
-		
-		Portal.activePortaldisplay(gl);
-
+		for (int i = 0; i < portalList.size(); i++) {
+			portalList.get(i).displayPortal(glut, gl);
+			portalList.get(i).calcPortaltoPlayer(player);
+		}
+		// portal1.displayPortal(glut, gl);
+		// portal2.displayPortal(glut, gl);
 		gl.glEnable(GL.GL_CULL_FACE);
-
+		// portal1.calcPortaltoPlayer(player);
+		// portal2.calcPortaltoPlayer(player);
 		if(player.getControl().info ){
 			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 			if(!(player.playerStateInt == 3 || player.playerStateInt == 4)){
@@ -836,13 +836,6 @@ public class MazeRunner {
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
-	}
-	public static int getScreenWidth(){
-		return screenWidth;
-	}
-
-	public static int getScreenHeight(){
-		return screenHeight;
 	}
 
 }

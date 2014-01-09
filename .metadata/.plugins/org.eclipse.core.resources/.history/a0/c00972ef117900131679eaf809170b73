@@ -117,7 +117,7 @@ public class Portal {
 	
 		 // portal die getest wordt op view
 			// p.stencilDisplay(gl);
-		 p.displayPortal(glut, gl);
+		 p.displayPortaloud(glut, gl);
 		 
 		  
 		  gl.glColorMask(true,true,true,true);
@@ -188,7 +188,7 @@ public class Portal {
 					check=false;
 				}}
 				if (check){
-					portalList.get(i).displayPortal(glut, gl);
+					portalList.get(i).displayPortaloud(glut, gl);
 			}
 		}
 	}
@@ -277,7 +277,7 @@ public class Portal {
 
 	
 
-	public void displayPortal(GLUT glut, GL gl) {
+	public void displayPortaloud(GLUT glut, GL gl) {
 		gl.glColor4d(1, 1, 1, 1);
 		gl.glPushMatrix();
 		gl.glClearColor(0, 0, 0, 0);
