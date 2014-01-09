@@ -184,7 +184,7 @@ public class Teken {
 	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, int tex) {
 		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, new int[] { tex, tex, tex, tex, tex, tex });
 	}
-
+	
 	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax,
 			int[] texList) {
 		Vertex v1 = new Vertex(xmin, ymin, zmin);
@@ -247,6 +247,45 @@ public class Teken {
 		drawQuad(gl, v8, v4, v1, v5); // Left plane
 
 		gl.glDisable(GL.GL_CULL_FACE);
+	}
+	public static void drawCuboidWithoutCulling(GL gl, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax,
+			int[] texList) {
+		Vertex v1 = new Vertex(xmin, ymin, zmin);
+		Vertex v2 = new Vertex(xmin, ymin, zmax);
+		Vertex v3 = new Vertex(xmax, ymin, zmax);
+		Vertex v4 = new Vertex(xmax, ymin, zmin);
+		Vertex v5 = new Vertex(xmin, ymax, zmin);
+		Vertex v6 = new Vertex(xmin, ymax, zmax);
+		Vertex v7 = new Vertex(xmax, ymax, zmax);
+		Vertex v8 = new Vertex(xmax, ymax, zmin);
+
+		gl.glDisable(GL.GL_CULL_FACE);
+		
+		// Floor plane
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[0]);
+		drawQuad(gl, v4, v3, v2, v1);
+
+		// Top plane
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[1]);
+		drawQuad(gl, v5, v6, v7, v8);
+
+		// Back plane
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[2]);
+		drawQuad(gl, v7, v3, v4, v8);
+
+		// Right side plane
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[3]);
+		drawQuad(gl, v6, v2, v3, v7);
+
+		// Front plane
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[4]);
+		drawQuad(gl, v5, v1, v2, v6);
+
+		// Left plane
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[5]);
+		drawQuad(gl, v8, v4, v1, v5);
+
+		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
 	public static void kruis(GL gl, float x1, float y1, float x2, float y2) {

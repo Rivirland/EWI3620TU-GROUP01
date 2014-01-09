@@ -34,7 +34,7 @@ public class Skybox {
 	    gl.glColor4f(1,1,1,1);
 	 
 	    
-	    Teken.drawCuboid(gl,-1,1,-1,1,-1,1,new int[] {8,9,10,11,12,13});
+	    Teken.drawCuboidWithoutCulling(gl,-1,1,-1,1,-1,1,new int[] {8,9,10,11,12,13});
 
 	 
 	    // Restore enable bits and matrix
