@@ -132,9 +132,9 @@ public class Maze implements VisibleObject {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int fd = (int) Double.parseDouble(st.nextToken());
-						int portalID = (int) Double.parseDouble(st.nextToken());
-						int portalConID = (int) Double.parseDouble(st.nextToken());
-						Portal portal = new Portal((float) (mazeX + objectX), mazeY, (float) (mazeZ + objectZ), fd, portalID, portalConID);
+//						int portalID = (int) Double.parseDouble(st.nextToken());
+//						int portalConID = (int) Double.parseDouble(st.nextToken());
+						Portal portal = new Portal((float) (mazeX + objectX), mazeY, (float) (mazeZ + objectZ), fd);
 						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
 						// (float)objectY, objectZ, fd);

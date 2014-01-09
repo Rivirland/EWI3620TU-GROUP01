@@ -46,7 +46,7 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 		  
 		 // Teken.rechthoek(gl, x1, y1, x2, y2);
 	
-		 /*
+		 
 		 gl.glBegin(GL.GL_TRIANGLE_FAN);
 		 
 		 gl.glVertex2f(x1,y1);
@@ -55,29 +55,30 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 		 gl.glVertex2f(x2,y1);
 		 
 		 gl.glEnd();
-		 */
 		 
-		 float xc,yc,angle;
-		 gl.glBegin(GL.GL_TRIANGLE_FAN);
-		 gl.glVertex2f((x2+x1)/2,(y2+y1)/2);
 		 
-		 for (angle=1.0f; angle <361; angle=0.2f+angle){
-			 xc = (float) ((x2+x1)/2+Math.sin(angle)*100);
-			 yc = (float) ((float) ((y2+y1)/2)+Math.cos(angle)*100);
-			 
-			 gl.glVertex2f(xc,yc);
-		 }
-		 
-		 gl.glEnd();
-		 
+//		 float xc,yc,angle;
+//		 gl.glBegin(GL.GL_TRIANGLE_FAN);
+//		 gl.glVertex2f((x2+x1)/2,(y2+y1)/2);
+//		 
+//		 for (angle=1.0f; angle <361; angle=0.2f+angle){
+//			 xc = (float) ((x2+x1)/2+Math.sin(angle)*100);
+//			 yc = (float) ((float) ((y2+y1)/2)+Math.cos(angle)*100);
+//			 
+//			 gl.glVertex2f(xc,yc);
+//		 }
+//		 
+//		 gl.glEnd();
+//		 
 		  
 		  gl.glColorMask(true,true,true,true);
 		  gl.glDepthMask(true);
-		  gl.glStencilMask(0x00);
+		  gl.glStencilMask(0);
 		  
 		  gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
 		  
 		  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
+		  
 	}
 
 	public void display(GL gl, boolean catalogus, byte drawMode, byte textureMode, int hoogteMode){
