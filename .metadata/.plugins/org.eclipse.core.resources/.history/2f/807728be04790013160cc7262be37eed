@@ -249,7 +249,7 @@ public class MazeRunner {
 		// gl.glShadeModel(GL.GL_FLAT);
 		// Set the shading model.
 		//
-//		loadTextures(gl);
+		loadTextures(gl);
 		loadModels(gl);
 		// @@
 	}

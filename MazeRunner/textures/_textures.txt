@@ -1,3 +1,4 @@
+1: trapholdertexture.jpg
 2: catalogusdak1.jpg
 3: cataloguskolom1.jpg
 4: cataloguskolom2.jpg
@@ -10,7 +11,7 @@
 11: sb4.jpg
 12: sb5.jpg
 13: sb6.jpg
-14: trapHolderTexture.jpg
+14: trapTexture.jpg
 15: walltexture.jpg
 16: woodtexture.jpg
 17: z15levelEditorSpooky.jpg
