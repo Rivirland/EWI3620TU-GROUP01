@@ -410,8 +410,6 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-		// TODO
-
 		Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);

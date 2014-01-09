@@ -1,0 +1,1991 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>1160</w>
+      <h>1790</h>
+    </coordinates>
+    <panel_attributes>engine::MazeRunner
+--
++screenWidth: int
++screenHeight: int
++visibleObjects: java.util.ArrayList
++player: engine.Player
++enemyList: java.util.ArrayList
++bulletList: java.util.ArrayList
++roofList: java.util.ArrayList
++portalList: java.util.ArrayList
+-camera: engine.Camera
+-enemyControl: enemies.EnemyControl
++level: engine.Level
+-previousTime: long
+-startTime: long
++spookyModel: model.Model
++m21Model: model.Model
++torchModel: model.Model
++trapModel: model.Model
++copterModel: model.Model
++sb1: com.sun.opengl.util.texture.Texture
++sb2: com.sun.opengl.util.texture.Texture
++sb3: com.sun.opengl.util.texture.Texture
++sb4: com.sun.opengl.util.texture.Texture
++sb5: com.sun.opengl.util.texture.Texture
++sb6: com.sun.opengl.util.texture.Texture
++earthTexture: com.sun.opengl.util.texture.Texture
++wallTexture: com.sun.opengl.util.texture.Texture
++roofTexture: com.sun.opengl.util.texture.Texture
++trapHolderTexture: com.sun.opengl.util.texture.Texture
++oildrumTexture: com.sun.opengl.util.texture.Texture
++woodTexture: com.sun.opengl.util.texture.Texture
++cataloguskolom1: com.sun.opengl.util.texture.Texture
++cataloguskolom2: com.sun.opengl.util.texture.Texture
++catalogusdak1: com.sun.opengl.util.texture.Texture
++z15levelEditorSpooky: com.sun.opengl.util.texture.Texture
++z16levelEditorSmart: com.sun.opengl.util.texture.Texture
++z17MenuBackGround: com.sun.opengl.util.texture.Texture
++z18coptertexture: com.sun.opengl.util.texture.Texture
++smartEnemyNormalTexture: com.sun.opengl.util.texture.Texture
++spookyEnemyNormalTexture: com.sun.opengl.util.texture.Texture
++smartEnemyAlertTexture: com.sun.opengl.util.texture.Texture
++spookyEnemyAlertTexture: com.sun.opengl.util.texture.Texture
++spookyEnemyTexture2: com.sun.opengl.util.texture.Texture
++gunTexture: com.sun.opengl.util.texture.Texture
++z24portaltexture: com.sun.opengl.util.texture.Texture
++z25dirtywalltexture: com.sun.opengl.util.texture.Texture
++z26cataloguswall6: com.sun.opengl.util.texture.Texture
++z27cataloguswall7: com.sun.opengl.util.texture.Texture
++z28cataloguswall8: com.sun.opengl.util.texture.Texture
++z29cataloguswall9: com.sun.opengl.util.texture.Texture
++z30cataloguswall10: com.sun.opengl.util.texture.Texture
++z31cataloguswall11: com.sun.opengl.util.texture.Texture
++z32cataloguswall12: com.sun.opengl.util.texture.Texture
++z33cataloguswall13: com.sun.opengl.util.texture.Texture
++z34cataloguswall14: com.sun.opengl.util.texture.Texture
++z35cataloguswall15: com.sun.opengl.util.texture.Texture
++z36cataloguswall16: com.sun.opengl.util.texture.Texture
++z37cataloguswall17: com.sun.opengl.util.texture.Texture
++z38cataloguswall18: com.sun.opengl.util.texture.Texture
++z39cataloguswall19: com.sun.opengl.util.texture.Texture
++z40cataloguswall20: com.sun.opengl.util.texture.Texture
++z41cataloguswall21: com.sun.opengl.util.texture.Texture
++z42cataloguswall22: com.sun.opengl.util.texture.Texture
++z43cataloguswall23: com.sun.opengl.util.texture.Texture
++z44cataloguswall24: com.sun.opengl.util.texture.Texture
++z45cataloguswall25: com.sun.opengl.util.texture.Texture
++z46cataloguswall26: com.sun.opengl.util.texture.Texture
++z47cataloguswall27: com.sun.opengl.util.texture.Texture
++z48cataloguswall28: com.sun.opengl.util.texture.Texture
++z49cataloguswall1: com.sun.opengl.util.texture.Texture
++z50cataloguswall2: com.sun.opengl.util.texture.Texture
++z51cataloguswall3: com.sun.opengl.util.texture.Texture
++z52cataloguswall4: com.sun.opengl.util.texture.Texture
++mazeX: int
++mazeY: int
++mazeZ: int
+-input: engine.UserInput
++currentTime: long
++playingTime: long
++deltaTime: int
+--
+~MazeRunner(): ctor
++MazeRunner(int, int, javax.media.opengl.GLCanvas, javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL, javax.media.opengl.glu.GLU, engine.UserInput, engine.Level): ctor
++setScreen(int, int): void
++setScreen(javax.media.opengl.glu.GLU, javax.media.opengl.GL, int, int): void
++noMousechange(): void
++initObjects(javax.media.opengl.GLCanvas, engine.UserInput, engine.Level): void
++init(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL, javax.media.opengl.glu.GLU): void
+-initLighting(javax.media.opengl.GL): void
+-updateLighting(javax.media.opengl.GL): void
++setTime(long): void
++multipleView(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
+-updatePlayingTime(): void
+-updateCamera(): void
++getPlayer(): engine.Player
++loadTextures2(javax.media.opengl.GL): void
++loadModels(javax.media.opengl.GL): void
+-updateMovement(int, javax.media.opengl.GLAutoDrawable): void
+-reticle(javax.media.opengl.GL): void
+-reticle2(javax.media.opengl.GL): void
++visibleIterator(javax.media.opengl.GL): void
++getScreenWidth(): int
++getScreenHeight(): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1170</x>
+      <y>0</y>
+      <w>630</w>
+      <h>1230</h>
+    </coordinates>
+    <panel_attributes>levelEditor::LevelEditor
+--
+~serialVersionUID: long
+-screenWidth: int
+-screenHeight: int
+-buttonSize: float
+-canvas: javax.media.opengl.GLCanvas
+-NIETS: byte
+-KOLOM: byte
+-MUUR: byte
+-DAK: byte
+-ITEM: byte
+-drawMode: byte
+-textureMode: byte
+-hoogteMode: byte
+-heightsOn: boolean
+-gridrows: int
+-gridcolumns: int
+-gridklikx: float
+-gridkliky: float
+-gridklikxrechts: float
+-gridklikyrechts: float
+-gridklik: boolean
+-catalogus: boolean
+-backTexture: com.sun.opengl.util.texture.Texture
+-levels: levelEditor.LevelEditorWorld
+-location: int[]
+-wereld: int[][]
+-textures: int[][]
+-items: java.util.ArrayList
++wallTexture1: com.sun.opengl.util.texture.Texture
+-selectedLevel: int
+-selectedLevelPrevious: int
+-remove: boolean
+-open: boolean
+-worldview: boolean
+-addportaldirection: boolean
+-xportal: float
+-yportal: float
+~modelviewer: levelEditor.LevelEditorModelViewer
+~worldviewer: levelEditor.LevelEditorWorldViewer
+-points: java.util.ArrayList
+~columncheckamount: java.lang.reflect.Array
+--
++LevelEditor(javax.media.opengl.GL, int, int, levelEditor.LevelEditorWorld): ctor
++setScreen(int, int): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
+-tekenButton(javax.media.opengl.GL, float, float, float, float): void
+-tekenButtonMetKleur(javax.media.opengl.GL, float, float, float, float, float, float, float): void
+-drawGrid(javax.media.opengl.GL, float, float, float, float, int, int): void
+-rechthoek(javax.media.opengl.GL, float, float, float, float): void
++tekenLevelEditorAchtergrond(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
+-lineOnScreen(javax.media.opengl.GL, float, float, float, float): void
++updateLevel(): void
++mouseReleased(java.awt.event.MouseEvent): void
++mousePressed(java.awt.event.MouseEvent): void
++mouseDragged(java.awt.event.MouseEvent): void
++veranderMatrixVolgensKlikInGrid(float, float): void
++veranderMatrixVolgensKlikInGridrechts(float, float): void
++checkVoorAangrenzendeMurenVerticaal(int, int): void
++checkVoorAangrenzendeMurenHorizontaal(int, int): void
++checkIfExists(int, int): boolean
++veranderMatrixGrootte(int[][]): int[][]
++veranderMatrixGrootte2(int[][]): int[][]
+-drawGridInhoud(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
+-saveAs(): void
++defaultMatrix(): int[][]
++defaultLocation(): int[]
++loadTextures(javax.media.opengl.GL): void
++plaatsTexture(javax.media.opengl.GL, float, float, float, float, int): void
++plaatsTexture2(javax.media.opengl.GL, float, float, float, float, int): void
++keyPressed(java.awt.event.KeyEvent): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1810</x>
+      <y>0</y>
+      <w>430</w>
+      <h>1160</h>
+    </coordinates>
+    <panel_attributes>engine::Maze
+--
++MAZE_SIZE_X: int
++MAZE_SIZE_Z: int
++CELL_SIZE: double
++SQUARE_SIZE: double
++WALL_WIDTH: double
++WALL_LENGTH: double
++COLUMN_WIDTH: double
++ITEM_HEIGHT: double
++DOOR_WIDTH: double
++DOOR_HEIGHT: double
++mazeX: int
++mazeY: int
++mazeZ: int
++minX: int
++minZ: int
++mazeID: int
++maxX: double
++maxZ: double
++itemList: java.util.ArrayList
++maze: int[][]
++textureMatrix: int[][]
++visitedMatrix: int[][]
++maxHeight: int
+--
++Maze(java.lang.String, int, int, int, int): ctor
++loadMaze(java.lang.String, int): void
+-readObjects(java.io.File): void
+-buildTextureMatrix(java.io.File): void
+-loadMazeSize(java.io.File): void
++getMaxX(): double
++getMinX(): int
++getMaxZ(): double
++getMinZ(): int
++getMazeID(): int
++getMazeX(): int
++getMazeY(): int
++getMazeZ(): int
++coordToMatrixElement(double): int
++MatrixElementToCoords(int, int): double[]
+-buildMaze(java.io.File): void
++getElementOnCoords(int, int): int
++getTextureElementOnCoords(int, int): int
++printMaze(): void
++isWall(int, int): boolean
++isDebris(int, int): boolean
++isExit(int, int): boolean
++isWall(double, double): boolean
++isExit(double, double): boolean
+-convertToGridX(double): int
+-convertToGridZ(double): int
++display(javax.media.opengl.GL): void
+~setLighting(javax.media.opengl.GL): void
++drawDebrisXFromQuad(javax.media.opengl.GL): void
++drawDebrisColumnFromQuad(javax.media.opengl.GL): void
++drawDebrisZFromQuad(javax.media.opengl.GL): void
+-drawSingleFloorTile(javax.media.opengl.GL, double, double): void
++paintWallZFromQuad(javax.media.opengl.GL, double, int): void
++drawWallZFromQuad(javax.media.opengl.GL, double): void
+-paintDoorXFromQuad(javax.media.opengl.GL, double, int, int): void
++drawDoorZFromQuad(javax.media.opengl.GL, double): void
++drawWallXFromQuad(javax.media.opengl.GL, double): void
++paintColumnFromQuad(javax.media.opengl.GL, double, int): void
++drawColumnFromQuad(javax.media.opengl.GL, double): void
++getItemHeight(): double
++getColumnWidth(): double
++getWallWidth(): double
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2250</x>
+      <y>0</y>
+      <w>510</w>
+      <h>1060</h>
+    </coordinates>
+    <panel_attributes>menu::Main
+--
+~serialVersionUID: long
++textureList: java.util.ArrayList
+-screenWidth: int
+-screenHeight: int
+-buttonSize: float
++teken: menu.Teken
+~MAINMENU: byte
+~GAMEMENU: byte
+~LEVELMENU: byte
+~SETTINGS: byte
+~QUIT: byte
+~INGAME: byte
+~LEVELEDITOR: byte
+~PAUZE: byte
+~LOADGAME: byte
+~DELETEGAME: byte
+~LOADLEVEL: byte
+~fullscreenboolean: boolean
+~mousemode: boolean
+-normalCursor: java.awt.Cursor
+-ingamepausetime: long
+-pausedtime: long
+-selected: boolean
+-gamestate: int
+-currentstate: int
+-ingamestarted: boolean
+~leveleditor: levelEditor.LevelEditor
+~mainmenu: menu.MainMenu
+~gamemenu: menu.GameMenu
+~levelmenu: menu.LevelMenu
+~quit: menu.Quit
+~settings: menu.Settings
+~userinput: engine.UserInput
+~mazerunner: engine.MazeRunner
++db: engine.Database
+-canvas: javax.media.opengl.GLCanvas
+~fullscreen: menu.Fullscreen
+~gl: javax.media.opengl.GL
+~glu: javax.media.opengl.glu.GLU
+~drawable: javax.media.opengl.GLAutoDrawable
+--
+~Main(): ctor
++getNewTime(): long
++Main(): ctor
++init(javax.media.opengl.GLAutoDrawable): void
++display(javax.media.opengl.GLAutoDrawable): void
++displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean): void
++reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int): void
++mouseReleased(java.awt.event.MouseEvent): void
++mouseClicked(java.awt.event.MouseEvent): void
++mouseEntered(java.awt.event.MouseEvent): void
++mouseExited(java.awt.event.MouseEvent): void
++mousePressed(java.awt.event.MouseEvent): void
++main(java.lang.String[]): void
++mouseDragged(java.awt.event.MouseEvent): void
++mouseMoved(java.awt.event.MouseEvent): void
++keyPressed(java.awt.event.KeyEvent): void
++keyReleased(java.awt.event.KeyEvent): void
++keyTyped(java.awt.event.KeyEvent): void
++loadTextures(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2770</x>
+      <y>0</y>
+      <w>350</w>
+      <h>960</h>
+    </coordinates>
+    <panel_attributes>/enemies::Enemy/
+--
+-enemyControl: enemies.EnemyControl
++speed: double
++begX: double
++begY: double
++begZ: double
++begSpeed: double
+-horAngle: double
+#west: boolean
+#east: boolean
+#north: boolean
+#south: boolean
+-randomizer: int
++TOD: long
+#trapped: boolean
+#dead: boolean
+#size: double
+-trappedX: double
+-trappedY: double
+-trappedZ: double
+#alert: boolean
+--
++Enemy(double, double, double, double, double): ctor
++reset(): void
++setControl(enemies.EnemyControl): void
++getControl(): enemies.EnemyControl
++setRandomizer(int): void
++getRandomizer(): int
++setHorAngle(double): void
++getHorAngle(): double
++setSpeed(double): void
++getSpeed(): double
++update(int, engine.Player): void
++updateMovementPatrol(): void
++updateMovementFollow(engine.Player): void
++rotateEnemy(javax.media.opengl.GL): void
++display(javax.media.opengl.GL): void
++drawEnemy(javax.media.opengl.GL): void
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
++setTOD(long): void
++getTOD(): long
++setTrapped(boolean): void
++getTrapped(): boolean
++setDead(boolean): void
++getDead(): boolean
++getSize(): double
++setSize(double): void
++setTrappedX(double): void
++setTrappedZ(double): void
++getTrappedX(): double
++getTrappedZ(): double
++setTrappedY(double): void
++getTrappedY(): double
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3130</x>
+      <y>0</y>
+      <w>460</w>
+      <h>860</h>
+    </coordinates>
+    <panel_attributes>engine::Portal
+--
+-x: float
+-y: float
+-z: float
++portalID: int
++portalConnectionID: int
+-portalcamera: engine.Camera
+-amountmazep: int
+-activep: int[]
+-breedte: float
+-hoogte: float
+-facingdirection: int
+-glu: javax.media.opengl.glu.GLU
+-toportal: engine.Portal
+-connected: boolean
+-dx: float
+-dy: float
+-dz: float
+~teleportation: boolean
+--
+~Portal(): ctor
++Portal(float, float, float, int): ctor
++Portal(float, float, float, int, int, int): ctor
++activePortaldisplay(javax.media.opengl.GL): void
++stencil(javax.media.opengl.GL, engine.Portal): void
++stencilDisplay(javax.media.opengl.GL): void
++portalView(javax.media.opengl.GL, engine.Camera): void
++displayInactivePortals(javax.media.opengl.GL, java.util.ArrayList): void
++connectPortals(int[]): void
++toteleport(engine.Player, boolean): void
++setPortalID(int): void
++checkteleportation(engine.Player, float, float, float): void
++displayPortal(com.sun.opengl.util.GLUT, javax.media.opengl.GL): void
++toString(): java.lang.String
++Equals(engine.Portal, engine.Portal): boolean
++setconnectedTo(engine.Portal): void
++portalConnection(engine.Portal, engine.Portal): void
++calcPortaltoPlayer(engine.Player): void
++updateCamera(com.sun.opengl.util.GLUT, javax.media.opengl.GL): void
++Connection(engine.Portal): void
++getisConnected(): boolean
++setisConnected(boolean): void
++getX(): float
++getY(): float
++getZ(): float
++getFacingdirection(): int
++getPlayerdx(): float
++getPlayerdy(): float
++getPlayerdz(): float
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3600</x>
+      <y>0</y>
+      <w>360</w>
+      <h>770</h>
+    </coordinates>
+    <panel_attributes>engine::Player
+--
+-horAngle: double
+-verAngle: double
+-speed: double
++begX: double
++begY: double
++begZ: double
++begV: double
++begH: double
++canTeleport: boolean
++canMove: boolean
++nrOfTraps: int
++nrOfBullets: int
++cloakSeconds: double
++playerStateInt: int
+-control: engine.Control
++score: int
++invisible: boolean
++falling: boolean
++fallingSpeed: double
++invisibleT: long
++PlayerStateCloak: playerStates.PlayerState
++PlayerStateDead: playerStates.PlayerState
++PlayerStateGun: playerStates.PlayerState
++PlayerStateTrap: playerStates.PlayerState
++PlayerStateVictory: playerStates.PlayerState
+--
++Player(double, double, double, double, double): ctor
++setControl(engine.Control): void
++getControl(): engine.Control
++getHorAngle(): double
++setHorAngle(double): void
++getVerAngle(): double
++setVerAngle(double): void
++getSpeed(): double
++setSpeed(double): void
++update(int, javax.media.opengl.GLAutoDrawable): void
++minimapUpdate(): void
++playerStateUpdate(): void
++reset(): void
++noMousechange(): void
++getLocalX(): double
++getLocalY(): double
++getLocalZ(): double
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3970</x>
+      <y>0</y>
+      <w>420</w>
+      <h>620</h>
+    </coordinates>
+    <panel_attributes>levelEditor::LevelEditorViewer
+--
+#DRAAIMODE: byte
+#ZOOMMODE: byte
+#PANMODE: byte
+#mousemode: int
+#rotationX: double
+#rotationY: double
+#panX: double
+#panY: double
+#scalef: double
+#xmidden: int
+#ymidden: int
+~glut: com.sun.opengl.util.GLUT
+#screenWidth: int
+#screenHeight: int
+#x1: int
+#y1: int
+#x2: int
+#y2: int
+#x1mouse: int
+#y1mouse: int
+#x2mouse: int
+#y2mouse: int
+#dX: int
+#dY: int
+--
+~LevelEditorViewer(): ctor
++LevelEditorViewer(int, int, double, double, double, double): ctor
+#init(javax.media.opengl.GL): void
++mouseReleased(java.awt.event.MouseEvent): void
++mouseDragged(java.awt.event.MouseEvent): void
++update(): void
++moveObject(): void
+#superMousehandling(java.awt.event.MouseEvent): void
++reshape(int, int, double, double, double, double): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4400</x>
+      <y>0</y>
+      <w>350</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>engine::UserInput
+--
+~x1: int
+~x2: int
+~y1: int
+~y2: int
+-robot: java.awt.Robot
+-mouseLocation: java.awt.Point
+-centerLocation: java.awt.Point
+-relativeMouseMode: boolean
+-isRecentering: boolean
+-mouselookMode: boolean
+-cursor: java.awt.Cursor
+-mousechange: boolean
+-startedinput: boolean
+~invisibleCursor: java.awt.Cursor
+~normalCursor: java.awt.Cursor
+-canvas: javax.media.opengl.GLCanvas
+--
++UserInput(javax.media.opengl.GLCanvas): ctor
++init(javax.media.opengl.GLCanvas): void
+-recenterMouse(javax.media.opengl.GLCanvas): void
++reshape(): void
++update(javax.media.opengl.GLAutoDrawable): void
++cursorChange(boolean): void
++mousePressed(java.awt.event.MouseEvent): void
++mouseDragged(java.awt.event.MouseEvent): void
++mouseMoved(java.awt.event.MouseEvent): void
++keyPressed(java.awt.event.KeyEvent): void
++keyReleased(java.awt.event.KeyEvent): void
++setmouselookMode(boolean): void
++noMousechange(): void
++run(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>1800</y>
+      <w>340</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>/engine::Control/
+--
+#forward: boolean
+#back: boolean
+#left: boolean
+#right: boolean
+#up: boolean
+#down: boolean
+#tab: boolean
+#pause: boolean
+#itemUse: boolean
+#gunShoot: boolean
+#playerStateDown: boolean
+#playerStateUp: boolean
++minimap: boolean
++info: boolean
+#dX: int
+#dY: int
+--
++Control(): ctor
++getForward(): boolean
++getBack(): boolean
++getLeft(): boolean
++getRight(): boolean
++getdX(): int
++getdY(): int
++getPause(): boolean
++setdY(int): void
++setdX(int): void
++update(javax.media.opengl.GLAutoDrawable): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>350</x>
+      <y>1800</y>
+      <w>360</w>
+      <h>500</h>
+    </coordinates>
+    <panel_attributes>engine::Camera
+--
+-horAngle: double
+-verAngle: double
+-vrpX: double
+-vrpY: double
+-vrpZ: double
+-vuvX: double
+-vuvY: double
+-vuvZ: double
+--
++Camera(double, double, double, double, double): ctor
++calculateVRP(): void
++getHorAngle(): double
++setHorAngle(double): void
++getVerAngle(): double
++setVerAngle(double): void
++getVrpX(): double
++setVrpX(double): void
++getVrpY(): double
++setVrpY(double): void
++getVrpZ(): double
++setVrpZ(double): void
++getVuvX(): double
++setVuvX(double): void
++getVuvY(): double
++setVuvY(double): void
++getVuvZ(): double
++setVuvZ(double): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>720</x>
+      <y>1800</y>
+      <w>310</w>
+      <h>500</h>
+    </coordinates>
+    <panel_attributes>items::TrapDropped
+--
+#used: boolean
+-timeUsed: long
+-legal: boolean
+-thrown: boolean
+-t0: long
++vy0: double
++vx0: double
++ay: double
++ax: double
++horAngle: double
++inair: boolean
++onground: boolean
+--
+~TrapDropped(): ctor
++TrapDropped(double, double, double, int): ctor
++display(javax.media.opengl.GL): void
++touches(engine.GameObject): boolean
++setUsed(boolean): void
++getUsed(): boolean
++setTimeUsed(long): void
++getTimeUsed(): long
++getLegal(): boolean
++setLegal(boolean): void
++setThrown(boolean): void
++getThrown(): boolean
++setT0(long): void
++getT0(): long
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1040</x>
+      <y>1800</y>
+      <w>870</w>
+      <h>480</h>
+    </coordinates>
+    <panel_attributes>menu::Teken
+--
++renderer1: com.sun.opengl.util.j2d.TextRenderer
++renderer2: com.sun.opengl.util.j2d.TextRenderer
++renderer3: com.sun.opengl.util.j2d.TextRenderer
++sizeint: int
+--
++Teken(): ctor
++startText(javax.media.opengl.GLAutoDrawable, java.lang.String, float): void
++textDraw(javax.media.opengl.GL, java.lang.String, double, double, float): void
++endText(float): void
++textDraw(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL, java.lang.String, float, float, float): void
++textDrawMetKleur(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL, java.lang.String, float, float, float, float, float, float): void
++tekenButton(javax.media.opengl.GL, float, float, float, float): void
++tekenButtonMetKleur(javax.media.opengl.GL, float, float, float, float, float, float, float): void
++rechthoek(javax.media.opengl.GL, float, float, float, float): void
++lineOnScreen(javax.media.opengl.GL, float, float, float, float): void
++drawQuad(javax.media.opengl.GL, engine.Vertex, engine.Vertex, engine.Vertex, engine.Vertex, engine.Vector): void
++drawQuad(javax.media.opengl.GL, engine.Vertex, engine.Vertex, engine.Vertex, engine.Vertex): void
++drawCuboid(javax.media.opengl.GL, double, double, double, double, double, double, int): void
++drawCuboid(javax.media.opengl.GL, double, double, double, double, double, double, int[]): void
++drawCuboid(javax.media.opengl.GL, double, double, double, double, double, double): void
++drawCuboidWithoutCulling(javax.media.opengl.GL, double, double, double, double, double, double, int[]): void
++kruis(javax.media.opengl.GL, float, float, float, float): void
++pijlboven(javax.media.opengl.GL, float, float, float): void
++pijlonder(javax.media.opengl.GL, float, float, float): void
++pijlrechts(javax.media.opengl.GL, float, float, float): void
++pijllinks(javax.media.opengl.GL, float, float, float): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1920</x>
+      <y>1800</y>
+      <w>510</w>
+      <h>460</h>
+    </coordinates>
+    <panel_attributes>levelEditor::LevelEditorLevel
+--
+-name: java.lang.String
++location: int[]
+-gebouwen: int[][]
+-textures: int[][]
++itemlist: java.util.ArrayList
+--
++LevelEditorLevel(int[], java.lang.String, int[][], int[][], java.util.ArrayList): ctor
++readLevel(java.lang.String, int[], java.lang.String): levelEditor.LevelEditorLevel
++readLocation(java.lang.String): int[]
++readGebouwen(java.lang.String): int[][]
++readTextures(java.lang.String): int[][]
++readObjects(java.lang.String): java.util.ArrayList
++saveAs(): void
++open(): void
++getLocation(): int[]
++setLocation(int[]): void
++getName(): java.lang.String
++setName(java.lang.String): void
++getTextures(): int[][]
++setTextures(int[][]): void
++getGebouwen(): int[][]
++setGebouwen(int[][]): void
++getItemList(): java.util.ArrayList
++setItemList(java.util.ArrayList): void
++getItem(int): double[]
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2440</x>
+      <y>1800</y>
+      <w>380</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>items::TrapDroppedGBS
+--
+-radius: double
+-height: double
++StartTime: long
+-alpha: double
++animationTime: double
++animationTime2: double
++animationTime3: double
++animationTime4: double
++animationTime5: double
+--
+~TrapDroppedGBS(): ctor
++TrapDroppedGBS(double, double, double, int, long): ctor
++display(javax.media.opengl.GL): void
++drawTrap(javax.media.opengl.GL): void
++getRadius(): double
++setRadius(double): void
++getHeight(): double
++setHeight(double): void
++getAlpha(): double
++setAlpha(double): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2830</x>
+      <y>1800</y>
+      <w>360</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>items::Roof
+--
++matrixX: int
++matrixZ: int
+-ROOF_LENGTH: double
+-ROOF_HEIGHT: double
++fallingSpeed: double
++legal: boolean
+--
++Roof(double, double, double, int, double, int, int): ctor
++display(javax.media.opengl.GL): void
++drawRoof(javax.media.opengl.GL): void
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
++touches(engine.GameObject): boolean
++isOnWalls(): boolean
++setLegal(boolean): void
++getLegal(): boolean
++getRoofHeight(): double
++getRoofLength(): double
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3200</x>
+      <y>1800</y>
+      <w>450</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>levelEditor::LevelEditorWorldViewer
+--
+-mazelist: java.util.ArrayList
+-WORLD: byte
+-CURRENTLEVEL: byte
+-xcenter: double
+-ycenter: double
+-zcenter: double
+-run: boolean
+-minX: int
+-minZ: int
+-maxX: int
+-maxZ: int
+-minY: int
+-maxY: int
+--
++LevelEditorWorldViewer(int, int, double, double, double, double): ctor
++minvalueX(): void
++centerLength(): void
++display(javax.media.opengl.GL): void
++mousePressed(java.awt.event.MouseEvent): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3660</x>
+      <y>1800</y>
+      <w>390</w>
+      <h>350</h>
+    </coordinates>
+    <panel_attributes>engine::Minimap
+--
+-minimapX: int
+-minimapZ: int
+~columnPercentageX: double
+~columnPercentageZ: double
+~wallPercentageX: double
+~wallPercentageZ: double
+--
+~Minimap(): ctor
++Minimap(): ctor
++displayMinimap(javax.media.opengl.GL): void
++iterateOverMatrix(javax.media.opengl.GL): void
++drawColumn(javax.media.opengl.GL, double, double): void
++drawWallz(javax.media.opengl.GL, double, double): void
++drawWallx(javax.media.opengl.GL, double, double): void
++drawFloor(javax.media.opengl.GL, double, double): void
++drawPlayer(javax.media.opengl.GL, double, double): void
++drawBackground(javax.media.opengl.GL): void
++reticle(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4060</x>
+      <y>1800</y>
+      <w>400</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>engine::Level
+--
++mazelist: java.util.ArrayList
+-aantal: int
+-naam: java.lang.String
++minGlobalY: double
+-orderedMazes: int[]
+--
++Level(java.lang.String): ctor
+-orderMazesOnHeight(): int[]
++voegToe(engine.Maze): void
++getAantal(): int
++getNaam(): java.lang.String
++getMazeList(): java.util.ArrayList
++getMaze(int): engine.Maze
++leesLevels(java.lang.String): void
++inSameMaze(engine.GameObject, engine.GameObject): int
++getCurrentMaze(engine.GameObject): int
++collides(engine.GameObject, double): boolean[]
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4470</x>
+      <y>1800</y>
+      <w>290</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>engine::GameObject
+--
+#locationX: double
+#locationY: double
+#locationZ: double
+--
++GameObject(): ctor
++GameObject(double, double, double): ctor
++setLocationX(double): void
++getLocationX(): double
++setLocationY(double): void
++getLocationY(): double
++setLocationZ(double): void
++getLocationZ(): double
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>2330</y>
+      <w>300</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>engine::GeneticAlgorithm
+--
+-mazes: java.util.ArrayList
++parentsPerIteration: int
++distances: double[][]
+--
++GeneticAlgorithm(java.util.ArrayList, int): ctor
++assignPortalID(): void
++connectPortals(): void
++solve(): int[]
++iterate(int[][], int): int[][]
+-generateParents(): int[][]
+-calcDistances(): double[][]
++mutation(int[]): int[]
++crossover(int[], int[]): int[]
++containsNumber(int[], int): boolean
++calcDistance(int[]): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>310</x>
+      <y>2330</y>
+      <w>450</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>levelEditor::LevelEditorModelViewer
+--
+-previousMode: int
+-NIETS: byte
+-KOLOM: byte
+-MUUR: byte
+-DAK: byte
+-ITEM: byte
+-WORLD: byte
+--
+~LevelEditorModelViewer(): ctor
++LevelEditorModelViewer(int, int, double, double, double, double): ctor
++stencil(javax.media.opengl.GL): void
++display(javax.media.opengl.GL, boolean, byte, byte, int): void
++mousePressed(java.awt.event.MouseEvent): void
++reshape(int, int, int, int, int, int): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>840</x>
+      <y>2330</y>
+      <w>760</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>levelEditor::LevelEditorWorld
+--
+-levels: java.util.ArrayList
+-popup: boolean
+--
++LevelEditorWorld(): ctor
++readWorld(java.lang.String): levelEditor.LevelEditorWorld
++drawLevelList(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL, float, float, float, float, float, float, int): void
++addLevel(): void
++saveAs(): void
++mouseReleased(float, float, float, float, float, float, int): int
++mouseReleased2(float, float, float, float, float, float, float, float): void
++mouseReleased3(float, float, float, float, float, float, float, float): boolean
++mousePressed(float, float, float, float, float, float, float, float): boolean
++get(int): levelEditor.LevelEditorLevel
++getSize(): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1540</x>
+      <y>2330</y>
+      <w>490</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>menu::MainMenu
+--
+~MAINMENU: byte
+~GAMEMENU: byte
+~LEVELMENU: byte
+~SETTINGS: byte
+~QUIT: byte
+~renderer: com.sun.opengl.util.j2d.TextRenderer
+-StartGameEntered: boolean
+-screenWidth: int
+-screenHeight: int
+--
++MainMenu(int, int): ctor
++setScreen(int, int): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++mouseReleased(java.awt.event.MouseEvent): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2040</x>
+      <y>2330</y>
+      <w>240</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>menu::Fullscreen
+--
+~fullscreen: boolean
+~displayChanged: boolean
+~ge: java.awt.GraphicsEnvironment
+~gd: java.awt.GraphicsDevice
+~myDevice: java.awt.GraphicsDevice
++dm: java.awt.DisplayMode
++dm_old: java.awt.DisplayMode
+--
++Fullscreen(): ctor
++init(java.awt.Frame): boolean
++exit(): void
++getHeight(): int
++getWidth(): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2290</x>
+      <y>2330</y>
+      <w>290</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>model::Model
+--
++vertices: java.util.ArrayList
++normals: java.util.ArrayList
++textureCoordinates: java.util.ArrayList
++faces: java.util.ArrayList
+--
++Model(): ctor
++display(javax.media.opengl.GL): void
++hasNormals(): boolean
++hasTextureCoordinates(): boolean
++getFaces(): java.util.ArrayList
++getNormals(): java.util.ArrayList
++getVertices(): java.util.ArrayList
++getTextureCoordinates(): java.util.ArrayList
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2590</x>
+      <y>2330</y>
+      <w>240</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>model::Model$Face
+--
+-vertexIndices: int[]
+-normalIndices: int[]
+-textureCoordinateIndices: int[]
+--
++hasNormals(): boolean
++hasTextureCoordinates(): boolean
++getVertexIndices(): int[]
++getTextureCoordinateIndices(): int[]
++getNormalIndices(): int[]
++Model$Face(int[]): ctor
++Model$Face(int[], int[]): ctor
++Model$Face(int[], int[], int[]): ctor
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2840</x>
+      <y>2330</y>
+      <w>320</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>engine::Sound
+--
++gunfire: engine.Sound
++roofCrash: engine.Sound
++noBullets: engine.Sound
++reload: engine.Sound
++fire: engine.Sound
+-clip: java.applet.AudioClip
+--
+~Sound(): ctor
++Sound(java.lang.String): ctor
++play(): void
+~access$0(engine.Sound): java.applet.AudioClip
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3170</x>
+      <y>2330</y>
+      <w>260</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>/items::Item/
+--
++mazeID: int
+--
++Item(double, double, double, int): ctor
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
++getLocalX(): double
++getLocalY(): double
++getLocalZ(): double
++display(javax.media.opengl.GL): void
++touches(engine.GameObject): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3440</x>
+      <y>2330</y>
+      <w>470</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>engine::Vector
+--
++x: double
++y: double
++z: double
+--
+~Vector(double, double, double): ctor
++crossproduct(engine.Vector): engine.Vector
++toString(): java.lang.String
++normalize(): void
++calcNormal(engine.Vector, engine.Vector): engine.Vector
++calcNormal(engine.Vertex, engine.Vertex, engine.Vertex): engine.Vector
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3920</x>
+      <y>2330</y>
+      <w>490</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>menu::GameMenu
+--
+-screenWidth: int
+-screenHeight: int
+~GAMEMENU: byte
+~INGAME: byte
+~LOADGAME: byte
+--
++GameMenu(int, int): ctor
++setScreen(int, int): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++MouseReleased(java.awt.event.MouseEvent): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4420</x>
+      <y>2330</y>
+      <w>490</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>menu::LevelMenu
+--
+~LEVELMENU: byte
+~LEVELEDITOR: byte
+~LOADLEVEL: byte
+-screenWidth: int
+-screenHeight: int
+--
++LevelMenu(int, int): ctor
++setScreen(int, int): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++MouseReleased(java.awt.event.MouseEvent): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>2630</y>
+      <w>330</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>items::BulletHolder
+--
++amount: int
+--
++BulletHolder(double, double, double, int, int): ctor
++display(javax.media.opengl.GL): void
++touches(engine.GameObject): boolean
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
++getAmount(): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>340</x>
+      <y>2630</y>
+      <w>490</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>menu::Quit
+--
+~MAINMENU: byte
+~QUIT: byte
+-screenWidth: int
+-screenHeight: int
+--
++Quit(int, int): ctor
++setScreen(int, int): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++mouseReleased(java.awt.event.MouseEvent): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>840</x>
+      <y>2630</y>
+      <w>650</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>engine::Database
+--
++conn: java.sql.Connection
++stat: java.sql.Statement
++rs: java.sql.ResultSet
+--
++Database(): ctor
++executeUpdate(java.lang.String): void
++printHighscores(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL, java.lang.String): void
++close(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1500</x>
+      <y>2630</y>
+      <w>390</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>items::Bullet
+--
++horAngle: double
++verAngle: double
++speed: double
+--
++Bullet(double, double, double, double, double, double): ctor
++display(javax.media.opengl.GL): void
++update(int): void
++touches(engine.GameObject): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1900</x>
+      <y>2630</y>
+      <w>610</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>levelEditor::Catalogus
+--
+-NIETS: byte
+-KOLOM: byte
+-MUUR: byte
+-DAK: byte
+-ITEM: byte
+--
++Catalogus(): ctor
++drawCatalogus(javax.media.opengl.GL, boolean, byte, float, float, levelEditor.LevelEditor): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2520</x>
+      <y>2630</y>
+      <w>500</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>/playerStates::PlayerState/
+--
+--
++PlayerState(): ctor
++itemUse(): void
++entering(): void
++leaving(): void
++displayItem(javax.media.opengl.GL): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++getState(int): playerStates.PlayerState
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3030</x>
+      <y>2630</y>
+      <w>500</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>playerStates::PlayerStateCloak
+--
++duration: double
+--
++PlayerStateCloak(): ctor
++itemUse(): void
++entering(): void
++leaving(): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++displayItem(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3540</x>
+      <y>2630</y>
+      <w>500</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>playerStates::PlayerStateGun
+--
+--
++PlayerStateGun(): ctor
++shootGun(): void
++itemUse(): void
++entering(): void
++leaving(): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++displayItem(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4050</x>
+      <y>2630</y>
+      <w>270</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>engine::Vertex
+--
++x: double
++y: double
++z: double
+--
++Vertex(double, double, double): ctor
++substract(engine.Vertex): engine.Vector
++toString(): java.lang.String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4330</x>
+      <y>2630</y>
+      <w>250</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>items::Exit
+--
+--
++Exit(double, double, double, int): ctor
++display(javax.media.opengl.GL): void
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
++touches(engine.GameObject): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>2830</y>
+      <w>300</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>items::TrapHolder
+--
+--
++TrapHolder(double, double, double, int): ctor
++display(javax.media.opengl.GL): void
++touches(engine.GameObject): boolean
++getGlobalX(): double
++getGlobalY(): double
++getGlobalZ(): double
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>310</x>
+      <y>2830</y>
+      <w>380</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>model::OBJLoader
+--
+--
++OBJLoader(): ctor
+-parseVertex(java.lang.String): model.Vector3d
+-parseNormal(java.lang.String): model.Vector3d
+-parseFace(boolean, java.lang.String): model.Model$Face
++loadModel(java.io.File): model.Model
++loadTexturedModel(java.io.File): model.Model
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>700</x>
+      <y>2830</y>
+      <w>500</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>playerStates::PlayerStateDead
+--
+--
++PlayerStateDead(): ctor
++itemUse(): void
++entering(): void
++leaving(): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++displayItem(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1210</x>
+      <y>2830</y>
+      <w>500</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>playerStates::PlayerStateTorch
+--
+--
++PlayerStateTorch(): ctor
++itemUse(): void
++entering(): void
++leaving(): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++displayItem(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1720</x>
+      <y>2830</y>
+      <w>500</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>playerStates::PlayerStateTrap
+--
+--
++PlayerStateTrap(): ctor
++itemUse(): void
++entering(): void
++leaving(): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++displayItem(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2230</x>
+      <y>2830</y>
+      <w>500</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>playerStates::PlayerStateVictory
+--
+--
++PlayerStateVictory(): ctor
++itemUse(): void
++entering(): void
++leaving(): void
++drawInfo(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
++displayItem(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2740</x>
+      <y>2830</y>
+      <w>280</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>engine::Reticle
+--
+-screenWidth: int
+-screenHeight: int
+--
++Reticle(): ctor
++reticle(javax.media.opengl.GL): void
+-drawReticle(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3030</x>
+      <y>2830</y>
+      <w>490</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>menu::Settings
+--
+-screenWidth: int
+-screenHeight: int
+--
++Settings(int, int): ctor
++setScreen(int, int): void
++display(javax.media.opengl.GLAutoDrawable, javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3530</x>
+      <y>2830</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>model::Vector3d
+--
++x: double
++y: double
++z: double
+--
++Vector3d(): ctor
++Vector3d(double, double, double): ctor
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>3800</x>
+      <y>2830</y>
+      <w>400</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>enemies::EnemySpooky
+--
+--
++EnemySpooky(double, double, double, double, double): ctor
++update(int, engine.Player): void
++drawEnemy(javax.media.opengl.GL): void
++showEnemy(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4210</x>
+      <y>2830</y>
+      <w>300</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>/engine::Animator/
+--
+--
++Animator(): ctor
++trapAnimation(items.TrapDroppedGBS): void
++disappearIntoTrap(enemies.Enemy): void
++thrownTrapDropped(items.TrapDropped): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>4520</x>
+      <y>2830</y>
+      <w>280</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>engine::ChangeGL
+--
+--
++ChangeGL(): ctor
++GLTexture(javax.media.opengl.GL): void
++GLto3D(javax.media.opengl.GL): void
++GLto2D(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>3000</y>
+      <w>210</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>model::Vector2d
+--
++x: double
++y: double
+--
++Vector2d(): ctor
++Vector2d(double, double): ctor
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>220</x>
+      <y>3000</y>
+      <w>180</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>/enemies::EnemyControl/
+--
+#up: boolean
+--
++EnemyControl(): ctor
++update(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>410</x>
+      <y>3000</y>
+      <w>390</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>enemies::EnemySmart
+--
+--
++EnemySmart(double, double, double, double, double): ctor
++update(int, engine.Player): void
++drawEnemy(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>810</x>
+      <y>3000</y>
+      <w>190</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>engine::InputDialog
+--
++frame: javax.swing.JFrame
+--
++InputDialog(): ctor
++getName(): java.lang.String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1010</x>
+      <y>3000</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>engine::Sound$1
+--
+~this$0: engine.Sound
+--
+~Sound$1(engine.Sound): ctor
++run(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1230</x>
+      <y>3000</y>
+      <w>190</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>levelEditor::InputLocation
+--
++frame: javax.swing.JFrame
+--
++InputLocation(): ctor
++getLocation(): int[]
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1430</x>
+      <y>3000</y>
+      <w>600</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>menu::KiesFileUitBrowser
+--
+--
++KiesFileUitBrowser(): ctor
++loadFile(java.awt.Frame, java.lang.String, java.lang.String, java.lang.String): java.lang.String
++saveFile(java.awt.Frame, java.lang.String, java.lang.String, java.lang.String): java.lang.String
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2040</x>
+      <y>3000</y>
+      <w>340</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>menu::Main$1
+--
+~this$0: menu.Main
+--
+~Main$1(menu.Main): ctor
++windowClosing(java.awt.event.WindowEvent): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2390</x>
+      <y>3000</y>
+      <w>300</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>engine::Skybox
+--
+--
++Skybox(): ctor
++displaySkybox(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>2700</x>
+      <y>3000</y>
+      <w>250</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+engine::VisibleObject
+--
+--
++display(javax.media.opengl.GL): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
