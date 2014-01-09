@@ -20,7 +20,7 @@ public class Portal {
 	
 	private Camera portalcamera;
 	
-	private static int amountmazep;
+	private static int amountmazep = 2;
 	private static int[] activep;
 
 	// eigenschappen van de portal
@@ -71,29 +71,33 @@ public class Portal {
 	 */
 	public static void activePortaldisplay(GL gl){
 		
+		// finding the activeportals, portals are identified with an integer number
 		int mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		int[] activep = new int[amountmazep]; 
 		for(int i=0; i<amountmazep; i++){
 			activep[i] = mazeID*amountmazep+i;
+			System.out.println(activep[i]);
 		}
 		
+		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
-		MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
+		//MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
 		stencil(gl, MazeRunner.portalList.get(activep[i]));
 		}
 		
-		//TODO tijdelijk om te testen
-		displayInactivePortals(gl, MazeRunner.portalList);
+		//TODO tijdelijk om te testen, nu worden ook de portals die gestencild worden hier weergegeven,
+		// deze functie wordt later aangeroepen om alleen de inactieve portals weer te geven
+		//displayInactivePortals(gl, MazeRunner.portalList);
 	}
 
 	public static void stencil (GL gl, Portal p){
 		// enable stenciltest
 		GLUT glut=new GLUT();
-		// gl.glEnable(GL.GL_STENCIL_TEST);
+	//	gl.glEnable(GL.GL_STENCIL_TEST);
 		 
 		 // temporarily disable colormask because what is stencilled does not need to have color
-		 gl.glColorMask(false,false,false,false);
-		 gl.glDepthMask(false);
+	//	 gl.glColorMask(false,false,false,false);
+	//	 gl.glDepthMask(false);
 		 
 		 //glstencilfunc compares the ref and mask value with the stencilpixel and mask value and 
 		 // when it passes the pixel is passed to the next test or rasterization process(glstencilop)
@@ -101,40 +105,42 @@ public class Portal {
 		 // first parameter is the test function
 		 // second is the stencil value that is being compared
 		 // third is mask: a mask applied to both ref and the stencil pixel; you can use 0xFF (if you have 8 bitplanes) to disable the mask
-		 gl.glStencilFunc(GL.GL_NEVER, 1, 0xff);
+	//	 gl.glStencilFunc(GL.GL_NEVER, 1, 0xff);
 		 
 		 //1. sfail: the test from glStencilFunc failed
 		 //2. dpfail: the test from glStencilFunc passed, but the depth buffer test failed
 		 //3. dppass: the test from glStencilFunc passed, and the depth buffer passed or is disabled
-		 gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
+	//	 gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
 		 
 		 //control the bits of an operation
-		 gl.glStencilMask(0xff);
+	//	 gl.glStencilMask(0xff);
 		 // clear the stencil buffer so everything else is unaffected
-		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT); 
+	//	 gl.glClear(GL.GL_STENCIL_BUFFER_BIT); 
 		  
 		 // Teken.rechthoek(gl, x1, y1, x2, y2);
 	
 		 // portal die getest wordt op view
-			// p.stencilDisplay(gl);
+		// p.stencilDisplay(gl);
+		 
+		 //TODO om te testen of het werkt, moet stencilDisplay worden
 		 p.displayPortal(glut, gl);
 		 
 		  
-		  gl.glColorMask(true,true,true,true);
-		  gl.glDepthMask(true);
+	//	  gl.glColorMask(true,true,true,true);
+	//	  gl.glDepthMask(true);
 		  
 		  
 		//TODO hier moet de view voor de portal gegeven worden
 		  
-		  portalView(gl, p.portalcamera);
+	//	  portalView(gl, p.portalcamera);
 		  
-		  gl.glStencilMask(0);
+	//	  gl.glStencilMask(0);
 		  
 		  // if buffervalue is equal to 0, then it gets overwritten
-		  gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
+	//	  gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
 		  
 		  // if buffervalue equal to 1 then it gets overwritten
-		  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
+	//	  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
 	}
 
 	public void stencilDisplay(GL gl){
@@ -161,22 +167,22 @@ public class Portal {
 		ArrayList<Portal> portalList=MazeRunner.portalList;
 		GLU glu=new GLU();
 		GLUT glut = new GLUT();
-		gl.glViewport(0, 0, MazeRunner.getScreenWidth(), MazeRunner.getScreenHeight());
-			gl.glLoadIdentity();
-			glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
-			MazeRunner.visibleIterator(gl);
-			displayInactivePortals(gl, portalList);
+//	//	gl.glViewport(0, 0, MazeRunner.getScreenWidth(), MazeRunner.getScreenHeight());
+//			gl.glLoadIdentity();
+//	//		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
+//	//		MazeRunner.visibleIterator(gl);
+			//displayInactivePortals(gl, portalList);
 			
-//			for (int i = 0; i < portalList.size(); i++) {
-//				boolean check = true;
-//				for (int j=0; j<amountmazep ; j++){
-//					if(i == activep[j]){
-//						check=false;
-//					}}
-//					if (check){
-//						portalList.get(i).displayPortaloud(glut, gl);
-//				}
-//			}
+			for (int i = 0; i < portalList.size(); i++) {
+				boolean check = true;
+				for (int j=0; j<amountmazep ; j++){
+					if(i == activep[j]){
+						check=false;
+					}}
+					if (check){
+						portalList.get(i).displayPortal(glut, gl);
+				}
+			}
 		}
 		
 	public static void displayInactivePortals(GL gl,ArrayList<Portal> portalList){
@@ -199,7 +205,7 @@ public class Portal {
 			System.out.println(MazeRunner.portalList.size());
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
-			}
+		}
 			portalConnection(MazeRunner.portalList.get(mazes.length * 2 - 1), MazeRunner.portalList.get(0));
 		}
 	}
@@ -208,6 +214,8 @@ public class Portal {
 
 	public void toteleport(Player player, boolean teleportation) {
 		if (teleportation) {
+			
+			
 			player.setLocationX(toportal.getX());
 			player.setLocationY(toportal.getY() + 2.5);
 			player.setLocationZ(toportal.getZ());
@@ -280,6 +288,7 @@ public class Portal {
 	public void displayPortal(GLUT glut, GL gl) {
 		gl.glColor4d(1, 1, 1, 1);
 		gl.glPushMatrix();
+		
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glTranslatef(this.x, (float) (this.y), this.z);
 
