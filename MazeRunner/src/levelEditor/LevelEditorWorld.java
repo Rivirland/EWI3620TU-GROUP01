@@ -32,7 +32,7 @@ public class LevelEditorWorld {
 			int lz = Integer.parseInt(st.nextToken());
 			String name = st.nextToken();
 			lijst.levels.add(LevelEditorLevel.readLevel(name, new int[] {lx,ly,lz}, currentdir + "\\levels\\" + name + ".txt"));
-			System.out.println(name + " added");
+			System.out.println(name + " added to list of levels");
 		}
 		scannames.close();
 		return lijst;

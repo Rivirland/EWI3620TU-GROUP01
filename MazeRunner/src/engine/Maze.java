@@ -70,7 +70,6 @@ public class Maze implements VisibleObject {
 		try {
 			loadMaze(filename, i);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -88,7 +87,6 @@ public class Maze implements VisibleObject {
 		File infile = new File(filename + ".txt");
 		try {
 			loadMazeSize(infile);
-
 		} catch (IOException e) {
 			System.out.println("Fout in loadMazeSize");
 		}
@@ -101,7 +99,6 @@ public class Maze implements VisibleObject {
 		try {
 			buildTextureMatrix(infileTex);
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Fout in buildTextureMatrix - NFE");
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -344,9 +341,6 @@ public class Maze implements VisibleObject {
 		minZ = mazeZ;
 		maxX = minX + Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;
 		maxZ = minZ + Math.floor(((double) MAZE_SIZE_Z + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;
-		double[] test;
-		test = MatrixElementToCoords(1,2);
-		System.out.println(test[0] + ", " + test[1]);
 	}
 
 	public int getElementOnCoords(int i, int j) {

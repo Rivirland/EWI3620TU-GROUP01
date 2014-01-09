@@ -164,7 +164,7 @@ public class MazeRunner {
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
 
-		System.out.println(Arrays.toString(worldConnection));
+		System.out.println("Worlds connected in order: " + Arrays.toString(worldConnection));
 		// Roof roof = new Roof(0.5, 5, 0.5, 1);
 		// roofList.add(roof);
 

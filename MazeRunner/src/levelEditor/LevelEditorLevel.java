@@ -76,7 +76,7 @@ public class LevelEditorLevel {
 				res[i][j] = sc2.nextInt();
 			}
 		}
-		System.out.println("file ingelezen");
+		System.out.println("Maze File ingelezen");
 		return res;
 	}
 	
@@ -109,7 +109,7 @@ public class LevelEditorLevel {
 				res[i][j] = sc2.nextInt();
 			}
 		}
-		System.out.println("file ingelezen");
+		System.out.println("Texture File ingelezen");
 		return res;
 	}
 	

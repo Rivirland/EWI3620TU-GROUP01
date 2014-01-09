@@ -56,7 +56,7 @@ public class Portal {
 
 	public static void connectPortals(int[] mazes) {
 		if (MazeRunner.portalList.size() > 0) {
-			System.out.println(MazeRunner.portalList.size());
+			System.out.println("Number of portals detected: " + MazeRunner.portalList.size());
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
 			}
@@ -214,7 +214,7 @@ public class Portal {
 		if (!Equals(p1, p2)) {
 			p1.setconnectedTo(p2);
 			p2.setconnectedTo(p1);
-			System.out.println("Connected " + p1.portalID + "and " + p2.portalID);
+			System.out.println("Connected portal: " + p1.portalID + " and portal: " + p2.portalID);
 			p1.setisConnected(true);
 			p2.setisConnected(true);
 

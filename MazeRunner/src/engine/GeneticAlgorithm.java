@@ -122,7 +122,7 @@ public class GeneticAlgorithm {
 							}
 						}
 					}
-					System.out.println((i+1) + ", " + (j+1) + " with distance: " + distance);
+					System.out.println("Calculated distance between Maze: " + (i+1) + " and Maze: " + (j+1) + " :" + distance);
 					res[i][j] = distance;
 					res[j][i] = distance;
 				}
