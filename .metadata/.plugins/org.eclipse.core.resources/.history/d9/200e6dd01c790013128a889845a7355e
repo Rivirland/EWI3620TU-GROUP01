@@ -40,22 +40,15 @@ public class Level {
 		for(int i = 0; i < this.aantal; i++){
 			double height = temp[this.aantal-i-1];
 			for (int j = 0; j < this.aantal; j++){
-				if(mazelist.get(j).mazeY == height && !contains(res,j)){
+				System.out.println(Arrays.toString(res));
+				System.out.println("Bevat " + j + ": " + Arrays.asList(res).contains(j));
+				if(mazelist.get(j).mazeY == height && !Arrays.asList(res).contains(j)){
 					res[i] = j;
 				}
 			}
 		}
 		System.out.println("Ordering mazes on height: " + Arrays.toString(res));
 		return res;
-	}
-
-	private boolean contains(int[] res, int j) {
-		for (int i = 0; i < res.length; i++){
-			if(res[i]==j){
-				return true;
-			}
-		}
-		return false;
 	}
 
 	// Adds a maze toe the mazelist.

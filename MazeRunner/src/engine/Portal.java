@@ -72,7 +72,8 @@ public class Portal {
 	public static void activePortaldisplay(GL gl){
 		
 		// finding the activeportals, portals are identified with an integer number
-		int mazeID = Math.abs(MazeRunner.level.getCurrentMaze(MazeRunner.player));
+		int mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
+		if (mazeID != -1){
 		int[] activep = new int[amountmazep]; 
 		for(int i=0; i<amountmazep; i++){
 			activep[i] = mazeID*amountmazep+i;
@@ -89,7 +90,7 @@ public class Portal {
 		// deze functie wordt later aangeroepen om alleen de inactieve portals weer te geven
 		//displayInactivePortals(gl, MazeRunner.portalList);
 	}
-
+	}
 	public static void stencil (GL gl, Portal p){
 		// enable stenciltest
 		GLUT glut=new GLUT();

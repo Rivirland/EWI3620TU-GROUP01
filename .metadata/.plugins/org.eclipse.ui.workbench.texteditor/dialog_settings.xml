@@ -9,8 +9,8 @@
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 =======
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="175" key="DIALOG_Y_ORIGIN"/>
-		<item value="1143" key="DIALOG_X_ORIGIN"/>
+		<item value="185" key="DIALOG_Y_ORIGIN"/>
+		<item value="680" key="DIALOG_X_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 >>>>>>> ec0fdfdd69c6b5f414bc349f40632fe64a5f7ad2
@@ -21,6 +21,18 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
+<<<<<<< HEAD
+		<item value="stencil" key="selection"/>
+		<list key="findhistory">
+			<item value="stencil"/>
+			<item value="active"/>
+			<item value="public static void drawQuad"/>
+			<item value="textDraw"/>
+			<item value="TextRenderer"/>
+			<item value="loadTe"/>
+			<item value="&quot;dak&quot;"/>
+			<item value=" 80f/1080f*screenHeight"/>
+=======
 <<<<<<< HEAD
 		<item value="display" key="selection"/>
 		<list key="findhistory">
@@ -38,8 +50,12 @@
 			<item value="getMazeY"/>
 			<item value="getCurrent"/>
 			<item value="getCurrentMaze"/>
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 		</list>
 		<list key="replacehistory">
+			<item value=" 60"/>
+			<item value="60"/>
+			<item value="90"/>
 		</list>
 	</section>
 </section>

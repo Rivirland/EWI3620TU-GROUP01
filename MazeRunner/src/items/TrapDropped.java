@@ -14,7 +14,7 @@ public class TrapDropped extends Item {
 	private boolean legal;
 	private boolean thrown;
 	private long t0;
-	public static double vy0=.1;
+	public static double vy0=.11;
 	public static double vx0=1.0;
 	public static double ay=-0.1;
 	public static double ax=0;
