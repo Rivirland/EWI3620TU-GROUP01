@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 !SESSION 2014-01-09 11:50:47.631 -----------------------------------------------
 eclipse.buildId=4.3.0.M20130911-1000
 java.version=1.7.0_45
@@ -10,6 +11,20 @@ This is a continuation of log file C:\Users\Gebruiker\Documents\SourceTree\EWI36
 Created Time: 2014-01-09 11:51:21.410
 
 !ENTRY org.eclipse.egit.ui 2 0 2014-01-09 11:51:21.415
+=======
+!SESSION 2014-01-09 11:53:00.860 -----------------------------------------------
+eclipse.buildId=4.3.0.I20130605-2000
+java.version=1.7.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+This is a continuation of log file C:\Users\Levi\Documents\Gamenakerstvakantie\.metadata\.bak_0.log
+Created Time: 2014-01-09 11:53:11.280
+
+!ENTRY org.eclipse.egit.ui 2 0 2014-01-09 11:53:11.295
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 !MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
 Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
 The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
@@ -17,14 +32,22 @@ this system level configuration. The Git installation location can be configured
 Team > Git > Configuration preference page's 'System Settings' tab.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
 
+<<<<<<< HEAD
 !ENTRY org.eclipse.egit.ui 2 0 2014-01-09 11:51:21.419
+=======
+!ENTRY org.eclipse.egit.ui 2 0 2014-01-09 11:53:11.295
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 !MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
 user global configuration and to define the default location to store repositories: 'C:\Users\Gebruiker'. If this is
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
 
+<<<<<<< HEAD
 !ENTRY org.eclipse.debug.core 4 125 2014-01-09 11:53:42.728
+=======
+!ENTRY org.eclipse.debug.core 4 125 2014-01-09 11:53:14.228
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 !MESSAGE Error logged from Debug Core: 
 !STACK 1
 org.eclipse.debug.core.DebugException: org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup. occurred while reading launch configuration file: C:\Users\Gebruiker\Documents\SourceTree\EWI3620TU-GROUP01\.metadata\.plugins\org.eclipse.debug.core\.launches\LevelEditorMain.launch.
@@ -118,8 +141,13 @@ Caused by: org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The co
 	at org.eclipse.debug.internal.core.LaunchManager.createInfoFromXML(LaunchManager.java:929)
 	at org.eclipse.debug.internal.core.LaunchManager.getInfo(LaunchManager.java:1353)
 	... 69 more
+<<<<<<< HEAD
 !SUBENTRY 1 org.eclipse.debug.core 4 5012 2014-01-09 11:53:42.730
 !MESSAGE org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup. occurred while reading launch configuration file: C:\Users\Gebruiker\Documents\SourceTree\EWI3620TU-GROUP01\.metadata\.plugins\org.eclipse.debug.core\.launches\LevelEditorMain.launch.
+=======
+!SUBENTRY 1 org.eclipse.debug.core 4 5012 2014-01-09 11:53:14.228
+!MESSAGE org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup. occurred while reading launch configuration file: C:\Users\Levi\Documents\Gamenakerstvakantie\.metadata\.plugins\org.eclipse.debug.core\.launches\LevelEditorMain.launch.
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 !STACK 0
 org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)
@@ -208,7 +236,11 @@ org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of el
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1450)
 	at org.eclipse.equinox.launcher.Main.main(Main.java:1426)
 
+<<<<<<< HEAD
 !ENTRY org.eclipse.debug.core 4 125 2014-01-09 11:53:42.783
+=======
+!ENTRY org.eclipse.debug.core 4 125 2014-01-09 11:53:14.244
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 !MESSAGE Error logged from Debug Core: 
 !STACK 1
 org.eclipse.debug.core.DebugException: org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup. occurred while reading launch configuration file: C:\Users\Gebruiker\Documents\SourceTree\EWI3620TU-GROUP01\.metadata\.plugins\org.eclipse.debug.core\.launches\MazeRunner (1).launch.
@@ -302,8 +334,13 @@ Caused by: org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The co
 	at org.eclipse.debug.internal.core.LaunchManager.createInfoFromXML(LaunchManager.java:929)
 	at org.eclipse.debug.internal.core.LaunchManager.getInfo(LaunchManager.java:1353)
 	... 69 more
+<<<<<<< HEAD
 !SUBENTRY 1 org.eclipse.debug.core 4 5012 2014-01-09 11:53:42.784
 !MESSAGE org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup. occurred while reading launch configuration file: C:\Users\Gebruiker\Documents\SourceTree\EWI3620TU-GROUP01\.metadata\.plugins\org.eclipse.debug.core\.launches\MazeRunner (1).launch.
+=======
+!SUBENTRY 1 org.eclipse.debug.core 4 5012 2014-01-09 11:53:14.244
+!MESSAGE org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup. occurred while reading launch configuration file: C:\Users\Levi\Documents\Gamenakerstvakantie\.metadata\.plugins\org.eclipse.debug.core\.launches\MazeRunner (1).launch.
+>>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 !STACK 0
 org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 2; The content of elements must consist of well-formed character data or markup.
 	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(Unknown Source)

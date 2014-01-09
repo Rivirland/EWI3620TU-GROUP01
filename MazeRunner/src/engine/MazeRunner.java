@@ -408,10 +408,7 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-//		for (int i = 0; i < portalList.size(); i++) {
-//			portalList.get(i).displayPortal(glut, gl);
-//			portalList.get(i).calcPortaltoPlayer(player);
-//		}
+//TODO
 		
 		Portal.activePortaldisplay(gl);
 
@@ -769,6 +766,20 @@ public class MazeRunner {
 			}
 		}
 
+
+// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in updateMovement
+		//****************
+//		public static void WillTeleport(boolean canTeleport, ArrayList<Portal> portalList){
+//			for (int i = 0; i < portalList.size(); i++) {
+//				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+//				
+//			}
+//		} else {
+//			MazeRunner.player.canTeleport = true;
+//		}
+//	}
+		
+		//TODO dit hoort eigenlijk in de portal klasse		
 		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
@@ -778,7 +789,7 @@ public class MazeRunner {
 		} else {
 			MazeRunner.player.canTeleport = true;
 		}
-		//
+		
 		for (Maze m : level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
