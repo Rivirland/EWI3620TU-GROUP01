@@ -185,7 +185,8 @@ public class Teken {
 		drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, new int[] { tex, tex, tex, tex, tex, tex });
 	}
 
-	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax, int[] texList) {
+	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax,
+			int[] texList) {
 		Vertex v1 = new Vertex(xmin, ymin, zmin);
 		Vertex v2 = new Vertex(xmin, ymin, zmax);
 		Vertex v3 = new Vertex(xmax, ymin, zmax);
@@ -195,11 +196,12 @@ public class Teken {
 		Vertex v7 = new Vertex(xmax, ymax, zmax);
 		Vertex v8 = new Vertex(xmax, ymax, zmin);
 
-		gl.glDisable(GL.GL_CULL_FACE);
-
+		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glCullFace(GL.GL_BACK);
+		
 		// Floor plane
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[0]);
-		drawQuad(gl, v1, v2, v3, v4);
+		drawQuad(gl, v4, v3, v2, v1);
 
 		// Top plane
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[1]);
@@ -207,21 +209,21 @@ public class Teken {
 
 		// Back plane
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[2]);
-		drawQuad(gl, v4, v8, v7, v3);
+		drawQuad(gl, v7, v3, v4, v8);
 
 		// Right side plane
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[3]);
-		drawQuad(gl, v3, v7, v6, v2);
+		drawQuad(gl, v6, v2, v3, v7);
 
 		// Front plane
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[4]);
-		drawQuad(gl, v6, v2, v1, v5);
+		drawQuad(gl, v5, v1, v2, v6);
 
 		// Left plane
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texList[5]);
-		drawQuad(gl, v5, v1, v4, v8);
+		drawQuad(gl, v8, v4, v1, v5);
 
-		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glDisable(GL.GL_CULL_FACE);
 	}
 
 	public static void drawCuboid(GL gl, double xmin, double xmax, double ymin, double ymax, double zmin, double zmax) {
@@ -234,16 +236,17 @@ public class Teken {
 		Vertex v7 = new Vertex(xmax, ymax, zmax);
 		Vertex v8 = new Vertex(xmax, ymax, zmin);
 
-		gl.glDisable(GL.GL_CULL_FACE);
-
-		drawQuad(gl, v1, v2, v3, v4); // Floor plane
-		drawQuad(gl, v5, v6, v7, v8); // Top plane
-		drawQuad(gl, v4, v8, v7, v3); // Back plane
-		drawQuad(gl, v3, v7, v6, v2); // Right plane
-		drawQuad(gl, v6, v2, v1, v5); // Front plane
-		drawQuad(gl, v5, v1, v4, v8); // Left plane
-
 		gl.glEnable(GL.GL_CULL_FACE);
+		gl.glCullFace(GL.GL_BACK);
+
+		drawQuad(gl, v4, v3, v2, v1); // Floor plane
+		drawQuad(gl, v5, v6, v7, v8); // Top plane
+		drawQuad(gl, v7, v3, v4, v8); // Back plane
+		drawQuad(gl, v6, v2, v3, v7); // Right side plane
+		drawQuad(gl, v5, v1, v2, v6); // Front plane
+		drawQuad(gl, v8, v4, v1, v5); // Left plane
+
+		gl.glDisable(GL.GL_CULL_FACE);
 	}
 
 	public static void kruis(GL gl, float x1, float y1, float x2, float y2) {
