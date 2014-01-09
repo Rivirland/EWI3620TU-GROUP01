@@ -134,9 +134,9 @@ public class Maze implements VisibleObject {
 					if (objectNumber == 1) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						int fd = (int) Double.parseDouble(st.nextToken());
-						int portalID = (int) Double.parseDouble(st.nextToken());
-						int portalConID = (int) Double.parseDouble(st.nextToken());
+						int fd = Integer.parseInt(st.nextToken());
+						int portalID = Integer.parseInt(st.nextToken());
+						int portalConID = Integer.parseInt(st.nextToken());
 						Portal portal = new Portal((float) (mazeX + objectX), mazeY, (float) (mazeZ + objectZ), fd, portalID, portalConID);
 						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
@@ -162,7 +162,7 @@ public class Maze implements VisibleObject {
 					} else if (objectNumber == 4) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						int amount = (int) Double.parseDouble(st.nextToken());
+						int amount = Integer.parseInt(st.nextToken());
 						BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
