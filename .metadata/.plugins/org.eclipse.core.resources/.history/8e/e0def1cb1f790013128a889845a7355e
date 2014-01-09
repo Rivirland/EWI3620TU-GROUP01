@@ -82,7 +82,7 @@ public class Portal {
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
 		//MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
-//		stencil(gl, MazeRunner.portalList.get(activep[i]));
+		stencil(gl, MazeRunner.portalList.get(activep[i]));
 		}
 		
 		//TODO tijdelijk om te testen, nu worden ook de portals die gestencild worden hier weergegeven,

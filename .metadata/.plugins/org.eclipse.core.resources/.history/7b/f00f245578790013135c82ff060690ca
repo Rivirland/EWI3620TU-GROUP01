@@ -93,11 +93,9 @@ public class MazeRunner {
 	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
-			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2,
-			gunTexture, z24portaltexture, z25dirtywalltexture, z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12,
-			z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21,
-			z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2,
-			z51cataloguswall3, z52cataloguswall4;
+			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture, z25dirtywalltexture,
+			z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12, z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21, z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2, z51cataloguswall3, z52cataloguswall4;
+
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
@@ -251,7 +249,7 @@ public class MazeRunner {
 		// gl.glShadeModel(GL.GL_FLAT);
 		// Set the shading model.
 		//
-		// loadTextures(gl);
+//		loadTextures(gl);
 		loadModels(gl);
 		// @@
 	}
@@ -370,7 +368,7 @@ public class MazeRunner {
 		if (player.getControl().minimap) {
 			Minimap.displayMinimap(gl);
 		}
-
+		
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
 
@@ -410,19 +408,20 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-		// TODO
-
+//TODO
+		
 		Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 
-		if (player.getControl().info) {
+		if(player.getControl().info ){
 			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
-			if (!(player.playerStateInt == 3 || player.playerStateInt == 4)) {
+			if(!(player.playerStateInt == 3 || player.playerStateInt == 4)){
 				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), 30);
-				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player) + 1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
+				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player)+1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
 			}
 		}
+		
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
@@ -497,13 +496,13 @@ public class MazeRunner {
 	 * Program entry point
 	 * 
 	 * @param args
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 
 	// Loads all the texture and stores them into the memory. We have to keep
 	// track of the order ourselves.
-
-	// Onderstaande methode nog even niet weggooien
+	
+		// Onderstaande methode nog even niet weggooien
 	public void loadTextures2(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures";
@@ -518,7 +517,7 @@ public class MazeRunner {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			
 		}
 
 		catalogusdak1 = TextureIO.newTexture(datas[0]);
@@ -714,17 +713,18 @@ public class MazeRunner {
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
 					if (b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
-						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 3 || maze.textureMatrix[maze
-								.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 4)) {
-							maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
-							bulletList.remove(b);
-							visibleObjects.remove(b);
-						} else {
-							bulletList.remove(b);
-							visibleObjects.remove(b);
-						}
+							if((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 3 || maze.textureMatrix[maze
+					                                                                                                                             							.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 4)){
+						maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
+						bulletList.remove(b);
+						visibleObjects.remove(b);
+					} else{
+						bulletList.remove(b);
+						visibleObjects.remove(b);
 					}
-
+					}
+					
+					
 				}
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -769,22 +769,20 @@ public class MazeRunner {
 			}
 		}
 
-		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
-		// updateMovement
-		// ****************
-		// public static void WillTeleport(boolean canTeleport,
-		// ArrayList<Portal> portalList){
-		// for (int i = 0; i < portalList.size(); i++) {
-		// portalList.get(i).checkteleportation(player, (float) previousX,
-		// (float) previousY, (float) previousZ);
-		//
-		// }
-		// } else {
-		// MazeRunner.player.canTeleport = true;
-		// }
-		// }
 
-		// TODO dit hoort eigenlijk in de portal klasse
+// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in updateMovement
+		//****************
+//		public static void WillTeleport(boolean canTeleport, ArrayList<Portal> portalList){
+//			for (int i = 0; i < portalList.size(); i++) {
+//				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+//				
+//			}
+//		} else {
+//			MazeRunner.player.canTeleport = true;
+//		}
+//	}
+		
+		//TODO dit hoort eigenlijk in de portal klasse		
 		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
@@ -794,7 +792,7 @@ public class MazeRunner {
 		} else {
 			MazeRunner.player.canTeleport = true;
 		}
-
+		
 		for (Maze m : level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
@@ -853,12 +851,11 @@ public class MazeRunner {
 			it.next().display(gl);
 		}
 	}
-
-	public static int getScreenWidth() {
+	public static int getScreenWidth(){
 		return screenWidth;
 	}
 
-	public static int getScreenHeight() {
+	public static int getScreenHeight(){
 		return screenHeight;
 	}
 

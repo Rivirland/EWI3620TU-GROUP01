@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-<<<<<<< HEAD
-		<item value="305" key="DIALOG_WIDTH"/>
-		<item value="145" key="DIALOG_Y_ORIGIN"/>
-		<item value="1259" key="DIALOG_X_ORIGIN"/>
-		<item value="442" key="DIALOG_HEIGHT"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-=======
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="185" key="DIALOG_Y_ORIGIN"/>
 		<item value="680" key="DIALOG_X_ORIGIN"/>
 		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
->>>>>>> ec0fdfdd69c6b5f414bc349f40632fe64a5f7ad2
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
@@ -21,36 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="stencil" key="selection"/>
+		<item value="b." key="selection"/>
 		<list key="findhistory">
+			<item value="b."/>
+			<item value="contains"/>
 			<item value="stencil"/>
 			<item value="active"/>
 			<item value="public static void drawQuad"/>
 			<item value="textDraw"/>
 			<item value="TextRenderer"/>
 			<item value="loadTe"/>
-			<item value="&quot;dak&quot;"/>
-			<item value=" 80f/1080f*screenHeight"/>
-=======
-<<<<<<< HEAD
-		<item value="display" key="selection"/>
-		<list key="findhistory">
-			<item value="DISPLAY"/>
-			<item value="updateMovement"/>
-			<item value="active"/>
-			<item value="displayportal"/>
-=======
-		<item value="1.3" key="selection"/>
-		<list key="findhistory">
-			<item value="1.3"/>
-			<item value="floor"/>
->>>>>>> ec0fdfdd69c6b5f414bc349f40632fe64a5f7ad2
-			<item value="isWall"/>
-			<item value="getMazeY"/>
-			<item value="getCurrent"/>
-			<item value="getCurrentMaze"/>
->>>>>>> 83252ee1c78f2232380446833c69589c9bb99b44
 		</list>
 		<list key="replacehistory">
 			<item value=" 60"/>
