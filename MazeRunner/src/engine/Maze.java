@@ -477,7 +477,7 @@ public class Maze implements VisibleObject {
 					}
 					// (odd,even) paints debris in the Z-direction
 					if (i % 2 != 0 && j % 2 == 0) {
-						drawDebrisColumnFromQuad(gl);
+						drawDebrisZFromQuad(gl);
 					}
 					// (even,odd) paints debris in the X-direction
 					if (i % 2 == 0 && j % 2 != 0) {
