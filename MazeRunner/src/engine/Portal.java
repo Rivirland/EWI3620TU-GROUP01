@@ -72,7 +72,7 @@ public class Portal {
 	public static void activePortaldisplay(GL gl){
 		
 		// finding the activeportals, portals are identified with an integer number
-		int mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
+		int mazeID = Math.abs(MazeRunner.level.getCurrentMaze(MazeRunner.player));
 		int[] activep = new int[amountmazep]; 
 		for(int i=0; i<amountmazep; i++){
 			activep[i] = mazeID*amountmazep+i;
@@ -81,7 +81,7 @@ public class Portal {
 		
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
-		//MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
+		MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
 		stencil(gl, MazeRunner.portalList.get(activep[i]));
 		}
 		
