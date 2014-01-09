@@ -36,9 +36,9 @@ public class PlayerStateCloak extends PlayerState{
 //			
 //		}
 		if(MazeRunner.player.cloakSeconds > 0){
-		Teken.textDraw(autodrawable, gl, "Seconds of invisibility left: " + MazeRunner.player.cloakSeconds, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), (float) (0.05 * MazeRunner.screenHeight));
+		Teken.textDraw(autodrawable, gl, "Seconds of invisibility left: " + MazeRunner.player.cloakSeconds, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), 30);
 		}else{
-			Teken.textDraw(autodrawable, gl, "No more invisibility!", (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), (float) (0.05 * MazeRunner.screenHeight));
+			Teken.textDraw(autodrawable, gl, "No more invisibility!", (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), 30);
 				
 		}
 		}

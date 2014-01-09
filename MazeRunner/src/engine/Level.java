@@ -45,7 +45,7 @@ public class Level {
 				}
 			}
 		}
-		System.out.println("RES: " + Arrays.toString(res));
+		System.out.println("Ordering mazes on height: " + Arrays.toString(res));
 		return res;
 	}
 
@@ -100,7 +100,7 @@ public class Level {
 				int y = Integer.parseInt(st.nextToken());
 				int z = Integer.parseInt(st.nextToken());
 				String m = st.nextToken();
-				System.out.println(m + " " + x + y + z);
+				System.out.println("Level loaded: " + m + " x: " + x + " y: " + y + " z: " + z);
 				if(y<minGlobalY){
 					minGlobalY = y;
 				}

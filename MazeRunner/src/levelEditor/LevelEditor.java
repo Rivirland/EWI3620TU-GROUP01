@@ -123,7 +123,7 @@ public static Texture wallTexture1;
 		this.items = levels.get(0).getItemList();
 		gridrows= (wereld.length-1)/2;
 		gridcolumns = (wereld[0].length-1)/2;
-//		loadTextures(gl);
+		loadTextures(gl);
 		modelviewer= new LevelEditorModelViewer(screenWidth, screenHeight,(90f/1920f*screenWidth), (90f/1080f*screenHeight),  (589f/1920f*screenWidth), (860f/1080f*screenHeight));
 		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775)/1920f*screenWidth,  (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,  1050/1080f*screenHeight);
 		//worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, screenWidth/2, screenHeight/2, screenWidth, screenHeight);
@@ -161,11 +161,11 @@ public static Texture wallTexture1;
 
 		if (selectedLevel >= 0 && worldview==false){
 
-			Teken.textDrawMetKleur(drawable, gl, (gridcolumns + " x " + gridrows), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, (gridcolumns + " x " + gridrows), 622f/1920f*screenWidth, 948f/1080f*screenHeight, 30, 1f, 1f, 1f);
 
-			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
-			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
-			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f/1920f*screenWidth, 890f/1080f*screenHeight, 40f/1080f*screenHeight, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f/1920f*screenWidth, 890f/1080f*screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f/1920f*screenWidth, 890f/1080f*screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f/1920f*screenWidth, 890f/1080f*screenHeight, 30, 1f, 1f, 1f);
 			drawGrid(gl, 830f/1920f*screenWidth, 90f/1080f*screenHeight, 1830f/1920f*screenWidth , 990f/1080f*screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			//veranderMatrixVolgensKlikInGrid(gl);
@@ -375,7 +375,7 @@ public static Texture wallTexture1;
 		rechthoek(gl, (340f-55f)/1920f*screenWidth, (90f-40f)/1080f*screenHeight, (340f-35f)/1920f*screenWidth, (90f-20f)/1080f*screenHeight);
 		//grijs hoogte midden
 		rechthoek(gl, (340f-20f)/1920f*screenWidth, (90f-40f)/1080f*screenHeight, (340f+20f)/1920f*screenWidth, (90f-20f)/1080f*screenHeight);
-		Teken.textDrawMetKleur (drawable, gl, String.valueOf(hoogteMode), (340f-15f)/1920f*screenWidth, (90f-38f)/1080f*screenHeight, 20f/1080f*screenHeight, 0, 0, 0);
+		Teken.textDrawMetKleur (drawable, gl, String.valueOf(hoogteMode), (340f-15f)/1920f*screenWidth, (90f-38f)/1080f*screenHeight, 30, 0, 0, 0);
 		gl.glColor3f(0.76f, 0.76f, 0.76f);
 		//grijs hoogte plus
 		rechthoek(gl, (340f+35f)/1920f*screenWidth, (90f-40f)/1080f*screenHeight, (340f+55f)/1920f*screenWidth, (90f-20f)/1080f*screenHeight);
@@ -1358,7 +1358,7 @@ public static Texture wallTexture1;
 					tekenButtonMetKleur(gl, xmin+(kolom/2)*distance, ymax-rij/2*distance ,xmin+(kolom/2+1)*distance, ymax-(rij/2+1)*distance, 147f/255f, 80f/255f, 51f/255f);
 				}
 				if (wereld[rij][kolom]!=0 && heightsOn){
-					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin+(kolom/2)*distance+distance/2, ymax-(rij/2+1)*distance+distance/2, 20f/1080f*screenHeight, 1f, 1f, 1f);
+					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin+(kolom/2)*distance+distance/2, ymax-(rij/2+1)*distance+distance/2, 30, 1f, 1f, 1f);
 				}
 			}
 		}	
