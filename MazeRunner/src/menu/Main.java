@@ -48,6 +48,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	// Screen size.
 	private int screenWidth = 800, screenHeight = 600;
 	private float buttonSize = screenHeight / 10.0f;
+	public Teken teken;
 
 	// all the different states and their corresponding number
 	final byte MAINMENU = 0;
@@ -196,7 +197,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		// Always reset the matrix before performing transformations, otherwise
 		// those transformations will stack with previous transformations!
 		gl.glLoadIdentity();
-
+		Teken teken = new Teken();
 		mainmenu = new MainMenu(screenWidth, screenHeight);
 		try {
 			leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));
@@ -211,6 +212,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
 		db = new Database();
 		loadTextures(gl);
+		
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the
 		 * active matrix. In this case, a simple 2D projection is performed,

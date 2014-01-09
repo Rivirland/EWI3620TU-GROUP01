@@ -160,7 +160,6 @@ public class Maze implements VisibleObject {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int amount = (int) Double.parseDouble(st.nextToken());
-						System.out.println(mazeY);
 						BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
@@ -172,9 +171,8 @@ public class Maze implements VisibleObject {
 						MazeRunner.visibleObjects.add(th);
 					} else if (objectNumber == 6) {
 						double objectX = Double.parseDouble(st.nextToken());
-						double objectY = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						Exit e = new Exit(mazeX + objectX, mazeY + objectY, mazeZ + objectZ, mazeID);
+						Exit e = new Exit(mazeX + objectX, mazeY+2.5, mazeZ + objectZ, mazeID);
 						itemList.add(e);
 						MazeRunner.visibleObjects.add(e);
 					}
@@ -569,7 +567,7 @@ public class Maze implements VisibleObject {
 
 		setLighting(gl);
 
-		double thick=1.3;
+		double thick=1.0;
 		// Apply texture.
 		Teken.drawCuboid(gl, 0, size_x, -thick, 0, 0, size_z, 5);
 

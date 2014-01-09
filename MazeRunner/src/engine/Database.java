@@ -48,16 +48,16 @@ public class Database {
 
 	public void printHighscores(GLAutoDrawable autodrawable, GL gl,String st) {
 		float h = 0.8f; 
-		Teken.textDraw(autodrawable, gl, "Player Name", 0.35f*MazeRunner.screenWidth, 0.9f*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
-		Teken.textDraw(autodrawable, gl, "Score", 0.65f*MazeRunner.screenWidth, 0.9f*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
+		Teken.textDraw(autodrawable, gl, "Player Name", 0.35f*MazeRunner.screenWidth, 0.9f*MazeRunner.screenHeight, 60);
+		Teken.textDraw(autodrawable, gl, "Score", 0.65f*MazeRunner.screenWidth, 0.9f*MazeRunner.screenHeight, 60);
 		try {
 			rs = stat.executeQuery(st);
 			while (rs.next()) {
 				
 				// Retrieve the values from the rows, by specifying the column
 				// name.
-				Teken.textDraw(autodrawable, gl, rs.getString("naam"), 0.35f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
-				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.65f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
+				Teken.textDraw(autodrawable, gl, rs.getString("naam"), 0.35f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 60);
+				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.65f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 60);
 
 				h-=0.1;
 			}

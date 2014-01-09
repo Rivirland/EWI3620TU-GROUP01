@@ -1,4 +1,4 @@
-1: trapholdertexture.jpg
+56: trapholdertexture.jpg
 2: catalogusdak1.jpg
 3: cataloguskolom1.jpg
 4: cataloguskolom2.jpg

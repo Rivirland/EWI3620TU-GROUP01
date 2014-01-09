@@ -11,70 +11,115 @@ import engine.Vector;
 import engine.Vertex;
 
 public class Teken {
+	public static TextRenderer renderer1, renderer2, renderer3;
+	// 1: 30, 2: 60, 3: 90
+	public static int sizeint;
 
-	public static TextRenderer startText(GLAutoDrawable drawable, String font, double size) {
-		int sizeint = (int) size;
-		TextRenderer renderer = new TextRenderer(new Font(font, Font.BOLD, sizeint));
-		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
-		return renderer;
+	public Teken() {
+		renderer1 = new TextRenderer(new Font("Arial", Font.BOLD, 30));
+		renderer2 = new TextRenderer(new Font("Arial", Font.BOLD, 60));
+		renderer3 = new TextRenderer(new Font("Arial", Font.BOLD, 90));
 	}
 
-	public static void textDraw(GL gl, String str, double x, double y, TextRenderer renderer) {
+	public static void startText(GLAutoDrawable drawable, String font, float size) {
+		// int sizeint = (int) size;
+		// TextRenderer renderer = new TextRenderer(new Font(font, Font.BOLD,
+		// sizeint));
+		if (size == 30) {
+			renderer1.beginRendering(drawable.getWidth(), drawable.getHeight());
+		} else if (size == 60) {
+			renderer2.beginRendering(drawable.getWidth(), drawable.getHeight());
+		} else {
+			renderer3.beginRendering(drawable.getWidth(), drawable.getHeight());
+		}
+	}
+
+	public static void textDraw(GL gl, String str, double x, double y, float size) {
 		int xint = (int) x;
 		int yint = (int) y;
-		renderer.setColor(1.0f, 1f, 1f, 1f);
-		renderer.draw(str, xint, yint);
-
+		if (size == 30) {
+			renderer1.setColor(1.0f, 1f, 1f, 1f);
+			renderer1.draw(str, xint, yint);
+		} else if (size == 60) {
+			renderer2.setColor(1.0f, 1f, 1f, 1f);
+			renderer2.draw(str, xint, yint);
+		} else {
+			renderer3.setColor(1.0f, 1f, 1f, 1f);
+			renderer3.draw(str, xint, yint);
+		}
 	}
 
-	public static void endText(TextRenderer renderer) {
-		renderer.endRendering();
+	public static void endText(float size) {
+		if (size == 30) {
+			renderer1.endRendering();
+		} else if (size == 60) {
+			renderer2.endRendering();
+		} else {
+			renderer3.endRendering();
+		}
 	}
 
 	public static void textDraw(GLAutoDrawable drawable, GL gl, String str, float x, float y, float size) {
 		int xint = (int) x;
 		int yint = (int) y;
-		int sizeint = (int) size;
 
-		TextRenderer renderer = new TextRenderer(new Font("Arial", Font.BOLD, sizeint));
-		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
-		// optionally set the color
-		renderer.setColor(1.0f, 1f, 1f, 1f);
-		renderer.draw(str, xint, yint);
-
-		// ... more draw commands, color changes, etc.
-		renderer.endRendering();
+		if (size == 30) {
+			renderer1.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer1.setColor(1.0f, 1f, 1f, 1f);
+			renderer1.draw(str, xint, yint);
+			renderer1.endRendering();
+		} else if (size == 60) {
+			renderer2.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer2.setColor(1.0f, 1f, 1f, 1f);
+			renderer2.draw(str, xint, yint);
+			renderer2.endRendering();
+		} else {
+			renderer3.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer3.setColor(1.0f, 1f, 1f, 1f);
+			renderer3.draw(str, xint, yint);
+			renderer3.endRendering();
+		}
 	}
 
-	public static void textDraw(GLAutoDrawable drawable, GL gl, String str, float x, float y, float size, String font) {
+//	public static void textDraw(GLAutoDrawable drawable, GL gl, String str, float x, float y, float size, String font) {
+//		int xint = (int) x;
+//		int yint = (int) y;
+//		//
+//		// TextRenderer renderer = new TextRenderer(new Font(font, Font.BOLD,
+//		// sizeint));
+//		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
+//		// optionally set the color
+//		renderer.setColor(1.0f, 1f, 1f, 1f);
+//		renderer.draw(str, xint, yint);
+//
+//		// ... more draw commands, color changes, etc.
+//		renderer.endRendering();
+//	}
+
+	public static void textDrawMetKleur(GLAutoDrawable drawable, GL gl, String str, float x, float y, float size, float r, float g, float b) {
 		int xint = (int) x;
 		int yint = (int) y;
-		int sizeint = (int) size;
-
-		TextRenderer renderer = new TextRenderer(new Font(font, Font.BOLD, sizeint));
-		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
-		// optionally set the color
-		renderer.setColor(1.0f, 1f, 1f, 1f);
-		renderer.draw(str, xint, yint);
-
-		// ... more draw commands, color changes, etc.
-		renderer.endRendering();
-	}
-
-	public static void textDrawMetKleur(GLAutoDrawable drawable, GL gl, String str, float x, float y, float size, float r,
-			float g, float b) {
-		int xint = (int) x;
-		int yint = (int) y;
-		int sizeint = (int) size;
-
-		TextRenderer renderer = new TextRenderer(new Font("Arial", Font.BOLD, sizeint));
-		renderer.beginRendering(drawable.getWidth(), drawable.getHeight());
-		// optionally set the color
-		renderer.setColor(r, g, b, 1f);
-		renderer.draw(str, xint, yint);
-
-		// ... more draw commands, color changes, etc.
-		renderer.endRendering();
+//		setSize(size);
+		// int sizeint = (int) size;
+		//
+		// TextRenderer renderer = new TextRenderer(new Font("Arial",
+		// Font.BOLD, sizeint));
+		if(size == 30){
+			renderer1.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer1.setColor(r, g, b, 1f);
+			renderer1.draw(str, xint, yint);
+			renderer1.endRendering();	
+		} else if (size == 60){
+			renderer2.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer2.setColor(r, g, b, 1f);
+			renderer2.draw(str, xint, yint);
+			renderer2.endRendering();
+		} else {
+			renderer3.beginRendering(drawable.getWidth(), drawable.getHeight());
+			renderer3.setColor(r, g, b, 1f);
+			renderer3.draw(str, xint, yint);
+			renderer3.endRendering();
+		}
 	}
 
 	public static void tekenButton(GL gl, float xmin, float ymin, float xmax, float ymax) {

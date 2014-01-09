@@ -54,7 +54,7 @@ public class PlayerStateTrap extends PlayerState {
 
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl) {
-		Teken.textDraw(autodrawable, gl, "Number of traps: " + MazeRunner.player.nrOfTraps, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), (float) (0.05 * MazeRunner.screenHeight));
+		Teken.textDraw(autodrawable, gl, "Number of traps: " + MazeRunner.player.nrOfTraps, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), 30);
 	}
 
 	public void displayItem(GL gl) {

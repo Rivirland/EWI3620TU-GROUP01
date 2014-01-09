@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <dirs>
-<entry loc="C:\Program Files\Java\jre7" stamp="1384249811495"/>
+<<<<<<< HEAD
+<entry loc="C:\Program Files\Java\jre7" stamp="1378306461816"/>
+=======
+<entry loc="C:\Program Files\Java\jre7" stamp="1385940292497"/>
+>>>>>>> 6e148c863f31cdac90813d4b5da1e6c0490587b2
 </dirs>
