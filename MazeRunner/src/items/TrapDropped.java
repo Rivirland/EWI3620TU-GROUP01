@@ -57,7 +57,7 @@ public class TrapDropped extends Item {
 		gl.glPushMatrix();
 		gl.glTranslated(getGlobalX() - sizeX / 2, getGlobalY(), getGlobalZ() - sizeZ / 2);
 		// drawCuboid
-		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,1);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,56);
 		gl.glPopMatrix();
 	}
 

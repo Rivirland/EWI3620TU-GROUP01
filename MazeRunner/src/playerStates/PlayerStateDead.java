@@ -34,7 +34,7 @@ public class PlayerStateDead extends PlayerState{
 
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
-		Teken.textDraw(autodrawable, gl, "You died! Press space to start again", 0.35f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 0.05f*Math.min(MazeRunner.screenHeight, MazeRunner.screenWidth));
+		Teken.textDraw(autodrawable, gl, "You died! Press space to start again", 0.35f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 30);
 
 	}
 

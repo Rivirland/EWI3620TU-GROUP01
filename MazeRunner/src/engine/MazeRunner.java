@@ -420,8 +420,8 @@ public class MazeRunner {
 		if(player.getControl().info ){
 			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 			if(!(player.playerStateInt == 3 || player.playerStateInt == 4)){
-				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player)+1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), (float) (0.05 * screenHeight));
+				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), 30);
+				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player)+1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
 			}
 		}
 		

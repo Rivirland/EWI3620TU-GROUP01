@@ -53,7 +53,7 @@ public class LevelEditorWorld {
 				gl.glColor3f(0.76f, 0.76f, 0.76f);
 				Teken.kruis(gl, xmax-24f/1920f*screenWidth, ymax-((ymax-ymin)*(i+1)/20)+10f/1080f*screenHeight, xmax-10f/1920f*screenWidth, ymax-((ymax-ymin)*i/20)-10f/1080f*screenHeight);
 			}
-			Teken.textDrawMetKleur(drawable, gl, levels.get(i).getName(), xmin, ymax-((ymax-ymin)*(i+1)/20), 40f/1080f*screenHeight, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, levels.get(i).getName(), xmin, ymax-((ymax-ymin)*(i+1)/20), 30, 1f, 1f, 1f);
 			
 			//popup menu
 			if (xmin < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < xmax){

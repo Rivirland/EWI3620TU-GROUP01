@@ -67,7 +67,7 @@ public class PlayerStateGun extends PlayerState{
 	
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
-		Teken.textDraw(autodrawable, gl, "Number of bullets: " + MazeRunner.player.nrOfBullets, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), (float) (0.05 * MazeRunner.screenHeight));
+		Teken.textDraw(autodrawable, gl, "Number of bullets: " + MazeRunner.player.nrOfBullets, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), 30);
 	}
 
 	@Override
