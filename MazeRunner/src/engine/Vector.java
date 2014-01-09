@@ -13,7 +13,7 @@ public class Vector {
 
 	public Vector crossproduct(Vector v1) {
 		double i = this.y * v1.z - this.z*v1.y;
-		double j= this.x * v1.z - this.z*v1.x;
+		double j = this.x * v1.z - this.z*v1.x;
 		double k = this.x * v1.y - this.y*v1.x;
 		return new Vector(i,-j,k);
 	}
