@@ -176,7 +176,7 @@ public class Portal {
 	}
 
 	public static void portalView(GL gl, Camera portalcamera) {
-
+<<<<<<< HEAD
 		//ArrayList<Portal> portalList=MazeRunner.portalList;
 		GLU glu=new GLU();
 		GLUT glut = new GLUT();
@@ -196,9 +196,34 @@ public class Portal {
 //						portalList.get(i).displayPortal(glut, gl);
 //				}
 //			}
+=======
+		ArrayList<Portal> portalList = MazeRunner.portalList;
+		GLU glu = new GLU();
+		GLUT glut = new GLUT();
+		// // gl.glViewport(0, 0, MazeRunner.getScreenWidth(),
+		// MazeRunner.getScreenHeight());
+		// gl.glLoadIdentity();
+		// // glu.gluLookAt(portalcamera.getLocationX(),
+		// portalcamera.getLocationY(), portalcamera.getLocationZ(),
+		// portalcamera.getVrpX(), portalcamera.getVrpY(),
+		// portalcamera.getVrpZ(), portalcamera.getVuvX(),
+		// portalcamera.getVuvY(), portalcamera.getVuvZ());
+		// // MazeRunner.visibleIterator(gl);
+		// displayInactivePortals(gl, portalList);
 
+		for (int i = 0; i < portalList.size(); i++) {
+			boolean check = true;
+			for (int j = 0; j < amountmazep; j++) {
+				if (i == activep[j]) {
+					check = false;
+				}
+			}
+			if (check) {
+				portalList.get(i).displayPortal(glut, gl);
+			}
+>>>>>>> 6b1a6e390080a21ea5db607ec28e6a905c260a11
 		}
-	
+	}
 
 	public static void displayInactivePortals(GL gl, ArrayList<Portal> portalList) {
 		GLUT glut = new GLUT();

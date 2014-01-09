@@ -1,4 +1,3 @@
-56: trapholdertexture.jpg
 2: catalogusdak1.jpg
 3: cataloguskolom1.jpg
 4: cataloguskolom2.jpg
@@ -53,3 +52,4 @@
 53: z51cataloguswall3.png
 54: z52cataloguswall4.png
 55: ammo.jpg
+56: trapholdertexture.jpg
