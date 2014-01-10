@@ -205,9 +205,12 @@ public class Player extends GameObject {
 				fallingSpeed = fallingSpeed * 1.007;
 			}else{
 				fallingSpeed = 0.01;
+				locationY = curMaze.mazeY+2.5;
 				falling = false;
 			}
 		}
+		
+		
 		
 		if(locationY < MazeRunner.level.minGlobalY){
 			PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
