@@ -410,6 +410,8 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
+		
+		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
 		Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
@@ -424,7 +426,6 @@ public class MazeRunner {
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
-		Reticle.reticle(gl);
 		//gl.glDisable(GL.GL_STENCIL_TEST);
 		gl.glFlush();
 
@@ -807,44 +808,7 @@ public class MazeRunner {
 		}
 	}
 
-	private void reticle(GL gl) {
-		ChangeGL.GLto2D(gl);
-		gl.glPushMatrix();
-		gl.glLoadIdentity();
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glColor3d(1, 1, 1);
-		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-		Teken.rechthoek(gl, 0, 0, screenWidth, screenHeight);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		ChangeGL.GLto3D(gl);
-	}
 
-	private void reticle2(GL gl) {
-		ChangeGL.GLto2D(gl);
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		// gl.glScissor(screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-		// gl.glScissor((screenWidth/2), (screenHeight/2), (screenWidth/2),
-		// (screenHeight/2));
-
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glColor3d(1, 1, 1);
-		Teken.rechthoek(gl, screenWidth / 2 - 50, screenHeight / 2 - 50, screenWidth / 2 + 50, screenHeight / 2 + 50);
-		// gl.glClearColor(1, 1, 1, 1);
-		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		// gl.glColor3d(1, 1, 1);
-		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-
-		// gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glDisable(GL.GL_SCISSOR_TEST);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		ChangeGL.GLto3D(gl);
-	}
 
 	public static void visibleIterator(GL gl) {
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {

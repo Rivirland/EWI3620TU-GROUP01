@@ -16,13 +16,13 @@ public class GeneticAlgorithm {
 		distances = calcDistances();
 	}
 
-	public void assignPortalID() {
-		int i = 0;
-		for (Portal p : MazeRunner.portalList) {
-			p.setPortalID(i);
-			i++;
-		}
-	}
+//	public void assignPortalID() {
+//		int i = 0;
+//		for (Portal p : MazeRunner.portalList) {
+//			p.setPortalID(i);
+//			i++;
+//		}
+//	}
 
 	public void connectPortals() {
 

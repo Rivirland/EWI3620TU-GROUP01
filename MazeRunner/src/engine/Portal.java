@@ -15,8 +15,12 @@ public class Portal {
 	private float x;
 	private float y;
 	private float z;
-	public int portalID;
-	public int portalConnectionID;
+//	public int portalID;
+//	public int portalConnectionID;
+	
+	public static int mazeID;
+	public static ArrayList<Portal> portalList;
+	public static ArrayList<Maze> mazeList;
 
 	private Camera portalcamera;
 
@@ -53,7 +57,6 @@ public class Portal {
 		this.facingdirection = facingdirection % 4;
 		this.setisConnected(false);
 		this.portalcamera=new Camera(0,0,0, facingdirection*-90,0);
-		
 	}
 
 //	public Portal(float x, float y, float z, int facingdirection, int ID, int cID) {
@@ -76,7 +79,12 @@ public class Portal {
 
 		// finding the activeportals, portals are identified with an integer
 		// number
-		int mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
+		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
+		Portal.portalList= MazeRunner.portalList;
+		Portal.mazeList= Level.mazelist;
+		
+		
+		
 		if (mazeID != -1){
 		activep = new int[amountmazep]; 
 		for(int i=0; i<amountmazep; i++){
@@ -84,16 +92,16 @@ public class Portal {
 		}
 		
 		//displaying all the portals that aren't active
-		displayInactivePortals(gl, MazeRunner.portalList);
+		displayInactivePortals(gl, portalList);
 		
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
-		//MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
-		//stencil(gl, MazeRunner.portalList.get(activep[i]), i);
+		//** dit wordt hier niet gedaan MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
+		stencil(gl, MazeRunner.portalList.get(activep[i]), i);
 		}
 		
 		//TODO tijdelijk om 1 keer stencil te testen
-		stencil(gl, MazeRunner.portalList.get(activep[0]), 0);
+//		stencil(gl, portalList.get(activep[0]), 0);
 		
 	}
 	}
@@ -134,10 +142,8 @@ public class Portal {
 		 //TODO om te testen of het werkt, moet stencilDisplay worden
 		 //p.displayPortal(glut, gl);
 		 
-		  
 		  gl.glColorMask(true,true,true,true);
 		  gl.glDepthMask(true);
-		  
 		  
 		//TODO hier moet de view voor de portal gegeven worden
 		  
@@ -185,17 +191,12 @@ public class Portal {
 		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
 		MazeRunner.visibleIterator(gl);
 		
-			
-//			for (int i = 0; i < portalList.size(); i++) {
-//				boolean check = true;
-//				for (int j=0; j<amountmazep ; j++){
-//					if(i == activep[j]){
-//						check=false;
-//					}}
-//					if (check){
-//						portalList.get(i).displayPortal(glut, gl);
-//				}
-//			}
+//		Hier skybox displayen
+		Skybox.displaySkybox(gl);
+//		De grond displayen
+		Maze.drawSingleFloorTile(gl, mazeList.get(mazeID).getMazeX(),mazeList.get(mazeID).getMazeZ());
+		
+		
 
 		}
 	
@@ -245,9 +246,9 @@ public class Portal {
 		}
 	}
 
-	public void setPortalID(int i) {
-		portalID = i;
-	}
+//	public void setPortalID(int i) {
+//		portalID = i;
+//	}
 
 	// deze functie moet voor een bepaalde portal in klasse MazeRunner, methode
 	// updatemovement
@@ -366,7 +367,7 @@ public class Portal {
 		if (!Equals(p1, p2)) {
 			p1.setconnectedTo(p2);
 			p2.setconnectedTo(p1);
-			System.out.println("Connected portal: " + p1.portalID + " and portal: " + p2.portalID);
+//			System.out.println("Connected portal: " + p1.portalID + " and portal: " + p2.portalID);
 			p1.setisConnected(true);
 			p2.setisConnected(true);
 

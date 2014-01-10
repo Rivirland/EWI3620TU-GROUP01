@@ -448,7 +448,6 @@ public class Maze implements VisibleObject {
 	private int convertToGridZ(double z) {
 		return (int) Math.floor(z / SQUARE_SIZE);
 	}
-
 	public void display(GL gl) {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
@@ -528,6 +527,7 @@ public class Maze implements VisibleObject {
 		// Calculates the size of the maze and then draws the floor tile
 		double xsize = Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;
 		double zsize = Math.floor(((double) MAZE_SIZE_Z + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;
+		
 		drawSingleFloorTile(gl, xsize, zsize); // Paint the floor.
 		gl.glPopMatrix();
 	}
@@ -563,7 +563,7 @@ public class Maze implements VisibleObject {
 
 
 	
-	private void drawSingleFloorTile(GL gl, double size_x, double size_z) {
+	public static void drawSingleFloorTile(GL gl, double size_x, double size_z) {
 
 		setLighting(gl);
 
