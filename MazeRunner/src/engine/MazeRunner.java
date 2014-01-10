@@ -180,7 +180,7 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(5, 2.5, 5, -90, 0);
+		player = new Player(Level.mazelist.get(0).mazeX + 5, Level.mazelist.get(0).mazeY + 2.5, Level.mazelist.get(0).mazeZ + 5, -90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
