@@ -7,7 +7,6 @@ import enemies.Enemy;
 import engine.Animator;
 import engine.GameObject;
 import engine.MazeRunner;
-import engine.Sound;
 
 public class TrapDropped extends Item {
 	protected boolean used;
@@ -30,7 +29,6 @@ public class TrapDropped extends Item {
 		this.horAngle=MazeRunner.player.getHorAngle();
 		this.inair=true; 
 		this.onground=false;
-		Sound.sounds.get("jackInBox").play();
 //		System.out.println("TrapDropped@global: x: " + this.getGlobalX() + " y: " + this.getGlobalY() + " z: "+ this.getGlobalZ());
 //		System.out.println("TrapDropped@local: x: " + this.getLocalX() + " y: " + this.getLocalY() + " z: "+ this.getLocalZ());
 	}
@@ -59,7 +57,7 @@ public class TrapDropped extends Item {
 		gl.glPushMatrix();
 		gl.glTranslated(getGlobalX() - sizeX / 2, getGlobalY(), getGlobalZ() - sizeZ / 2);
 		// drawCuboid
-		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,56);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,28);
 		gl.glPopMatrix();
 	}
 

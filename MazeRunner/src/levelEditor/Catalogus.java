@@ -25,40 +25,54 @@ public class Catalogus {
 			if (drawMode == MUUR){
 				//Teken.tekenButtonMetKleur(gl, 109.8f/1920*screenWidth, 751.25f/1080*screenHeight, 209.8f/1920*screenWidth, 851.25f/1080*screenHeight, 1f, 0f, 0f);
 				//Teken.tekenButtonMetKleur(gl, 229.6f/1920*screenWidth, 751.25f/1080*screenHeight, 329.6f/1920*screenWidth, 851.25f/1080*screenHeight, 0f, 1f, 0f);
-				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 51);
-				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 52);
-				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 53);
-				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 54);
+				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 29);
+				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 29);
+				leveleditor.plaatsTexture(gl, 254.6f, 751.25f, 304.6f, 801.25f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 30);
+				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 30);
+				leveleditor.plaatsTexture(gl, 494.6f, 751.25f, 544.6f, 801.25f, 16);
 				
-				leveleditor.plaatsTexture(gl, 109.8f, 642.50f, 209.8f, 742.50f, 27);
-				leveleditor.plaatsTexture(gl, 229.6f, 642.50f, 329.6f, 742.50f, 28);
-				leveleditor.plaatsTexture(gl, 349.4f, 642.50f, 449.4f, 742.50f, 29);
-				leveleditor.plaatsTexture(gl, 469.2f, 642.50f, 569.2f, 742.50f, 30);
+				leveleditor.plaatsTexture(gl, 109.8f, 642.50f, 209.8f, 742.50f, 31);
+				leveleditor.plaatsTexture(gl, 229.6f, 642.50f, 329.6f, 742.50f, 31);
+				leveleditor.plaatsTexture(gl, 254.6f, 642.50f, 304.6f, 692.50f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 642.50f, 449.4f, 742.50f, 32);
+				leveleditor.plaatsTexture(gl, 469.2f, 642.50f, 569.2f, 742.50f, 32);
+				leveleditor.plaatsTexture(gl, 494.6f, 642.50f, 544.6f, 692.50f, 16);
 				
-				leveleditor.plaatsTexture(gl, 109.8f, 533.75f, 209.8f, 633.75f, 31);
-				leveleditor.plaatsTexture(gl, 229.6f, 533.75f, 329.6f, 633.75f, 32);
-				leveleditor.plaatsTexture(gl, 349.4f, 533.75f, 449.4f, 633.75f, 33);
+				leveleditor.plaatsTexture(gl, 109.8f, 533.75f, 209.8f, 633.75f, 33);
+				leveleditor.plaatsTexture(gl, 229.6f, 533.75f, 329.6f, 633.75f, 33);
+				leveleditor.plaatsTexture(gl, 254.6f, 533.75f, 304.6f, 583.75f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 533.75f, 449.4f, 633.75f, 34);
 				leveleditor.plaatsTexture(gl, 469.2f, 533.75f, 569.2f, 633.75f, 34);
+				leveleditor.plaatsTexture(gl, 494.6f, 533.75f, 544.6f, 583.75f, 16);
 				
 				leveleditor.plaatsTexture(gl, 109.8f, 425.00f, 209.8f, 525.00f, 35);
-				leveleditor.plaatsTexture(gl, 229.6f, 425.00f, 329.6f, 525.00f, 36);
-				leveleditor.plaatsTexture(gl, 349.4f, 425.00f, 449.4f, 525.00f, 37);
-				leveleditor.plaatsTexture(gl, 469.2f, 425.00f, 569.2f, 525.00f, 38);
+				leveleditor.plaatsTexture(gl, 229.6f, 425.00f, 329.6f, 525.00f, 35);
+				leveleditor.plaatsTexture(gl, 254.6f, 425.00f, 304.6f, 475.00f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 425.00f, 449.4f, 525.00f, 36);
+				leveleditor.plaatsTexture(gl, 469.2f, 425.00f, 569.2f, 525.00f, 36);
+				leveleditor.plaatsTexture(gl, 494.6f, 425.00f, 544.6f, 475.00f, 16);
 				
-				leveleditor.plaatsTexture(gl, 109.8f, 316.25f, 209.8f, 416.25f, 39);
-				leveleditor.plaatsTexture(gl, 229.6f, 316.25f, 329.6f, 416.25f, 40);
-				leveleditor.plaatsTexture(gl, 349.4f, 316.25f, 449.4f, 416.25f, 41);
-				leveleditor.plaatsTexture(gl, 469.2f, 316.25f, 569.2f, 416.25f, 42);
+				leveleditor.plaatsTexture(gl, 109.8f, 316.25f, 209.8f, 416.25f, 37);
+				leveleditor.plaatsTexture(gl, 229.6f, 316.25f, 329.6f, 416.25f, 37);
+				leveleditor.plaatsTexture(gl, 254.6f, 316.25f, 304.6f, 366.25f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 316.25f, 449.4f, 416.25f, 38);
+				leveleditor.plaatsTexture(gl, 469.2f, 316.25f, 569.2f, 416.25f, 38);
+				leveleditor.plaatsTexture(gl, 494.6f, 316.25f, 544.6f, 366.25f, 16);
 				
-				leveleditor.plaatsTexture(gl, 109.8f, 207.50f, 209.8f, 307.50f, 43);
-				leveleditor.plaatsTexture(gl, 229.6f, 207.50f, 329.6f, 307.50f, 44);
-				leveleditor.plaatsTexture(gl, 349.4f, 207.50f, 449.4f, 307.50f, 45);
-				leveleditor.plaatsTexture(gl, 469.2f, 207.50f, 569.2f, 307.50f, 46);
+				leveleditor.plaatsTexture(gl, 109.8f, 207.50f, 209.8f, 307.50f, 39);
+				leveleditor.plaatsTexture(gl, 229.6f, 207.50f, 329.6f, 307.50f, 39);
+				leveleditor.plaatsTexture(gl, 254.6f, 207.50f, 304.6f, 257.50f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 207.50f, 449.4f, 307.50f, 40);
+				leveleditor.plaatsTexture(gl, 469.2f, 207.50f, 569.2f, 307.50f, 40);
+				leveleditor.plaatsTexture(gl, 494.6f, 207.50f, 544.6f, 257.50f, 16);
 				
-				leveleditor.plaatsTexture(gl, 109.8f, 98.75f, 209.8f, 198.75f, 47);
-				leveleditor.plaatsTexture(gl, 229.6f, 98.75f, 329.6f, 198.75f, 48);
-				leveleditor.plaatsTexture(gl, 349.4f, 98.75f, 449.4f, 198.75f, 49);
-				leveleditor.plaatsTexture(gl, 469.2f, 98.75f, 569.2f, 198.75f, 50);
+				leveleditor.plaatsTexture(gl, 109.8f, 98.75f, 209.8f, 198.75f, 41);
+				leveleditor.plaatsTexture(gl, 229.6f, 98.75f, 329.6f, 198.75f, 41);
+				leveleditor.plaatsTexture(gl, 254.6f, 98.75f, 304.6f, 148.75f, 16);
+				leveleditor.plaatsTexture(gl, 349.4f, 98.75f, 449.4f, 198.75f, 42);
+				leveleditor.plaatsTexture(gl, 469.2f, 98.75f, 569.2f, 198.75f, 42);
+				leveleditor.plaatsTexture(gl, 494.6f, 98.75f, 544.6f, 148.75f, 16);
 			}
 			if (drawMode == DAK){
 				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 2);
@@ -68,7 +82,7 @@ public class Catalogus {
 				leveleditor.plaatsTexture(gl, 109.8f, 751.25f, 209.8f, 851.25f, 26);
 				leveleditor.plaatsTexture(gl, 229.6f, 751.25f, 329.6f, 851.25f, 17);
 				leveleditor.plaatsTexture(gl, 349.4f, 751.25f, 449.4f, 851.25f, 18);
-				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 55);
+				leveleditor.plaatsTexture(gl, 469.2f, 751.25f, 569.2f, 851.25f, 57);
 				
 				leveleditor.plaatsTexture(gl, 109.8f, 642.50f, 209.8f, 742.50f, 14);
 				leveleditor.plaatsTexture(gl, 229.6f, 642.50f, 329.6f, 742.50f, 20);

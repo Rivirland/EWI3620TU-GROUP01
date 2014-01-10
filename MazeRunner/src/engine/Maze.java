@@ -129,12 +129,14 @@ public class Maze implements VisibleObject {
 				while ((line = bufRdrTex.readLine()) != null) {
 					StringTokenizer st = new StringTokenizer(line, ",");
 					double objectNumber = Double.parseDouble(st.nextToken());
-					if (objectNumber == 1) {
+					if (objectNumber == 129) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int fd = (int) Double.parseDouble(st.nextToken());
-//						int portalID = (int) Double.parseDouble(st.nextToken());
-//						int portalConID = (int) Double.parseDouble(st.nextToken());
+						// int portalID = (int)
+						// Double.parseDouble(st.nextToken());
+						// int portalConID = (int)
+						// Double.parseDouble(st.nextToken());
 						Portal portal = new Portal((float) (mazeX + objectX), mazeY, (float) (mazeZ + objectZ), fd);
 						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
@@ -143,7 +145,7 @@ public class Maze implements VisibleObject {
 						// " naar " + portalConnectionID + " op " + objectX +
 						// ", " + objectZ);
 						continue;
-					} else if (objectNumber == 2) {
+					} else if (objectNumber == 229) {
 						// EnemySpooky
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
@@ -151,29 +153,29 @@ public class Maze implements VisibleObject {
 						MazeRunner.enemyList.add(es);
 						// System.out.println("Maakt enemySpooky op: " + objectX
 						// + ", " + objectZ);
-					} else if (objectNumber == 3) {
+					} else if (objectNumber == 130) {
 						// EnemySmart
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						EnemySmart es = new EnemySmart(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, 0.005, mazeID);
 						MazeRunner.enemyList.add(es);
-					} else if (objectNumber == 4) {
+					} else if (objectNumber == 230) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						int amount = (int) Double.parseDouble(st.nextToken());
 						BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID, amount);
 						itemList.add(bh);
 						MazeRunner.visibleObjects.add(bh);
-					} else if (objectNumber == 5) {
+					} else if (objectNumber == 131) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
 						TrapHolder th = new TrapHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID);
 						itemList.add(th);
 						MazeRunner.visibleObjects.add(th);
-					} else if (objectNumber == 6) {
+					} else if (objectNumber == 231) {
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
-						Exit e = new Exit(mazeX + objectX, mazeY+2.5, mazeZ + objectZ, mazeID);
+						Exit e = new Exit(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, mazeID);
 						itemList.add(e);
 						MazeRunner.visibleObjects.add(e);
 					}
@@ -355,6 +357,7 @@ public class Maze implements VisibleObject {
 		}
 		return 0;
 	}
+
 	// Prints the maze.
 	public void printMaze() {
 		String res = "";
@@ -449,6 +452,7 @@ public class Maze implements VisibleObject {
 	private int convertToGridZ(double z) {
 		return (int) Math.floor(z / SQUARE_SIZE);
 	}
+
 	public void display(GL gl) {
 		gl.glPushMatrix();
 		gl.glTranslated(mazeX, mazeY, mazeZ);
@@ -486,12 +490,12 @@ public class Maze implements VisibleObject {
 						double xtrans = Math.floor(((double) i + 1) / 2) * COLUMN_WIDTH + Math.floor((double) i / 2) * WALL_LENGTH;
 						double ztrans = Math.floor(((double) j + 1) / 2) * COLUMN_WIDTH + Math.floor((double) j / 2) * WALL_LENGTH;
 						gl.glTranslated(xtrans, 0.0, ztrans);
-						if (textureMatrix[i][j] <= 2) {
-							gl.glBindTexture(GL.GL_TEXTURE_2D, 15);
-						} else if (textureMatrix[i][j] >= 3 && textureMatrix[i][j] <= 4) {
-							gl.glBindTexture(GL.GL_TEXTURE_2D, 16);
+						if (textureMatrix[i][j] > 200) {
+							gl.glBindTexture(GL.GL_TEXTURE_2D, textureMatrix[i][j] - 200);
+						}else{
+							gl.glBindTexture(GL.GL_TEXTURE_2D, textureMatrix[i][j] - 100);
 						}
-
+						
 						// If it's (even,even), you paint a column
 						if (i % 2 == 0 && j % 2 == 0) {
 							drawColumnFromQuad(gl, height * ITEM_HEIGHT);
@@ -499,7 +503,7 @@ public class Maze implements VisibleObject {
 
 						// (odd,even) paints a wall/door in the Z-direction
 						if (i % 2 != 0 && j % 2 == 0) {
-							if (height == 0 && textureMatrix[i][j] % 2 == 0) {
+							if (height == 0 && textureMatrix[i][j] > 200) {
 								drawDoorZFromQuad(gl, height * ITEM_HEIGHT);
 							} else {
 								drawWallZFromQuad(gl, height * ITEM_HEIGHT);
@@ -508,7 +512,7 @@ public class Maze implements VisibleObject {
 
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {
-							if (height == 0 && textureMatrix[i][j] % 2 == 0) {
+							if (height == 0 && textureMatrix[i][j] > 200) {
 								paintDoorXFromQuad(gl, height * ITEM_HEIGHT, i, j);
 							} else {
 								drawWallXFromQuad(gl, height * ITEM_HEIGHT);
@@ -528,63 +532,53 @@ public class Maze implements VisibleObject {
 		// Calculates the size of the maze and then draws the floor tile
 		double xsize = Math.floor(((double) MAZE_SIZE_X + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_X / 2) * WALL_LENGTH;
 		double zsize = Math.floor(((double) MAZE_SIZE_Z + 1) / 2) * COLUMN_WIDTH + Math.floor((double) MAZE_SIZE_Z / 2) * WALL_LENGTH;
-		
+
 		drawSingleFloorTile(gl, xsize, zsize); // Paint the floor.
 		gl.glPopMatrix();
 	}
 
 	static void setLighting(GL gl) {
 		// Set the ambient and diffuse properties
-		float matAmbient[] = { 0.8f,0.8f,0.8f, 1.0f };
+		float matAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, matAmbient, 0);
 	}
 
-
-
 	public static void drawDebrisXFromQuad(GL gl) {
-		Teken.drawCuboid(gl,0.0,WALL_WIDTH,0.0,ITEM_HEIGHT/10,0.0,WALL_LENGTH);
+		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, 0.0, ITEM_HEIGHT / 10, 0.0, WALL_LENGTH);
 
 	}
-
-
-	
 
 	public static void drawDebrisColumnFromQuad(GL gl) {
-		Teken.drawCuboid(gl,0.0,COLUMN_WIDTH,0.0,ITEM_HEIGHT/10,0.0,COLUMN_WIDTH);
-		
+		Teken.drawCuboid(gl, 0.0, COLUMN_WIDTH, 0.0, ITEM_HEIGHT / 10, 0.0, COLUMN_WIDTH);
+
 	}
-
-
-
-
 
 	public static void drawDebrisZFromQuad(GL gl) {
-		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, 0.0, ITEM_HEIGHT/10, 0.0, WALL_WIDTH);
+		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, 0.0, ITEM_HEIGHT / 10, 0.0, WALL_WIDTH);
 	}
 
-
-	
 	public static void drawSingleFloorTile(GL gl, double size_x, double size_z) {
 
 		setLighting(gl);
 
-		double thick=1.0;
+		double thick = 1.0;
 		// Apply texture.
 		Teken.drawCuboid(gl, 0, size_x, -thick, 0, 0, size_z, 5);
 
-
 	}
-
-	
 
 	public static void paintWallZFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 		drawWallZFromQuad(gl, h);
 	}
 
+	public static void paintDoorZFromQuad(GL gl, double h, int texture) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
+		drawDoorZFromQuad(gl, h);
+	}
 	public static void drawWallZFromQuad(GL gl, double h) {
 		setLighting(gl);
-		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
+		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, h, ITEM_HEIGHT + h, 0.0, WALL_WIDTH);
 	}
 
 	private void paintDoorXFromQuad(GL gl, double h, int i, int j) {
@@ -595,27 +589,21 @@ public class Maze implements VisibleObject {
 		gl.glPopMatrix();
 	}
 
-
-
 	public static void drawDoorZFromQuad(GL gl, double h) {
 		// Links van de deur
-		Teken.drawCuboid(gl, 0.0, (WALL_LENGTH-DOOR_WIDTH)/2, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
+		Teken.drawCuboid(gl, 0.0, (WALL_LENGTH - DOOR_WIDTH) / 2, h, ITEM_HEIGHT + h, 0.0, WALL_WIDTH);
 		// Rechts van de deur
-		Teken.drawCuboid(gl, (WALL_LENGTH+DOOR_WIDTH)/2, WALL_LENGTH, h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
+		Teken.drawCuboid(gl, (WALL_LENGTH + DOOR_WIDTH) / 2, WALL_LENGTH, h, ITEM_HEIGHT + h, 0.0, WALL_WIDTH);
 		// Boven de deur
-		Teken.drawCuboid(gl, (WALL_LENGTH-DOOR_WIDTH)/2, (WALL_LENGTH+DOOR_WIDTH)/2, DOOR_HEIGHT+h, ITEM_HEIGHT+h, 0.0, WALL_WIDTH);
+		Teken.drawCuboid(gl, (WALL_LENGTH - DOOR_WIDTH) / 2, (WALL_LENGTH + DOOR_WIDTH) / 2, DOOR_HEIGHT + h, ITEM_HEIGHT + h, 0.0, WALL_WIDTH);
 
 	}
-
-
 
 	public static void drawWallXFromQuad(GL gl, double h) {
 		setLighting(gl);
-		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, h, ITEM_HEIGHT+h, 0.0, WALL_LENGTH);
-		
+		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, h, ITEM_HEIGHT + h, 0.0, WALL_LENGTH);
+
 	}
-
-
 
 	public static void paintColumnFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
@@ -624,7 +612,7 @@ public class Maze implements VisibleObject {
 
 	public static void drawColumnFromQuad(GL gl, double h) {
 		setLighting(gl);
-		Teken.drawCuboid(gl, 0.0, COLUMN_WIDTH, h, ITEM_HEIGHT+h, 0.0, COLUMN_WIDTH);
+		Teken.drawCuboid(gl, 0.0, COLUMN_WIDTH, h, ITEM_HEIGHT + h, 0.0, COLUMN_WIDTH);
 	}
 
 	public static double getItemHeight() {

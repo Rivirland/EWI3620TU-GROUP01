@@ -12,8 +12,6 @@ import java.util.Collections;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 
-import playerStates.PlayerState;
-
 /**
  * The UserInput class is an extension of the Control class. It also implements
  * three interfaces, each providing handler methods for the different kinds of
@@ -44,7 +42,6 @@ public class UserInput extends Control implements Runnable {
 	private boolean relativeMouseMode; // to turn this mode (mouselook) off or	// on
 	private boolean isRecentering;
 	private boolean mouselookMode = true;
-	private boolean flyMode = true;
 	private Cursor cursor;
 
 //	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
@@ -263,18 +260,6 @@ public class UserInput extends Control implements Runnable {
 
 		if (event.getKeyCode() == KeyEvent.VK_L) {
 			// hierin switch voor full screen
-		}
-		
-		if (event.getKeyCode() == KeyEvent.VK_M) {
-			if (MazeRunner.player.playerStateInt == 2) {
-				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
-				MazeRunner.player.playerStateInt = 5;
-				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
-			} else if (MazeRunner.player.playerStateInt == 5){
-				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
-				MazeRunner.player.playerStateInt = 2;
-				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
-			}
 		}
 
 	}

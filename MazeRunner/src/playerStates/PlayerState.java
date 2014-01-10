@@ -28,9 +28,6 @@ public abstract class PlayerState {
 		if(input == 4){
 			return MazeRunner.player.PlayerStateVictory;
 		}
-		if(input == 5){
-			return MazeRunner.player.PlayerStateFly;
-		}
 		return null;
 	}
 

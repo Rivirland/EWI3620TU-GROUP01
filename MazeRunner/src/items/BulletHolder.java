@@ -16,7 +16,7 @@ public class BulletHolder extends Item {
 
 	@Override
 	public void display(GL gl) {
-		double sizeX = 1;
+		double sizeX = 2;
 		double sizeY = sizeX;
 		double sizeZ = sizeX;
 		double xmin = 0;
@@ -31,7 +31,7 @@ public class BulletHolder extends Item {
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		// drawCuboid
-		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,55);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, 27);
 		gl.glPopMatrix();
 		
 	}

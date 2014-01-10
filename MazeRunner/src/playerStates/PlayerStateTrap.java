@@ -68,7 +68,7 @@ public class PlayerStateTrap extends PlayerState {
 			gl.glRotated(MazeRunner.player.getVerAngle(), 1, 0, 0);
 			gl.glDisable(GL.GL_CULL_FACE);
 	
-			gl.glBindTexture(GL.GL_TEXTURE_2D, 56);
+			gl.glBindTexture(GL.GL_TEXTURE_2D, 28);
 //			MazeRunner.trapModel.display(gl);
 			Teken.drawCuboid(gl, 0.3, 0.6, -0.6, -0.3, 0, 0.3);
 			

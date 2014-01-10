@@ -171,10 +171,10 @@ public class Level {
 				// System.out.println("hier0");
 
 				// Checks if it's a wall
-				if (maze.getTextureElementOnCoords(newX0, newZ0) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX0, newZ0) > 100 && maze.getTextureElementOnCoords(newX0, newZ0) < 200) {
 					res[0] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX0, newZ0) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX0, newZ0) > 200) {
 					double globX = object.locationX + margin;
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
@@ -186,10 +186,10 @@ public class Level {
 				}
 			}
 			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getElementOnCoords(newX1, newZ1) > 0)) {
-				if (maze.getTextureElementOnCoords(newX1, newZ1) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX1, newZ1) > 100 && maze.getTextureElementOnCoords(newX1, newZ1) < 200) {
 					res[1] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX1, newZ1) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX1, newZ1) > 200) {
 
 					double globX = object.locationX;
 					double globZ = object.locationZ - margin;
@@ -205,10 +205,10 @@ public class Level {
 				}
 			}
 			if (!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze.getElementOnCoords(newX2, newZ2) > 0)) {
-				if (maze.getTextureElementOnCoords(newX2, newZ2) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX2, newZ2) > 100 && maze.getTextureElementOnCoords(newX2, newZ2) < 200) {
 					res[2] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX2, newZ2) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX2, newZ2) > 200) {
 					double globX = object.locationX - margin;
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX2, newZ2);
@@ -220,10 +220,10 @@ public class Level {
 				}
 			}
 			if (!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze.getElementOnCoords(newX3, newZ3) > 0)) {
-				if (maze.getTextureElementOnCoords(newX3, newZ3) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX3, newZ3) > 100 && maze.getTextureElementOnCoords(newX3, newZ3) < 200) {
 					res[3] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX3, newZ3) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX3, newZ3) > 200) {
 					double globX = object.locationX;
 					double globZ = object.locationZ + margin;
 					double[] wallXZ = maze.MatrixElementToCoords(newX3, newZ3);

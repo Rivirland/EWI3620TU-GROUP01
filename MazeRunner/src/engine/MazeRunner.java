@@ -713,8 +713,7 @@ public class MazeRunner {
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
 					if (b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
-						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 3 || maze.textureMatrix[maze
-								.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 4)) {
+						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] % 2 == 0)) {
 							maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
 							bulletList.remove(b);
 							visibleObjects.remove(b);
@@ -737,12 +736,6 @@ public class MazeRunner {
 					break;
 				}
 			}
-			if (b.touches(player)){
-				player.score+=2001;
-				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
-				MazeRunner.player.playerStateInt = 3;
-				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
-			}
 
 		}
 		for (int rNr = 0; rNr < roofList.size(); rNr++) {
@@ -752,7 +745,7 @@ public class MazeRunner {
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
 				if (r.locationY < maze.mazeY + 0.5) {
-					Sound.sounds.get("roofCrash").play();
+					Sound.roofCrash.play();
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
