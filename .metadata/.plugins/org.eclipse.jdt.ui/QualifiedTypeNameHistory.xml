@@ -15,4 +15,5 @@
 <fullyQualifiedTypeName name="levelEditor.LevelEditorModelViewer"/>
 <fullyQualifiedTypeName name="engine.Level"/>
 <fullyQualifiedTypeName name="engine.Skybox"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
 </qualifiedTypeNameHistroy>

@@ -67,6 +67,7 @@ public class Maze implements VisibleObject {
 		mazeX = x;
 		mazeY = y;
 		mazeZ = z;
+		maxHeight = 1;
 		try {
 			loadMaze(filename, i);
 		} catch (FileNotFoundException e) {

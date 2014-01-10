@@ -9,13 +9,16 @@ import items.TrapDropped;
 import items.TrapDroppedGBS;
 import items.TrapHolder;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -89,10 +92,12 @@ public class MazeRunner {
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
-
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
-			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture, z25dirtywalltexture, z26cataloguswall6
-			z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12, z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21, z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z28cataloguswall28;
+			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2,
+			gunTexture, z24portaltexture, z25dirtywalltexture, z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12,
+			z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21,
+			z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2,
+			z51cataloguswall3, z52cataloguswall4;
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
@@ -161,7 +166,7 @@ public class MazeRunner {
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
 
-		System.out.println(Arrays.toString(worldConnection));
+		System.out.println("Worlds connected in order: " + Arrays.toString(worldConnection));
 		// Roof roof = new Roof(0.5, 5, 0.5, 1);
 		// roofList.add(roof);
 
@@ -175,7 +180,7 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(5, 2.5, 5, -90, 0);
+		player = new Player(level.mazelist.get(0).minX + 5, level.mazelist.get(0).mazeY + 2.5, level.mazelist.get(0).minZ + 5, -90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
@@ -246,7 +251,7 @@ public class MazeRunner {
 		// gl.glShadeModel(GL.GL_FLAT);
 		// Set the shading model.
 		//
-		loadTextures(gl);
+		// loadTextures(gl);
 		loadModels(gl);
 		// @@
 	}
@@ -365,6 +370,7 @@ public class MazeRunner {
 		if (player.getControl().minimap) {
 			Minimap.displayMinimap(gl);
 		}
+
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
 
@@ -404,23 +410,23 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-		for (int i = 0; i < portalList.size(); i++) {
-			portalList.get(i).displayPortal(glut, gl);
-			portalList.get(i).calcPortaltoPlayer(player);
-		}
-		// portal1.displayPortal(glut, gl);
-		// portal2.displayPortal(glut, gl);
-		gl.glEnable(GL.GL_CULL_FACE);
-		// portal1.calcPortaltoPlayer(player);
-		// portal2.calcPortaltoPlayer(player);
+		
+		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
+		Portal.activePortaldisplay(gl);
 
-		Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-		PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
+		gl.glEnable(GL.GL_CULL_FACE);
+
+		if (player.getControl().info) {
+			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
+			if (!(player.playerStateInt == 3 || player.playerStateInt == 4)) {
+				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), 30);
+				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player) + 1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
+			}
+		}
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
-		Reticle.reticle(gl);
-
+		//gl.glDisable(GL.GL_STENCIL_TEST);
 		gl.glFlush();
 
 	}
@@ -490,18 +496,14 @@ public class MazeRunner {
 	 * Program entry point
 	 * 
 	 * @param args
+	 * @throws IOException
 	 */
 
 	// Loads all the texture and stores them into the memory. We have to keep
 	// track of the order ourselves.
-	// Right now, it is stored like this:
-	// 1: earthTexture
-	// 2: wallTexture
-	// 3: roofTexture
 
-	// 4: trapHolderTexture
-
-	public void loadTextures(GL gl) {
+	// Onderstaande methode nog even niet weggooien
+	public void loadTextures2(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures";
 
@@ -513,11 +515,9 @@ public class MazeRunner {
 			try {
 				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-
 				e.printStackTrace();
 			}
-			// System.out.println(files[i]);
+
 		}
 
 		catalogusdak1 = TextureIO.newTexture(datas[0]);
@@ -546,7 +546,35 @@ public class MazeRunner {
 		gunTexture = TextureIO.newTexture(datas[23]);
 		z24portaltexture = TextureIO.newTexture(datas[24]);
 		z25dirtywalltexture = TextureIO.newTexture(datas[25]);
+		z26cataloguswall6 = TextureIO.newTexture(datas[26]);
+		z27cataloguswall7 = TextureIO.newTexture(datas[27]);
+		z28cataloguswall8 = TextureIO.newTexture(datas[28]);
+		z29cataloguswall9 = TextureIO.newTexture(datas[29]);
+		z30cataloguswall10 = TextureIO.newTexture(datas[30]);
+		z31cataloguswall11 = TextureIO.newTexture(datas[31]);
+		z32cataloguswall12 = TextureIO.newTexture(datas[32]);
+		z33cataloguswall13 = TextureIO.newTexture(datas[33]);
+		z34cataloguswall14 = TextureIO.newTexture(datas[34]);
+		z35cataloguswall15 = TextureIO.newTexture(datas[35]);
+		z36cataloguswall16 = TextureIO.newTexture(datas[36]);
+		z37cataloguswall17 = TextureIO.newTexture(datas[37]);
+		z38cataloguswall18 = TextureIO.newTexture(datas[38]);
+		z39cataloguswall19 = TextureIO.newTexture(datas[39]);
+		z40cataloguswall20 = TextureIO.newTexture(datas[40]);
+		z41cataloguswall21 = TextureIO.newTexture(datas[41]);
+		z42cataloguswall22 = TextureIO.newTexture(datas[42]);
+		z43cataloguswall23 = TextureIO.newTexture(datas[43]);
+		z44cataloguswall24 = TextureIO.newTexture(datas[44]);
+		z45cataloguswall25 = TextureIO.newTexture(datas[45]);
+		z46cataloguswall26 = TextureIO.newTexture(datas[46]);
+		z47cataloguswall27 = TextureIO.newTexture(datas[47]);
+		z48cataloguswall28 = TextureIO.newTexture(datas[48]);
+		z49cataloguswall1 = TextureIO.newTexture(datas[49]);
+		z50cataloguswall2 = TextureIO.newTexture(datas[50]);
+		z51cataloguswall3 = TextureIO.newTexture(datas[51]);
+		z52cataloguswall4 = TextureIO.newTexture(datas[52]);
 		// gl.glDisable(GL.GL_TEXTURE_2D);
+
 	}
 
 	public void loadModels(GL gl) {
@@ -684,16 +712,18 @@ public class MazeRunner {
 				}
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
-					if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 3 || maze.textureMatrix[maze
-							.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 4)
-							&& b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
-						maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
-						bulletList.remove(b);
-						visibleObjects.remove(b);
-					} else {
-						bulletList.remove(b);
-						visibleObjects.remove(b);
+					if (b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
+						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 3 || maze.textureMatrix[maze
+								.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 4)) {
+							maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
+							bulletList.remove(b);
+							visibleObjects.remove(b);
+						} else {
+							bulletList.remove(b);
+							visibleObjects.remove(b);
+						}
 					}
+
 				}
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -738,6 +768,22 @@ public class MazeRunner {
 			}
 		}
 
+		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
+		// updateMovement
+		// ****************
+		// public static void WillTeleport(boolean canTeleport,
+		// ArrayList<Portal> portalList){
+		// for (int i = 0; i < portalList.size(); i++) {
+		// portalList.get(i).checkteleportation(player, (float) previousX,
+		// (float) previousY, (float) previousZ);
+		//
+		// }
+		// } else {
+		// MazeRunner.player.canTeleport = true;
+		// }
+		// }
+
+		// TODO dit hoort eigenlijk in de portal klasse
 		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
@@ -747,7 +793,7 @@ public class MazeRunner {
 		} else {
 			MazeRunner.player.canTeleport = true;
 		}
-		//
+
 		for (Maze m : level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
@@ -762,49 +808,20 @@ public class MazeRunner {
 		}
 	}
 
-	private void reticle(GL gl) {
-		ChangeGL.GLto2D(gl);
-		gl.glPushMatrix();
-		gl.glLoadIdentity();
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glColor3d(1, 1, 1);
-		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-		Teken.rechthoek(gl, 0, 0, screenWidth, screenHeight);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		ChangeGL.GLto3D(gl);
-	}
 
-	private void reticle2(GL gl) {
-		ChangeGL.GLto2D(gl);
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		// gl.glScissor(screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-		// gl.glScissor((screenWidth/2), (screenHeight/2), (screenWidth/2),
-		// (screenHeight/2));
-
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glColor3d(1, 1, 1);
-		Teken.rechthoek(gl, screenWidth / 2 - 50, screenHeight / 2 - 50, screenWidth / 2 + 50, screenHeight / 2 + 50);
-		// gl.glClearColor(1, 1, 1, 1);
-		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		// gl.glColor3d(1, 1, 1);
-		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-
-		// gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glDisable(GL.GL_SCISSOR_TEST);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		ChangeGL.GLto3D(gl);
-	}
 
 	public static void visibleIterator(GL gl) {
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
+	}
+
+	public static int getScreenWidth() {
+		return screenWidth;
+	}
+
+	public static int getScreenHeight() {
+		return screenHeight;
 	}
 
 }

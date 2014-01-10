@@ -1,5 +1,7 @@
 package playerStates;
 
+import java.io.IOException;
+
 import items.Bullet;
 
 import javax.media.opengl.GL;
@@ -16,7 +18,13 @@ public class PlayerStateGun extends PlayerState{
 
 	public static void shootGun(){
 		if(MazeRunner.player.nrOfBullets > 0){
-			Sound.gunfire.play();
+			try{
+			Sound.sounds.get("gunfire").play();
+			}
+			catch(NullPointerException e){
+				System.out.println("gunfire no");
+			}
+			
 			MazeRunner.player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
@@ -28,7 +36,7 @@ public class PlayerStateGun extends PlayerState{
 			MazeRunner.visibleObjects.add(bullet);
 		}
 		else{
-			Sound.noBullets.play();
+			Sound.sounds.get("noBullet").play();
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
@@ -42,7 +50,12 @@ public class PlayerStateGun extends PlayerState{
 		System.out.println("PRESS MOUSE BUTTON BEFORE TOO LATE!");
 		}
 		else{
-			Sound.noBullets.play();
+			try{
+			Sound.sounds.get("noBullet").play();
+			}
+			catch(NullPointerException e){
+				System.out.println("nobullet no");
+			}
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
@@ -52,16 +65,18 @@ public class PlayerStateGun extends PlayerState{
 	@Override
 	public void entering() {
 		System.out.println("Entering GunMode");
-		Sound.reload.play();
-		// TODO Auto-generated method stub
+		try{
+		Sound.sounds.get("reload").play();
+		}
+		catch(NullPointerException e){
+			System.out.println("reload no");
+		}
 		
 	}
 
 	@Override
 	public void leaving() {
-
 		System.out.println("Leaving GunMode");
-		// TODO Auto-generated method stub
 		
 	}
 	
