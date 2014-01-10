@@ -13,6 +13,7 @@ import menu.Teken;
 
 public class LevelEditorWorld {
 	private ArrayList<LevelEditorLevel> levels;
+	private static int startingBullets, startingTraps;
 	
 	private boolean popup=false;
 	
@@ -24,6 +25,10 @@ public class LevelEditorWorld {
 		LevelEditorWorld lijst = new LevelEditorWorld();
 		Scanner scannames = new Scanner(new File(filename));
 		String currentdir = System.getProperty("user.dir");
+		String str = scannames.next();
+		StringTokenizer StrTok = new StringTokenizer(str, ",");
+		startingBullets = Integer.parseInt(StrTok.nextToken());
+		startingTraps = Integer.parseInt(StrTok.nextToken());
 		while (scannames.hasNext()){
 			String string = scannames.next();
 			StringTokenizer st = new StringTokenizer(string, ",");
@@ -90,6 +95,7 @@ public class LevelEditorWorld {
 		}
 		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\worlds\\" + filename + ".txt");
+		bestand.println(startingBullets + "," + startingTraps + ",");
 		for (int i = 0; i != levels.size(); i++){
 			for(int j = 0; j < 3; j++){
 				bestand.print(levels.get(i).location[j] + ",");
@@ -159,5 +165,22 @@ public class LevelEditorWorld {
 	public int getSize() {
 		return levels.size();
 	}
+
+	public int getStartingBullets() {
+		return startingBullets;
+	}
+	
+	public int getStartingTraps() {
+		return startingTraps;
+	}
+
+	public void setStartingBullets(int i) {
+		startingBullets = i;
+	}
+	
+	public void setStartingTraps(int i) {
+		startingTraps = i;
+	}
+
 
 }

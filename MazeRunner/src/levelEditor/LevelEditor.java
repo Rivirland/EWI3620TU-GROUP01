@@ -152,9 +152,8 @@ public class LevelEditor {
 		// als er geen level is geselecteerd dan komt er geen grid
 
 		if (selectedLevel >= 0 && worldview == false) {
-
+			Teken.textDrawMetKleur(drawable, gl, (levels.getStartingBullets() + ", " + levels.getStartingTraps()), 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, (gridcolumns + " x " + gridrows), 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-
 			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
@@ -402,6 +401,7 @@ public class LevelEditor {
 
 		// grijs naast de buttons
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
+		rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f * screenHeight);
 		rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 740f / 1920f * screenWidth, 990f / 1080f * screenHeight);
 		rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 740f / 1920f * screenWidth, 932f / 1080f * screenHeight);
 
@@ -854,6 +854,15 @@ public class LevelEditor {
 					this.location = il.getLocation();
 				}
 			}
+			
+			if ((1 - 1052f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - 1010f / 1080f) * screenHeight) {
+				if (622f / 1920f * screenWidth < me.getX() && me.getX() < 740f / 1920f * screenWidth) {
+					InputLocation il = new InputLocation();
+					int[] info = il.getStartingInfo();
+					levels.setStartingBullets(info[0]);
+					levels.setStartingTraps(info[1]);
+				}
+			} 
 
 			// level knoppen
 			if (622f / 1920f * screenWidth < me.getX() && me.getX() < (622f + 51f) / 1920f * screenWidth) {
@@ -1761,7 +1770,7 @@ public class LevelEditor {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
 				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
-						14);
+						27);
 			}
 			if (items.get(item)[0] == 131) {
 				float x = (float) items.get(item)[1];

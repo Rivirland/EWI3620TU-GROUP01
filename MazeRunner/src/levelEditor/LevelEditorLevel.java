@@ -184,7 +184,22 @@ public class LevelEditorLevel {
 		return itemlist;
 	}
 	
+	public int countPortals(ArrayList<double[]> list){
+		int res = 0;
+		for(int i = 0; i < list.size(); i++){
+			double[] item = list.get(i);
+			if(item[0]==129){
+				res++;
+			}
+		}
+		return res;
+	}
+	
 	public void saveAs() throws FileNotFoundException{
+		if(countPortals(itemlist) != 2){
+			System.out.println("You need exactly two portals in a level!");
+			return;
+		}
 		//PrintWriter bestand = new PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 		String currentdir = System.getProperty("user.dir");

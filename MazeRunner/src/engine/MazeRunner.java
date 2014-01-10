@@ -90,7 +90,7 @@ public class MazeRunner {
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
+	public static Model spookyModel, m21Model, torchModel, trapModel, uh60body, uh60rotor, uh60backrotor;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
 			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2,
@@ -131,6 +131,10 @@ public class MazeRunner {
 	public void setScreen(int screenWidth, int screenHeight) {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+		Reticle.setScreenWidth(screenWidth);
+		Reticle.setScreenHeight(screenHeight);
+		Minimap.setMinimapX((int) (.4 * MazeRunner.screenWidth));
+		Minimap.setMinimapZ((int) (.4 * MazeRunner.screenHeight));
 	}
 
 	public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
@@ -370,6 +374,9 @@ public class MazeRunner {
 		if (player.getControl().minimap) {
 			Minimap.displayMinimap(gl);
 		}
+		if (player.playerStateInt == 2){
+			Reticle.display(gl);
+		}
 
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
@@ -412,7 +419,7 @@ public class MazeRunner {
 
 		
 		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
-		Portal.activePortaldisplay(gl);
+//		Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 
@@ -581,16 +588,52 @@ public class MazeRunner {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
+//		try {
+//			String currentdir = System.getProperty("user.dir");
+//			String filename = currentdir + "\\models\\uh60.obj";
+//			copterModel = OBJLoader.loadTexturedModel(new File(filename));
+//
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\uh60.obj";
-			copterModel = OBJLoader.loadTexturedModel(new File(filename));
+			String filename = currentdir + "\\models\\uh60body.obj";
+			uh60body = OBJLoader.loadTexturedModel(new File(filename));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60rotor.obj";
+			uh60rotor = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60backrotor.obj";
+			uh60backrotor = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
 
 		try {
 			String currentdir = System.getProperty("user.dir");
@@ -706,9 +749,9 @@ public class MazeRunner {
 			int i = MazeRunner.level.getCurrentMaze(b);
 			if (i != -1) {
 				Maze maze = MazeRunner.level.mazelist.get(i);
-				if (b.locationY < mazeY + 0.1) {
-					bulletList.remove(b);
+				if (b.locationY < maze.mazeY + 0.1) {
 					visibleObjects.remove(b);
+					bulletList.remove(b);
 				}
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
@@ -744,8 +787,19 @@ public class MazeRunner {
 				r.locationY -= deltaTime * r.fallingSpeed;
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
+				
+				
 				if (r.locationY < maze.mazeY + 0.5) {
-					Sound.roofCrash.play();
+
+//					Sound.roofCrash.play();
+
+					
+					try{
+					Sound.sounds.get("roofCrash").play();
+					}
+					catch(NullPointerException e){
+					System.out.println("roofcrash no");
+					}
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {

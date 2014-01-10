@@ -38,6 +38,7 @@ import com.sun.opengl.util.texture.TextureIO;
 import engine.Database;
 import engine.Level;
 import engine.MazeRunner;
+import engine.Sound;
 import engine.UserInput;
 
 public class Main extends Frame implements GLEventListener, MouseListener, KeyListener, MouseMotionListener {
@@ -212,6 +213,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
 		db = new Database();
 		loadTextures(gl);
+		Sound.init();
 		
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the

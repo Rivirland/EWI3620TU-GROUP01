@@ -17,6 +17,7 @@ public class Level {
 	private int aantal;
 	private String naam;
 	public double minGlobalY;
+	public int startingBullets, startingTraps;
 	private int[] orderedMazes;
 
 	// The constructor.
@@ -103,6 +104,10 @@ public class Level {
 		int i = 1;
 		String line = null;
 		try {
+			line = bufRdr.readLine();
+			StringTokenizer StrTok = new StringTokenizer(line, ",");
+			startingBullets = Integer.parseInt(StrTok.nextToken());
+			startingTraps = Integer.parseInt(StrTok.nextToken());
 			while ((line = bufRdr.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(line, ",");
 				int x = Integer.parseInt(st.nextToken());
@@ -237,5 +242,15 @@ public class Level {
 			}
 		}
 		return res;
+	}
+	
+
+	public int getStartingBullets() {
+		return this.startingBullets;
+	}
+	
+
+	public int getStartingTraps() {
+		return this.startingTraps;
 	}
 }

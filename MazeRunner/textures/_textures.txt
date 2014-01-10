@@ -29,7 +29,7 @@
 30: wallshootable1.jpg
 31: wallnormal2.png
 32: wallshootable2.jpg
-33: wallnormal3.png
+33: wallnormal3.jpg
 34: wallshootable3.jpg
 35: wallnormal4.png
 36: wallshootable4.jpg
