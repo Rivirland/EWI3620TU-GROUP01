@@ -17,7 +17,7 @@ public class PlayerStateFly extends PlayerState{
 
 	public static void shootGun(){
 		if(MazeRunner.player.nrOfBullets > 0){
-			Sound.gunfire.play();
+			Sound.sounds.get("gunfire").play();
 			MazeRunner.player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
@@ -29,7 +29,7 @@ public class PlayerStateFly extends PlayerState{
 			MazeRunner.visibleObjects.add(bullet);
 		}
 		else{
-			Sound.noBullets.play();
+			Sound.sounds.get("noBullet").play();
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
@@ -43,7 +43,7 @@ public class PlayerStateFly extends PlayerState{
 		System.out.println("PRESS MOUSE BUTTON BEFORE TOO LATE!");
 		}
 		else{
-			Sound.noBullets.play();
+			Sound.sounds.get("noBullet").play();
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
@@ -53,7 +53,7 @@ public class PlayerStateFly extends PlayerState{
 	@Override
 	public void entering() {
 		System.out.println("Entering GunMode");
-		Sound.reload.play();
+		Sound.sounds.get("reload").play();
 		// TODO Auto-generated method stub
 		
 	}

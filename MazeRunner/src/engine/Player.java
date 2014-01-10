@@ -207,12 +207,7 @@ public class Player extends GameObject {
 				falling = false;
 			}
 		}
-		
-<<<<<<< HEAD
 		}
-=======
-		
->>>>>>> 647fc41c8fc4f04e8f2772eaf0bc675f12c049d5
 		
 		if(locationY < MazeRunner.level.minGlobalY){
 			PlayerState.getState(MazeRunner.player.playerStateInt).leaving();

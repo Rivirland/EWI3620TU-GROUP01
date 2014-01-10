@@ -1,6 +1,0 @@
-gunfire
-roofCrash
-noBullets
-reload
-jackInBox
-powerUpGun
