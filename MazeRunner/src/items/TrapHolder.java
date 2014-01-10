@@ -15,7 +15,7 @@ public class TrapHolder extends Item {
 
 	@Override
 	public void display(GL gl) {
-		double sizeX = 2;
+		double sizeX = 1;
 		double sizeY = sizeX;
 		double sizeZ = sizeX;
 		double xmin = 0;

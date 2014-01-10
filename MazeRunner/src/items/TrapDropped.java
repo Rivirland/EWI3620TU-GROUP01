@@ -7,6 +7,7 @@ import enemies.Enemy;
 import engine.Animator;
 import engine.GameObject;
 import engine.MazeRunner;
+import engine.Sound;
 
 public class TrapDropped extends Item {
 	protected boolean used;
@@ -29,6 +30,7 @@ public class TrapDropped extends Item {
 		this.horAngle=MazeRunner.player.getHorAngle();
 		this.inair=true; 
 		this.onground=false;
+		Sound.sounds.get("jackInBox").play();
 //		System.out.println("TrapDropped@global: x: " + this.getGlobalX() + " y: " + this.getGlobalY() + " z: "+ this.getGlobalZ());
 //		System.out.println("TrapDropped@local: x: " + this.getLocalX() + " y: " + this.getLocalY() + " z: "+ this.getLocalZ());
 	}

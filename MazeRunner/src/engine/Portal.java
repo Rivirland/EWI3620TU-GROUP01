@@ -104,7 +104,9 @@ public class Portal {
 //		stencil(gl, portalList.get(activep[0]), 0);
 		
 	}
-	}
+		
+}
+
 	public static void stencil (GL gl, Portal p, int num){
 		
 		GLUT glut=new GLUT();
@@ -189,18 +191,17 @@ public class Portal {
 		gl.glViewport(0, 0, MazeRunner.getScreenWidth(), MazeRunner.getScreenHeight());
 		//gl.glLoadIdentity();
 		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
-		MazeRunner.visibleIterator(gl);
 		
 //		Hier skybox displayen
 		Skybox.displaySkybox(gl);
-//		De grond displayen
+		
+//		om de vloer te tekenen	
 		Maze.drawSingleFloorTile(gl, mazeList.get(mazeID).getMazeX(),mazeList.get(mazeID).getMazeZ());
 		
-		
-
+//		De grond displayen		
+		MazeRunner.visibleIterator(gl);
 		}
 	
-
 	public static void displayInactivePortals(GL gl, ArrayList<Portal> portalList) {
 		GLUT glut = new GLUT();
 		for (int i = 0; i < portalList.size(); i++) {

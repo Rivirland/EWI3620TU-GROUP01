@@ -1,15 +1,18 @@
 package engine;
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sun.opengl.util.texture.Texture;
 
 public class Sound {
 	
-	public static final Sound gunfire = new Sound("/Gunfire.wav");
-	public static final Sound roofCrash = new Sound("/crash.wav");
-	public static final Sound noBullets = new Sound("/noBullets.wav");
-	public static final Sound reload = new Sound("/reload.wav");
-	public static final Sound fire = new Sound("/fire.wav");
-	
+	public static Map<String, Sound> sounds = new HashMap<String, Sound>();
 	private AudioClip clip;
 	
 	public Sound(String filename){
@@ -19,6 +22,25 @@ public class Sound {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	public static void init(){
+		System.out.println("\nLoading sounds..");
+		String curDir = System.getProperty("user.dir");
+		File f = new File(curDir + "\\bin\\sounds.txt");
+		
+		try{
+			BufferedReader bufRdr = new BufferedReader(new FileReader(f));
+			String line = null;
+			while ((line = bufRdr.readLine()) != null) {
+				Sound temp = new Sound("/" + line + ".wav");
+				sounds.put(line, temp);
+				System.out.println("Sound loaded succesfully: " + line);
+			}
+		} catch (Exception e){
+			System.out.println("Error in Sound.init()");
+			e.printStackTrace();
+		}
+		System.out.println("Sounds loaded succesfully\n");
 	}
 	
 	public void play(){

@@ -180,7 +180,7 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(5, 2.5, 5, -90, 0);
+		player = new Player(Level.mazelist.get(0).mazeX + 5, Level.mazelist.get(0).mazeY + 2.5, Level.mazelist.get(0).mazeZ + 5, -90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
@@ -737,6 +737,12 @@ public class MazeRunner {
 					break;
 				}
 			}
+			if (b.touches(player)){
+				player.score+=2001;
+				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
+				MazeRunner.player.playerStateInt = 3;
+				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
+			}
 
 		}
 		for (int rNr = 0; rNr < roofList.size(); rNr++) {
@@ -746,7 +752,7 @@ public class MazeRunner {
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
 				if (r.locationY < maze.mazeY + 0.5) {
-					Sound.roofCrash.play();
+					Sound.sounds.get("roofCrash").play();
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
