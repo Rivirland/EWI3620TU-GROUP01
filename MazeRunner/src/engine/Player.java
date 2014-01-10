@@ -2,12 +2,7 @@ package engine;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import playerStates.PlayerState;
-import playerStates.PlayerStateCloak;
-import playerStates.PlayerStateDead;
-import playerStates.PlayerStateGun;
-import playerStates.PlayerStateTrap;
-import playerStates.PlayerStateVictory;
+import playerStates.*;
 
 /**
  * Player represents the actual player in MazeRunner.
@@ -36,13 +31,13 @@ public class Player extends GameObject {
 	public int nrOfBullets;
 	public double cloakSeconds;
 	public int playerStateInt;
-	private Control control = null;
+	public Control control = null;
 	public int score;
 	public boolean invisible = false;
 	public boolean falling = false;
 	public double fallingSpeed;
 	public long invisibleT;
-	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory;
+	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory, PlayerStateFly;
 
 	/**
 	 * The Player constructor.
@@ -87,6 +82,7 @@ public class Player extends GameObject {
 		this.PlayerStateGun = new PlayerStateGun();
 		this.PlayerStateTrap = new PlayerStateTrap();
 		this.PlayerStateVictory = new PlayerStateVictory();
+		this.PlayerStateFly= new PlayerStateFly();
 	}
 
 	/**
@@ -193,6 +189,8 @@ public class Player extends GameObject {
 		}
 		minimapUpdate();
 		
+		if (MazeRunner.player.playerStateInt !=5 ){
+		
 		if(MazeRunner.level.getCurrentMaze(this) == -1){
 			falling = true;
 			locationY -= fallingSpeed*deltaTime;
@@ -209,8 +207,7 @@ public class Player extends GameObject {
 				falling = false;
 			}
 		}
-		
-		
+		}
 		
 		if(locationY < MazeRunner.level.minGlobalY){
 			PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
@@ -262,13 +259,17 @@ public class Player extends GameObject {
 					locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270)) * speed * deltaTime;
 				}
 				if (control.up) {
-//					locationY += speed * deltaTime;
+					if(MazeRunner.player.playerStateInt == 5){
+						locationY += speed * deltaTime;
+					}
 				}
 				if (control.down) {
-//					locationY -= speed * deltaTime;
-//					if (locationY < 2.5) {
-//						locationY = 2.5;
-//					}
+					if(MazeRunner.player.playerStateInt == 5){
+						locationY -= speed * deltaTime;
+						if (locationY < 2.5) {
+							locationY = 2.5;
+						}
+					}
 				}
 				boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
 				if (playerCollide[0] || playerCollide[2]) {
