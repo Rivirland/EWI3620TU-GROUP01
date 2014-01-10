@@ -13,15 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="drawSingleFloorTile" key="selection"/>
+		<item value="loadModels" key="selection"/>
 		<list key="findhistory">
+			<item value="loadmodels"/>
+			<item value="maxZ"/>
 			<item value="drawSingleFloorTile"/>
 			<item value="maze.display"/>
 			<item value="visibleobject"/>
 			<item value="floor"/>
 			<item value="ground"/>
 			<item value="gound"/>
-			<item value="skybox"/>
 		</list>
 		<list key="replacehistory">
 		</list>

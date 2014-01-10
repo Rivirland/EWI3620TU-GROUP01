@@ -90,7 +90,7 @@ public class MazeRunner {
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
+	public static Model spookyModel, m21Model, torchModel, trapModel, uh60body, uh60rotor, uh60backrotor;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
 			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2,
@@ -581,16 +581,52 @@ public class MazeRunner {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
+//		try {
+//			String currentdir = System.getProperty("user.dir");
+//			String filename = currentdir + "\\models\\uh60.obj";
+//			copterModel = OBJLoader.loadTexturedModel(new File(filename));
+//
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\uh60.obj";
-			copterModel = OBJLoader.loadTexturedModel(new File(filename));
+			String filename = currentdir + "\\models\\uh60body.obj";
+			uh60body = OBJLoader.loadTexturedModel(new File(filename));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60rotor.obj";
+			uh60rotor = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60backrotor.obj";
+			uh60backrotor = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
 
 		try {
 			String currentdir = System.getProperty("user.dir");
