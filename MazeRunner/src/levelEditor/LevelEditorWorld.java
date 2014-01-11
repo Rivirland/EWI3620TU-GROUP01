@@ -32,11 +32,11 @@ public class LevelEditorWorld {
 		while (scannames.hasNext()){
 			String string = scannames.next();
 			StringTokenizer st = new StringTokenizer(string, ",");
-			int lx = Integer.parseInt(st.nextToken());
-			int ly = Integer.parseInt(st.nextToken());
-			int lz = Integer.parseInt(st.nextToken());
+			double lx = Double.parseDouble(st.nextToken());
+			double ly = Double.parseDouble(st.nextToken());
+			double lz = Double.parseDouble(st.nextToken());
 			String name = st.nextToken();
-			lijst.levels.add(LevelEditorLevel.readLevel(name, new int[] {lx,ly,lz}, currentdir + "\\levels\\" + name + ".txt"));
+			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] {lx,ly,lz}, currentdir + "\\levels\\" + name + ".txt"));
 			System.out.println(name + " added to list of levels");
 		}
 		scannames.close();

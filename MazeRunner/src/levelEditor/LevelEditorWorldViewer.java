@@ -29,8 +29,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	private double zcenter;
 	
 	private boolean run = true;
-	
-	private int minX, minZ, maxX, maxZ, minY, maxY;	
+	private double minX, maxX, minZ, maxZ, minY, maxY;
 	
 	public LevelEditorWorldViewer(int screenWidth, int screenHeight, double x1,
 			double y1, double x2, double y2) {
@@ -49,8 +48,8 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		int size = mazelist.size();
 		System.out.println(size);
 		
-		int minX = 0;
-		int current = 0;
+		double minX = 0;
+		double current = 0;
 		// to calculate the min value
 		minX = mazelist.get(0).mazeX;
 		for (int i=1; i<size; i++){
@@ -61,7 +60,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			this.minX = minX;
 		}
 		
-		int minZ = 0;
+		double minZ = 0;
 		minZ = mazelist.get(0).mazeZ;
 		for (int i=1; i<size; i++){
 			current =mazelist.get(i).mazeZ;
@@ -71,7 +70,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			this.minZ = minZ;
 		}
 		
-		int maxX = 0;
+		double maxX = 0;
 		maxX = (int) mazelist.get(0).maxX;
 		for (int i=1; i<size; i++){
 			current =(int) mazelist.get(i).maxX;
@@ -82,7 +81,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		}
 		
 		
-		int maxZ = 0;
+		double maxZ = 0;
 		minZ =(int) mazelist.get(0).maxZ;
 		for (int i=1; i<size; i++){
 			current =(int) mazelist.get(i).maxZ;
@@ -93,7 +92,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		this.maxZ = maxZ;
 		
 		
-		int minY = 0;
+		double minY = 0;
 		// to calculate the min value
 		minY = mazelist.get(0).mazeY;
 		for (int i=1; i<size; i++){
@@ -105,7 +104,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		this.minY = minY;
 		
 		
-		int maxY = 0;
+		double maxY = 0;
 		// to calculate the max value
 		// for now it doesn't calculate in the heigt of structures on a maze
 		maxY = mazelist.get(0).mazeY;

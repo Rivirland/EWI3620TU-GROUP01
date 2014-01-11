@@ -14,8 +14,8 @@ public class Roof extends Item {
 	public double fallingSpeed;
 	public boolean legal;
 
-	public Roof(double x, double y, double z, int i, double WL, int row, int col) {
-		super(x, y, z, i);
+	public Roof(double x, double y, double z, int mazeID, double WL, int row, int col) {
+		super(x, y, z, mazeID);
 //		Maze maze = MazeRunner.level.getMaze(mazeID);
 		ROOF_LENGTH = WL;
 		ROOF_HEIGHT= WL/2;

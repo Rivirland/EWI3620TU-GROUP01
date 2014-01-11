@@ -110,9 +110,9 @@ public class Level {
 			startingTraps = Integer.parseInt(StrTok.nextToken());
 			while ((line = bufRdr.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(line, ",");
-				int x = Integer.parseInt(st.nextToken());
-				int y = Integer.parseInt(st.nextToken());
-				int z = Integer.parseInt(st.nextToken());
+				double x = Double.parseDouble(st.nextToken());
+				double y = Double.parseDouble(st.nextToken());
+				double z = Double.parseDouble(st.nextToken());
 				String m = st.nextToken();
 				System.out.println("Level loaded: " + m + " x: " + x + " y: " + y + " z: " + z);
 				if(y<minGlobalY){

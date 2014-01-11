@@ -16,21 +16,21 @@ import menu.KiesFileUitBrowser;
 public class LevelEditorLevel {
 	
 	private String name;
-	public int[] location;
+	public double[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
 	public ArrayList<double[]> itemlist;
 
 	
-	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
+	public LevelEditorLevel(double[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
 		this.setLocation(location);
 		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
 		this.setItemList(itemList);
 	}
-	
-	public static LevelEditorLevel readLevel(String naam, int[] location, String filename) throws FileNotFoundException{
+
+	public static LevelEditorLevel readLevel(String naam, double[] location, String filename) throws FileNotFoundException{
 
 		return new LevelEditorLevel(location, naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
 	}
@@ -250,11 +250,11 @@ public class LevelEditorLevel {
 		itemlist = readObjects(filename);
 	}
 	
-	public int[] getLocation() {
+	public double[] getLocation() {
 		return location;
 	}
 
-	public void setLocation(int[] location) {
+	public void setLocation(double[] location) {
 		this.location = location;
 	}
 	

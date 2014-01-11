@@ -53,8 +53,9 @@ public class Maze implements VisibleObject {
 	public final static double ITEM_HEIGHT = 5;
 	public final static double DOOR_WIDTH = 2;
 	public final static double DOOR_HEIGHT = 3.5;
-	public int mazeX, mazeY, mazeZ;
-	public int minX, minZ, mazeID;
+	public double mazeX, mazeY, mazeZ;
+	public double minX, minZ;
+	public int mazeID;
 	public double maxX, maxZ;
 	public ArrayList<Item> itemList = new ArrayList<Item>();
 	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
@@ -62,7 +63,7 @@ public class Maze implements VisibleObject {
 	public int[][] visitedMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int maxHeight;
 
-	public Maze(String filename, int i, int x, int y, int z) {
+	public Maze(String filename, int i, double x, double y, double z) {
 		mazeID = i - 1;
 		mazeX = x;
 		mazeY = y;
@@ -137,7 +138,7 @@ public class Maze implements VisibleObject {
 						// Double.parseDouble(st.nextToken());
 						// int portalConID = (int)
 						// Double.parseDouble(st.nextToken());
-						Portal portal = new Portal((float) (mazeX + objectX), mazeY, (float) (mazeZ + objectZ), fd);
+						Portal portal = new Portal((float) (mazeX + objectX), (float) mazeY, (float) (mazeZ + objectZ), fd);
 						MazeRunner.portalList.add(portal);
 						// Portal portal = new Portal((float)objectX,
 						// (float)objectY, objectZ, fd);
@@ -243,7 +244,7 @@ public class Maze implements VisibleObject {
 		return this.maxX;
 	}
 
-	public int getMinX() {
+	public double getMinX() {
 		return this.minX;
 	}
 
@@ -251,23 +252,23 @@ public class Maze implements VisibleObject {
 		return this.maxZ;
 	}
 
-	public int getMinZ() {
+	public double getMinZ() {
 		return this.minZ;
 	}
 
-	public int getMazeID() {
+	public double getMazeID() {
 		return this.mazeID;
 	}
 
-	public int getMazeX() {
+	public double getMazeX() {
 		return this.mazeX;
 	}
 
-	public int getMazeY() {
+	public double getMazeY() {
 		return this.mazeY;
 	}
 
-	public int getMazeZ() {
+	public double getMazeZ() {
 		return this.mazeZ;
 	}
 

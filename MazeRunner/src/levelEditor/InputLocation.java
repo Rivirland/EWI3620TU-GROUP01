@@ -13,14 +13,14 @@ public class InputLocation
 			frame = new JFrame("Make your choice!");
 		}
 		
-		public int[] getLocation(){
+		public double[] getLocation(){
 			String text = JOptionPane.showInputDialog(frame, "Insert the world's location, for example 0,0,0");
 			Scanner sc = new Scanner(text);
 			sc.useDelimiter("\\s*,\\s*");
-			int[] res = new int[3];
-			res[0] = sc.nextInt();
-			res[1] = sc.nextInt();
-			res[2] = sc.nextInt();
+			double[] res = new double[3];
+			res[0] = sc.nextDouble();
+			res[1] = sc.nextDouble();
+			res[2] = sc.nextDouble();
 			return res;
 		}
 		

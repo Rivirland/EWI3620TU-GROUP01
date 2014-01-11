@@ -72,7 +72,7 @@ public class LevelEditor {
 	private Texture backTexture;
 
 	private LevelEditorWorld levels;
-	private int[] location;
+	private double[] location;
 	private int[][] wereld;
 	private int[][] textures;
 	private ArrayList<double[]> items;
@@ -1850,8 +1850,8 @@ public class LevelEditor {
 		return defaultmatrix;
 	}
 
-	public static int[] defaultLocation() {
-		int[] defaultlocation = { 0, 0, 0 };
+	public static double[] defaultLocation() {
+		double[] defaultlocation = { 0, 0, 0 };
 		return defaultlocation;
 	}
 
