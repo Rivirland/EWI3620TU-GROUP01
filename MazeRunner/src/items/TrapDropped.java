@@ -15,10 +15,7 @@ public class TrapDropped extends Item {
 	private boolean legal;
 	private boolean thrown;
 	private long t0;
-	public static double vy0=.11;
-	public static double vx0=1.0;
-	public static double ay=-0.1;
-	public static double ax=0;
+	public double vy0, vx0, ay, ax;
 	public double horAngle;
 	public boolean inair;
 	public boolean onground;
@@ -30,6 +27,10 @@ public class TrapDropped extends Item {
 		this.horAngle=MazeRunner.player.getHorAngle();
 		this.inair=true; 
 		this.onground=false;
+		this.vy0=.11;
+		this.vx0=1.0;
+		this.ay=-0.1;
+		this.ax=0;
 		Sound.sounds.get("jackInBox").play();
 //		System.out.println("TrapDropped@global: x: " + this.getGlobalX() + " y: " + this.getGlobalY() + " z: "+ this.getGlobalZ());
 //		System.out.println("TrapDropped@local: x: " + this.getLocalX() + " y: " + this.getLocalY() + " z: "+ this.getLocalZ());
@@ -123,5 +124,10 @@ public class TrapDropped extends Item {
 	}
 	public long getT0(){
 		return this.t0;
+	}
+
+	public void bounce(TrapDropped trap) {
+		// TODO Auto-generated method stub
+		
 	}
 }

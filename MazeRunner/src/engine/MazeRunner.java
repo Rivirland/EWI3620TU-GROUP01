@@ -636,7 +636,8 @@ public class MazeRunner {
 		double previousX = player.getLocationX();
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
-
+		// Item updating
+		
 		// Player updating
 		player.update(deltaTime, drawable);
 		int currentMazeID = level.getCurrentMaze(player);
@@ -655,6 +656,18 @@ public class MazeRunner {
 						MazeRunner.player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
+					}
+				}
+			}
+			// Check for collision between TrapDropped items, if so, call bounce method.
+			for (int i =0; i < currentMaze.itemList.size(); i++){
+				Item itemi = currentMaze.itemList.get(i);
+				if (itemi instanceof TrapDropped){
+					for (int j =0; j<currentMaze.itemList.size(); j++){
+						Item itemj = currentMaze.itemList.get(j);
+						if (itemi.touches(itemj) && i!=j && itemj instanceof TrapDropped){
+							((TrapDropped) itemi).bounce((TrapDropped) itemj);
+						}
 					}
 				}
 			}
@@ -696,6 +709,7 @@ public class MazeRunner {
 							visibleObjects.add(tdGBS);
 						}
 					}
+					
 				}
 			}
 
@@ -773,6 +787,8 @@ public class MazeRunner {
 				}
 			}
 		}
+
+
 
 		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
 		// updateMovement
