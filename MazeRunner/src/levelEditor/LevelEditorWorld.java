@@ -13,6 +13,7 @@ import menu.Teken;
 
 public class LevelEditorWorld {
 	private ArrayList<LevelEditorLevel> levels;
+	private static int startingBullets, startingTraps;
 	
 	private boolean popup=false;
 	
@@ -24,14 +25,18 @@ public class LevelEditorWorld {
 		LevelEditorWorld lijst = new LevelEditorWorld();
 		Scanner scannames = new Scanner(new File(filename));
 		String currentdir = System.getProperty("user.dir");
+		String str = scannames.next();
+		StringTokenizer StrTok = new StringTokenizer(str, ",");
+		startingBullets = Integer.parseInt(StrTok.nextToken());
+		startingTraps = Integer.parseInt(StrTok.nextToken());
 		while (scannames.hasNext()){
 			String string = scannames.next();
 			StringTokenizer st = new StringTokenizer(string, ",");
-			int lx = Integer.parseInt(st.nextToken());
-			int ly = Integer.parseInt(st.nextToken());
-			int lz = Integer.parseInt(st.nextToken());
+			double lx = Double.parseDouble(st.nextToken());
+			double ly = Double.parseDouble(st.nextToken());
+			double lz = Double.parseDouble(st.nextToken());
 			String name = st.nextToken();
-			lijst.levels.add(LevelEditorLevel.readLevel(name, new int[] {lx,ly,lz}, currentdir + "\\levels\\" + name + ".txt"));
+			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] {lx,ly,lz}, currentdir + "\\levels\\" + name + ".txt"));
 			System.out.println(name + " added to list of levels");
 		}
 		scannames.close();
@@ -90,6 +95,7 @@ public class LevelEditorWorld {
 		}
 		
 		PrintWriter bestand = new PrintWriter(currentdir + "\\worlds\\" + filename + ".txt");
+		bestand.println(startingBullets + "," + startingTraps + ",");
 		for (int i = 0; i != levels.size(); i++){
 			for(int j = 0; j < 3; j++){
 				bestand.print(levels.get(i).location[j] + ",");
@@ -159,5 +165,22 @@ public class LevelEditorWorld {
 	public int getSize() {
 		return levels.size();
 	}
+
+	public int getStartingBullets() {
+		return startingBullets;
+	}
+	
+	public int getStartingTraps() {
+		return startingTraps;
+	}
+
+	public void setStartingBullets(int i) {
+		startingBullets = i;
+	}
+	
+	public void setStartingTraps(int i) {
+		startingTraps = i;
+	}
+
 
 }

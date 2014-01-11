@@ -31,7 +31,13 @@ public class TrapDropped extends Item {
 		this.vx0=1.0;
 		this.ay=-0.1;
 		this.ax=0;
-		Sound.sounds.get("jackInBox").play();
+
+		try{
+			Sound.sounds.get("jackInBox").play();
+		}
+		catch(NullPointerException e){
+			System.out.println("jackinBox no");
+		}
 //		System.out.println("TrapDropped@global: x: " + this.getGlobalX() + " y: " + this.getGlobalY() + " z: "+ this.getGlobalZ());
 //		System.out.println("TrapDropped@local: x: " + this.getLocalX() + " y: " + this.getLocalY() + " z: "+ this.getLocalZ());
 	}
@@ -60,7 +66,7 @@ public class TrapDropped extends Item {
 		gl.glPushMatrix();
 		gl.glTranslated(getGlobalX() - sizeX / 2, getGlobalY(), getGlobalZ() - sizeZ / 2);
 		// drawCuboid
-		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,56);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,28);
 		gl.glPopMatrix();
 	}
 

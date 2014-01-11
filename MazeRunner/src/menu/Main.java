@@ -214,6 +214,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		db = new Database();
 		loadTextures(gl);
 		Sound.init();
+		
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the
 		 * active matrix. In this case, a simple 2D projection is performed,
@@ -637,53 +638,53 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	}
 	
 	public void loadTextures(GL gl){
-		System.out.println("\nLoading Textures... ");
+		System.out.println("Texture loading... ");
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures\\";
 		File f = new File(curDir + "_textures.txt");
 		try{
-			BufferedReader bufRdr = new BufferedReader(new FileReader(f));
-			String line = null;
-			
-			// Check size
-			int i=0;
-			while ((line = bufRdr.readLine()) != null) {
-				i++;
+		BufferedReader bufRdr = new BufferedReader(new FileReader(f));
+		String line = null;
+		
+		// Check size
+		int i=0;
+		while ((line = bufRdr.readLine()) != null) {
+			i++;
+		}
+		bufRdr.close();
+		
+		textureList = new ArrayList<Texture>();
+		ArrayList<File> fileList = new ArrayList<File>();
+		for (int j=0;j<i+2;j++){
+			textureList.add(null);
+			fileList.add(null);
+		}
+		System.out.println("TextureList size: " + textureList.size());
+		
+		bufRdr = new BufferedReader(new FileReader(f));
+		while ((line = bufRdr.readLine()) != null){
+			StringTokenizer st = new StringTokenizer(line, ": ");
+			int nummer = Integer.parseInt(st.nextToken());
+			String string = curDir + st.nextToken();
+			File file = new File(string);
+			fileList.set(nummer, file);
+//			System.out.println(nummer + " " + file);
+		}
+		for(int z=0; z< fileList.size(); z++){
+			File file = fileList.get(z);
+			try {
+			TextureData textureData = TextureIO.newTextureData(file, false, "jpg");
+			Texture texture = TextureIO.newTexture(textureData);
+			textureList.set(z, texture);
+			System.out.println("Texture succesfully loaded: " + z + ": " + file);
+			}catch (Exception e){
+				System.out.println("fout: " + e.getMessage());
 			}
-			bufRdr.close();
-			
-			textureList = new ArrayList<Texture>();
-			ArrayList<File> fileList = new ArrayList<File>();
-			for (int j=0;j<i+2;j++){
-				textureList.add(null);
-				fileList.add(null);
-			}
-			System.out.println("TextureList size: " + textureList.size());
-			
-			bufRdr = new BufferedReader(new FileReader(f));
-			while ((line = bufRdr.readLine()) != null){
-				StringTokenizer st = new StringTokenizer(line, ": ");
-				int nummer = Integer.parseInt(st.nextToken());
-				String string = curDir + st.nextToken();
-				File file = new File(string);
-				fileList.set(nummer, file);
-	//			System.out.println(nummer + " " + file);
-			}
-			for(int z=0; z< fileList.size(); z++){
-				File file = fileList.get(z);
-				try {
-				TextureData textureData = TextureIO.newTextureData(file, false, "jpg");
-				Texture texture = TextureIO.newTexture(textureData);
-				textureList.set(z, texture);
-				System.out.println("Texture loaded succesfully: " + z + ": " + file);
-				}catch (Exception e){
-					System.out.println("fout: " + e.getMessage());
-				}
-			}
+		}
 		}catch (Exception e){
 			System.out.println("fout: " + e.getMessage());
 		}
-		System.out.println("Textures loaded succesfully\n");
+		System.out.println("Textures loaded");
 	}
 
 

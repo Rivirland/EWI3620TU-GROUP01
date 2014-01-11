@@ -83,8 +83,6 @@ public class Portal {
 		Portal.portalList= MazeRunner.portalList;
 		Portal.mazeList= Level.mazelist;
 		
-		
-		
 		if (mazeID != -1){
 		activep = new int[amountmazep]; 
 		for(int i=0; i<amountmazep; i++){
@@ -193,13 +191,20 @@ public class Portal {
 		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
 		
 //		Hier skybox displayen
-		Skybox.displaySkybox(gl);
+		//Skybox.displaySkybox(gl);
 		
 //		om de vloer te tekenen	
-		Maze.drawSingleFloorTile(gl, mazeList.get(mazeID).getMazeX(),mazeList.get(mazeID).getMazeZ());
 		
-//		De grond displayen		
+//		gl.glColor3d(1, 1, 1);
+//		De grond displayen	
+		
+		gl.glLoadIdentity();
+		
+		Skybox.displaySkybox(gl);
+		Maze.drawSingleFloorTile(gl, mazeList.get(mazeID).getMazeX(),mazeList.get(mazeID).getMazeZ());
 		MazeRunner.visibleIterator(gl);
+		
+		
 		}
 	
 	public static void displayInactivePortals(GL gl, ArrayList<Portal> portalList) {

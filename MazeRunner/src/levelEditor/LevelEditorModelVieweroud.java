@@ -92,7 +92,7 @@ public class LevelEditorModelVieweroud {
 		
 	}
 	
-	public void display(GL gl, boolean catalogus, byte drawMode, byte textureMode, int hoogteMode){
+	public void display(GL gl, boolean catalogus, byte drawMode, int textureMode, int hoogteMode){
 		init(gl);
 		GLUT glut=new GLUT();
 		gl.glEnable(GL.GL_SCISSOR_TEST);
@@ -138,15 +138,10 @@ public class LevelEditorModelVieweroud {
 				gl.glRotated(rotationX,0,1,0);
 				gl.glScaled(scalef,scalef,scalef);
 				gl.glTranslated(-width/2, -height/2, -width/2);
-				
-				
-				switch (textureMode) {
-				case 1:
-					Maze.paintColumnFromQuad(gl, 0,15);
-					break;
-				case 2:
-					Maze.paintColumnFromQuad(gl, 0,16);
-					break;
+				if (textureMode > 200) {
+					Maze.paintColumnFromQuad(gl, 0, textureMode - 200);
+				} else {
+					Maze.paintColumnFromQuad(gl, 0, textureMode - 100);
 				}
 				break;
 			case MUUR: 
@@ -164,13 +159,10 @@ public class LevelEditorModelVieweroud {
 				gl.glRotated(rotationX,0,1,0);
 				gl.glScaled(scalef/2,scalef/2,scalef/2);
 				gl.glTranslated(-length/2, -height/2, -width/2);
-				switch (textureMode) {
-				case 1:
-					Maze.paintWallZFromQuad(gl,0,15);
-					break;
-				case 2:
-					Maze.paintWallZFromQuad(gl, 0, 16);
-					break;
+				if (textureMode > 200) {
+					Maze.paintColumnFromQuad(gl, 0, textureMode - 200);
+				} else {
+					Maze.paintColumnFromQuad(gl, 0, textureMode - 100);
 				}
 				break;
 				

@@ -2,12 +2,7 @@ package engine;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import playerStates.PlayerState;
-import playerStates.PlayerStateCloak;
-import playerStates.PlayerStateDead;
-import playerStates.PlayerStateGun;
-import playerStates.PlayerStateTrap;
-import playerStates.PlayerStateVictory;
+import playerStates.*;
 
 /**
  * Player represents the actual player in MazeRunner.
@@ -42,7 +37,7 @@ public class Player extends GameObject {
 	public boolean falling = false;
 	public double fallingSpeed;
 	public long invisibleT;
-	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory;
+	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory, PlayerStateFly;
 
 	/**
 	 * The Player constructor.
@@ -75,8 +70,8 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = .01;
-		nrOfTraps = 1000;
-		nrOfBullets = 200;
+		nrOfTraps = MazeRunner.level.startingTraps;
+		nrOfBullets = MazeRunner.level.startingBullets;
 		cloakSeconds = 10000;
 		playerStateInt = 0;
 		fallingSpeed = 0.5;
@@ -87,6 +82,7 @@ public class Player extends GameObject {
 		this.PlayerStateGun = new PlayerStateGun();
 		this.PlayerStateTrap = new PlayerStateTrap();
 		this.PlayerStateVictory = new PlayerStateVictory();
+		this.PlayerStateFly = new PlayerStateFly();
 	}
 
 	/**

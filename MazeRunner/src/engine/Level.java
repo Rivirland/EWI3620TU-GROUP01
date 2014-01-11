@@ -17,6 +17,7 @@ public class Level {
 	private int aantal;
 	private String naam;
 	public double minGlobalY;
+	public int startingBullets, startingTraps;
 	private int[] orderedMazes;
 
 	// The constructor.
@@ -103,11 +104,15 @@ public class Level {
 		int i = 1;
 		String line = null;
 		try {
+			line = bufRdr.readLine();
+			StringTokenizer StrTok = new StringTokenizer(line, ",");
+			startingBullets = Integer.parseInt(StrTok.nextToken());
+			startingTraps = Integer.parseInt(StrTok.nextToken());
 			while ((line = bufRdr.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(line, ",");
-				int x = Integer.parseInt(st.nextToken());
-				int y = Integer.parseInt(st.nextToken());
-				int z = Integer.parseInt(st.nextToken());
+				double x = Double.parseDouble(st.nextToken());
+				double y = Double.parseDouble(st.nextToken());
+				double z = Double.parseDouble(st.nextToken());
 				String m = st.nextToken();
 				System.out.println("Level loaded: " + m + " x: " + x + " y: " + y + " z: " + z);
 				if(y<minGlobalY){
@@ -171,10 +176,10 @@ public class Level {
 				// System.out.println("hier0");
 
 				// Checks if it's a wall
-				if (maze.getTextureElementOnCoords(newX0, newZ0) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX0, newZ0) > 100 && maze.getTextureElementOnCoords(newX0, newZ0) < 200) {
 					res[0] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX0, newZ0) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX0, newZ0) > 200) {
 					double globX = object.locationX + margin;
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
@@ -186,10 +191,10 @@ public class Level {
 				}
 			}
 			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getElementOnCoords(newX1, newZ1) > 0)) {
-				if (maze.getTextureElementOnCoords(newX1, newZ1) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX1, newZ1) > 100 && maze.getTextureElementOnCoords(newX1, newZ1) < 200) {
 					res[1] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX1, newZ1) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX1, newZ1) > 200) {
 
 					double globX = object.locationX;
 					double globZ = object.locationZ - margin;
@@ -205,10 +210,10 @@ public class Level {
 				}
 			}
 			if (!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze.getElementOnCoords(newX2, newZ2) > 0)) {
-				if (maze.getTextureElementOnCoords(newX2, newZ2) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX2, newZ2) > 100 && maze.getTextureElementOnCoords(newX2, newZ2) < 200) {
 					res[2] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX2, newZ2) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX2, newZ2) > 200) {
 					double globX = object.locationX - margin;
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX2, newZ2);
@@ -220,10 +225,10 @@ public class Level {
 				}
 			}
 			if (!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze.getElementOnCoords(newX3, newZ3) > 0)) {
-				if (maze.getTextureElementOnCoords(newX3, newZ3) % 2 == 1) {
+				if (maze.getTextureElementOnCoords(newX3, newZ3) > 100 && maze.getTextureElementOnCoords(newX3, newZ3) < 200) {
 					res[3] = true;
 				}// Checks if it's a door
-				else if (maze.getTextureElementOnCoords(newX3, newZ3) % 2 == 0) {
+				else if (maze.getTextureElementOnCoords(newX3, newZ3) > 200) {
 					double globX = object.locationX;
 					double globZ = object.locationZ + margin;
 					double[] wallXZ = maze.MatrixElementToCoords(newX3, newZ3);
@@ -237,5 +242,15 @@ public class Level {
 			}
 		}
 		return res;
+	}
+	
+
+	public int getStartingBullets() {
+		return this.startingBullets;
+	}
+	
+
+	public int getStartingTraps() {
+		return this.startingTraps;
 	}
 }

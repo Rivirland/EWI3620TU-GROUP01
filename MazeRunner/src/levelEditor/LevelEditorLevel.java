@@ -16,21 +16,21 @@ import menu.KiesFileUitBrowser;
 public class LevelEditorLevel {
 	
 	private String name;
-	public int[] location;
+	public double[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
 	public ArrayList<double[]> itemlist;
 
 	
-	public LevelEditorLevel(int[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
+	public LevelEditorLevel(double[] location, String name, int[][] gebouwen, int[][] textures, ArrayList<double[]> itemList){
 		this.setLocation(location);
 		this.setName(name);
 		this.setGebouwen(gebouwen);
 		this.setTextures(textures);
 		this.setItemList(itemList);
 	}
-	
-	public static LevelEditorLevel readLevel(String naam, int[] location, String filename) throws FileNotFoundException{
+
+	public static LevelEditorLevel readLevel(String naam, double[] location, String filename) throws FileNotFoundException{
 
 		return new LevelEditorLevel(location, naam, readGebouwen(filename), readTextures(filename), readObjects(filename));
 	}
@@ -124,7 +124,7 @@ public class LevelEditorLevel {
 				while ((line = bufRdrTex.readLine()) != null) {
 					StringTokenizer st = new StringTokenizer(line, ",");
 					double objectNumber = Double.parseDouble(st.nextToken());
-					if (objectNumber == 1) {
+					if (objectNumber == 129) {
 						// Portal
 						double[] portal = new double[6];
 						portal[0] = objectNumber;
@@ -135,21 +135,21 @@ public class LevelEditorLevel {
 						portal[5] = Double.parseDouble(st.nextToken()); //portalConID
 						itemlist.add(portal);
 						continue;
-					} else if (objectNumber == 2) {
+					} else if (objectNumber == 229) {
 						// EnemySpooky
 						double[] enemyspooky = new double[3];
 						enemyspooky[0] = objectNumber;
 						enemyspooky[1] = Double.parseDouble(st.nextToken()); //objectX
 						enemyspooky[2] = Double.parseDouble(st.nextToken()); //objectZ
 						itemlist.add(enemyspooky);
-					} else if (objectNumber == 3) {
+					} else if (objectNumber == 130) {
 						// EnemySmart
 						double[] enemysmart = new double[3];
 						enemysmart[0] = objectNumber;
 						enemysmart[1] = Double.parseDouble(st.nextToken()); //objectX
 						enemysmart[2] = Double.parseDouble(st.nextToken()); //objectZ
 						itemlist.add(enemysmart);
-					} else if (objectNumber == 4) {
+					} else if (objectNumber == 230) {
 						// Bullets
 						double[] bullets = new double[4];
 						bullets[0] = objectNumber;
@@ -157,14 +157,14 @@ public class LevelEditorLevel {
 						bullets[2] = Double.parseDouble(st.nextToken()); //objectZ
 						bullets[3] = Double.parseDouble(st.nextToken()); //amount
 						itemlist.add(bullets);
-					} else if (objectNumber == 5) {
+					} else if (objectNumber == 131) {
 						// Trapholder
 						double[] trapholder = new double[3];
 						trapholder[0] = objectNumber;
 						trapholder[1] = Double.parseDouble(st.nextToken()); //objectX
 						trapholder[2] = Double.parseDouble(st.nextToken()); //objectZ
 						itemlist.add(trapholder);
-					} else if (objectNumber == 6){
+					} else if (objectNumber == 231){
 						// Exit
 						double[] exit = new double[3];
 						exit[0] = objectNumber;
@@ -184,7 +184,22 @@ public class LevelEditorLevel {
 		return itemlist;
 	}
 	
+	public int countPortals(ArrayList<double[]> list){
+		int res = 0;
+		for(int i = 0; i < list.size(); i++){
+			double[] item = list.get(i);
+			if(item[0]==129){
+				res++;
+			}
+		}
+		return res;
+	}
+	
 	public void saveAs() throws FileNotFoundException{
+		if(countPortals(itemlist) != 2){
+			System.out.println("You need exactly two portals in a level!");
+			return;
+		}
 		//PrintWriter bestand = new PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 		String currentdir = System.getProperty("user.dir");
@@ -235,11 +250,11 @@ public class LevelEditorLevel {
 		itemlist = readObjects(filename);
 	}
 	
-	public int[] getLocation() {
+	public double[] getLocation() {
 		return location;
 	}
 
-	public void setLocation(int[] location) {
+	public void setLocation(double[] location) {
 		this.location = location;
 	}
 	

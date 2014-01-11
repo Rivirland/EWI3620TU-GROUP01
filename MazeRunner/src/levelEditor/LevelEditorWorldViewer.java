@@ -12,8 +12,10 @@ import com.sun.opengl.util.GLUT;
 
 
 
+
 import engine.MazeRunner;
 import engine.Maze;
+import engine.Skybox;
 
 public class LevelEditorWorldViewer extends LevelEditorViewer{
 
@@ -27,8 +29,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	private double zcenter;
 	
 	private boolean run = true;
-	
-	private int minX, minZ, maxX, maxZ, minY, maxY;	
+	private double minX, maxX, minZ, maxZ, minY, maxY;
 	
 	public LevelEditorWorldViewer(int screenWidth, int screenHeight, double x1,
 			double y1, double x2, double y2) {
@@ -45,9 +46,10 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		LevelEditorWorldViewer.mazelist = MazeRunner.level.getMazeList();
 		
 		int size = mazelist.size();
+		System.out.println(size);
 		
-		int minX = 0;
-		int current = 0;
+		double minX = 0;
+		double current = 0;
 		// to calculate the min value
 		minX = mazelist.get(0).mazeX;
 		for (int i=1; i<size; i++){
@@ -58,7 +60,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			this.minX = minX;
 		}
 		
-		int minZ = 0;
+		double minZ = 0;
 		minZ = mazelist.get(0).mazeZ;
 		for (int i=1; i<size; i++){
 			current =mazelist.get(i).mazeZ;
@@ -68,7 +70,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			this.minZ = minZ;
 		}
 		
-		int maxX = 0;
+		double maxX = 0;
 		maxX = (int) mazelist.get(0).maxX;
 		for (int i=1; i<size; i++){
 			current =(int) mazelist.get(i).maxX;
@@ -78,17 +80,19 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			this.maxX = maxX;
 		}
 		
-		int maxZ = 0;
+		
+		double maxZ = 0;
 		minZ =(int) mazelist.get(0).maxZ;
 		for (int i=1; i<size; i++){
 			current =(int) mazelist.get(i).maxZ;
 			if (current > maxZ){
 				maxZ = current;
 			}
-			this.maxZ = maxZ;
 		}
+		this.maxZ = maxZ;
 		
-		int minY = 0;
+		
+		double minY = 0;
 		// to calculate the min value
 		minY = mazelist.get(0).mazeY;
 		for (int i=1; i<size; i++){
@@ -96,24 +100,38 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 			if (current < minY){
 				minY = current;
 			}
-			this.minY = minY;
 		}
+		this.minY = minY;
 		
-		int maxY = 0;
+		
+		double maxY = 0;
 		// to calculate the max value
+		// for now it doesn't calculate in the heigt of structures on a maze
 		maxY = mazelist.get(0).mazeY;
 		for (int i=1; i<size; i++){
 			current =mazelist.get(i).mazeY;
-			if (current < maxY){
+			if (current > maxY){
 				maxY = current;
 			}
-			this.maxY = maxY;
+			
 		}
+		this.maxY = maxY;
 		
+		System.out.println("minx "+minX);
+		System.out.println("maxx "+maxX);
+		System.out.println("minz "+minZ);
+		System.out.println("maxz "+maxZ);
+		System.out.println("miny "+minY);
+		System.out.println("maxy "+maxY);
 		
 		this.xcenter = (minX+maxX)/2;
 		this.ycenter = (minY+maxY)/2;
 		this.zcenter = (minZ+maxZ)/2;
+		
+		System.out.println("xcenter "+xcenter);
+		System.out.println("ycenter "+ycenter);
+		System.out.println("zcenter "+zcenter);
+		
 		// 1000 normaal
 		
 		//(Math.abs(maxX) + Math.abs(minX))/(x2-x1)
@@ -136,9 +154,10 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		}
 		init(gl);
 		
+		
 		gl.glPushMatrix();
 		
-		gl.glTranslated(xmidden, ymidden, 0);
+		gl.glTranslated(0, ymidden, 0);
 		gl.glTranslated(-2*panX,2*panY, 0);
 		//gl.glTranslated(2*panX,2*panY, 0);
 		
@@ -151,6 +170,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		gl.glTranslated(-xcenter, -ycenter,-zcenter);
 		//gl.glTranslated(-2*panX,-2*panY, 0);
 		
+		//Skybox.displaySkybox(gl);
 		MazeRunner.visibleIterator(gl);
 		gl.glColor3d(1, 1, 1);
 		Teken.rechthoek(gl, xmidden-5, ymidden-5, xmidden+5, ymidden+5);

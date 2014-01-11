@@ -54,10 +54,10 @@ public class Minimap {
 			for (int i = 0; i < curMaze.visitedMatrix.length; i++) {
 				for (int j = 0; j < curMaze.visitedMatrix[0].length; j++) {
 					if (curMaze.visitedMatrix[i][j] == 1) {
-						double xtrans = (Math.floor(((double) (i + 1)) / 2) * columnPercentageX * minimapX + Math
-								.floor((double) i / 2) * wallPercentageX * minimapX);
-						double ztrans = (Math.floor(((double) (j + 1)) / 2) * columnPercentageZ * minimapZ + Math
-								.floor((double) j / 2) * wallPercentageZ * minimapZ);
+						double xtrans = (Math.floor(((double) (i + 1)) / 2) * columnPercentageX * getMinimapX() + Math
+								.floor((double) i / 2) * wallPercentageX * getMinimapX());
+						double ztrans = (Math.floor(((double) (j + 1)) / 2) * columnPercentageZ * getMinimapZ() + Math
+								.floor((double) j / 2) * wallPercentageZ * getMinimapZ());
 						// System.out.println(xtrans + " " + ztrans);
 
 						gl.glPushMatrix();
@@ -89,8 +89,8 @@ public class Minimap {
 							drawFloor(gl, xtrans, ztrans);
 						}
 					}
-					double x = MazeRunner.player.getLocalX() / totalX * minimapX;
-					double z = MazeRunner.player.getLocalZ() / totalZ * minimapZ;
+					double x = MazeRunner.player.getLocalX() / totalX * getMinimapX();
+					double z = MazeRunner.player.getLocalZ() / totalZ * getMinimapZ();
 					drawPlayer(gl, x, z);
 					gl.glColor3d(1, 1, 1);
 					gl.glPopMatrix();
@@ -107,40 +107,40 @@ public class Minimap {
 
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
-		gl.glVertex2d(columnPercentageX * minimapX + x, z);
-		gl.glVertex2d(columnPercentageX * minimapX + x, columnPercentageZ
-				* minimapZ + z);
-		gl.glVertex2d(x, columnPercentageZ * minimapZ + z);
+		gl.glVertex2d(columnPercentageX * getMinimapX() + x, z);
+		gl.glVertex2d(columnPercentageX * getMinimapX() + x, columnPercentageZ
+				* getMinimapZ() + z);
+		gl.glVertex2d(x, columnPercentageZ * getMinimapZ() + z);
 		gl.glEnd();
 	}
 
 	public static void drawWallz(GL gl, double x, double z) {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
-		gl.glVertex2d(wallPercentageX * minimapX + x, z);
-		gl.glVertex2d(wallPercentageX * minimapX + x, columnPercentageZ
-				* minimapZ + z);
-		gl.glVertex2d(x, columnPercentageZ * minimapZ + z);
+		gl.glVertex2d(wallPercentageX * getMinimapX() + x, z);
+		gl.glVertex2d(wallPercentageX * getMinimapX() + x, columnPercentageZ
+				* getMinimapZ() + z);
+		gl.glVertex2d(x, columnPercentageZ * getMinimapZ() + z);
 		gl.glEnd();
 	}
 
 	public static void drawWallx(GL gl, double x, double z) {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
-		gl.glVertex2d(columnPercentageX * minimapX + x, z);
-		gl.glVertex2d(columnPercentageX * minimapX + x, wallPercentageZ
-				* minimapZ + z);
-		gl.glVertex2d(x, wallPercentageZ * minimapZ + z);
+		gl.glVertex2d(columnPercentageX * getMinimapX() + x, z);
+		gl.glVertex2d(columnPercentageX * getMinimapX() + x, wallPercentageZ
+				* getMinimapZ() + z);
+		gl.glVertex2d(x, wallPercentageZ * getMinimapZ() + z);
 		gl.glEnd();
 	}
 
 	public static void drawFloor(GL gl, double x, double z) {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(x, z);
-		gl.glVertex2d(wallPercentageX * minimapX + x, z);
-		gl.glVertex2d(wallPercentageX * minimapX + x, wallPercentageZ
-				* minimapZ + z);
-		gl.glVertex2d(x, wallPercentageZ * minimapZ + z);
+		gl.glVertex2d(wallPercentageX * getMinimapX() + x, z);
+		gl.glVertex2d(wallPercentageX * getMinimapX() + x, wallPercentageZ
+				* getMinimapZ() + z);
+		gl.glVertex2d(x, wallPercentageZ * getMinimapZ() + z);
 		gl.glEnd();
 	}
 
@@ -159,14 +159,26 @@ public class Minimap {
 		gl.glColor3d(0,0,0);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex2d(0, 0);
-		gl.glVertex2d(minimapX, 0);
-		gl.glVertex2d(minimapX, minimapZ);
-		gl.glVertex2d(0, minimapZ);
+		gl.glVertex2d(getMinimapX(), 0);
+		gl.glVertex2d(getMinimapX(), getMinimapZ());
+		gl.glVertex2d(0, getMinimapZ());
 		gl.glEnd();
 
 	}
-	
-	public static void reticle(GL gl){
-		
+
+	public static int getMinimapX() {
+		return minimapX;
+	}
+
+	public static void setMinimapX(int minimapX) {
+		Minimap.minimapX = minimapX;
+	}
+
+	public static int getMinimapZ() {
+		return minimapZ;
+	}
+
+	public static void setMinimapZ(int minimapZ) {
+		Minimap.minimapZ = minimapZ;
 	}
 }
