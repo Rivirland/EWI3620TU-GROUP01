@@ -102,7 +102,6 @@ public class MazeRunner {
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
 	public static long currentTime;
-
 	public static long playingTime;
 	public static int deltaTime;
 
@@ -351,7 +350,7 @@ public class MazeRunner {
 		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		if (deltaTime > 10000 | deltaTime < 0) {
+		if (deltaTime > 100 | deltaTime < 0) {
 			deltaTime = 0;
 		}
 
@@ -374,7 +373,7 @@ public class MazeRunner {
 		if (player.getControl().minimap) {
 			Minimap.displayMinimap(gl);
 		}
-		if (player.playerStateInt == 2){
+		if (player.playerStateInt == 2) {
 			Reticle.display(gl);
 		}
 
@@ -417,9 +416,8 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-		
 		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
-//		Portal.activePortaldisplay(gl);
+		// Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 
@@ -433,7 +431,7 @@ public class MazeRunner {
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
-		//gl.glDisable(GL.GL_STENCIL_TEST);
+		// gl.glDisable(GL.GL_STENCIL_TEST);
 		gl.glFlush();
 
 	}
@@ -468,11 +466,9 @@ public class MazeRunner {
 	 */
 
 	private void updatePlayingTime() {
-		if (player.playerStateInt == 3) {
-		} else if (player.playerStateInt == 4) {
-		} else {
+		if (player.playerStateInt != 3 && player.playerStateInt != 4) {
+			playingTime += deltaTime;
 		}
-
 	}
 
 	/**
@@ -588,17 +584,17 @@ public class MazeRunner {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
-//		try {
-//			String currentdir = System.getProperty("user.dir");
-//			String filename = currentdir + "\\models\\uh60.obj";
-//			copterModel = OBJLoader.loadTexturedModel(new File(filename));
-//
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		
+		// try {
+		// String currentdir = System.getProperty("user.dir");
+		// String filename = currentdir + "\\models\\uh60.obj";
+		// copterModel = OBJLoader.loadTexturedModel(new File(filename));
+		//
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60body.obj";
@@ -609,7 +605,7 @@ public class MazeRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60rotor.obj";
@@ -620,7 +616,7 @@ public class MazeRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60backrotor.obj";
@@ -631,9 +627,6 @@ public class MazeRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
-
 
 		try {
 			String currentdir = System.getProperty("user.dir");
@@ -787,18 +780,15 @@ public class MazeRunner {
 				r.locationY -= deltaTime * r.fallingSpeed;
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
-				
-				
+
 				if (r.locationY < maze.mazeY + 0.5) {
 
-//					Sound.roofCrash.play();
+					// Sound.roofCrash.play();
 
-					
-					try{
-					Sound.sounds.get("roofCrash").play();
-					}
-					catch(NullPointerException e){
-					System.out.println("roofcrash no");
+					try {
+						Sound.sounds.get("roofCrash").play();
+					} catch (NullPointerException e) {
+						System.out.println("roofcrash no");
 					}
 					roofList.remove(r);
 					r.setLegal(false);
@@ -860,8 +850,6 @@ public class MazeRunner {
 			}
 		}
 	}
-
-
 
 	public static void visibleIterator(GL gl) {
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {

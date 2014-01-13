@@ -854,7 +854,7 @@ public class LevelEditor {
 					this.location = il.getLocation();
 				}
 			}
-			
+
 			if ((1 - 1052f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - 1010f / 1080f) * screenHeight) {
 				if (622f / 1920f * screenWidth < me.getX() && me.getX() < 740f / 1920f * screenWidth) {
 					InputLocation il = new InputLocation();
@@ -862,7 +862,7 @@ public class LevelEditor {
 					levels.setStartingBullets(info[0]);
 					levels.setStartingTraps(info[1]);
 				}
-			} 
+			}
 
 			// level knoppen
 			if (622f / 1920f * screenWidth < me.getX() && me.getX() < (622f + 51f) / 1920f * screenWidth) {
@@ -1393,7 +1393,7 @@ public class LevelEditor {
 			for (int kolom = 1; kolom < wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] == 129) {
 					// onderstaande moet veranderen in een daktexture
-					plaatsTexture2(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1) * distance, ymax - (rij / 2 + 1) * distance, 7);
+					Teken.plaatsTexture(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1) * distance, ymax - (rij / 2 + 1) * distance, 7);
 				}
 				if (wereld[rij][kolom] != 0 && heightsOn) {
 					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin + (kolom / 2) * distance + distance / 2, ymax - (rij / 2 + 1) * distance + distance / 2, 30, 1f, 1f,
@@ -1407,10 +1407,10 @@ public class LevelEditor {
 			for (int kolom = 0; kolom <= wereld[0].length; kolom = kolom + 2) {
 				if (textures[rij][kolom] > 200) {
 					// onderstaande moet veranderen in een kolomtexture
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax
 							- (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 200);
 				} else if (textures[rij][kolom] > 100) {
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax
 							- (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 100);
 				}
 			}
@@ -1421,13 +1421,13 @@ public class LevelEditor {
 			for (int kolom = 0; kolom <= wereld[0].length; kolom = kolom + 2) {
 				if (textures[rij][kolom] > 200) {
 					// onderstaande moet veranderen in een muurtexture
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
 							ymax - (rij + 1) / 2 * distance + distance * 6 / 10, textures[rij][kolom] - 200);
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 4 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 4 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
 							ymax - (rij + 1) / 2 * distance + distance / 10, textures[rij][kolom] - 200);
 				} else if (textures[rij][kolom] > 100) {
 					// onderstaande moet veranderen in een muurtexture
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
 							ymax - (rij + 1) / 2 * distance + distance / 10, textures[rij][kolom] - 100);
 				}
 				// if (textures[rij][kolom]==3){
@@ -1677,13 +1677,13 @@ public class LevelEditor {
 		for (int rij = 0; rij <= wereld.length; rij = rij + 2) {
 			for (int kolom = 1; kolom <= wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] > 200) {
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance * 6
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance * 6
 							/ 10, ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 200);
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance * 4 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance / 10,
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 4 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance / 10,
 							ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 200);
 				} else if (textures[rij][kolom] > 100) {
 					// onderstaande moet veranderen in een muurtexture
-					plaatsTexture2(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance / 10,
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance / 10,
 							ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 100);
 				}
 				// if (textures[rij][kolom]==2){
@@ -1743,7 +1743,7 @@ public class LevelEditor {
 			if (items.get(item)[0] == 129) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
 						26);
 				if (items.get(item)[3] == 0)
 					Teken.pijlboven(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
@@ -1757,38 +1757,38 @@ public class LevelEditor {
 			if (items.get(item)[0] == 229) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
 						17);
 			}
 			if (items.get(item)[0] == 130) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
 						18);
 			}
 			if (items.get(item)[0] == 230) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
 						27);
 			}
 			if (items.get(item)[0] == 131) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
 						14);
 			}
 			if (items.get(item)[0] == 231) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				plaatsTexture2(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4,
 						20);
 			}
 		}
 
 		// teken portal pijl
 		if (addportaldirection) {
-			plaatsTexture2(gl, xportal - distance / 4, yportal - distance / 4, xportal + distance / 4, yportal + distance / 4, 26);
+			Teken.plaatsTexture(gl, xportal - distance / 4, yportal - distance / 4, xportal + distance / 4, yportal + distance / 4, 26);
 			float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX()) - xportal);
 			float dY = (float) (screenHeight + 30f - MouseInfo.getPointerInfo().getLocation().getY() - yportal);
 			if (Math.abs(dX) >= Math.abs(dY)) {
@@ -1907,37 +1907,7 @@ public class LevelEditor {
 
 	}
 
-	public void plaatsTexture2(GL gl, float xmin, float ymin, float xmax, float ymax, int i) {
-
-		// Setting the floor color and material.
-		// float[] rgba = {1f, 1f, 1f};
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, rgba, 0);
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, rgba, 0);
-		// gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 0.5f);
-
-		// Apply texture.
-		if (wallTexture1 != null) {
-			wallTexture1.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, i);
-		}
-
-		// gl.glNormal3d(0, 1, 0);
-		// float wallColour[] = { 0.0f, 1.0f, 1.0f, 1.0f };
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);
-
-		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2f(0.0f, 1.0f);
-		gl.glVertex2f(xmin, ymin);
-		gl.glTexCoord2f(1.0f, 1.0f);
-		gl.glVertex2f(xmax, ymin);
-		gl.glTexCoord2f(1.0f, 0.0f);
-		gl.glVertex2f(xmax, ymax);
-		gl.glTexCoord2f(0.0f, 0.0f);
-		gl.glVertex2f(xmin, ymax);
-
-		gl.glEnd();
-
-	}
+	
 
 	public void keyPressed(KeyEvent e) {
 

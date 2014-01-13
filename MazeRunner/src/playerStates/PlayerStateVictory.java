@@ -33,11 +33,10 @@ public class PlayerStateVictory extends PlayerState{
 //		System.out.println("Victory! Score: " + MazeRunner.player.score);	
 		try {
 //			Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + MazeRunner.level.getNaam());
-			// stat.executeUpdate("CREATE TABLE students (studentnumber INT, name STRING);");
 			Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS highscores" + MazeRunner.level.getNaam()
-					+ " (naam STRING, score INT);");
+					+ " (naam STRING, score INT, time INT);");
 			Main.db.stat.executeUpdate("INSERT INTO highscores" + MazeRunner.level.getNaam()
-					+ " (naam, score) values ('" + name + "', " + MazeRunner.player.score + ");");
+					+ " (naam, score, time) values ('" + name + "', " + MazeRunner.player.score + ", " + MazeRunner.playingTime + ");");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +52,7 @@ public class PlayerStateVictory extends PlayerState{
 
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl){
-		String st= "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC LIMIT 0,5";
+		String st= "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC, time ASC LIMIT 0,5";
 		Main.db.printHighscores(autodrawable, gl, st);
 	}
 

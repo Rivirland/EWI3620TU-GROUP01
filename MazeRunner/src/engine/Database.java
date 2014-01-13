@@ -24,8 +24,7 @@ public class Database {
 			 * DriverManager will select the driver that we just loaded. To
 			 * initially create a database file,
 			 */
-			conn = DriverManager
-					.getConnection("jdbc:sqlite:db/mydatabase.db");
+			conn = DriverManager.getConnection("jdbc:sqlite:db/mydatabase.db");
 
 			/*
 			 * A Statement object is used to send SQL statements and retrieve
@@ -46,27 +45,29 @@ public class Database {
 		}
 	}
 
-	public void printHighscores(GLAutoDrawable autodrawable, GL gl,String st) {
-		float h = 0.8f; 
-		Teken.textDraw(autodrawable, gl, "Player Name", 0.35f*MazeRunner.screenWidth, 0.9f*MazeRunner.screenHeight, 60);
-		Teken.textDraw(autodrawable, gl, "Score", 0.65f*MazeRunner.screenWidth, 0.9f*MazeRunner.screenHeight, 60);
+	public void printHighscores(GLAutoDrawable autodrawable, GL gl, String st) {
+		float h = 0.8f;
+		Teken.textDraw(autodrawable, gl, "Player Name", 0.1f * MazeRunner.screenWidth, 0.9f * MazeRunner.screenHeight, 60);
+		Teken.textDraw(autodrawable, gl, "Score", 0.5f * MazeRunner.screenWidth, 0.9f * MazeRunner.screenHeight, 60);
+		Teken.textDraw(autodrawable, gl, "Time", 0.8f * MazeRunner.screenWidth, 0.9f * MazeRunner.screenHeight, 60);
 		try {
 			rs = stat.executeQuery(st);
 			while (rs.next()) {
-				
+
 				// Retrieve the values from the rows, by specifying the column
 				// name.
-				Teken.textDraw(autodrawable, gl, rs.getString("naam"), 0.35f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 60);
-				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.65f*MazeRunner.screenWidth, h*MazeRunner.screenHeight, 60);
+				Teken.textDraw(autodrawable, gl, rs.getString("naam"), 0.1f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
+				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.5f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
+				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("time")/1000), 0.8f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
 
-				h-=0.1;
+				h -= 0.1;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void close(){
+
+	public void close() {
 		try {
 			rs.close();
 			stat.close();

@@ -2,11 +2,16 @@ package menu;
 
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 import engine.Skybox;
 
@@ -35,7 +40,8 @@ public class MainMenu {
 	}
 	
 	public void display(GLAutoDrawable drawable, GL gl){
-		
+
+//		Teken.plaatsTexture(gl, 100, 100, 200, 200, 19);	
 		
 		
 		Teken.startText(drawable, "Arial", 90); 
@@ -106,5 +112,6 @@ public class MainMenu {
 		}
 		return gamestate;
 	}
+
 
 }
