@@ -219,7 +219,6 @@ public class Player extends GameObject {
 		if (canMove) {
 			playerStateUpdate();
 			double previousX = this.getLocationX();
-			double previousY = this.getLocationY();
 			double previousZ = this.getLocationZ();
 
 			if (control != null) {
@@ -276,6 +275,7 @@ public class Player extends GameObject {
 			}
 
 			if (control.gunShoot && playerStateInt == 2) {
+				// TODO: FIX DEZE SHIZZLE
 				((PlayerStateGun) this.PlayerStateGun).shootGun();
 				control.gunShoot = false;
 			}

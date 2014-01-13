@@ -4,9 +4,7 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
-import enemies.EnemySmart;
 import engine.GameObject;
-import engine.Player;
 import engine.VisibleObject;
 
 public class Bullet extends GameObject implements VisibleObject {

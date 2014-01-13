@@ -27,9 +27,9 @@ public class TrapHolder extends Item {
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		// drawCuboid
-		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax,14);
+		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, 14);
 		gl.glPopMatrix();
-		
+
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class TrapHolder extends Item {
 		double diffX = object.getGlobalX() - this.getGlobalX();
 		double diffY = object.getGlobalY() - this.getGlobalY();
 		double diffZ = object.getGlobalZ() - this.getGlobalZ();
-		
-		if (Math.sqrt(diffX * diffX  + diffZ * diffZ) < 2) {
+
+		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
 			if (object instanceof Player) {
 				return true;
 			} else {

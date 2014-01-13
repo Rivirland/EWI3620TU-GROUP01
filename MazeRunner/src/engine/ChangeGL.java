@@ -1,7 +1,6 @@
 package engine;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
 public class ChangeGL {
 

@@ -324,6 +324,10 @@ public class Teken {
 	}
 	
 	public static void plaatsTexture(GL gl, float xmin, float ymin, float xmax, float ymax, int i) {
+		if(i == 19){
+			System.out.println(gl.glIsEnabled(GL.GL_LIGHTING));
+		}
+		
 		gl.glBindTexture(GL.GL_TEXTURE_2D, i);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(0.0f, 1.0f);

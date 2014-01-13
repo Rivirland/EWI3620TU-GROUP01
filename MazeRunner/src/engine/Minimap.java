@@ -3,8 +3,6 @@ package engine;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import menu.Teken;
-
 public class Minimap {
 	private static int minimapX = (int) (.4 * MazeRunner.screenWidth);
 	private static int minimapZ = (int) (.4 * MazeRunner.screenHeight);
@@ -45,10 +43,10 @@ public class Minimap {
 			Maze curMaze = MazeRunner.level.getMaze(mazeID);
 			double totalX = curMaze.maxX - curMaze.minX;
 			double totalZ = curMaze.maxZ - curMaze.minZ;
-			columnPercentageX = (curMaze.COLUMN_WIDTH / totalX);
-			columnPercentageZ = (curMaze.COLUMN_WIDTH / totalZ);
-			wallPercentageX = curMaze.WALL_LENGTH / totalX;
-			wallPercentageZ = curMaze.WALL_LENGTH / totalZ;
+			columnPercentageX = (Maze.COLUMN_WIDTH / totalX);
+			columnPercentageZ = (Maze.COLUMN_WIDTH / totalZ);
+			wallPercentageX = Maze.WALL_LENGTH / totalX;
+			wallPercentageZ = Maze.WALL_LENGTH / totalZ;
 			// System.out.println(wallPercentageX+ " " + wallPercentageZ);
 			
 			for (int i = 0; i < curMaze.visitedMatrix.length; i++) {

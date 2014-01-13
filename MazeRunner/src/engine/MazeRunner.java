@@ -9,16 +9,13 @@ import items.TrapDropped;
 import items.TrapDroppedGBS;
 import items.TrapHolder;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -30,7 +27,6 @@ import menu.Teken;
 import model.Model;
 import model.OBJLoader;
 
-import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -127,19 +123,19 @@ public class MazeRunner {
 
 	}
 
-	public void setScreen(int screenWidth, int screenHeight) {
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
+	public void setScreen(int Width, int Height) {
+		screenWidth = Width;
+		screenHeight = Height;
 		Reticle.setScreenWidth(screenWidth);
 		Reticle.setScreenHeight(screenHeight);
 		Minimap.setMinimapX((int) (.4 * MazeRunner.screenWidth));
 		Minimap.setMinimapZ((int) (.4 * MazeRunner.screenHeight));
 	}
 
-	public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
+	public void setScreen(GLU glu, GL gl, int Width, int Height) {
 
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
+		screenWidth = Width;
+		screenHeight = Height;
 
 		gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
 
@@ -158,14 +154,14 @@ public class MazeRunner {
 		input.noMousechange();
 	}
 
-	public void initObjects(GLCanvas canvas, UserInput input, Level level) {
+	public void initObjects(GLCanvas canvas, UserInput input, Level l) {
 
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
 		// Add the maze that we will be using
-		this.level = level;
-		GeneticAlgorithm GA = new GeneticAlgorithm(level.mazelist, 50);
+		level = l;
+		GeneticAlgorithm GA = new GeneticAlgorithm(Level.mazelist, 50);
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
 
@@ -283,7 +279,7 @@ public class MazeRunner {
 	}
 
 	public void setTime(long time) {
-		this.previousTime = time;
+		previousTime = time;
 	}
 
 	// function to test multiple views, and later to test portals
@@ -341,7 +337,6 @@ public class MazeRunner {
 		gl.glLoadIdentity();
 
 		GLU glu = new GLU();
-		GLUT glut = new GLUT();
 
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
@@ -672,7 +667,8 @@ public class MazeRunner {
 		double previousX = player.getLocationX();
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
-
+		// Item updating
+		
 		// Player updating
 		player.update(deltaTime, drawable);
 		int currentMazeID = level.getCurrentMaze(player);
@@ -691,6 +687,18 @@ public class MazeRunner {
 						MazeRunner.player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
+					}
+				}
+			}
+			// Check for collision between TrapDropped items, if so, call bounce method.
+			for (int i =0; i < currentMaze.itemList.size(); i++){
+				Item itemi = currentMaze.itemList.get(i);
+				if (itemi instanceof TrapDropped){
+					for (int j =0; j<currentMaze.itemList.size(); j++){
+						Item itemj = currentMaze.itemList.get(j);
+						if (itemi.touches(itemj) && i!=j && itemj instanceof TrapDropped){
+							((TrapDropped) itemi).bounce((TrapDropped) itemj);
+						}
 					}
 				}
 			}
@@ -732,6 +740,7 @@ public class MazeRunner {
 							visibleObjects.add(tdGBS);
 						}
 					}
+					
 				}
 			}
 
@@ -741,7 +750,7 @@ public class MazeRunner {
 			b.update(deltaTime);
 			int i = MazeRunner.level.getCurrentMaze(b);
 			if (i != -1) {
-				Maze maze = MazeRunner.level.mazelist.get(i);
+				Maze maze = Level.mazelist.get(i);
 				if (b.locationY < maze.mazeY + 0.1) {
 					visibleObjects.remove(b);
 					bulletList.remove(b);
@@ -811,6 +820,8 @@ public class MazeRunner {
 			}
 		}
 
+
+
 		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
 		// updateMovement
 		// ****************
@@ -837,7 +848,7 @@ public class MazeRunner {
 			MazeRunner.player.canTeleport = true;
 		}
 
-		for (Maze m : level.mazelist) {
+		for (Maze m : Level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
 					if (i.touches(player) && player.playerStateInt != 4) {

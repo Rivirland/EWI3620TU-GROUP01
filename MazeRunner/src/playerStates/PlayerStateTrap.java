@@ -1,6 +1,5 @@
 package playerStates;
 
-import items.Item;
 import items.TrapDropped;
 
 import javax.media.opengl.GL;
@@ -16,7 +15,7 @@ public class PlayerStateTrap extends PlayerState {
 		if (MazeRunner.player.nrOfTraps > 0 && MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1) {
 			MazeRunner.player.nrOfTraps--;
 			double trapX = MazeRunner.player.getGlobalX();
-			double trapY = MazeRunner.player.getGlobalY()-0.2;
+			double trapY = MazeRunner.player.getGlobalY() - 0.2;
 			double trapZ = MazeRunner.player.getGlobalZ();
 			TrapDropped trapDropped = new TrapDropped(trapX, trapY, trapZ, MazeRunner.level.getCurrentMaze(MazeRunner.player));
 			trapDropped.setThrown(true);
@@ -31,8 +30,6 @@ public class PlayerStateTrap extends PlayerState {
 		} else {
 			System.out.println("Not in a maze");
 		}
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -45,8 +42,6 @@ public class PlayerStateTrap extends PlayerState {
 	public void leaving() {
 		System.out.println("Leaving TrapMode");
 		// Remove Trap
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -55,7 +50,7 @@ public class PlayerStateTrap extends PlayerState {
 	}
 
 	public void displayItem(GL gl) {
-		if (MazeRunner.player.nrOfTraps>0){
+		if (MazeRunner.player.nrOfTraps > 0) {
 			gl.glPushMatrix();
 			gl.glTranslated(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ());
 			double s = Math.toRadians(MazeRunner.player.getHorAngle());
@@ -67,11 +62,11 @@ public class PlayerStateTrap extends PlayerState {
 			gl.glRotated(MazeRunner.player.getHorAngle(), 0, 1, 0);
 			gl.glRotated(MazeRunner.player.getVerAngle(), 1, 0, 0);
 			gl.glDisable(GL.GL_CULL_FACE);
-	
+
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 28);
-//			MazeRunner.trapModel.display(gl);
+			// MazeRunner.trapModel.display(gl);
 			Teken.drawCuboid(gl, 0.3, 0.6, -0.6, -0.3, 0, 0.3);
-			
+
 			gl.glPopMatrix();
 		}
 	}

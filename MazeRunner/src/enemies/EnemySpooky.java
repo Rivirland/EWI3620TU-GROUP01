@@ -4,9 +4,6 @@ import javax.media.opengl.GL;
 
 import playerStates.PlayerState;
 
-import com.sun.opengl.util.GLUT;
-
-import engine.Animator;
 import engine.Maze;
 import engine.MazeRunner;
 import engine.Player;

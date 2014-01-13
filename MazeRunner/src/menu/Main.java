@@ -200,17 +200,18 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glLoadIdentity();
 		Teken teken = new Teken();
 		mainmenu = new MainMenu(screenWidth, screenHeight);
-		try {
-			leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));
-		} catch (FileNotFoundException e) {
-			System.out.println("file niet gevonden: " + System.getProperty("user.dir") + "\\worlds\\world.txt");
-		}
+		
 		gamemenu = new GameMenu(screenWidth, screenHeight);
 		quit = new Quit(screenWidth, screenHeight); // quit
 		settings = new Settings(screenWidth, screenHeight); // menu
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
+		try {
+			leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));
+		} catch (FileNotFoundException e) {
+			System.out.println("file niet gevonden: " + System.getProperty("user.dir") + "\\worlds\\world.txt");
+		}
 		db = new Database();
 		loadTextures(gl);
 		Sound.init();
@@ -233,10 +234,16 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		// We have a simple 2D application, so we do not need to check for depth
 		// when rendering.
 		// gl.glDisable(GL.GL_DEPTH_TEST);
+		
+		gl.glDisable(GL.GL_LIGHTING);
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glDisable(GL.GL_LIGHTING);
+		gl.glDisable(GL.GL_LIGHT0);
 
 		userinput.setmouselookMode(false);
 		canvas.setCursor(normalCursor);
-
+		canvas.setVisible(true);
 	}
 
 	/*
@@ -675,6 +682,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			try {
 			TextureData textureData = TextureIO.newTextureData(file, false, "jpg");
 			Texture texture = TextureIO.newTexture(textureData);
+			texture.enable();
 			textureList.set(z, texture);
 			System.out.println("Texture succesfully loaded: " + z + ": " + file);
 			}catch (Exception e){

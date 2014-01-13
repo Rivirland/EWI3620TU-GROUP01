@@ -8,8 +8,9 @@ import engine.MazeRunner;
 import engine.Player;
 
 public class BulletHolder extends Item {
-	public final int amount; 
-	public BulletHolder(double x, double y, double z, int i,int amount) {
+	public final int amount;
+
+	public BulletHolder(double x, double y, double z, int i, int amount) {
 		super(x, y, z, i);
 		this.amount = amount;
 	}
@@ -26,14 +27,13 @@ public class BulletHolder extends Item {
 		double zmin = 0;
 		double zmax = sizeZ;
 		// Setting the trapHolder color and material.
-	
 
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
 		// drawCuboid
 		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, 27);
 		gl.glPopMatrix();
-		
+
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class BulletHolder extends Item {
 		double diffX = object.getGlobalX() - this.getGlobalX();
 		double diffY = object.getGlobalY() - this.getGlobalY();
 		double diffZ = object.getGlobalZ() - this.getGlobalZ();
-		
-		if (Math.sqrt(diffX * diffX  + diffZ * diffZ) < 2) {
+
+		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
 			if (object instanceof Player) {
 				return true;
 			} else {

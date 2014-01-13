@@ -5,7 +5,6 @@ import javax.media.opengl.GL;
 import com.sun.opengl.util.GLUT;
 
 import engine.GameObject;
-import engine.MazeRunner;
 import engine.Player;
 
 public class Exit extends Item {
@@ -34,19 +33,16 @@ public class Exit extends Item {
 
 	@Override
 	public double getGlobalX() {
-		// TODO Auto-generated method stub
 		return locationX;
 	}
 
 	@Override
 	public double getGlobalY() {
-		// TODO Auto-generated method stub
 		return locationY;
 	}
 
 	@Override
 	public double getGlobalZ() {
-		// TODO Auto-generated method stub
 		return locationZ;
 	}
 

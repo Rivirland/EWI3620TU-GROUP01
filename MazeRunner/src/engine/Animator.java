@@ -2,7 +2,6 @@ package engine;
 
 import items.*;
 import enemies.Enemy;
-import enemies.EnemySpooky;
 
 public abstract class Animator {
 
@@ -104,18 +103,26 @@ public abstract class Animator {
 			Maze curMaze = MazeRunner.level.getMaze(t.mazeID);
 			double previousX = t.getLocationX();
 			double previousZ = t.getLocationZ();
-			t.setLocationX(t.getLocationX() - (Math.sin(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
-			t.setLocationY(t.getLocationY() + TrapDropped.vy0 * dT * i + TrapDropped.ay * dT * dT * i * i);
-
-			t.setLocationZ(t.getLocationZ() - (Math.cos(Math.toRadians(t.horAngle)) * TrapDropped.vx0 * 0.07));
+			
+			t.setLocationX(t.getLocationX() - (Math.sin(Math.toRadians(t.horAngle)) * t.vx0 * 0.07));
+			t.setLocationY(t.getLocationY() + t.vy0  * dT * i + t.ay * dT * dT * i * i);
+			t.setLocationZ(t.getLocationZ() - (Math.cos(Math.toRadians(t.horAngle)) * t.vx0 * 0.07));
 			
 			boolean[] trapCollide = MazeRunner.level.collides(t, 0.25);
 			if (trapCollide[0] || trapCollide[2]) {
 				t.setLocationX(previousX);
+				t.horAngle=-t.horAngle;
+				t.vx0=t.vx0*0.5;
 			}
 			if (trapCollide[1] || trapCollide[3]) {
 				t.setLocationZ(previousZ);
+				t.horAngle=-180-t.horAngle;
+				t.vx0=t.vx0*0.5;
 			}
+			trapCollide[0]=false;
+			trapCollide[1]=false;
+			trapCollide[2]=false;
+			trapCollide[3]=false;
 			
 			if (t.getLocationY() <= curMaze.mazeY) {
 				t.inair = false;
