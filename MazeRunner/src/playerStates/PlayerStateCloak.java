@@ -22,6 +22,7 @@ public class PlayerStateCloak extends PlayerState{
 
 	@Override
 	public void leaving() {
+		MazeRunner.player.invisible = false;
 		System.out.println("Leaving Cloak mode");
 	}
 	

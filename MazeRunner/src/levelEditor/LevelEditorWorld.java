@@ -58,7 +58,11 @@ public class LevelEditorWorld {
 				gl.glColor3f(0.76f, 0.76f, 0.76f);
 				Teken.kruis(gl, xmax-24f/1920f*screenWidth, ymax-((ymax-ymin)*(i+1)/20)+10f/1080f*screenHeight, xmax-10f/1920f*screenWidth, ymax-((ymax-ymin)*i/20)-10f/1080f*screenHeight);
 			}
-			Teken.textDrawMetKleur(drawable, gl, levels.get(i).getName(), xmin, ymax-((ymax-ymin)*(i+1)/20), 30, 1f, 1f, 1f);
+			String levelName = levels.get(i).getName();
+			if(levelName.length() > 6){
+				levelName = levelName.substring(0,6);
+			}
+			Teken.textDrawMetKleur(drawable, gl, levelName, xmin, ymax-((ymax-ymin)*(i+1)/20), 30, 1f, 1f, 1f);
 			
 			//popup menu
 			if (xmin < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < xmax){
@@ -89,6 +93,9 @@ public class LevelEditorWorld {
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 		String currentdir = System.getProperty("user.dir");
 		String filename = kfub.saveFile(new Frame(), "Save world as...", currentdir + "\\worlds\\", "*");
+		if(filename == null){
+			filename = "basename";
+		}
 		//als de bestandsnaam al eindigt op .txt , knip dat er dan af
 		if (filename.substring(filename.length()-4, filename.length()).equals(".txt")){
 			filename = filename.substring(0, filename.length()-4);

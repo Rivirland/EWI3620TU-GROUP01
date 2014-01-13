@@ -12,9 +12,10 @@ import engine.Sound;
 
 public class PlayerStateFly extends PlayerState {
 
-	public static void shootGun() {
+	@Override
+	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
-			Sound.sounds.get("gunfire").play();
+			Sound.sounds.get("Gunfire").play();
 			MazeRunner.player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
@@ -25,26 +26,14 @@ public class PlayerStateFly extends PlayerState {
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
 		} else {
-			Sound.sounds.get("noBullet").play();
+			Sound.sounds.get("noBullets").play();
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
 		// Shoot bullet if nrOfBullets > 0
 	}
 
-	@Override
-	public void itemUse() { // kan dit een reload worden voor gun?
-		if (MazeRunner.player.nrOfBullets > 0) {
-			System.out.println("RELOADING");
-			System.out.println("WE'VE BEEN OVERRUN!!!");
-			System.out.println("PRESS MOUSE BUTTON BEFORE TOO LATE!");
-		} else {
-			Sound.sounds.get("noBullet").play();
-		}
-		System.out.println(MazeRunner.player.nrOfBullets);
-
-		// Shoot bullet if nrOfBullets > 0
-	}
+	
 
 	@Override
 	public void entering() {

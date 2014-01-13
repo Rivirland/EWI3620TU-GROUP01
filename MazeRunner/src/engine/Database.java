@@ -56,7 +56,11 @@ public class Database {
 
 				// Retrieve the values from the rows, by specifying the column
 				// name.
-				Teken.textDraw(autodrawable, gl, rs.getString("naam"), 0.1f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
+				String name = rs.getString("naam");
+				if(name.length() > 10){
+					name = name.substring(0,9);
+				}
+				Teken.textDraw(autodrawable, gl, name, 0.1f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
 				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.5f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
 				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("time")/1000), 0.8f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
 

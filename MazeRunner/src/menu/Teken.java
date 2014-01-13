@@ -323,11 +323,7 @@ public class Teken {
 		lineOnScreen(gl, xportal - distance / 2 + distance / 10, yportal + distance / 10, xportal - distance / 2, yportal);
 	}
 	
-	public static void plaatsTexture(GL gl, float xmin, float ymin, float xmax, float ymax, int i) {
-		if(i == 19){
-			System.out.println(gl.glIsEnabled(GL.GL_LIGHTING));
-		}
-		
+	public static void plaatsTexture(GL gl, float xmin, float ymin, float xmax, float ymax, int i) {		
 		gl.glBindTexture(GL.GL_TEXTURE_2D, i);
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(0.0f, 1.0f);

@@ -179,8 +179,7 @@ public class Player extends GameObject {
 				System.out.println("1");
 				control.minimap = false;
 				control.info = true;
-			}
-			else if (control.info) {
+			} else if (control.info) {
 				System.out.println("2");
 				control.info = false;
 			} else {
@@ -188,34 +187,32 @@ public class Player extends GameObject {
 			}
 		}
 		minimapUpdate();
-		
-		if(MazeRunner.level.getCurrentMaze(this) == -1){
-			falling = true;
-			locationY -= fallingSpeed*deltaTime;
-			fallingSpeed = fallingSpeed * 1.007;
-		}else{
-			Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
-			if(locationY>curMaze.mazeY+2.5){
+
+		if (playerStateInt != 5) {
+			if (MazeRunner.level.getCurrentMaze(this) == -1) {
 				falling = true;
-				locationY = Math.max(curMaze.mazeY+2.5, locationY-fallingSpeed*deltaTime);
+				locationY -= fallingSpeed * deltaTime;
 				fallingSpeed = fallingSpeed * 1.007;
-			}else{
-				fallingSpeed = 0.01;
-				locationY = curMaze.mazeY+2.5;
-				falling = false;
+			} else {
+				Maze curMaze = MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this));
+				if (locationY > curMaze.mazeY + 2.5) {
+					falling = true;
+					locationY = Math.max(curMaze.mazeY + 2.5, locationY - fallingSpeed * deltaTime);
+					fallingSpeed = fallingSpeed * 1.007;
+				} else {
+					fallingSpeed = 0.01;
+					locationY = curMaze.mazeY + 2.5;
+					falling = false;
+				}
 			}
 		}
-		
-		
-		
-		if(locationY < MazeRunner.level.minGlobalY){
+
+		if (locationY < MazeRunner.level.minGlobalY && playerStateInt != 5) {
 			PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
 			MazeRunner.player.playerStateInt = 3;
 			PlayerState.getState(MazeRunner.player.playerStateInt).entering();
 		}
-		
-		
-		
+
 		if (canMove) {
 			playerStateUpdate();
 			double previousX = this.getLocationX();
@@ -257,13 +254,13 @@ public class Player extends GameObject {
 					locationZ -= Math.cos(Math.toRadians(getHorAngle() + 270)) * speed * deltaTime;
 				}
 				if (control.up) {
-//					locationY += speed * deltaTime;
+					locationY += speed * deltaTime;
 				}
 				if (control.down) {
-//					locationY -= speed * deltaTime;
-//					if (locationY < 2.5) {
-//						locationY = 2.5;
-//					}
+					locationY -= speed * deltaTime;
+					if (locationY < 2.5) {
+						locationY = 2.5;
+					}
 				}
 				boolean[] playerCollide = MazeRunner.level.collides(this, 0.2);
 				if (playerCollide[0] || playerCollide[2]) {
@@ -273,18 +270,6 @@ public class Player extends GameObject {
 					this.setLocationZ(previousZ);
 				}
 			}
-
-			if (control.gunShoot && playerStateInt == 2) {
-				// TODO: FIX DEZE SHIZZLE
-				((PlayerStateGun) this.PlayerStateGun).shootGun();
-				control.gunShoot = false;
-			}
-
-			/*
-			 * }else{ if (control.itemUse) {
-			 * PlayerState.getState(playerStateInt).itemUse(); control.itemUse =
-			 * false;}
-			 */
 
 		}
 		if (control.itemUse) {

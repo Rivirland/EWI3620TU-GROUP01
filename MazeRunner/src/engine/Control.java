@@ -35,7 +35,7 @@ public abstract class Control
 	protected boolean playerStateDown = false;
 	protected boolean playerStateUp = false;
 	public boolean minimap = false;
-	public boolean info = false;
+	public boolean info = true;
 	protected int dX = 0;
 	protected int dY = 0;
 	

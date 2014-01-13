@@ -46,7 +46,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 					this.locationZ += this.speed * deltaTime;
 				}
 				if (Math.sqrt(Math.pow(locationZ-currentMaze.mazeZ - playerZ, 2)
-						+ Math.pow(locationX-currentMaze.mazeX- playerX, 2)) < 1 && player.playerStateInt != 4) {
+						+ Math.pow(locationX-currentMaze.mazeX- playerX, 2)) < 1 && player.playerStateInt != 4 && player.playerStateInt != 5) {
 					PlayerState.getState(player.playerStateInt).leaving();
 					player.playerStateInt = 3;
 					PlayerState.getState(player.playerStateInt).entering();

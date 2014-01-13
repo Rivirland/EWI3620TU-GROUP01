@@ -33,15 +33,15 @@ public class Level {
 	private int[] orderMazesOnHeight() {
 		int[] res = new int[this.aantal];
 		double[] temp = new double[this.aantal];
-		for (int i = 0; i < this.aantal; i++){
+		for (int i = 0; i < this.aantal; i++) {
 			temp[i] = mazelist.get(i).mazeY;
 		}
 		Arrays.sort(temp);
-		
-		for(int i = 0; i < this.aantal; i++){
-			double height = temp[this.aantal-i-1];
-			for (int j = 0; j < this.aantal; j++){
-				if(mazelist.get(j).mazeY == height && !contains(res,j)){
+
+		for (int i = 0; i < this.aantal; i++) {
+			double height = temp[this.aantal - i - 1];
+			for (int j = 0; j < this.aantal; j++) {
+				if (mazelist.get(j).mazeY == height && !contains(res, j)) {
 					res[i] = j;
 				}
 			}
@@ -51,8 +51,8 @@ public class Level {
 	}
 
 	private boolean contains(int[] res, int j) {
-		for (int i = 0; i < res.length; i++){
-			if(res[i]==j){
+		for (int i = 0; i < res.length; i++) {
+			if (res[i] == j) {
 				return true;
 			}
 		}
@@ -115,7 +115,7 @@ public class Level {
 				double z = Double.parseDouble(st.nextToken());
 				String m = st.nextToken();
 				System.out.println("Level loaded: " + m + " x: " + x + " y: " + y + " z: " + z);
-				if(y<minGlobalY){
+				if (y < minGlobalY) {
 					minGlobalY = y;
 				}
 				Maze maze = new Maze(m, i, x, y, z);
@@ -180,7 +180,7 @@ public class Level {
 					res[0] = true;
 				}// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX0, newZ0) > 200) {
-					//double globX = object.locationX + margin;
+					// double globX = object.locationX + margin;
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
 					// Wall in X-direction
@@ -197,7 +197,7 @@ public class Level {
 				else if (maze.getTextureElementOnCoords(newX1, newZ1) > 200) {
 
 					double globX = object.locationX;
-					//double globZ = object.locationZ - margin;
+					// double globZ = object.locationZ - margin;
 					double[] wallXZ = maze.MatrixElementToCoords(newX1, newZ1);
 					// System.out.println(globX + " " + globZ + ", " +
 					// (wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2))
@@ -214,7 +214,7 @@ public class Level {
 					res[2] = true;
 				}// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX2, newZ2) > 200) {
-//					double globX = object.locationX - margin;
+					// double globX = object.locationX - margin;
 					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX2, newZ2);
 					// System.out.println(wallXZ[0] + " " + wallXZ[1]);
@@ -230,7 +230,7 @@ public class Level {
 				}// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX3, newZ3) > 200) {
 					double globX = object.locationX;
-//					double globZ = object.locationZ + margin;
+					// double globZ = object.locationZ + margin;
 					double[] wallXZ = maze.MatrixElementToCoords(newX3, newZ3);
 					// Wall in X-direction
 
@@ -243,12 +243,10 @@ public class Level {
 		}
 		return res;
 	}
-	
 
 	public int getStartingBullets() {
 		return this.startingBullets;
 	}
-	
 
 	public int getStartingTraps() {
 		return this.startingTraps;

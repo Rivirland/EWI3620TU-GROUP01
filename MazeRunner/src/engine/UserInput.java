@@ -41,16 +41,18 @@ public class UserInput extends Control implements Runnable {
 	private Point mouseLocation;
 	private Point centerLocation;
 
-	private boolean relativeMouseMode; // to turn this mode (mouselook) off or	// on
+	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
+										// // on
 	private boolean isRecentering;
 	private boolean mouselookMode = true;
 	private boolean flyMode = true;
 	private Cursor cursor;
 
-//	private boolean relativeMouseMode; // to turn this mode (mouselook) off or
-										// on
+	// private boolean relativeMouseMode; // to turn this mode (mouselook) off
+	// or
+	// on
 
-//	private Cursor cursor;
+	// private Cursor cursor;
 
 	private boolean mousechange = false;
 	private boolean startedinput = false;
@@ -60,7 +62,6 @@ public class UserInput extends Control implements Runnable {
 	Cursor normalCursor;
 
 	private GLCanvas canvas;
-
 
 	// TODO: Add fields to help calculate mouse movement
 
@@ -78,9 +79,9 @@ public class UserInput extends Control implements Runnable {
 
 		kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		//canvas.addMouseListener(this);
-		//canvas.addMouseMotionListener(this);
-		//canvas.addKeyListener(this);
+		// canvas.addMouseListener(this);
+		// canvas.addMouseMotionListener(this);
+		// canvas.addKeyListener(this);
 		this.canvas = canvas;
 		init(canvas);
 
@@ -95,18 +96,17 @@ public class UserInput extends Control implements Runnable {
 	public void init(GLCanvas canvas) {
 		// window= canvas;
 
-		invisibleCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-				Toolkit.getDefaultToolkit().getImage(""), new Point(0, 0),
-				"invisible");
+		invisibleCursor = Toolkit.getDefaultToolkit().createCustomCursor(Toolkit.getDefaultToolkit().getImage(""), new Point(0, 0), "invisible");
 		normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 		// canvas.setCursor(invisibleCursor);
 		mouseLocation = new Point();
 		centerLocation = new Point();
-//		relativeMouseMode = true;
+		// relativeMouseMode = true;
 		isRecentering = true;
 
-		// the robot is an object to bring the mouse back to the center of the screen
+		// the robot is an object to bring the mouse back to the center of the
+		// screen
 		try {
 			robot = new Robot();
 			if (mouselookMode) {
@@ -117,8 +117,7 @@ public class UserInput extends Control implements Runnable {
 		}
 
 		catch (Exception e) {
-			System.out
-					.println("Robot couldn't be made and may not be supported by your system");
+			System.out.println("Robot couldn't be made and may not be supported by your system");
 		}
 
 	}
@@ -133,49 +132,46 @@ public class UserInput extends Control implements Runnable {
 			robot.mouseMove(centerLocation.x, centerLocation.y);
 
 		}
-		
+
 	}
 
 	/*
 	 * **********************************************
 	 * * Updating * **********************************************
 	 */
-	public void reshape (){
+	public void reshape() {
 		// iets doen met als de window in zijn geheel wordt verplaatst
-		if (startedinput){
-		centerLocation.x = canvas.getWidth() / 2;
-		centerLocation.y = canvas.getHeight() / 2;
+		if (startedinput) {
+			centerLocation.x = canvas.getWidth() / 2;
+			centerLocation.y = canvas.getHeight() / 2;
 		}
 	}
-	
+
 	@Override
 	public void update(GLAutoDrawable drawable) {
 		if (!mouselookMode) {
-			
+
 			dX = x1 - x2;
 			dY = y1 - y2;
 			x1 = x2;
 			y1 = y2;
-			
+
 		}
 
 		if (mousechange) {
 			cursorChange(mouselookMode);
 		}
 	}
-		
-		public void cursorChange(boolean mouselookMode){
-			if (this.mouselookMode) {
-				canvas.setCursor(invisibleCursor);
-				mousechange = false;
-			} else {
-				canvas.setCursor(normalCursor);
-				mousechange = false;
-			}
+
+	public void cursorChange(boolean mouselookMode) {
+		if (this.mouselookMode) {
+			canvas.setCursor(invisibleCursor);
+			mousechange = false;
+		} else {
+			canvas.setCursor(normalCursor);
+			mousechange = false;
 		}
-
-
-	
+	}
 
 	/*
 	 * **********************************************
@@ -183,9 +179,8 @@ public class UserInput extends Control implements Runnable {
 	 */
 
 	public void mousePressed(MouseEvent event) {
-		
-		gunShoot=true;
-	
+		itemUse = true;
+
 		if (!mouselookMode) {
 			x1 = event.getX();
 			y1 = event.getY();
@@ -198,7 +193,7 @@ public class UserInput extends Control implements Runnable {
 	public void mouseDragged(MouseEvent event) {
 		if (!mouselookMode) {
 			x2 = event.getX();
-			
+
 			y2 = event.getY();
 		} else {
 			mouseMoved(event);
@@ -211,8 +206,7 @@ public class UserInput extends Control implements Runnable {
 		 * if (isRecentering && centerLocation.x == event.getX() &&
 		 * centerLocation.y ==event.getY()){ isRecentering = false;
 		 */
-		
-		
+
 		if (isRecentering) {
 			isRecentering = false;
 		} else {
@@ -244,10 +238,14 @@ public class UserInput extends Control implements Runnable {
 			right = true;
 		}
 		if (event.getKeyCode() == KeyEvent.VK_Z) {
-			up = true;
+			if (MazeRunner.player.playerStateInt == 5) {
+				up = true;
+			}
 		}
 		if (event.getKeyCode() == KeyEvent.VK_X) {
-			down = true;
+			if (MazeRunner.player.playerStateInt == 5) {
+				down = true;
+			}
 		}
 
 		if (event.getKeyCode() == KeyEvent.VK_P) {
@@ -263,18 +261,6 @@ public class UserInput extends Control implements Runnable {
 
 		if (event.getKeyCode() == KeyEvent.VK_L) {
 			// hierin switch voor full screen
-		}
-		
-		if (event.getKeyCode() == KeyEvent.VK_M) {
-			if (MazeRunner.player.playerStateInt == 2) {
-				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
-				MazeRunner.player.playerStateInt = 5;
-				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
-			} else if (MazeRunner.player.playerStateInt == 5){
-				PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
-				MazeRunner.player.playerStateInt = 2;
-				PlayerState.getState(MazeRunner.player.playerStateInt).entering();
-			}
 		}
 
 	}
@@ -293,47 +279,45 @@ public class UserInput extends Control implements Runnable {
 			right = false;
 		}
 		if (event.getKeyCode() == KeyEvent.VK_Z) {
-			up = false;
+			if (MazeRunner.player.playerStateInt != 5) {
+				playerStateUp = true;
+			} else {
+				up = false;
+			}
 		}
 		if (event.getKeyCode() == KeyEvent.VK_X) {
-			down = false;
+			if (MazeRunner.player.playerStateInt != 5) {
+				playerStateDown = true;
+			} else {
+				down = false;
+			}
 		}
-		if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-			System.out.println("do it for realz");
-			itemUse = true;	
-		}
-		if(event.getKeyCode() == KeyEvent.VK_UP){
-			playerStateUp = true;
-		}
-		if(event.getKeyCode() == KeyEvent.VK_DOWN){
-			playerStateDown = true;
-		}
-		if(event.getKeyCode() == KeyEvent.VK_TAB){
+		if (event.getKeyCode() == KeyEvent.VK_TAB) {
 			tab = true;
 		}
 	}
 
-	public void setmouselookMode (boolean mouselookMode){
-		if (this.mouselookMode != mouselookMode){
-			
-			this.mouselookMode=mouselookMode;
+	public void setmouselookMode(boolean mouselookMode) {
+		if (this.mouselookMode != mouselookMode) {
+
+			this.mouselookMode = mouselookMode;
 			mousechange = true;
 		}
-		
+
 	}
-	
+
 	/*
 	 * **********************************************
 	 * * Unused event handlers * **********************************************
 	 */
 
-	public void noMousechange(){
-		if(mouselookMode){
+	public void noMousechange() {
+		if (mouselookMode) {
 			recenterMouse(this.canvas);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

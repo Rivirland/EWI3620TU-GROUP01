@@ -45,7 +45,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	static final long serialVersionUID = 7526471155622776147L;
 	public static ArrayList<Texture> textureList = null;
 
-
 	// Screen size.
 	private int screenWidth = 800, screenHeight = 600;
 	private float buttonSize = screenHeight / 10.0f;
@@ -79,7 +78,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long ingamepausetime;
 	// time the pause is resumed
 	private long pausedtime;
-	private boolean selected = false;
+	private boolean selectedG = false;
+	private boolean selectedL = false;
 
 	// private boolean mouselookMode;
 	// the gamestate
@@ -198,12 +198,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		// Always reset the matrix before performing transformations, otherwise
 		// those transformations will stack with previous transformations!
 		gl.glLoadIdentity();
-		Teken teken = new Teken();
+		Teken t = new Teken();
 		mainmenu = new MainMenu(screenWidth, screenHeight);
-		
+
 		gamemenu = new GameMenu(screenWidth, screenHeight);
-		quit = new Quit(screenWidth, screenHeight); // quit
-		settings = new Settings(screenWidth, screenHeight); // menu
+		quit = new Quit(screenWidth, screenHeight); 
+		settings = new Settings(screenWidth, screenHeight); 
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
@@ -215,7 +215,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		db = new Database();
 		loadTextures(gl);
 		Sound.init();
-		
+
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the
 		 * active matrix. In this case, a simple 2D projection is performed,
@@ -234,7 +234,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		// We have a simple 2D application, so we do not need to check for depth
 		// when rendering.
 		// gl.glDisable(GL.GL_DEPTH_TEST);
-		
+
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glDisable(GL.GL_DEPTH_TEST);
@@ -243,7 +243,6 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		userinput.setmouselookMode(false);
 		canvas.setCursor(normalCursor);
-		canvas.setVisible(true);
 	}
 
 	/*
@@ -327,7 +326,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 			break;
 		case INGAME:
-			selected = false;
+			selectedG = false;
 			if (!ingamestarted) {
 				ingamestarted = true;
 				mazerunner.init(drawable, gl, glu);
@@ -348,9 +347,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			break;
 
 		case LOADGAME:
-			System.out.println("Selected: " + selected);
-			if (!selected) {
-				selected = true;
+			if (!selectedG) {
+				selectedG = true;
 				KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 				String currentdir = System.getProperty("user.dir");
 				String filename = kfub.loadFile(new Frame(), "Open...", currentdir + "\\worlds\\", "*.txt");
@@ -375,6 +373,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 				gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 
 			}
+			selectedL = false;
 			// gl.glLoadIdentity();
 			// gl.glOrtho(0, screenWidth, 0, screenHeight, -1, 1);
 			gl = drawable.getGL();
@@ -390,19 +389,22 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case LOADLEVEL:
 			// leveleditor = new LevelEditor(screenWidth, screenHeight);
 			if (currentstate != gamestate) {
-				KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
-				String currentdir2 = System.getProperty("user.dir");
-				String filename2 = kfub2.loadFile(new Frame(), "Open world...", currentdir2 + "\\worlds\\", "*.txt");
-				filename2 = currentdir2 + "\\worlds\\" + filename2;
-				System.out.println(filename2);
-				try {
-					leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(filename2));
-				} catch (FileNotFoundException e) {
-					System.out.println("file niet gevonden");
+				if (!selectedL) {
+					selectedL = true;
+					KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
+					String currentdir2 = System.getProperty("user.dir");
+					String filename2 = kfub2.loadFile(new Frame(), "Open world...", currentdir2 + "\\worlds\\", "*.txt");
+					filename2 = currentdir2 + "\\worlds\\" + filename2;
+					System.out.println(filename2);
+					try {
+						leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(filename2));
+					} catch (FileNotFoundException e) {
+						System.out.println("file niet gevonden");
+					}
+					gl.glMatrixMode(GL.GL_PROJECTION);
+					gl.glLoadIdentity();
+					gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 				}
-				gl.glMatrixMode(GL.GL_PROJECTION);
-				gl.glLoadIdentity();
-				gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 			}
 			gamestate = LEVELEDITOR;
 			break;
@@ -643,57 +645,56 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		// TODO Auto-generated method stub
 
 	}
-	
-	public void loadTextures(GL gl){
+
+	public void loadTextures(GL gl) {
 		System.out.println("Texture loading... ");
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures\\";
 		File f = new File(curDir + "_textures.txt");
-		try{
-		BufferedReader bufRdr = new BufferedReader(new FileReader(f));
-		String line = null;
-		
-		// Check size
-		int i=0;
-		while ((line = bufRdr.readLine()) != null) {
-			i++;
-		}
-		bufRdr.close();
-		
-		textureList = new ArrayList<Texture>();
-		ArrayList<File> fileList = new ArrayList<File>();
-		for (int j=0;j<i+2;j++){
-			textureList.add(null);
-			fileList.add(null);
-		}
-		System.out.println("TextureList size: " + textureList.size());
-		
-		bufRdr = new BufferedReader(new FileReader(f));
-		while ((line = bufRdr.readLine()) != null){
-			StringTokenizer st = new StringTokenizer(line, ": ");
-			int nummer = Integer.parseInt(st.nextToken());
-			String string = curDir + st.nextToken();
-			File file = new File(string);
-			fileList.set(nummer, file);
-//			System.out.println(nummer + " " + file);
-		}
-		for(int z=0; z< fileList.size(); z++){
-			File file = fileList.get(z);
-			try {
-			TextureData textureData = TextureIO.newTextureData(file, false, "jpg");
-			Texture texture = TextureIO.newTexture(textureData);
-			texture.enable();
-			textureList.set(z, texture);
-			System.out.println("Texture succesfully loaded: " + z + ": " + file);
-			}catch (Exception e){
-				System.out.println("fout: " + e.getMessage());
+		try {
+			BufferedReader bufRdr = new BufferedReader(new FileReader(f));
+			String line = null;
+
+			// Check size
+			int i = 0;
+			while ((line = bufRdr.readLine()) != null) {
+				i++;
 			}
-		}
-		}catch (Exception e){
+			bufRdr.close();
+
+			textureList = new ArrayList<Texture>();
+			ArrayList<File> fileList = new ArrayList<File>();
+			for (int j = 0; j < i + 2; j++) {
+				textureList.add(null);
+				fileList.add(null);
+			}
+			System.out.println("TextureList size: " + textureList.size());
+
+			bufRdr = new BufferedReader(new FileReader(f));
+			while ((line = bufRdr.readLine()) != null) {
+				StringTokenizer st = new StringTokenizer(line, ": ");
+				int nummer = Integer.parseInt(st.nextToken());
+				String string = curDir + st.nextToken();
+				File file = new File(string);
+				fileList.set(nummer, file);
+				// System.out.println(nummer + " " + file);
+			}
+			for (int z = 0; z < fileList.size(); z++) {
+				File file = fileList.get(z);
+				try {
+					TextureData textureData = TextureIO.newTextureData(file, false, "jpg");
+					Texture texture = TextureIO.newTexture(textureData);
+					texture.enable();
+					textureList.set(z, texture);
+					System.out.println("Texture succesfully loaded: " + z + ": " + file);
+				} catch (Exception e) {
+					System.out.println("fout: " + e.getMessage());
+				}
+			}
+		} catch (Exception e) {
 			System.out.println("fout: " + e.getMessage());
 		}
 		System.out.println("Textures loaded");
 	}
-
 
 }

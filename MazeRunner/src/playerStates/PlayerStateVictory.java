@@ -8,19 +8,14 @@ import javax.media.opengl.GLAutoDrawable;
 import engine.InputDialog;
 import engine.MazeRunner;
 import menu.Main;
+import menu.Teken;
 
 public class PlayerStateVictory extends PlayerState {
 
 	@Override
 	public void itemUse() {
-		// MazeRunner.player.reset();
-		// // MazeRunner.player.score = 1000;
-		// for(int e = 0; e < MazeRunner.enemyList.size(); e++){
-		// MazeRunner.enemyList.get(e).reset();
-		// }
-		// Player.canTeleport = false;
-		// Player.playerStateInt = 0;
-		// Player.canMove = true;
+		leaving();
+		MazeRunner.player.playerStateInt = 5;
 	}
 
 	@Override
@@ -47,13 +42,15 @@ public class PlayerStateVictory extends PlayerState {
 
 	@Override
 	public void leaving() {
-		// nothing
+		MazeRunner.player.canMove = true;
 	}
 
 	@Override
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl) {
 		String st = "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC, time ASC LIMIT 0,5";
 		Main.db.printHighscores(autodrawable, gl, st);
+		Teken.textDraw(autodrawable, gl, "Click to fly, press Escape to return to the Menu", 0.35f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 30);
+
 	}
 
 	@Override

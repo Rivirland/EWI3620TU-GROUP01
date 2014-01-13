@@ -12,7 +12,8 @@ import engine.Sound;
 
 public class PlayerStateGun extends PlayerState {
 
-	public static void shootGun() {
+	@Override
+	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
 			// Sound.gunfire.play();
 			try {
@@ -24,9 +25,9 @@ public class PlayerStateGun extends PlayerState {
 			MazeRunner.player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
-			double x = MazeRunner.player.getLocationX() - Math.cos(Math.toRadians(vAngle)) * Math.sin(Math.toRadians(hAngle)) * 3;
-			double y = MazeRunner.player.getLocationY() + Math.sin(Math.toRadians(vAngle)) * 3;
-			double z = MazeRunner.player.getLocationZ() - Math.cos(Math.toRadians(vAngle)) * Math.cos(Math.toRadians(hAngle)) * 3;
+			double x = MazeRunner.player.getLocationX() - Math.cos(Math.toRadians(vAngle)) * Math.sin(Math.toRadians(hAngle)) * 1;
+			double y = MazeRunner.player.getLocationY() + Math.sin(Math.toRadians(vAngle)) * 1;
+			double z = MazeRunner.player.getLocationZ() - Math.cos(Math.toRadians(vAngle)) * Math.cos(Math.toRadians(hAngle)) * 1;
 			Bullet bullet = new Bullet(x, y, z, hAngle, vAngle, 0.02);
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
@@ -39,24 +40,6 @@ public class PlayerStateGun extends PlayerState {
 		// Shoot bullet if nrOfBullets > 0
 	}
 
-	@Override
-	public void itemUse() { // kan dit een reload worden voor gun?
-		if (MazeRunner.player.nrOfBullets > 0) {
-			System.out.println("RELOADING");
-			System.out.println("WE'VE BEEN OVERRUN!!!");
-			System.out.println("PRESS MOUSE BUTTON BEFORE TOO LATE!");
-		} else {
-			// Sound.noBullets.play();
-			try {
-				Sound.sounds.get("noBullet").play();
-			} catch (NullPointerException e) {
-				System.out.println("nobullet no");
-			}
-		}
-		System.out.println(MazeRunner.player.nrOfBullets);
-
-		// Shoot bullet if nrOfBullets > 0
-	}
 
 	@Override
 	public void entering() {

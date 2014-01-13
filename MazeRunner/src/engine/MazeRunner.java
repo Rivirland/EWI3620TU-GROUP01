@@ -811,7 +811,7 @@ public class MazeRunner {
 						}
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ
-							&& player.playerStateInt != 4) {
+							&& player.playerStateInt != 4 && player.playerStateInt != 5) {
 						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
 						MazeRunner.player.playerStateInt = 3;
 						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
@@ -851,7 +851,7 @@ public class MazeRunner {
 		for (Maze m : Level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
-					if (i.touches(player) && player.playerStateInt != 4) {
+					if (i.touches(player) && player.playerStateInt != 4 && player.playerStateInt != 5) {
 						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
 						MazeRunner.player.playerStateInt = 4;
 						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
