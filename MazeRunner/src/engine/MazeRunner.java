@@ -678,6 +678,15 @@ public class MazeRunner {
 					}
 
 				}
+				// Check for collision with player
+				if (b.touches(player)){
+					PlayerState.getState(player.playerStateInt).leaving();
+					player.playerStateInt = 3;
+					PlayerState.getState(player.playerStateInt).entering();
+					visibleObjects.remove(b);
+					bulletList.remove(b);
+					player.score+=1001;
+				}
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 				Enemy e = enemyList.get(eNr);
