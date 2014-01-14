@@ -87,14 +87,7 @@ public class MazeRunner {
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel, uh60body, uh60rotor, uh60backrotor;
-	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
-	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
-			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2,
-			gunTexture, z24portaltexture, z25dirtywalltexture, z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12,
-			z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21,
-			z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2,
-			z51cataloguswall3, z52cataloguswall4;
-
+	
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
 	public static long currentTime;
@@ -500,95 +493,11 @@ public class MazeRunner {
 	// Loads all the texture and stores them into the memory. We have to keep
 	// track of the order ourselves.
 
-	// Onderstaande methode nog even niet weggooien
-	public void loadTextures2(GL gl) {
-		gl.glEnable(GL.GL_TEXTURE_2D);
-		String curDir = System.getProperty("user.dir") + "\\textures";
-
-		File f = new File(curDir);
-		File[] files = f.listFiles();
-		TextureData[] datas = new TextureData[(int) f.length()];
-
-		for (int i = 0; i < files.length; i++) {
-			try {
-				datas[i] = TextureIO.newTextureData(files[i], false, "jpg");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-
-		catalogusdak1 = TextureIO.newTexture(datas[0]);
-		cataloguskolom1 = TextureIO.newTexture(datas[1]);
-		cataloguskolom2 = TextureIO.newTexture(datas[2]);
-		earthTexture = TextureIO.newTexture(datas[3]);
-		oildrumTexture = TextureIO.newTexture(datas[4]);
-		roofTexture = TextureIO.newTexture(datas[5]);
-		sb1 = TextureIO.newTexture(datas[6]);
-		sb2 = TextureIO.newTexture(datas[7]);
-		sb3 = TextureIO.newTexture(datas[8]);
-		sb4 = TextureIO.newTexture(datas[9]);
-		sb5 = TextureIO.newTexture(datas[10]);
-		sb6 = TextureIO.newTexture(datas[11]);
-		trapHolderTexture = TextureIO.newTexture(datas[12]);
-		wallTexture = TextureIO.newTexture(datas[13]);
-		woodTexture = TextureIO.newTexture(datas[14]);
-		z15levelEditorSpooky = TextureIO.newTexture(datas[15]);
-		z16levelEditorSmart = TextureIO.newTexture(datas[16]);
-		z17MenuBackGround = TextureIO.newTexture(datas[17]);
-		z18coptertexture = TextureIO.newTexture(datas[18]);
-		smartEnemyNormalTexture = TextureIO.newTexture(datas[19]);
-		spookyEnemyNormalTexture = TextureIO.newTexture(datas[20]);
-		spookyEnemyAlertTexture = TextureIO.newTexture(datas[21]);
-		smartEnemyAlertTexture = TextureIO.newTexture(datas[22]);
-		gunTexture = TextureIO.newTexture(datas[23]);
-		z24portaltexture = TextureIO.newTexture(datas[24]);
-		z25dirtywalltexture = TextureIO.newTexture(datas[25]);
-		z26cataloguswall6 = TextureIO.newTexture(datas[26]);
-		z27cataloguswall7 = TextureIO.newTexture(datas[27]);
-		z28cataloguswall8 = TextureIO.newTexture(datas[28]);
-		z29cataloguswall9 = TextureIO.newTexture(datas[29]);
-		z30cataloguswall10 = TextureIO.newTexture(datas[30]);
-		z31cataloguswall11 = TextureIO.newTexture(datas[31]);
-		z32cataloguswall12 = TextureIO.newTexture(datas[32]);
-		z33cataloguswall13 = TextureIO.newTexture(datas[33]);
-		z34cataloguswall14 = TextureIO.newTexture(datas[34]);
-		z35cataloguswall15 = TextureIO.newTexture(datas[35]);
-		z36cataloguswall16 = TextureIO.newTexture(datas[36]);
-		z37cataloguswall17 = TextureIO.newTexture(datas[37]);
-		z38cataloguswall18 = TextureIO.newTexture(datas[38]);
-		z39cataloguswall19 = TextureIO.newTexture(datas[39]);
-		z40cataloguswall20 = TextureIO.newTexture(datas[40]);
-		z41cataloguswall21 = TextureIO.newTexture(datas[41]);
-		z42cataloguswall22 = TextureIO.newTexture(datas[42]);
-		z43cataloguswall23 = TextureIO.newTexture(datas[43]);
-		z44cataloguswall24 = TextureIO.newTexture(datas[44]);
-		z45cataloguswall25 = TextureIO.newTexture(datas[45]);
-		z46cataloguswall26 = TextureIO.newTexture(datas[46]);
-		z47cataloguswall27 = TextureIO.newTexture(datas[47]);
-		z48cataloguswall28 = TextureIO.newTexture(datas[48]);
-		z49cataloguswall1 = TextureIO.newTexture(datas[49]);
-		z50cataloguswall2 = TextureIO.newTexture(datas[50]);
-		z51cataloguswall3 = TextureIO.newTexture(datas[51]);
-		z52cataloguswall4 = TextureIO.newTexture(datas[52]);
-		// gl.glDisable(GL.GL_TEXTURE_2D);
-
-	}
+	
 
 	public void loadModels(GL gl) {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
-
-		// try {
-		// String currentdir = System.getProperty("user.dir");
-		// String filename = currentdir + "\\models\\uh60.obj";
-		// copterModel = OBJLoader.loadTexturedModel(new File(filename));
-		//
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
 
 		try {
 			String currentdir = System.getProperty("user.dir");
@@ -667,7 +576,6 @@ public class MazeRunner {
 		double previousX = player.getLocationX();
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
-		// Item updating
 		
 		// Player updating
 		player.update(deltaTime, drawable);
@@ -751,14 +659,15 @@ public class MazeRunner {
 			int i = MazeRunner.level.getCurrentMaze(b);
 			if (i != -1) {
 				Maze maze = Level.mazelist.get(i);
+				// Check for collision with floor
 				if (b.locationY < maze.mazeY + 0.1) {
 					visibleObjects.remove(b);
 					bulletList.remove(b);
 				}
-				// Check for collision with wall
-				if (MazeRunner.level.collides(b, 0)[0]) {
+				// Check for collision with level
+				if (MazeRunner.level.collides(b, 0)[0] && MazeRunner.level.collides(b,0)[1]) {
 					if (b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
-						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] % 2 == 0)) {
+						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] %2 ==0)) {
 							maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
 							bulletList.remove(b);
 							visibleObjects.remove(b);

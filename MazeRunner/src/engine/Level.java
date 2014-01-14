@@ -149,6 +149,18 @@ public class Level {
 		return -1;
 	}
 
+	public boolean checkNonZeroEntryOnPosition(int mazeID, int X, int Z){
+		Maze maze = mazelist.get(mazeID);
+		return checkNonZeroEntryOnPosition(maze, X, Z);
+	}
+	public boolean checkNonZeroEntryOnPosition(Maze maze, int X, int Z){
+		if (!(X % 2 == 1 && Z % 2 == 1) && (maze.getElementOnCoords(X, Z) > 0)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// This methods detects collision.
 	public boolean[] collides(GameObject object, double margin) {
 		// If you do not implement a margin (or set it to 0), you can still look
@@ -172,70 +184,77 @@ public class Level {
 			int newZ2 = maze.coordToMatrixElement(z);
 			int newX3 = maze.coordToMatrixElement(x);
 			int newZ3 = maze.coordToMatrixElement(z + margin);
-			if (!(newX0 % 2 == 1 && newZ0 % 2 == 1) && (maze.getElementOnCoords(newX0, newZ0) > 0)) {
-				// System.out.println("hier0");
-
+			double objectZ = object.locationZ;
+			double objectY = object.locationY;
+			double objectX = object.locationX;
+			
+			if (checkNonZeroEntryOnPosition(i, newX0, newZ0)){
 				// Checks if it's a wall
 				if (maze.getTextureElementOnCoords(newX0, newZ0) > 100 && maze.getTextureElementOnCoords(newX0, newZ0) < 200) {
 					res[0] = true;
-				}// Checks if it's a door
+				}
+				// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX0, newZ0) > 200) {
-					// double globX = object.locationX + margin;
-					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
-					// Wall in X-direction
-					if (!(globZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
-						res[0] = true;
+					if (!(objectZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[0]=true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[0]=true;
+						}
 					}
 
 				}
 			}
-			if (!(newX1 % 2 == 1 && newZ1 % 2 == 1) && (maze.getElementOnCoords(newX1, newZ1) > 0)) {
+			
+			if (checkNonZeroEntryOnPosition(i, newX1, newZ1)){
+				// Checks if it's a wall
 				if (maze.getTextureElementOnCoords(newX1, newZ1) > 100 && maze.getTextureElementOnCoords(newX1, newZ1) < 200) {
 					res[1] = true;
-				}// Checks if it's a door
+				}
+				// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX1, newZ1) > 200) {
-
-					double globX = object.locationX;
-					// double globZ = object.locationZ - margin;
 					double[] wallXZ = maze.MatrixElementToCoords(newX1, newZ1);
-					// System.out.println(globX + " " + globZ + ", " +
-					// (wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2))
-					// + ", "
-					// + (wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH -
-					// Maze.DOOR_WIDTH) / 2));
-					if (!(globX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
-						res[1] = true;
+					if (!(objectX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[1]=true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[1]=true;
+						}
 					}
+					
 				}
 			}
-			if (!(newX2 % 2 == 1 && newZ2 % 2 == 1) && (maze.getElementOnCoords(newX2, newZ2) > 0)) {
+			if (checkNonZeroEntryOnPosition(i, newX2, newZ2)){
+				// Checks if it's a wall
 				if (maze.getTextureElementOnCoords(newX2, newZ2) > 100 && maze.getTextureElementOnCoords(newX2, newZ2) < 200) {
 					res[2] = true;
-				}// Checks if it's a door
+				}
+				// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX2, newZ2) > 200) {
-					// double globX = object.locationX - margin;
-					double globZ = object.locationZ;
 					double[] wallXZ = maze.MatrixElementToCoords(newX2, newZ2);
-					// System.out.println(wallXZ[0] + " " + wallXZ[1]);
-					// Wall in X-direction
-					if (!(globZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+					if (!(objectZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
 						res[2] = true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[2]=true;
+						}
 					}
 				}
 			}
-			if (!(newX3 % 2 == 1 && newZ3 % 2 == 1) && (maze.getElementOnCoords(newX3, newZ3) > 0)) {
+			if (checkNonZeroEntryOnPosition(i, newX3, newZ3)){
+				// Checks if it's a wall
 				if (maze.getTextureElementOnCoords(newX3, newZ3) > 100 && maze.getTextureElementOnCoords(newX3, newZ3) < 200) {
 					res[3] = true;
 				}// Checks if it's a door
 				else if (maze.getTextureElementOnCoords(newX3, newZ3) > 200) {
-					double globX = object.locationX;
-					// double globZ = object.locationZ + margin;
 					double[] wallXZ = maze.MatrixElementToCoords(newX3, newZ3);
-					// Wall in X-direction
-
-					if (!(globX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && globX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
-						res[3] = true;
+					if (!(objectX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[3]=true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[3]=true;
+						}
 					}
 
 				}
