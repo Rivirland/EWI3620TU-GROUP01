@@ -428,10 +428,10 @@ public class MazeRunner {
 		}
 		System.out.println("cur: " + currentTime);
 		System.out.println("ev: " + eventMessageTime);
-		if(currentTime + startTime - eventMessageTime > 3000){
+		if(currentTime + startTime - eventMessageTime > 5000){
 			setEventMessage("");
 		}
-		Teken.textDraw(drawable, gl, eventMessage, 0.4f * screenWidth, 0.9f*screenHeight, 30);		
+		Teken.textDraw(drawable, gl, eventMessage, 0.9f * screenHeight, 0.3f*screenWidth, 30);		
 		
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.

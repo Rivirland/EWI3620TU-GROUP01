@@ -91,7 +91,7 @@ public class MazeRunner {
 	public static long playingTime;
 	public static int deltaTime;
 	private static String eventMessage;
-	private static long eventMessageTime;
+	private long eventMessageTime;
 
 	/*
 	 * **********************************************
@@ -243,7 +243,6 @@ public class MazeRunner {
 		//
 		// loadTextures(gl);
 		loadModels(gl);
-		eventMessage = "";
 		// @@
 	}
 
@@ -383,12 +382,10 @@ public class MazeRunner {
 				visibleObjects.remove(next);
 				System.out.println("removed TrapDropped");
 			} else if (next instanceof EnemySmart && ((EnemySmart) next).getDead()) {
-				setEventMessage("Killed a smart enemy! +100 points");
 				player.score += 100;
 				visibleObjects.remove(next);
 				System.out.println("removed EnemySmart");
 			} else if (next instanceof EnemySpooky && ((EnemySpooky) next).getDead()) {
-				setEventMessage("Killed a spooky enemy! +100 points");
 				player.score += 100;
 				visibleObjects.remove(next);
 				System.out.println("removed EnemySpooky");
@@ -426,12 +423,8 @@ public class MazeRunner {
 		if (!player.getControl().minimap && !player.getControl().info && player.playerStateInt == 4) {
 			PlayerStateVictory.drawPersonalHighscores(drawable, gl);
 		}
-		System.out.println("cur: " + currentTime);
-		System.out.println("ev: " + eventMessageTime);
-		if(currentTime + startTime - eventMessageTime > 3000){
-			setEventMessage("");
-		}
-		Teken.textDraw(drawable, gl, eventMessage, 0.4f * screenWidth, 0.9f*screenHeight, 30);		
+		
+		Teken.textDraw(gl, eventMessage, 0.9 * screenHeight, 0.3*screenWidth, 30);		
 		
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
@@ -602,12 +595,10 @@ public class MazeRunner {
 				if (item.touches(player)) {
 					if (item instanceof TrapHolder) {
 						MazeRunner.player.nrOfTraps++;
-						setEventMessage("Picked up a trap!");
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
 					}
 					if (item instanceof BulletHolder) {
-						setEventMessage("Picked up " + ((BulletHolder) item).getAmount() + " bullets!");
 						MazeRunner.player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
@@ -702,8 +693,7 @@ public class MazeRunner {
 					PlayerState.getState(player.playerStateInt).entering();
 					visibleObjects.remove(b);
 					bulletList.remove(b);
-					setEventMessage("You just shot yourself, dummy! No points lost");
-					player.score += 1000;
+					player.score += 1001;
 				}
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -743,14 +733,12 @@ public class MazeRunner {
 						if (e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(e.getGlobalZ() - maze.mazeZ) == r.matrixZ) {
 							enemyList.remove(e);
 							player.score += 400;
-							setEventMessage("A roof dropped on a smart enemy! +500 points");
 							e.setDead(true);
 						}
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ
 							&& player.playerStateInt != 4 && player.playerStateInt != 5) {
 						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
-						setEventMessage("A roof fell on you!");
 						MazeRunner.player.playerStateInt = 3;
 						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
 					}
@@ -812,9 +800,8 @@ public class MazeRunner {
 		return screenHeight;
 	}
 	
-	public static void setEventMessage(String eveMsg){
-		eventMessageTime = Calendar.getInstance().getTimeInMillis();
-		eventMessage = eveMsg;
+	public static void setEventMessage(){
+		
 	}
 
 }
