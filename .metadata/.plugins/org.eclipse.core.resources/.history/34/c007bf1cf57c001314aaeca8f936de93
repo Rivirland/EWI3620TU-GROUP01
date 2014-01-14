@@ -9,16 +9,13 @@ import items.TrapDropped;
 import items.TrapDroppedGBS;
 import items.TrapHolder;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -30,7 +27,6 @@ import menu.Teken;
 import model.Model;
 import model.OBJLoader;
 
-import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -90,17 +86,18 @@ public class MazeRunner {
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel;
+	public static Model spookyModel, m21Model, torchModel, trapModel, uh60body, uh60rotor, uh60backrotor;
 	public static Texture sb1, sb2, sb3, sb4, sb5, sb6;
 	public static Texture earthTexture, wallTexture, roofTexture, trapHolderTexture, oildrumTexture, woodTexture, cataloguskolom1, cataloguskolom2, catalogusdak1, z15levelEditorSpooky,
-			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2, gunTexture, z24portaltexture, z25dirtywalltexture,
-			z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12, z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21, z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2, z51cataloguswall3, z52cataloguswall4;
-
+			z16levelEditorSmart, z17MenuBackGround, z18coptertexture, smartEnemyNormalTexture, spookyEnemyNormalTexture, smartEnemyAlertTexture, spookyEnemyAlertTexture, spookyEnemyTexture2,
+			gunTexture, z24portaltexture, z25dirtywalltexture, z26cataloguswall6, z27cataloguswall7, z28cataloguswall8, z29cataloguswall9, z30cataloguswall10, z31cataloguswall11, z32cataloguswall12,
+			z33cataloguswall13, z34cataloguswall14, z35cataloguswall15, z36cataloguswall16, z37cataloguswall17, z38cataloguswall18, z39cataloguswall19, z40cataloguswall20, z41cataloguswall21,
+			z42cataloguswall22, z43cataloguswall23, z44cataloguswall24, z45cataloguswall25, z46cataloguswall26, z47cataloguswall27, z48cataloguswall28, z49cataloguswall1, z50cataloguswall2,
+			z51cataloguswall3, z52cataloguswall4;
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
 	public static long currentTime;
-
 	public static long playingTime;
 	public static int deltaTime;
 
@@ -126,15 +123,19 @@ public class MazeRunner {
 
 	}
 
-	public void setScreen(int screenWidth, int screenHeight) {
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
+	public void setScreen(int Width, int Height) {
+		screenWidth = Width;
+		screenHeight = Height;
+		Reticle.setScreenWidth(screenWidth);
+		Reticle.setScreenHeight(screenHeight);
+		Minimap.setMinimapX((int) (.4 * MazeRunner.screenWidth));
+		Minimap.setMinimapZ((int) (.4 * MazeRunner.screenHeight));
 	}
 
-	public void setScreen(GLU glu, GL gl, int screenWidth, int screenHeight) {
+	public void setScreen(GLU glu, GL gl, int Width, int Height) {
 
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
+		screenWidth = Width;
+		screenHeight = Height;
 
 		gl.glViewport(0, 0, screenWidth, screenHeight); // VOOR PORTAL!!!!!!!
 
@@ -153,18 +154,18 @@ public class MazeRunner {
 		input.noMousechange();
 	}
 
-	public void initObjects(GLCanvas canvas, UserInput input, Level level) {
+	public void initObjects(GLCanvas canvas, UserInput input, Level l) {
 
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
 		// Add the maze that we will be using
-		this.level = level;
-		GeneticAlgorithm GA = new GeneticAlgorithm(level.mazelist, 50);
+		level = l;
+		GeneticAlgorithm GA = new GeneticAlgorithm(Level.mazelist, 50);
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
 
-		System.out.println(Arrays.toString(worldConnection));
+		System.out.println("Worlds connected in order: " + Arrays.toString(worldConnection));
 		// Roof roof = new Roof(0.5, 5, 0.5, 1);
 		// roofList.add(roof);
 
@@ -178,7 +179,7 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(5, 2.5, 5, -90, 0);
+		player = new Player(Level.mazelist.get(0).mazeX + 5, Level.mazelist.get(0).mazeY + 2.5, Level.mazelist.get(0).mazeZ + 5, -90, 0);
 
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
@@ -249,7 +250,7 @@ public class MazeRunner {
 		// gl.glShadeModel(GL.GL_FLAT);
 		// Set the shading model.
 		//
-//		loadTextures(gl);
+		// loadTextures(gl);
 		loadModels(gl);
 		// @@
 	}
@@ -278,7 +279,7 @@ public class MazeRunner {
 	}
 
 	public void setTime(long time) {
-		this.previousTime = time;
+		previousTime = time;
 	}
 
 	// function to test multiple views, and later to test portals
@@ -336,7 +337,6 @@ public class MazeRunner {
 		gl.glLoadIdentity();
 
 		GLU glu = new GLU();
-		GLUT glut = new GLUT();
 
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();
@@ -345,7 +345,7 @@ public class MazeRunner {
 		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
-		if (deltaTime > 10000 | deltaTime < 0) {
+		if (deltaTime > 100 | deltaTime < 0) {
 			deltaTime = 0;
 		}
 
@@ -368,7 +368,10 @@ public class MazeRunner {
 		if (player.getControl().minimap) {
 			Minimap.displayMinimap(gl);
 		}
-		
+		if (player.playerStateInt == 2) {
+			Reticle.display(gl);
+		}
+
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
 
@@ -408,25 +411,22 @@ public class MazeRunner {
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
-//TODO
-		
-//		Portal.activePortaldisplay(gl);
+		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
+		// Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 
-		if(player.getControl().info ){
+		if (player.getControl().info) {
 			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
-			if(!(player.playerStateInt == 3 || player.playerStateInt == 4)){
-				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), (float) (0.05 * screenHeight));
-				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player)+1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), (float) (0.05 * screenHeight));
+			if (!(player.playerStateInt == 3 || player.playerStateInt == 4)) {
+				Teken.textDraw(drawable, gl, "Score: " + player.score + " Time: " + playingTime / 1000, (float) (0.05 * screenHeight), (float) (0.05 * screenWidth), 30);
+				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player) + 1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
 			}
 		}
-		
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
-		Reticle.reticle(gl);
-
+		// gl.glDisable(GL.GL_STENCIL_TEST);
 		gl.glFlush();
 
 	}
@@ -461,11 +461,9 @@ public class MazeRunner {
 	 */
 
 	private void updatePlayingTime() {
-		if (player.playerStateInt == 3) {
-		} else if (player.playerStateInt == 4) {
-		} else {
+		if (player.playerStateInt != 3 && player.playerStateInt != 4) {
+			playingTime += deltaTime;
 		}
-
 	}
 
 	/**
@@ -496,13 +494,13 @@ public class MazeRunner {
 	 * Program entry point
 	 * 
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 
 	// Loads all the texture and stores them into the memory. We have to keep
 	// track of the order ourselves.
-	
-		// Onderstaande methode nog even niet weggooien
+
+	// Onderstaande methode nog even niet weggooien
 	public void loadTextures2(GL gl) {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures";
@@ -517,7 +515,7 @@ public class MazeRunner {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 
 		catalogusdak1 = TextureIO.newTexture(datas[0]);
@@ -583,8 +581,30 @@ public class MazeRunner {
 
 		try {
 			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\uh60.obj";
-			copterModel = OBJLoader.loadTexturedModel(new File(filename));
+			String filename = currentdir + "\\models\\uh60body.obj";
+			uh60body = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60rotor.obj";
+			uh60rotor = OBJLoader.loadTexturedModel(new File(filename));
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60backrotor.obj";
+			uh60backrotor = OBJLoader.loadTexturedModel(new File(filename));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -636,7 +656,8 @@ public class MazeRunner {
 		double previousX = player.getLocationX();
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
-
+		// Item updating
+		
 		// Player updating
 		player.update(deltaTime, drawable);
 		int currentMazeID = level.getCurrentMaze(player);
@@ -655,6 +676,18 @@ public class MazeRunner {
 						MazeRunner.player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
+					}
+				}
+			}
+			// Check for collision between TrapDropped items, if so, call bounce method.
+			for (int i =0; i < currentMaze.itemList.size(); i++){
+				Item itemi = currentMaze.itemList.get(i);
+				if (itemi instanceof TrapDropped){
+					for (int j =0; j<currentMaze.itemList.size(); j++){
+						Item itemj = currentMaze.itemList.get(j);
+						if (itemi.touches(itemj) && i!=j && itemj instanceof TrapDropped){
+							((TrapDropped) itemi).bounce((TrapDropped) itemj);
+						}
 					}
 				}
 			}
@@ -696,6 +729,7 @@ public class MazeRunner {
 							visibleObjects.add(tdGBS);
 						}
 					}
+					
 				}
 			}
 
@@ -705,23 +739,24 @@ public class MazeRunner {
 			b.update(deltaTime);
 			int i = MazeRunner.level.getCurrentMaze(b);
 			if (i != -1) {
-				Maze maze = MazeRunner.level.mazelist.get(i);
-				if (b.locationY < mazeY + 0.1) {
-					bulletList.remove(b);
+				Maze maze = Level.mazelist.get(i);
+				if (b.locationY < maze.mazeY + 0.1) {
 					visibleObjects.remove(b);
+					bulletList.remove(b);
 				}
 				// Check for collision with wall
 				if (MazeRunner.level.collides(b, 0)[0]) {
-					if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 3 || maze.textureMatrix[maze
-							.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] == 4)
-							&& b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
-						maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
-						bulletList.remove(b);
-						visibleObjects.remove(b);
-					} else {
-						bulletList.remove(b);
-						visibleObjects.remove(b);
+					if (b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
+						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] % 2 == 0)) {
+							maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
+							bulletList.remove(b);
+							visibleObjects.remove(b);
+						} else {
+							bulletList.remove(b);
+							visibleObjects.remove(b);
+						}
 					}
+
 				}
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -743,8 +778,16 @@ public class MazeRunner {
 				r.locationY -= deltaTime * r.fallingSpeed;
 				r.fallingSpeed = r.fallingSpeed * 1.005;
 				Maze maze = level.getMaze(r.mazeID);
+
 				if (r.locationY < maze.mazeY + 0.5) {
-					Sound.roofCrash.play();
+
+					// Sound.roofCrash.play();
+
+					try {
+						Sound.sounds.get("roofCrash").play();
+					} catch (NullPointerException e) {
+						System.out.println("roofcrash no");
+					}
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -757,7 +800,7 @@ public class MazeRunner {
 						}
 					}
 					if (maze.coordToMatrixElement(player.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(player.getGlobalZ() - maze.mazeZ) == r.matrixZ
-							&& player.playerStateInt != 4) {
+							&& player.playerStateInt != 4 && player.playerStateInt != 5) {
 						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
 						MazeRunner.player.playerStateInt = 3;
 						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
@@ -766,13 +809,24 @@ public class MazeRunner {
 			}
 		}
 
-//TODO dit hoort eigenlijk in de portal klasse
-		
-		public static void willTeleport(boolean canTeleport, ArrayList<Portal> portalList){
-			
-			
-		}
-		
+
+
+		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
+		// updateMovement
+		// ****************
+		// public static void WillTeleport(boolean canTeleport,
+		// ArrayList<Portal> portalList){
+		// for (int i = 0; i < portalList.size(); i++) {
+		// portalList.get(i).checkteleportation(player, (float) previousX,
+		// (float) previousY, (float) previousZ);
+		//
+		// }
+		// } else {
+		// MazeRunner.player.canTeleport = true;
+		// }
+		// }
+
+		// TODO dit hoort eigenlijk in de portal klasse
 		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
@@ -782,11 +836,11 @@ public class MazeRunner {
 		} else {
 			MazeRunner.player.canTeleport = true;
 		}
-		//
-		for (Maze m : level.mazelist) {
+
+		for (Maze m : Level.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
-					if (i.touches(player) && player.playerStateInt != 4) {
+					if (i.touches(player) && player.playerStateInt != 4 && player.playerStateInt != 5) {
 						PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
 						MazeRunner.player.playerStateInt = 4;
 						PlayerState.getState(MazeRunner.player.playerStateInt).entering();
@@ -797,55 +851,17 @@ public class MazeRunner {
 		}
 	}
 
-	private void reticle(GL gl) {
-		ChangeGL.GLto2D(gl);
-		gl.glPushMatrix();
-		gl.glLoadIdentity();
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glColor3d(1, 1, 1);
-		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-		Teken.rechthoek(gl, 0, 0, screenWidth, screenHeight);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		ChangeGL.GLto3D(gl);
-	}
-
-	private void reticle2(GL gl) {
-		ChangeGL.GLto2D(gl);
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		// gl.glMatrixMode(GL.GL_PROJECTION);
-		// gl.glScissor(screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-		// gl.glScissor((screenWidth/2), (screenHeight/2), (screenWidth/2),
-		// (screenHeight/2));
-
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		gl.glColor3d(1, 1, 1);
-		Teken.rechthoek(gl, screenWidth / 2 - 50, screenHeight / 2 - 50, screenWidth / 2 + 50, screenHeight / 2 + 50);
-		// gl.glClearColor(1, 1, 1, 1);
-		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		// gl.glColor3d(1, 1, 1);
-		// Teken.rechthoek(gl, screenWidth-5, screenHeight-5, screenWidth+5,
-		// screenHeight+5);
-
-		// gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glDisable(GL.GL_SCISSOR_TEST);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		ChangeGL.GLto3D(gl);
-	}
-
 	public static void visibleIterator(GL gl) {
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
 	}
-	public static int getScreenWidth(){
+
+	public static int getScreenWidth() {
 		return screenWidth;
 	}
 
-	public static int getScreenHeight(){
+	public static int getScreenHeight() {
 		return screenHeight;
 	}
 

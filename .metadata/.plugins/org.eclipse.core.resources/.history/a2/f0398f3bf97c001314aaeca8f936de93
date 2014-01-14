@@ -76,7 +76,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 		gl.glTranslated(x, y, z);
 		gl.glTranslated(0, 10, 40);
 		gl.glRotated(MazeRunner.player.getHorAngle(), 0, 1, 0);
-		gl.glRotated(MazeRunner.player.getVerAngle(), 1, 0, 0);
+//		gl.glRotated(MazeRunner.player.getVerAngle(), 1, 0, 0);
 		if (MazeRunner.player.getControl().getRight()) {
 			gl.glRotated(-10, 0, 0, 1);
 		}

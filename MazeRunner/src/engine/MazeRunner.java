@@ -579,17 +579,6 @@ public class MazeRunner {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
-		// try {
-		// String currentdir = System.getProperty("user.dir");
-		// String filename = currentdir + "\\models\\uh60.obj";
-		// copterModel = OBJLoader.loadTexturedModel(new File(filename));
-		//
-		// } catch (FileNotFoundException e) {
-		// e.printStackTrace();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
-
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60body.obj";
