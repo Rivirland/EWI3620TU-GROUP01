@@ -43,13 +43,26 @@ public class Sound {
 		System.out.println("Sounds loaded succesfully\n");
 	}
 	
-	public void play(){
+	public void play2(){
 		try{
 			new Thread(){
 				public void run(){
 					clip.play();
 				}
 			}.start();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}	
+	public void play(){
+		try{
+			new Thread(
+					new Runnable(){
+						public void run(){
+							clip.play();
+						}
+			}).start();
 		}
 		catch(Exception ex){
 			ex.printStackTrace();

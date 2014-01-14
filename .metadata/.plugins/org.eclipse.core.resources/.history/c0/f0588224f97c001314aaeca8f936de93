@@ -69,9 +69,9 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 		gl.glTranslated(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ());
 		double s = Math.toRadians(MazeRunner.player.getHorAngle());
 		double t = Math.toRadians(MazeRunner.player.getVerAngle());
-		double x = -Math.sin(s) * Math.cos(t);
-		double y = Math.sin(t);
-		double z = -Math.cos(s) * Math.cos(t);
+		double x = -Math.sin(s);
+		double y = 1;
+		double z = -Math.cos(s);
 
 		gl.glTranslated(x, y, z);
 		gl.glTranslated(0, 10, 40);
