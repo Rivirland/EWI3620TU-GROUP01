@@ -122,7 +122,6 @@ public class LogIn {
 					Main.db.stat.executeUpdate("INSERT INTO accounts (name, password, date) values ('" + name + "', '" + password + "', '" + date + "');");
 					Main.loggedIn = true;
 					Main.accName = name;
-					Main.accDate = date;
 					Main.setCurrentstate(0);
 				}
 			} catch (SQLException e) {
