@@ -169,8 +169,7 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(Level.mazelist.get(0).mazeX + 5, Level.mazelist.get(0).mazeY + 2.5, Level.mazelist.get(0).mazeZ + 5, -90, 0);
-
+		player = new Player(Level.getStartX(), Level.getStartY(), Level.getStartZ(), -90, 0);
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
 		for (int i = 0; i < enemyList.size(); i++) {
@@ -419,7 +418,7 @@ public class MazeRunner {
 			PlayerStateVictory.drawNonPersonalHighscores(drawable, gl);
 		}
 
-		if (!player.getControl().minimap && ! player.getControl().info && player.playerStateInt == 4) {
+		if (!player.getControl().minimap && !player.getControl().info && player.playerStateInt == 4) {
 			PlayerStateVictory.drawPersonalHighscores(drawable, gl);
 		}
 		gl.glLoadIdentity();

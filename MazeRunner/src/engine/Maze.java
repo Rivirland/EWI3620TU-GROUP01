@@ -179,6 +179,12 @@ public class Maze implements VisibleObject {
 						Exit e = new Exit(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, mazeID);
 						itemList.add(e);
 						MazeRunner.visibleObjects.add(e);
+					} else if (objectNumber == 132){
+						double objectX = Double.parseDouble(st.nextToken());
+						double objectZ = Double.parseDouble(st.nextToken());
+						Level.setStartX(mazeX + objectX);
+						Level.setStartY(mazeY + 2.5);
+						Level.setStartZ(mazeZ + objectZ);
 					}
 				}
 			} catch (IOException e) {

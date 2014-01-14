@@ -86,6 +86,7 @@ public class Catalogus {
 				
 				leveleditor.plaatsTexture(gl, 109.8f, 642.50f, 209.8f, 742.50f, 14);
 				leveleditor.plaatsTexture(gl, 229.6f, 642.50f, 329.6f, 742.50f, 20);
+				leveleditor.plaatsTexture(gl, 349.4f, 642.50f, 449.4f, 742.50f, 15);
 			}
 		}
 	}

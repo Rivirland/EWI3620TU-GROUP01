@@ -11,7 +11,7 @@
 12: sb5.jpg
 13: sb6.jpg
 14: trapTexture.jpg
-15: placeholder1.jpg
+15: startblok.jpg
 16: blacktexture.jpg
 17: z15levelEditorSpooky.jpg
 18: z16levelEditorSmart.jpg

@@ -92,7 +92,6 @@ public class MainMenu {
 			}
 		}
 
-		Teken.textDraw(drawable, gl, "", 0, 0, 30);
 
 	}
 
