@@ -15,7 +15,7 @@ public class TrapHolder extends Item {
 
 	@Override
 	public void display(GL gl) {
-		double sizeX = 2;
+		double sizeX = 1;
 		double sizeY = sizeX;
 		double sizeZ = sizeX;
 		double xmin = 0;
@@ -38,7 +38,7 @@ public class TrapHolder extends Item {
 		double diffY = object.getGlobalY() - this.getGlobalY();
 		double diffZ = object.getGlobalZ() - this.getGlobalZ();
 
-		if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 2) {
+		if (Math.sqrt(diffX * diffX + diffZ * diffZ) < 2 && diffY<5) {
 			if (object instanceof Player) {
 				return true;
 			} else {

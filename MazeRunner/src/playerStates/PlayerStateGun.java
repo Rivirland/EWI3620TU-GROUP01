@@ -15,7 +15,6 @@ public class PlayerStateGun extends PlayerState {
 	@Override
 	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
-			// Sound.gunfire.play();
 			try {
 				Sound.sounds.get("Gunfire").play();
 			} catch (NullPointerException e) {
@@ -32,19 +31,20 @@ public class PlayerStateGun extends PlayerState {
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
 		} else {
-			// TODO: moet dit niet gewoon aanstaan?
-			// Sound.noBullets.play();
+			try {
+				Sound.sounds.get("noBullets").play();
+			} catch (NullPointerException e) {
+				System.out.println("noBullets no");
+			}
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
-		// Shoot bullet if nrOfBullets > 0
 	}
 
 
 	@Override
 	public void entering() {
 		System.out.println("Entering GunMode");
-		// Sound.reload.play();
 		try {
 			Sound.sounds.get("reload").play();
 		} catch (NullPointerException e) {
