@@ -1,0 +1,4 @@
+1389712655484	Encapsulate field 'errMsg'
+1389712661531	Encapsulate field 'errMsgTime'
+1389713305627	Rename compilation unit 'Settings.java'
+1389717156875	Encapsulate field 'currentstate'

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import javax.media.opengl.GL;
@@ -52,6 +53,8 @@ public class LevelEditor {
 	private static final byte DAK = 3;
 	private static final byte ITEM = 4;
 	private byte drawMode = NIETS;
+	private static String errMsg;
+	private static long errMsgTime;
 
 	private int textureMode = 0;
 	private byte hoogteMode = 1;
@@ -115,6 +118,8 @@ public class LevelEditor {
 		this.wereld = levels.get(0).getGebouwen();
 		this.textures = levels.get(0).getTextures();
 		this.items = levels.get(0).getItemList();
+		setErrMsg("");
+		
 		gridrows = (wereld.length - 1) / 2;
 		gridcolumns = (wereld[0].length - 1) / 2;
 		loadTextures(gl);
@@ -168,6 +173,11 @@ public class LevelEditor {
 		if (worldview) {
 			worldviewer.display(gl);
 		}
+		
+		if(Calendar.getInstance().getTimeInMillis()-errMsgTime > 5000){
+			setErrMsg("");
+		}
+		Teken.textDrawMetKleur(drawable, gl, getErrMsg(), 800f/1920f * screenHeight, 20f/1080f*screenWidth, 30, 1f, 1f, 1f);
 		// Teken.rechthoek(gl, (775)/1920f*screenWidth,
 		// (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,
 		// 1050/1080f*screenHeight);
@@ -1913,6 +1923,23 @@ public class LevelEditor {
 			this.worldview = !worldview;
 		}
 
+	}
+
+	public static String getErrMsg() {
+		return errMsg;
+	}
+
+	public static void setErrMsg(String errMsg) {
+		LevelEditor.errMsg = errMsg;
+		LevelEditor.setErrMsgTime(Calendar.getInstance().getTimeInMillis());
+	}
+
+	public static long getErrMsgTime() {
+		return errMsgTime;
+	}
+
+	public static void setErrMsgTime(long errMsgTime) {
+		LevelEditor.errMsgTime = errMsgTime;
 	}
 
 }

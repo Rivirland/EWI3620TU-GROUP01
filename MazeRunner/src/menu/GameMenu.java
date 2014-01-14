@@ -62,16 +62,25 @@ public class GameMenu {
 			if (750f / 1920f * screenWidth < me.getX() && me.getX() < 1170f / 1920f * screenWidth) {
 				if (300f / 1080f * screenHeight < me.getY() && me.getY() < 400f / 1080f * screenHeight) {
 					// The first button is clicked
-					gamestate = INGAME;
+					if (Main.loggedIn) {
+						gamestate = INGAME;
+					} else {
+						System.out.println("You're not logged in");
+					}
 				} else if (450f / 1080f * screenHeight < me.getY() && me.getY() < 550f / 1080f * screenHeight) {
+
 					// The second button is clicked
-					MazeRunner.visibleObjects.clear();
-					MazeRunner.portalList.clear();
-					MazeRunner.enemyList.clear();
-					MazeRunner.bulletList.clear();
-					MazeRunner.roofList.clear();
-					MazeRunner.playingTime = 0;
-					gamestate = LOADGAME;
+					if (Main.loggedIn) {
+						MazeRunner.visibleObjects.clear();
+						MazeRunner.portalList.clear();
+						MazeRunner.enemyList.clear();
+						MazeRunner.bulletList.clear();
+						MazeRunner.roofList.clear();
+						MazeRunner.playingTime = 0;
+						gamestate = LOADGAME;
+					} else {
+						System.out.println("You're not logged in");
+					}
 				} else if (600f / 1080f * screenHeight < me.getY() && me.getY() < 700f / 1080f * screenHeight) {
 					// The third button is clicked
 					gamestate = GAMEMENU;

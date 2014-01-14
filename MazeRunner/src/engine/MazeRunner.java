@@ -23,14 +23,11 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
 import playerStates.PlayerState;
+import playerStates.PlayerStateVictory;
+import menu.Main;
 import menu.Teken;
 import model.Model;
 import model.OBJLoader;
-
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
-
 import enemies.Enemy;
 import enemies.EnemyControl;
 import enemies.EnemySmart;
@@ -87,7 +84,7 @@ public class MazeRunner {
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
 	public static Model spookyModel, m21Model, torchModel, trapModel, uh60body, uh60rotor, uh60backrotor;
-	
+
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
 	public static long currentTime;
@@ -358,9 +355,10 @@ public class MazeRunner {
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		Skybox.displaySkybox(gl);
-		if (player.getControl().minimap) {
+		if (player.getControl().minimap && player.playerStateInt != 4) {
 			Minimap.displayMinimap(gl);
 		}
+
 		if (player.playerStateInt == 2) {
 			Reticle.display(gl);
 		}
@@ -417,6 +415,13 @@ public class MazeRunner {
 			}
 		}
 
+		if (player.getControl().minimap && player.playerStateInt == 4) {
+			PlayerStateVictory.drawNonPersonalHighscores(drawable, gl);
+		}
+
+		if (!player.getControl().minimap && ! player.getControl().info && player.playerStateInt == 4) {
+			PlayerStateVictory.drawPersonalHighscores(drawable, gl);
+		}
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 		// gl.glDisable(GL.GL_STENCIL_TEST);
@@ -492,8 +497,6 @@ public class MazeRunner {
 
 	// Loads all the texture and stores them into the memory. We have to keep
 	// track of the order ourselves.
-
-	
 
 	public void loadModels(GL gl) {
 
@@ -576,7 +579,7 @@ public class MazeRunner {
 		double previousX = player.getLocationX();
 		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
-		
+
 		// Player updating
 		player.update(deltaTime, drawable);
 		int currentMazeID = level.getCurrentMaze(player);
@@ -598,13 +601,14 @@ public class MazeRunner {
 					}
 				}
 			}
-			// Check for collision between TrapDropped items, if so, call bounce method.
-			for (int i =0; i < currentMaze.itemList.size(); i++){
+			// Check for collision between TrapDropped items, if so, call bounce
+			// method.
+			for (int i = 0; i < currentMaze.itemList.size(); i++) {
 				Item itemi = currentMaze.itemList.get(i);
-				if (itemi instanceof TrapDropped){
-					for (int j =0; j<currentMaze.itemList.size(); j++){
+				if (itemi instanceof TrapDropped) {
+					for (int j = 0; j < currentMaze.itemList.size(); j++) {
 						Item itemj = currentMaze.itemList.get(j);
-						if (itemi.touches(itemj) && i!=j && itemj instanceof TrapDropped){
+						if (itemi.touches(itemj) && i != j && itemj instanceof TrapDropped) {
 							((TrapDropped) itemi).bounce((TrapDropped) itemj);
 						}
 					}
@@ -648,7 +652,7 @@ public class MazeRunner {
 							visibleObjects.add(tdGBS);
 						}
 					}
-					
+
 				}
 			}
 
@@ -665,9 +669,9 @@ public class MazeRunner {
 					bulletList.remove(b);
 				}
 				// Check for collision with level
-				if (MazeRunner.level.collides(b, 0)[0] && MazeRunner.level.collides(b,0)[1]) {
+				if (MazeRunner.level.collides(b, 0)[0] && MazeRunner.level.collides(b, 0)[1]) {
 					if (b.locationY <= maze.mazeY + Maze.ITEM_HEIGHT * maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)]) {
-						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] %2 ==0)) {
+						if ((maze.textureMatrix[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] % 2 == 0)) {
 							maze.maze[maze.coordToMatrixElement(b.locationX - maze.mazeX)][maze.coordToMatrixElement(b.locationZ - maze.mazeZ)] = -1;
 							bulletList.remove(b);
 							visibleObjects.remove(b);
@@ -679,13 +683,13 @@ public class MazeRunner {
 
 				}
 				// Check for collision with player
-				if (b.touches(player)){
+				if (b.touches(player)) {
 					PlayerState.getState(player.playerStateInt).leaving();
 					player.playerStateInt = 3;
 					PlayerState.getState(player.playerStateInt).entering();
 					visibleObjects.remove(b);
 					bulletList.remove(b);
-					player.score+=1001;
+					player.score += 1001;
 				}
 			}
 			for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -737,8 +741,6 @@ public class MazeRunner {
 				}
 			}
 		}
-
-
 
 		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
 		// updateMovement

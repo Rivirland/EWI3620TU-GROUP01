@@ -21,7 +21,7 @@ public class Bullet extends GameObject implements VisibleObject {
 	
 	public void display(GL gl){
 		GLUT glut = new GLUT();
-		gl.glColor3d(0.0, 0.0, 1.0);
+		gl.glColor3d(0.0, 0.0, 0.0);
 		gl.glPushMatrix();
 		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
 		glut.glutSolidSphere(0.05, 10, 10);

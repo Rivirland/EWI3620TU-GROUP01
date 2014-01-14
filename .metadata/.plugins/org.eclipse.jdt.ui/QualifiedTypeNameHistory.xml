@@ -2,4 +2,5 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="engine.Sound"/>
 <fullyQualifiedTypeName name="levelEditor.LevelEditor"/>
+<fullyQualifiedTypeName name="playerStates.PlayerStateVictory"/>
 </qualifiedTypeNameHistroy>

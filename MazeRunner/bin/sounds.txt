@@ -1,7 +1,5 @@
-applause-2
-crash
-crash-oud1
-Gunfire
-Jump
-noBullets
-reload
+applause-2.wav
+crash.wav
+Gunfire.wav
+noBullets.wav
+reload.wav

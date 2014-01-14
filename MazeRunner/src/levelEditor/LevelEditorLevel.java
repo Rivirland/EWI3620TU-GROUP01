@@ -8,8 +8,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.Calendar;
 
 import menu.KiesFileUitBrowser;
 
@@ -197,7 +199,7 @@ public class LevelEditorLevel {
 
 	public void saveAs() throws FileNotFoundException {
 		if (countPortals(itemlist) != 2) {
-			System.out.println("You need exactly two portals in a level!");
+			LevelEditor.setErrMsg("You need exactly two portals in a level!");
 			return;
 		}
 		// PrintWriter bestand = new

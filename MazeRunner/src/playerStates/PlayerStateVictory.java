@@ -23,9 +23,7 @@ public class PlayerStateVictory extends PlayerState {
 		MazeRunner.player.getControl().info = true;
 		MazeRunner.player.getControl().minimap = false;
 		MazeRunner.player.canMove = false;
-		InputDialog ID = new InputDialog();
-		String name = ID.getName();
-		// System.out.println("Victory! Score: " + MazeRunner.player.score);
+		String name = Main.accName;
 		try {
 			// Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" +
 			// MazeRunner.level.getNaam());
@@ -49,13 +47,30 @@ public class PlayerStateVictory extends PlayerState {
 	public void drawInfo(GLAutoDrawable autodrawable, GL gl) {
 		String st = "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC, time ASC LIMIT 0,5";
 		Main.db.printHighscores(autodrawable, gl, st);
-		Teken.textDraw(autodrawable, gl, "Click to fly, press Escape to return to the Menu", 0.35f*MazeRunner.screenWidth, 0.05f*MazeRunner.screenHeight, 30);
+		Teken.textDraw(autodrawable, gl, "Click to fly, press Escape to return to the Menu, press TAB to switch highscores", 0.15f * MazeRunner.screenWidth, 0.05f * MazeRunner.screenHeight, 30);
 
 	}
 
 	@Override
 	public void displayItem(GL gl) {
 		// nothing
+	}
+	
+	
+
+	public static void drawPersonalHighscores(GLAutoDrawable autodrawable, GL gl) {
+		String st = "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " WHERE naam == '" + Main.accName + "' ORDER BY score DESC, time ASC LIMIT 0,5";
+		Main.db.printHighscores(autodrawable, gl, st);
+		Teken.textDraw(autodrawable, gl, "Click to fly, press Escape to return to the Menu, press TAB to switch highscores", 0.15f * MazeRunner.screenWidth, 0.05f * MazeRunner.screenHeight, 30);
+
+	}
+
+	public static void drawNonPersonalHighscores(GLAutoDrawable autodrawable, GL gl) {
+		String st = "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " WHERE naam <> '" + Main.accName + "' ORDER BY score DESC, time ASC LIMIT 0,5";
+		Main.db.printHighscores(autodrawable, gl, st);
+		Teken.textDraw(autodrawable, gl, "Click to fly, press Escape to return to the Menu, press TAB to switch highscores", 0.15f * MazeRunner.screenWidth, 0.05f * MazeRunner.screenHeight, 30);
+
+		
 	}
 
 }

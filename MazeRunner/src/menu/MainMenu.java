@@ -26,7 +26,7 @@ public class MainMenu {
 	public MainMenu(int screenWidth, int screenHeight) {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-		
+
 	}
 
 	public void setScreen(int screenWidth, int screenHeight) {
@@ -35,56 +35,55 @@ public class MainMenu {
 	}
 
 	public void display(GLAutoDrawable drawable, GL gl) {
-//		gl.glClearColor(0, 0, 0, 0);
-//		gl.glMatrixMode(GL.GL_PROJECTION);
-//		gl.glViewport(0, 0, screenWidth, screenHeight);
-//		gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-//		gl.glMatrixMode(GL.GL_MODELVIEW);
+		// gl.glClearColor(0, 0, 0, 0);
+		// gl.glMatrixMode(GL.GL_PROJECTION);
+		// gl.glViewport(0, 0, screenWidth, screenHeight);
+		// gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
+		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		// gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glEnable(GL.GL_TEXTURE_2D);
-		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glDisable(GL.GL_DEPTH_TEST);
-		gl.glDisable(GL.GL_LIGHTING);
-		gl.glDisable(GL.GL_LIGHT0);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glDisable(GL.GL_DEPTH_TEST);
-		// ChangeGL.GLto2D(gl);
+		// gl.glDisable(GL.GL_CULL_FACE);
+		// gl.glDisable(GL.GL_DEPTH_TEST);
+		// gl.glDisable(GL.GL_LIGHTING);
+		// gl.glDisable(GL.GL_LIGHT0);
+		// gl.glEnable(GL.GL_BLEND);
+		// gl.glDisable(GL.GL_DEPTH_TEST);
 		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 19);
 
 		Teken.startText(drawable, "Arial", 90);
 		Teken.textDraw(gl, "Z@idm@n The G@me", 300f / 1920f * screenWidth, 830f / 1080f * screenHeight, 90);
 		Teken.endText(90);
 		Teken.startText(drawable, "Arial", 60);
-		Teken.textDraw(gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60);
-		Teken.textDraw(gl, "Level Editor", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60);
-		Teken.textDraw(gl, "Settings", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
-		Teken.textDraw(gl, "Quit Game", 750f / 1920f * screenWidth, 230f / 1080f * screenHeight, 60);
 		Teken.endText(60);
 
 		// ik beweeg over de eerste knop => deze licht rood op
-		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth) {
-			if (350f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f / 1080f * screenHeight) {
-				Teken.textDrawMetKleur(drawable, gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 1f, 0f, 0f);
-			}
+		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
+				&& (350f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f / 1080f * screenHeight)) {
+			Teken.textDrawMetKleur(drawable, gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+		} else {
+			Teken.textDraw(gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60);
 		}
 
 		// ik beweeg over de tweede knop => deze licht rood op
-		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth) {
-			if (500f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 600f / 1080f * screenHeight) {
-				Teken.textDrawMetKleur(drawable, gl, "Level Editor", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 1f, 0f, 0f);
-			}
+		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
+				&& (500f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 600f / 1080f * screenHeight)) {
+			Teken.textDrawMetKleur(drawable, gl, "Level Editor", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+		} else {
+			Teken.textDraw(gl, "Level Editor", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60);
 		}
 		// ik beweeg over de derde knop => deze licht rood op
-		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth) {
-			if (650f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 750f / 1080f * screenHeight) {
-				Teken.textDrawMetKleur(drawable, gl, "Settings", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
-			}
+		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
+				&& (650f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 750f / 1080f * screenHeight)) {
+			Teken.textDrawMetKleur(drawable, gl, "Manage Accounts", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+		} else {
+			Teken.textDraw(gl, "Manage Accounts", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
 		}
 		// ik beweeg over de vierde knop => deze licht rood op
-		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth) {
-			if (800f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 900f / 1080f * screenHeight) {
-				Teken.textDrawMetKleur(drawable, gl, "Quit Game", 750f / 1920f * screenWidth, 230f / 1080f * screenHeight, 60, 1f, 0f, 0f);
-			}
+		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
+				&& (800f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 900f / 1080f * screenHeight)) {
+			Teken.textDrawMetKleur(drawable, gl, "Quit Game", 750f / 1920f * screenWidth, 230f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+		} else {
+			Teken.textDraw(gl, "Quit Game", 750f / 1920f * screenWidth, 230f / 1080f * screenHeight, 60);
 		}
 
 		if (1820f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1920f / 1920f * screenWidth) {
@@ -92,6 +91,8 @@ public class MainMenu {
 				Teken.textDraw(drawable, gl, "Z@IDM@N RULES!", 50f / 1920f * screenWidth, 1000f / 1080f * screenHeight, 30);
 			}
 		}
+
+		Teken.textDraw(drawable, gl, "", 0, 0, 30);
 
 	}
 
