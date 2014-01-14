@@ -16,9 +16,9 @@ public class Teken {
 	public static int sizeint;
 
 	public Teken() {
-		renderer1 = new TextRenderer(new Font("Arial", Font.BOLD, 30));
-		renderer2 = new TextRenderer(new Font("Arial", Font.BOLD, 60));
-		renderer3 = new TextRenderer(new Font("Arial", Font.BOLD, 90));
+		renderer1 = new TextRenderer(new Font("Arial", Font.BOLD, 30), true, false);
+		renderer2 = new TextRenderer(new Font("Arial", Font.BOLD, 60), true, false);
+		renderer3 = new TextRenderer(new Font("Arial", Font.BOLD, 90), true, false);
 	}
 
 	public static void startText(GLAutoDrawable drawable, String font, float size) {

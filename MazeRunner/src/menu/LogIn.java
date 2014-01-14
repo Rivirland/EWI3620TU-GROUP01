@@ -3,6 +3,8 @@ package menu;
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -24,9 +26,10 @@ public class LogIn {
 	}
 
 	public void display(GLAutoDrawable drawable, GL gl) {
+		Main.drawMenuBackground3buttons(gl, screenWidth, screenHeight);
 		Teken.startText(drawable, "Arial", 60);
 		Teken.endText(60);
-		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f / 1920f * screenWidth, 830f / 1080f * screenHeight, 90);
+//		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f / 1920f * screenWidth, 830f / 1080f * screenHeight, 90);
 		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
 				&& (350f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f / 1080f * screenHeight)) {
 			Teken.textDrawMetKleur(drawable, gl, "Log In", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 1f, 0f, 0f);
@@ -62,17 +65,21 @@ public class LogIn {
 					String password = ID.getString("What's your password?");
 					Main.db.rs = Main.db.stat.executeQuery("SELECT password FROM accounts WHERE name == '" + name + "';");
 					if (password.equals(Main.db.rs.getString("password"))) {
+						Main.db.stat.executeUpdate("DELETE FROM accounts WHERE name == '" + name + "';");
+
+						String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+						Main.db.stat.executeUpdate("INSERT INTO accounts (name, password, date) values ('" + name + "', '" + password + "', '" + date + "');");
 						Main.loggedIn = true;
 						Main.accName = name;
+						Main.accDate = date;
 						Main.setCurrentstate(0);
 					} else {
-						System.out.println("Passwords do not match");
+						Main.setMainErrorMessage("Wrong password!");
 					}
 				} else {
-					System.out.println("No account with that name exists");
+					Main.setMainErrorMessage("No such account exists");
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -84,6 +91,12 @@ public class LogIn {
 		}
 		if (750f / 1920f * screenWidth < me.getX() && me.getX() < 1170f / 1920f * screenWidth && (650f / 1080f * screenHeight < me.getY() && me.getY() < 750f / 1080f * screenHeight)) {
 			// System.out.println("create");
+			try {
+				Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (name STRING, password STRING, date STRING);");
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			InputDialog ID = new InputDialog();
 			boolean accepted = false;
 			String name = null;
@@ -93,6 +106,8 @@ public class LogIn {
 					Main.db.rs = Main.db.stat.executeQuery("SELECT COUNT(*) AS result FROM accounts WHERE name == '" + name + "';");
 					if (Main.db.rs.getInt("result") == 0 && !name.equals(null)) {
 						accepted = true;
+					}else{
+						Main.setMainErrorMessage("That name is already taken");
 					}
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -102,8 +117,9 @@ public class LogIn {
 			String password = ID.getString("What's your password?");
 			try {
 				if (!password.equals(null)) {
-					Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (name STRING, password STRING);");
-					Main.db.stat.executeUpdate("INSERT INTO accounts (name, password) values ('" + name + "', '" + password + "');");
+					String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+					Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (name STRING, password STRING, date STRING);");
+					Main.db.stat.executeUpdate("INSERT INTO accounts (name, password, date) values ('" + name + "', '" + password + "', '" + date + "');");
 					Main.loggedIn = true;
 					Main.accName = name;
 					Main.setCurrentstate(0);

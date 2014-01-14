@@ -322,7 +322,7 @@ public class MazeRunner {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable, GL gl) {
-
+		Main.everplayed = true;
 		ChangeGL.GLto3D(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -426,8 +426,6 @@ public class MazeRunner {
 		if (!player.getControl().minimap && !player.getControl().info && player.playerStateInt == 4) {
 			PlayerStateVictory.drawPersonalHighscores(drawable, gl);
 		}
-		System.out.println("cur: " + currentTime);
-		System.out.println("ev: " + eventMessageTime);
 		if(currentTime + startTime - eventMessageTime > 3000){
 			setEventMessage("");
 		}

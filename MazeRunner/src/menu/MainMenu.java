@@ -48,10 +48,10 @@ public class MainMenu {
 		// gl.glDisable(GL.GL_LIGHT0);
 		// gl.glEnable(GL.GL_BLEND);
 		// gl.glDisable(GL.GL_DEPTH_TEST);
-		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 19);
+		Main.drawMenuBackground4buttons(gl, screenWidth, screenHeight);
 
 		Teken.startText(drawable, "Arial", 90);
-		Teken.textDraw(gl, "Z@idm@n The G@me", 300f / 1920f * screenWidth, 830f / 1080f * screenHeight, 90);
+//		Teken.textDraw(gl, "Z@idm@n The G@me", 300f / 1920f * screenWidth, 830f / 1080f * screenHeight, 90);
 		Teken.endText(90);
 		Teken.startText(drawable, "Arial", 60);
 		Teken.endText(60);

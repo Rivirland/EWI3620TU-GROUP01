@@ -8,8 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -38,7 +36,6 @@ import com.sun.opengl.util.texture.TextureIO;
 import engine.Database;
 import engine.Level;
 import engine.MazeRunner;
-import engine.Sound;
 import engine.UserInput;
 
 public class Main extends Frame implements GLEventListener, MouseListener, KeyListener, MouseMotionListener {
@@ -80,6 +77,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long pausedtime;
 	private boolean selectedG = false;
 	private boolean selectedL = false;
+	private static String mainErrorMessage;
+	private static long MEMtime;
 
 	// private boolean mouselookMode;
 	// the gamestate
@@ -111,6 +110,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	GLAutoDrawable drawable;
 	public static boolean loggedIn;
 	public static String accName;
+	public static String accDate;
+	public static boolean everplayed;
 
 	/*
 	 * public long getTime (){ return time; }
@@ -124,9 +125,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 * The constructor of the window, in which all States can take place
 	 */
 	public Main() {
-		super("naam van onze g@me");
+		super("Skyland");
+		
 		loggedIn = false;
 		gamestate = MAINMENU;
+		mainErrorMessage = "";
+		MEMtime = Calendar.getInstance().getTimeInMillis();
 
 		// Set the desired size and background color of the frame
 		if (fullscreenboolean) {
@@ -216,6 +220,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		}
 		db = new Database();
 		loadTextures(gl);
+		//TODO: geluid weer aanzetten en fixen en shit
 //		Sound.init();
 
 		/*
@@ -245,6 +250,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		userinput.setmouselookMode(false);
 		canvas.setCursor(normalCursor);
+		
+		everplayed = false;
 	}
 
 	/*
@@ -321,6 +328,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case LOGIN:
 
 			login.display(drawable, gl);
+			displayAccMsg(drawable, gl);
 			currentstate = gamestate;
 
 			break;
@@ -425,10 +433,21 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 	private void displayAccMsg(GLAutoDrawable drawable, GL gl) {
 		if (loggedIn) {
-			Teken.textDrawMetKleur(drawable, gl, "You are logged in as " + accName, 750f / 1920f * screenWidth, 80f / 1080f * screenHeight, 60, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "You are logged in as", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Last logon: " + accDate, 730f / 1920f * screenWidth, 20f/1080f * screenHeight, 30, 1f, 1f, 1f);
 		} else {
-			Teken.textDrawMetKleur(drawable, gl, "You are not logged in", 750f / 1920f * screenWidth, 80f / 1080f * screenHeight, 60, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "You are not logged in", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			if(Calendar.getInstance().getTimeInMillis() - MEMtime > 5000){
+				setMainErrorMessage("");
+			}
+			Teken.textDrawMetKleur(drawable, gl, mainErrorMessage, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 		}
+	}
+
+	public static void setMainErrorMessage(String string) {
+		mainErrorMessage = string;
+		MEMtime = Calendar.getInstance().getTimeInMillis();		
 	}
 
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
@@ -722,9 +741,28 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	}
 
 	public static void setCurrentstate(int input) {
-		System.out.println("Setting to: " + input);
 		currentstate = input;
 		gamestate = input;
 	}
+
+	public static void drawMenuBackground4buttons(GL gl, int screenWidth, int screenHeight) {
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 19);
+		
+	}
+	
+	public static void drawMenuBackground3buttons(GL gl, int screenWidth, int screenHeight) {
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 43);
+		
+	}
+	
+	
 
 }
