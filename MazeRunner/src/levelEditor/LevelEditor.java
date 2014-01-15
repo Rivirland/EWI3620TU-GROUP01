@@ -152,7 +152,7 @@ public class LevelEditor {
 		gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		plaatsTexture(gl, 0f, 0f, 1920f, 1080f, 19);
+		plaatsTexture(gl, 0f, 0f, 1920f, 1080f, 44);
 		tekenLevelEditorAchtergrond(drawable, gl);
 
 		levels.drawLevelList(drawable, gl, 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight, screenWidth, screenHeight, selectedLevel);
@@ -387,37 +387,37 @@ public class LevelEditor {
 		lineOnScreen(gl, 90f / 1920f * screenWidth, 860f / 1080f * screenHeight, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight);
 
 		gl.glColor3f(0.76f, 0.76f, 0.76f);
-		// grijs hoogte min
-		rechthoek(gl, (340f - 55f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f - 35f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		// grijs hoogte midden
-		rechthoek(gl, (340f - 20f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 20f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs hoogte min
+//		rechthoek(gl, (340f - 55f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f - 35f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs hoogte midden
+//		rechthoek(gl, (340f - 20f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 20f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
 		Teken.textDrawMetKleur(drawable, gl, String.valueOf(hoogteMode), (340f - 15f) / 1920f * screenWidth, (90f - 38f) / 1080f * screenHeight, 30, 0, 0, 0);
-		gl.glColor3f(0.76f, 0.76f, 0.76f);
-		// grijs hoogte plus
-		rechthoek(gl, (340f + 35f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 55f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-
-		// grijs min boven
-		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
-		// grijs plus boven
-		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
-		// grijs min onder
-		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		// grijs plus onder
-		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		// grijs min links
-		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
-		// grijs plus links
-		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
-		// grijs min rechts
-		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
-		// grijs plus rechts
-		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
+//		gl.glColor3f(0.76f, 0.76f, 0.76f);
+//		// grijs hoogte plus
+//		rechthoek(gl, (340f + 35f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 55f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//
+//		// grijs min boven
+//		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
+//		// grijs plus boven
+//		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
+//		// grijs min onder
+//		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs plus onder
+//		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs min links
+//		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
+//		// grijs plus links
+//		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
+//		// grijs min rechts
+//		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
+//		// grijs plus rechts
+//		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
 
 		// grijs naast de buttons
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
-		rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f * screenHeight);
-		rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 740f / 1920f * screenWidth, 990f / 1080f * screenHeight);
-		rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 740f / 1920f * screenWidth, 932f / 1080f * screenHeight);
+//		rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f * screenHeight);
+//		rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 740f / 1920f * screenWidth, 990f / 1080f * screenHeight);
+//		rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 740f / 1920f * screenWidth, 932f / 1080f * screenHeight);
 
 		// levelbuttons
 		tekenButton(gl, 622f / 1920f * screenWidth, (860f - 51f) / 1080f * screenHeight, (622f + 51f) / 1920f * screenWidth, 860f / 1080f * screenHeight);

@@ -3,4 +3,4 @@
 0.0,0.0,63.5,speedrun
 0.0,0.0,127.0,speedrun
 0.0,0.0,190.5,speedrun
-0.0,0.0,254,speedrunfinish
+0.0,0.0,254.0,speedrunfinish

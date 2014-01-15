@@ -1,5 +1,5 @@
 10,10,
-0.0,0.0,0.0,standardmaze
+0.0,0.0,0.0,standardmazestart
 0.0,30.0,0.0,standardmaze
 0.0,0.0,0.0,standardmaze
-0.0,0.0,0.0,nieuw
+0.0,0.0,0.0,standardmaze

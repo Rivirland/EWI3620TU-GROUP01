@@ -756,7 +756,14 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glLoadIdentity();
 		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 43);
-		
+	}
+	
+	public static void drawLevelEditorBG(GL gl, int screenWidth, int screenHeight) {
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 44);
 	}
 	
 	
