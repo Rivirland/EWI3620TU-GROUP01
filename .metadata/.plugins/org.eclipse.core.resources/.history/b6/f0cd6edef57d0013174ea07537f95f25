@@ -2,7 +2,6 @@ package menu;
 
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -66,7 +65,7 @@ public class MainMenu {
 		} else {
 			Teken.textDraw(gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60);
 		}
-		
+		Main.db.stat.executeUpdate("DROP TABLE IF EXISTS accounts");
 		// ik beweeg over de tweede knop => deze licht rood op
 		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
 				&& (500f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 600f / 1080f * screenHeight)) {
@@ -114,10 +113,6 @@ public class MainMenu {
 				} else if (750f / 1080f * screenHeight < me.getY() && me.getY() < 850f / 1080f * screenHeight) {
 					// The fourth button is clicked
 					gamestate = QUIT;
-				}
-			} else if (1820/1920f * screenWidth < me.getX() && me.getX() < 1920f / 1920f *screenWidth){
-				if (930f/1080f * screenHeight < me.getY() && me.getY() < 1030f/1080f * screenHeight){
-					System.out.println("hiermee zouden we de databases kunnen clearen ofzo");
 				}
 			}
 		}
