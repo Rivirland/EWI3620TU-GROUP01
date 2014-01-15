@@ -126,7 +126,7 @@ public class LogIn {
 			String password = ID.getString("What's your password?");
 			try {
 				if (!password.equals(null)) {
-					String date = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
+					String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 					Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (name STRING, password STRING, date STRING);");
 					Main.db.stat.executeUpdate("INSERT INTO accounts (name, password, date) values ('" + name + "', '" + password + "', '" + date + "');");
 					Main.loggedIn = true;

@@ -56,12 +56,6 @@ public class LogIn {
 
 	public void mouseReleased(MouseEvent me) {
 		if ((750f / 1920f * screenWidth < me.getX() && me.getX() < 1170f / 1920f * screenWidth) && (350f / 1080f * screenHeight < me.getY() && me.getY() < 450f / 1080f * screenHeight)) {
-			try {
-				Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (name STRING, password STRING, date STRING);");
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			// System.out.println("login");
 			InputDialog ID = new InputDialog();
 			String name = ID.getString("What's your name?");
@@ -76,7 +70,7 @@ public class LogIn {
 						
 						Main.db.stat.executeUpdate("DELETE FROM accounts WHERE name == '" + name + "';");
 						
-						String date = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
+						String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 						Main.db.stat.executeUpdate("INSERT INTO accounts (name, password, date) values ('" + name + "', '" + password + "', '" + date + "');");
 						Main.loggedIn = true;
 						Main.accName = name;
@@ -126,7 +120,7 @@ public class LogIn {
 			String password = ID.getString("What's your password?");
 			try {
 				if (!password.equals(null)) {
-					String date = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date());
+					String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
 					Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (name STRING, password STRING, date STRING);");
 					Main.db.stat.executeUpdate("INSERT INTO accounts (name, password, date) values ('" + name + "', '" + password + "', '" + date + "');");
 					Main.loggedIn = true;

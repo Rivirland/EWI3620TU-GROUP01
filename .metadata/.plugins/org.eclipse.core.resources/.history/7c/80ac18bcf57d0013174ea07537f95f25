@@ -25,7 +25,8 @@ public class PlayerStateVictory extends PlayerState {
 		MazeRunner.player.canMove = false;
 		String name = Main.accName;
 		try {
-//			Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + MazeRunner.level.getNaam());
+			 Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" +
+			 MazeRunner.level.getNaam());
 			Main.db.stat.executeUpdate("CREATE TABLE IF NOT EXISTS highscores" + MazeRunner.level.getNaam() + " (naam STRING, score INT, time INT);");
 			Main.db.stat.executeUpdate("INSERT INTO highscores" + MazeRunner.level.getNaam() + " (naam, score, time) values ('" + name + "', " + MazeRunner.player.score + ", "
 					+ MazeRunner.playingTime + ");");
@@ -54,6 +55,8 @@ public class PlayerStateVictory extends PlayerState {
 	public void displayItem(GL gl) {
 		// nothing
 	}
+	
+	
 
 	public static void drawPersonalHighscores(GLAutoDrawable autodrawable, GL gl) {
 		String st = "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " WHERE naam == '" + Main.accName + "' ORDER BY score DESC, time ASC LIMIT 0,5";
@@ -67,6 +70,7 @@ public class PlayerStateVictory extends PlayerState {
 		Main.db.printHighscores(autodrawable, gl, st);
 		Teken.textDraw(autodrawable, gl, "Click to fly, press Escape to return to the Menu, press TAB to switch highscores", 0.15f * MazeRunner.screenWidth, 0.05f * MazeRunner.screenHeight, 30);
 
+		
 	}
 
 }
