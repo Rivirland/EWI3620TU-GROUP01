@@ -1,7 +1,0 @@
-applause-2
-crash
-crash-oud1
-Gunfire
-Jump
-noBullets
-reload

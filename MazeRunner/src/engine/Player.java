@@ -76,7 +76,6 @@ public class Player extends GameObject {
 		playerStateInt = 0;
 		fallingSpeed = 0.5;
 		score = 0;
-		System.out.println("CREATING NEW PLAYER");
 		this.PlayerStateCloak = new PlayerStateCloak();
 		this.PlayerStateDead = new PlayerStateDead();
 		this.PlayerStateGun = new PlayerStateGun();

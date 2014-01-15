@@ -19,7 +19,8 @@ public class Level {
 	public double minGlobalY;
 	public int startingBullets, startingTraps;
 	private int[] orderedMazes;
-
+	private static double startX, startY, startZ;
+	
 	// The constructor.
 	public Level(String string) {
 		Level.mazelist = new ArrayList<Maze>();
@@ -46,7 +47,6 @@ public class Level {
 				}
 			}
 		}
-		System.out.println("Ordering mazes on height: " + Arrays.toString(res));
 		return res;
 	}
 
@@ -114,7 +114,6 @@ public class Level {
 				double y = Double.parseDouble(st.nextToken());
 				double z = Double.parseDouble(st.nextToken());
 				String m = st.nextToken();
-				System.out.println("Level loaded: " + m + " x: " + x + " y: " + y + " z: " + z);
 				if (y < minGlobalY) {
 					minGlobalY = y;
 				}
@@ -269,5 +268,29 @@ public class Level {
 
 	public int getStartingTraps() {
 		return this.startingTraps;
+	}
+
+	public static void setStartX(double objectX) {;
+		startX = objectX;
+	}
+	
+	public static void setStartY(double objectY) {
+		startY = objectY;
+	}
+	
+	public static void setStartZ(double objectZ) {
+		startZ = objectZ;
+	}
+	
+	public static double getStartX(){
+		return startX;
+	}
+	
+	public static double getStartY(){
+		return startY;
+	}
+	
+	public static double getStartZ(){
+		return startZ;
 	}
 }

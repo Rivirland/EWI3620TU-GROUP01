@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 import javax.media.opengl.GL;
@@ -52,6 +53,8 @@ public class LevelEditor {
 	private static final byte DAK = 3;
 	private static final byte ITEM = 4;
 	private byte drawMode = NIETS;
+	private static String errMsg;
+	private static long errMsgTime;
 
 	private int textureMode = 0;
 	private byte hoogteMode = 1;
@@ -111,17 +114,23 @@ public class LevelEditor {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.levels = levels;
+		try{
 		this.location = levels.get(0).getLocation();
 		this.wereld = levels.get(0).getGebouwen();
 		this.textures = levels.get(0).getTextures();
 		this.items = levels.get(0).getItemList();
+		setErrMsg("");
+		
+		
 		gridrows = (wereld.length - 1) / 2;
 		gridcolumns = (wereld[0].length - 1) / 2;
+		}catch(IndexOutOfBoundsException e){};
 		loadTextures(gl);
 		modelviewer = new LevelEditorModelViewer(screenWidth, screenHeight, (90f / 1920f * screenWidth), (90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
 		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
 		// worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight,
 		// screenWidth/2, screenHeight/2, screenWidth, screenHeight);
+		
 	}
 
 	public void setScreen(int screenWidth, int screenHeight) {
@@ -143,7 +152,7 @@ public class LevelEditor {
 		gl.glClearColor(0.34f, 0.11f, 0.13f, 1);
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		plaatsTexture(gl, 0f, 0f, 1920f, 1080f, 19);
+		plaatsTexture(gl, 0f, 0f, 1920f, 1080f, 44);
 		tekenLevelEditorAchtergrond(drawable, gl);
 
 		levels.drawLevelList(drawable, gl, 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight, screenWidth, screenHeight, selectedLevel);
@@ -168,6 +177,11 @@ public class LevelEditor {
 		if (worldview) {
 			worldviewer.display(gl);
 		}
+		
+		if(Calendar.getInstance().getTimeInMillis()-errMsgTime > 5000){
+			setErrMsg("");
+		}
+		Teken.textDrawMetKleur(drawable, gl, getErrMsg(), 800f/1920f * screenHeight, 20f/1080f*screenWidth, 30, 1f, 1f, 1f);
 		// Teken.rechthoek(gl, (775)/1920f*screenWidth,
 		// (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,
 		// 1050/1080f*screenHeight);
@@ -373,37 +387,37 @@ public class LevelEditor {
 		lineOnScreen(gl, 90f / 1920f * screenWidth, 860f / 1080f * screenHeight, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight);
 
 		gl.glColor3f(0.76f, 0.76f, 0.76f);
-		// grijs hoogte min
-		rechthoek(gl, (340f - 55f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f - 35f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		// grijs hoogte midden
-		rechthoek(gl, (340f - 20f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 20f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs hoogte min
+//		rechthoek(gl, (340f - 55f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f - 35f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs hoogte midden
+//		rechthoek(gl, (340f - 20f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 20f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
 		Teken.textDrawMetKleur(drawable, gl, String.valueOf(hoogteMode), (340f - 15f) / 1920f * screenWidth, (90f - 38f) / 1080f * screenHeight, 30, 0, 0, 0);
-		gl.glColor3f(0.76f, 0.76f, 0.76f);
-		// grijs hoogte plus
-		rechthoek(gl, (340f + 35f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 55f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-
-		// grijs min boven
-		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
-		// grijs plus boven
-		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
-		// grijs min onder
-		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		// grijs plus onder
-		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		// grijs min links
-		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
-		// grijs plus links
-		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
-		// grijs min rechts
-		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
-		// grijs plus rechts
-		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
+//		gl.glColor3f(0.76f, 0.76f, 0.76f);
+//		// grijs hoogte plus
+//		rechthoek(gl, (340f + 35f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 55f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//
+//		// grijs min boven
+//		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
+//		// grijs plus boven
+//		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
+//		// grijs min onder
+//		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs plus onder
+//		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
+//		// grijs min links
+//		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
+//		// grijs plus links
+//		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
+//		// grijs min rechts
+//		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
+//		// grijs plus rechts
+//		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
 
 		// grijs naast de buttons
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
-		rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f * screenHeight);
-		rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 740f / 1920f * screenWidth, 990f / 1080f * screenHeight);
-		rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 740f / 1920f * screenWidth, 932f / 1080f * screenHeight);
+//		rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f * screenHeight);
+//		rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 740f / 1920f * screenWidth, 990f / 1080f * screenHeight);
+//		rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 740f / 1920f * screenWidth, 932f / 1080f * screenHeight);
 
 		// levelbuttons
 		tekenButton(gl, 622f / 1920f * screenWidth, (860f - 51f) / 1080f * screenHeight, (622f + 51f) / 1920f * screenWidth, 860f / 1080f * screenHeight);
@@ -435,7 +449,6 @@ public class LevelEditor {
 			selectedLevelPrevious = selectedLevel;
 			remove = false;
 			open = false;
-			System.out.println("update");
 		} else {
 			try {
 				levels.get(selectedLevel).setLocation(this.location);
@@ -968,7 +981,6 @@ public class LevelEditor {
 				xmin = xmidden - (distance * gridcolumns) / 2;
 				xmax = xmidden + (distance * gridcolumns) / 2;
 			}
-			System.out.println("gridklik is " + gridklik);
 
 			// LINKERMUISKNOP: plaats iets in de matrix
 
@@ -1096,6 +1108,9 @@ public class LevelEditor {
 					// (gridkliky-ymin)*7f/distance,
 					// (gridklikx-xmin)*7f/distance, hoogteMode});
 				}
+				if (textureMode == 132){
+					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance });
+				}
 			}
 
 			gridklik = false;
@@ -1125,7 +1140,6 @@ public class LevelEditor {
 				xmin = xmidden - (distance * gridcolumns) / 2;
 				xmax = xmidden + (distance * gridcolumns) / 2;
 			}
-			System.out.println("gridklik is " + gridklik);
 
 			// RECHTERMUISKNOP: verwijder iets uit de matrix
 
@@ -1215,7 +1229,6 @@ public class LevelEditor {
 				}
 			} else {
 				// verwijder items
-				System.out.println("hoi");
 				for (int item = 0; item != items.size(); item++) {
 					float x = (float) items.get(item)[1];
 					float z = (float) items.get(item)[2];
@@ -1430,246 +1443,7 @@ public class LevelEditor {
 					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance
 							/ 10, ymax - (rij + 1) / 2 * distance + distance / 10, textures[rij][kolom] - 100);
 				}
-				// if (textures[rij][kolom]==3){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 156f/255f, 133f/255f,
-				// 95f/255f);
-				// }
-				// if (textures[rij][kolom]==4){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance*6/10, 156f/255f, 133f/255f,
-				// 95f/255f);
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*4/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 156f/255f, 133f/255f,
-				// 95f/255f);
-				// }
-				// if (textures[rij][kolom]==5){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==6){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==7){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==8){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==9){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==10){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==11){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==12){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==13){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==14){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==15){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==16){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==17){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==18){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==19){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==20){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==21){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==22){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==23){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==24){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==25){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==26){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==27){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
-				// if (textures[rij][kolom]==28){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance+distance*9/10
-				// ,xmin+((kolom+1)/2)*distance+distance/10,
-				// ymax-(rij+1)/2*distance+distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
+				
 			}
 		}
 
@@ -1686,54 +1460,6 @@ public class LevelEditor {
 					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance
 							/ 10, ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 100);
 				}
-				// if (textures[rij][kolom]==2){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance*9/10,
-				// ymax-(rij+1)/2*distance+distance/10
-				// ,xmin+((kolom+1)/2)*distance-distance*6/10,
-				// ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f,
-				// 16f/255f);
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance*4/10,
-				// ymax-(rij+1)/2*distance+distance/10
-				// ,xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance-distance/10, 135f/255f, 22f/255f,
-				// 16f/255f);
-				// }
-				// if (textures[rij][kolom]==3){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance*9/10,
-				// ymax-(rij+1)/2*distance+distance/10
-				// ,xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f,
-				// 95f/255f);
-				// }
-				// if (textures[rij][kolom]==4){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance*9/10,
-				// ymax-(rij+1)/2*distance+distance/10
-				// ,xmin+((kolom+1)/2)*distance-distance*6/10,
-				// ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f,
-				// 95f/255f);
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance*4/10,
-				// ymax-(rij+1)/2*distance+distance/10
-				// ,xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance-distance/10, 156f/255f, 133f/255f,
-				// 95f/255f);
-				// }
-				// if (textures[rij][kolom]==5){
-				// //onderstaande moet veranderen in een muurtexture
-				// tekenButtonMetKleur(gl,
-				// xmin+((kolom+1)/2)*distance-distance*9/10,
-				// ymax-(rij+1)/2*distance+distance/10
-				// ,xmin+((kolom+1)/2)*distance-distance/10,
-				// ymax-(rij+1)/2*distance-distance/10, 20f/255f, 20f/255f,
-				// 20f/255f);
-				// }
 			}
 		}
 
@@ -1783,6 +1509,13 @@ public class LevelEditor {
 				float z = (float) items.get(item)[2];
 				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
 						/ 4, 20);
+			}
+			if (items.get(item)[0] == 132){
+
+				float x = (float) items.get(item)[1];
+				float z = (float) items.get(item)[2];
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
+						/ 4, 15);
 			}
 		}
 
@@ -1866,7 +1599,6 @@ public class LevelEditor {
 			File file2 = new File(filename);
 			TextureData data2 = TextureIO.newTextureData(file2, false, "jpg");
 			wallTexture1 = TextureIO.newTexture(data2);
-			System.out.println("gelukt");
 		} catch (IOException exc) {
 			System.out.println("niet gevonden - texture");
 			exc.printStackTrace();
@@ -1913,6 +1645,23 @@ public class LevelEditor {
 			this.worldview = !worldview;
 		}
 
+	}
+
+	public static String getErrMsg() {
+		return errMsg;
+	}
+
+	public static void setErrMsg(String errMsg) {
+		LevelEditor.errMsg = errMsg;
+		LevelEditor.setErrMsgTime(Calendar.getInstance().getTimeInMillis());
+	}
+
+	public static long getErrMsgTime() {
+		return errMsgTime;
+	}
+
+	public static void setErrMsgTime(long errMsgTime) {
+		LevelEditor.errMsgTime = errMsgTime;
 	}
 
 }

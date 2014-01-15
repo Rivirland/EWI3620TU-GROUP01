@@ -8,8 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -38,7 +36,6 @@ import com.sun.opengl.util.texture.TextureIO;
 import engine.Database;
 import engine.Level;
 import engine.MazeRunner;
-import engine.Sound;
 import engine.UserInput;
 
 public class Main extends Frame implements GLEventListener, MouseListener, KeyListener, MouseMotionListener {
@@ -54,7 +51,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final byte MAINMENU = 0;
 	final byte GAMEMENU = 1;
 	final byte LEVELMENU = 2;
-	final byte SETTINGS = 3;
+	final byte LOGIN = 3;
 	final byte QUIT = 4;
 	final byte INGAME = 5;
 	final byte LEVELEDITOR = 6;
@@ -80,12 +77,14 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long pausedtime;
 	private boolean selectedG = false;
 	private boolean selectedL = false;
+	private static String mainErrorMessage;
+	private static long MEMtime;
 
 	// private boolean mouselookMode;
 	// the gamestate
-	private int gamestate;
+	private static int gamestate;
 	// to check if a gamestate was changed
-	private int currentstate = gamestate;
+	private static int currentstate = gamestate;
 	// if the ingame is started
 	private boolean ingamestarted = false;
 
@@ -95,7 +94,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	GameMenu gamemenu;
 	LevelMenu levelmenu;
 	Quit quit;
-	Settings settings;
+	LogIn login;
 	UserInput userinput;
 	MazeRunner mazerunner;
 	public static Database db;
@@ -109,6 +108,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	GL gl;
 	GLU glu;
 	GLAutoDrawable drawable;
+	public static boolean loggedIn;
+	public static String accName;
+	public static String accDate;
+	public static boolean everplayed;
 
 	/*
 	 * public long getTime (){ return time; }
@@ -122,9 +125,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 * The constructor of the window, in which all States can take place
 	 */
 	public Main() {
-		super("naam van onze g@me");
-
+		super("Skyland");
+		
+		loggedIn = false;
 		gamestate = MAINMENU;
+		mainErrorMessage = "";
+		MEMtime = Calendar.getInstance().getTimeInMillis();
 
 		// Set the desired size and background color of the frame
 		if (fullscreenboolean) {
@@ -202,19 +208,16 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		mainmenu = new MainMenu(screenWidth, screenHeight);
 
 		gamemenu = new GameMenu(screenWidth, screenHeight);
-		quit = new Quit(screenWidth, screenHeight); 
-		settings = new Settings(screenWidth, screenHeight); 
+		quit = new Quit(screenWidth, screenHeight);
+		login = new LogIn(screenWidth, screenHeight);
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
-		try {
-			leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));
-		} catch (FileNotFoundException e) {
-			System.out.println("file niet gevonden: " + System.getProperty("user.dir") + "\\worlds\\world.txt");
-		}
+		leveleditor = new LevelEditor(gl, screenWidth, screenHeight, new LevelEditorWorld());
 		db = new Database();
 		loadTextures(gl);
-		Sound.init();
+		//TODO: geluid weer aanzetten en fixen en shit
+//		Sound.init();
 
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the
@@ -243,6 +246,8 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		userinput.setmouselookMode(false);
 		canvas.setCursor(normalCursor);
+		
+		everplayed = false;
 	}
 
 	/*
@@ -299,23 +304,27 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case MAINMENU:
 
 			mainmenu.display(drawable, gl);
+			displayAccMsg(drawable, gl);
 			currentstate = gamestate;
 
 			break;
 		case GAMEMENU:
 
 			gamemenu.display(drawable, gl);
+			displayAccMsg(drawable, gl);
 			currentstate = gamestate;
 			break;
 		case LEVELMENU:
 
 			levelmenu.display(drawable, gl);
+			displayAccMsg(drawable, gl);
 			currentstate = gamestate;
 
 			break;
-		case SETTINGS:
+		case LOGIN:
 
-			settings.display(drawable, gl);
+			login.display(drawable, gl);
+			displayAccMsg(drawable, gl);
 			currentstate = gamestate;
 
 			break;
@@ -353,7 +362,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 				String currentdir = System.getProperty("user.dir");
 				String filename = kfub.loadFile(new Frame(), "Open...", currentdir + "\\worlds\\", "*.txt");
 				// filename = currentdir + "\\levels\\" + filename;
-				System.out.println(filename.substring(0, filename.length() - 6));
+				if(filename == null){
+					filename = "world.txt";
+				}
 				mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length() - 4)));
 				gamestate = INGAME;
 			}
@@ -394,6 +405,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 					KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
 					String currentdir2 = System.getProperty("user.dir");
 					String filename2 = kfub2.loadFile(new Frame(), "Open world...", currentdir2 + "\\worlds\\", "*.txt");
+					if(filename2 == null){
+						filename2 = "world.txt";
+					}
 					filename2 = currentdir2 + "\\worlds\\" + filename2;
 					System.out.println(filename2);
 					try {
@@ -411,6 +425,25 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		}
 
 		gl.glFlush();
+	}
+
+	private void displayAccMsg(GLAutoDrawable drawable, GL gl) {
+		if (loggedIn) {
+			Teken.textDrawMetKleur(drawable, gl, "You are logged in as", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Last logon: " + accDate, 730f / 1920f * screenWidth, 20f/1080f * screenHeight, 30, 1f, 1f, 1f);
+		} else {
+			Teken.textDrawMetKleur(drawable, gl, "You are not logged in", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			if(Calendar.getInstance().getTimeInMillis() - MEMtime > 5000){
+				setMainErrorMessage("");
+			}
+			Teken.textDrawMetKleur(drawable, gl, mainErrorMessage, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+		}
+	}
+
+	public static void setMainErrorMessage(String string) {
+		mainErrorMessage = string;
+		MEMtime = Calendar.getInstance().getTimeInMillis();		
 	}
 
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
@@ -435,7 +468,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		mainmenu.setScreen(screenWidth, screenHeight);
 		gamemenu.setScreen(screenWidth, screenHeight);
 		levelmenu.setScreen(screenWidth, screenHeight);
-		settings.setScreen(screenWidth, screenHeight);
+		login.setScreen(screenWidth, screenHeight);
 		quit.setScreen(screenWidth, screenHeight);
 		mazerunner.setScreen(screenWidth, screenHeight);
 		leveleditor.setScreen(screenWidth, screenHeight);
@@ -482,7 +515,9 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			gamestate = levelmenu.MouseReleased(me);
 
 			break;
-		case SETTINGS:
+		case LOGIN:
+
+			login.mouseReleased(me);
 
 			break;
 		case QUIT:
@@ -518,7 +553,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case LEVELMENU:
 
 			break;
-		case SETTINGS:
+		case LOGIN:
 
 			break;
 		case QUIT:
@@ -560,7 +595,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		case LEVELMENU:
 
 			break;
-		case SETTINGS:
+		case LOGIN:
 
 			break;
 		case QUIT:
@@ -696,5 +731,41 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		}
 		System.out.println("Textures loaded");
 	}
+
+	public int getCurrentstate() {
+		return currentstate;
+	}
+
+	public static void setCurrentstate(int input) {
+		currentstate = input;
+		gamestate = input;
+	}
+
+	public static void drawMenuBackground4buttons(GL gl, int screenWidth, int screenHeight) {
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 19);
+		
+	}
+	
+	public static void drawMenuBackground3buttons(GL gl, int screenWidth, int screenHeight) {
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 43);
+	}
+	
+	public static void drawLevelEditorBG(GL gl, int screenWidth, int screenHeight) {
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
+		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 44);
+	}
+	
+	
 
 }

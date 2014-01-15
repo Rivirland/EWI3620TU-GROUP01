@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -28,6 +29,7 @@ public class LevelEditorLevel {
 		this.setTextures(textures);
 		this.setItemList(itemList);
 	}
+	
 
 	public static LevelEditorLevel readLevel(String naam, double[] location, String filename) throws FileNotFoundException {
 
@@ -75,7 +77,6 @@ public class LevelEditorLevel {
 				res[i][j] = sc2.nextInt();
 			}
 		}
-		System.out.println("Maze File ingelezen");
 		return res;
 	}
 
@@ -108,7 +109,6 @@ public class LevelEditorLevel {
 				res[i][j] = sc2.nextInt();
 			}
 		}
-		System.out.println("Texture File ingelezen");
 		return res;
 	}
 
@@ -171,6 +171,13 @@ public class LevelEditorLevel {
 						exit[1] = Double.parseDouble(st.nextToken()); // objectX
 						exit[2] = Double.parseDouble(st.nextToken()); // objectZ
 						itemlist.add(exit);
+					} else if (objectNumber == 132) {
+						// Starting Point
+						double[] start = new double[3];
+						start[0] = objectNumber;
+						start[1] = Double.parseDouble(st.nextToken()); // objectX
+						start[2] = Double.parseDouble(st.nextToken()); // objectZ
+						itemlist.add(start);
 					}
 				}
 			} catch (IOException e) {
@@ -197,7 +204,7 @@ public class LevelEditorLevel {
 
 	public void saveAs() throws FileNotFoundException {
 		if (countPortals(itemlist) != 2) {
-			System.out.println("You need exactly two portals in a level!");
+			LevelEditor.setErrMsg("You need exactly two portals in a level!");
 			return;
 		}
 		// PrintWriter bestand = new
@@ -241,6 +248,41 @@ public class LevelEditorLevel {
 		}
 		bestand3.close();
 	}
+	
+	public void saveAs(String filename) throws FileNotFoundException {
+		if (countPortals(itemlist) != 2) {
+			LevelEditor.setErrMsg("You need exactly two portals in a level!");
+			return;
+		}
+		String currentdir = System.getProperty("user.dir");
+		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
+		for (int i = 0; i != gebouwen.length; i++) {
+			for (int j = 0; j != gebouwen[0].length; j++) {
+				bestand.print(gebouwen[i][j] + ",");
+			}
+			bestand.println();
+		}
+		bestand.close();
+
+		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
+		for (int i = 0; i != textures.length; i++) {
+			for (int j = 0; j != textures[0].length; j++) {
+				bestand2.print(textures[i][j] + ",");
+			}
+			bestand2.println();
+		}
+		bestand2.close();
+
+		PrintWriter bestand3 = new PrintWriter(currentdir + "\\levels\\" + filename + "_o.txt");
+		for (int item = 0; item != itemlist.size(); item++) {
+			System.out.println(Arrays.toString(itemlist.get(item)));
+			for (int itemcontent = 0; itemcontent != itemlist.get(item).length; itemcontent++) {
+				bestand3.print(itemlist.get(item)[itemcontent] + ",");
+			}
+			bestand3.println();
+		}
+		bestand3.close();
+	}
 
 	public void open() throws FileNotFoundException {
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
@@ -250,6 +292,16 @@ public class LevelEditorLevel {
 			filename = "standardmaze.txt";
 		}
 		 
+		name = filename.substring(0, filename.length() - 4);
+		filename = currentdir + "\\levels\\" + filename;
+		System.out.println(filename);
+		gebouwen = readGebouwen(filename);
+		textures = readTextures(filename);
+		itemlist = readObjects(filename);
+	}
+	
+	public void open(String filename) throws FileNotFoundException {
+		String currentdir = System.getProperty("user.dir");
 		name = filename.substring(0, filename.length() - 4);
 		filename = currentdir + "\\levels\\" + filename;
 		System.out.println(filename);

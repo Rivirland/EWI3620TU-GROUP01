@@ -10,8 +10,8 @@ public class InputDialog
 		frame = new JFrame("Name");
 	}
 	
-	public String getName(){
-		String res = JOptionPane.showInputDialog(frame, "What's your name?");
+	public String getString(String text){
+		String res = JOptionPane.showInputDialog(frame, text);
 		return res;
 	}
 //  public static void main(String[] args)

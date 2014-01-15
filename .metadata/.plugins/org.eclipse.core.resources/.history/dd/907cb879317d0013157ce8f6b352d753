@@ -1,0 +1,26 @@
+package menu;
+
+import javax.media.opengl.*;
+
+public class LogIn {
+	
+	private int screenWidth = 800, screenHeight = 600;
+	
+	public LogIn(int screenWidth, int screenHeight){
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+	}
+	
+	public void setScreen(int screenWidth, int screenHeight){
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+	}
+	
+	public void display(GLAutoDrawable drawable, GL gl){
+		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f/1920f*screenWidth, 830f/1080f*screenHeight, 90);
+		Teken.textDraw(drawable, gl, "Log in", 750f/1920f*screenWidth, 680f/1080f*screenHeight, 60);
+		Teken.textDraw(drawable, gl, "Create Account", 750f/1920f*screenWidth, 520f/1080f*screenHeight, 60);
+		
+	}
+
+}
