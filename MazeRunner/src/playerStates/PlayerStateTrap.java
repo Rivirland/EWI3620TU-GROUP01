@@ -6,6 +6,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import engine.MazeRunner;
+import engine.Sound;
 import menu.Teken;
 
 public class PlayerStateTrap extends PlayerState {
@@ -13,6 +14,7 @@ public class PlayerStateTrap extends PlayerState {
 	@Override
 	public void itemUse() {
 		if (MazeRunner.player.nrOfTraps > 0 && MazeRunner.level.getCurrentMaze(MazeRunner.player) != -1) {
+			//TODO: Play sound?
 			MazeRunner.player.nrOfTraps--;
 			double trapX = MazeRunner.player.getGlobalX();
 			double trapY = MazeRunner.player.getGlobalY() - 0.2;

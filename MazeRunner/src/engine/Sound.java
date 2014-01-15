@@ -10,7 +10,7 @@ import java.util.Map;
 
 import com.sun.opengl.util.texture.Texture;
 
-public class Sound {
+public class Sound implements Runnable{
 	
 	public static Map<String, Sound> sounds = new HashMap<String, Sound>();
 	private AudioClip clip;
@@ -20,6 +20,7 @@ public class Sound {
 			clip = Applet.newAudioClip(Sound.class.getResource(filename));
 		}
 		catch(Exception e){
+			System.out.println("error in Sound constructor with file: " + filename);
 			e.printStackTrace();
 		}
 	}
@@ -42,30 +43,19 @@ public class Sound {
 		}
 		System.out.println("Sounds loaded succesfully\n");
 	}
+	@Override
+	public void run() {
+		try{
+			clip.play();
+		}catch(Exception e){
+			System.out.println("error in Sound.Play()");
+		}
+	}
+	public static void play(String string) {
+		Sound sound = new Sound("/" + string);
+		Thread thread = new Thread(sound);
+		thread.start();
+		
+	}
 	
-	public void play2(){
-		try{
-			new Thread(){
-				public void run(){
-					clip.play();
-				}
-			}.start();
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-		}
-	}	
-	public void play(){
-		try{
-			new Thread(
-					new Runnable(){
-						public void run(){
-							clip.play();
-						}
-			}).start();
-		}
-		catch(Exception ex){
-			ex.printStackTrace();
-		}
-	}	
 }

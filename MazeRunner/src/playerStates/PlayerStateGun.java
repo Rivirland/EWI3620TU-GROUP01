@@ -6,7 +6,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import menu.Teken;
-
 import engine.MazeRunner;
 import engine.Sound;
 
@@ -16,9 +15,9 @@ public class PlayerStateGun extends PlayerState {
 	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
 			try {
-				Sound.sounds.get("Gunfire").play();
-			} catch (NullPointerException e) {
-				System.out.println("gunfire no");
+				Sound.play("gunfire.wav");
+			} catch (Exception e) {
+				System.out.println("no gunfire sound");
 			}
 
 			MazeRunner.player.nrOfBullets--;
@@ -32,9 +31,9 @@ public class PlayerStateGun extends PlayerState {
 			MazeRunner.visibleObjects.add(bullet);
 		} else {
 			try {
-				Sound.sounds.get("noBullets").play();
+				Sound.play("noBullets.wav");
 			} catch (NullPointerException e) {
-				System.out.println("noBullets no");
+				System.out.println("no noBullets sound");
 			}
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
@@ -46,9 +45,9 @@ public class PlayerStateGun extends PlayerState {
 	public void entering() {
 		System.out.println("Entering GunMode");
 		try {
-			Sound.sounds.get("reload").play();
+			Sound.play("reload.wav");
 		} catch (NullPointerException e) {
-			System.out.println("reload no");
+			System.out.println("no reload sound");
 		}
 
 	}

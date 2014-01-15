@@ -709,14 +709,13 @@ public class MazeRunner {
 				Maze maze = level.getMaze(r.mazeID);
 
 				if (r.locationY < maze.mazeY + 0.5) {
-
-					// Sound.roofCrash.play();
-
-					try {
-						Sound.sounds.get("roofCrash").play();
-					} catch (NullPointerException e) {
-						System.out.println("roofcrash no");
+					
+					try{
+						Sound.play("roofCrash.wav");
+					}catch (Exception e){
+						System.out.println("no noBullets sound");
 					}
+					
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {

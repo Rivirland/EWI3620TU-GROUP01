@@ -7,7 +7,6 @@ import enemies.Enemy;
 import engine.Animator;
 import engine.GameObject;
 import engine.MazeRunner;
-import engine.Sound;
 
 public class TrapDropped extends Item {
 	protected boolean used;
@@ -31,13 +30,6 @@ public class TrapDropped extends Item {
 		this.vx0=1.0;
 		this.ay=-0.1;
 		this.ax=0;
-
-		try{
-			Sound.sounds.get("jackInBox").play();
-		}
-		catch(NullPointerException e){
-			System.out.println("jackinBox no");
-		}
 //		System.out.println("TrapDropped@global: x: " + this.getGlobalX() + " y: " + this.getGlobalY() + " z: "+ this.getGlobalZ());
 //		System.out.println("TrapDropped@local: x: " + this.getLocalX() + " y: " + this.getLocalY() + " z: "+ this.getLocalZ());
 	}

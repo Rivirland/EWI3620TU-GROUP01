@@ -6,7 +6,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import menu.Teken;
-
 import engine.MazeRunner;
 import engine.Sound;
 
@@ -17,7 +16,11 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 	@Override
 	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
-			Sound.sounds.get("Gunfire").play();
+			try{
+				Sound.play("gunfire.wav");
+			}catch (Exception e){
+				System.out.println("no noBullets sound");
+			}
 			MazeRunner.player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
 			double vAngle = MazeRunner.player.getVerAngle();
@@ -28,7 +31,11 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 			MazeRunner.bulletList.add(bullet);
 			MazeRunner.visibleObjects.add(bullet);
 		} else {
-			Sound.sounds.get("noBullets").play();
+			try{
+				Sound.play("noBullets.wav");
+			}catch (Exception e){
+				System.out.println("no noBullets sound");
+			}
 		}
 		System.out.println(MazeRunner.player.nrOfBullets);
 
@@ -41,7 +48,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 	public void entering() {
 		System.out.println("Entering GunMode");
 		try {
-			Sound.sounds.get("reload").play();
+			Sound.play("reload.wav");
 		} catch (NullPointerException e) {
 			System.out.println("no Reload sound");
 		}
