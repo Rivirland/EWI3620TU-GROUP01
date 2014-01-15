@@ -29,12 +29,12 @@ public class InputLocation
 				res[2] = Double.parseDouble(st.nextToken());
 				return res;
 			} else {
-				System.out.println("Please enter according to format");
+				LevelEditor.setErrMsg("Please enter according to format");
 			}
 		} catch (NullPointerException e) {
 			System.out.println("User clicked cancel");
 		} catch (NumberFormatException e) {
-			System.out.println("Please enter according to format");
+			LevelEditor.setErrMsg("Please enter according to format");
 		}
 		return new double[] { 0, 0 ,0 };
 	}
@@ -50,12 +50,12 @@ public class InputLocation
 				res[1] = Integer.parseInt(st.nextToken());
 				return res;
 			} else {
-				System.out.println("Please enter according to format");
+				LevelEditor.setErrMsg("Please enter according to format");
 			}
 		} catch (NullPointerException e) {
 			System.out.println("User clicked cancel");
 		} catch (NumberFormatException e) {
-			System.out.println("Please enter according to format");
+			LevelEditor.setErrMsg("Please enter according to format");
 		}
 		return new int[] { 0, 0 };
 	}
