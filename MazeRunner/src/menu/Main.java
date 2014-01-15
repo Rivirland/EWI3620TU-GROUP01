@@ -213,11 +213,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
 		userinput = new UserInput(canvas);
 		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
-		try {
-			leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(System.getProperty("user.dir") + "\\worlds\\world.txt"));
-		} catch (FileNotFoundException e) {
-			System.out.println("file niet gevonden: " + System.getProperty("user.dir") + "\\worlds\\world.txt");
-		}
+		leveleditor = new LevelEditor(gl, screenWidth, screenHeight, new LevelEditorWorld());
 		db = new Database();
 		loadTextures(gl);
 		//TODO: geluid weer aanzetten en fixen en shit

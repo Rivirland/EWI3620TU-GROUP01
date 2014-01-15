@@ -1,5 +1,0 @@
-applause-2.wav
-crash.wav
-Gunfire.wav
-noBullets.wav
-reload.wav

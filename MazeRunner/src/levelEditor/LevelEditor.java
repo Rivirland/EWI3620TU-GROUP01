@@ -114,19 +114,23 @@ public class LevelEditor {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.levels = levels;
+		try{
 		this.location = levels.get(0).getLocation();
 		this.wereld = levels.get(0).getGebouwen();
 		this.textures = levels.get(0).getTextures();
 		this.items = levels.get(0).getItemList();
 		setErrMsg("");
 		
+		
 		gridrows = (wereld.length - 1) / 2;
 		gridcolumns = (wereld[0].length - 1) / 2;
+		}catch(IndexOutOfBoundsException e){};
 		loadTextures(gl);
 		modelviewer = new LevelEditorModelViewer(screenWidth, screenHeight, (90f / 1920f * screenWidth), (90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
 		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
 		// worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight,
 		// screenWidth/2, screenHeight/2, screenWidth, screenHeight);
+		
 	}
 
 	public void setScreen(int screenWidth, int screenHeight) {
