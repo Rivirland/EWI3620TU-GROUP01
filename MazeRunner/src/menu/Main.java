@@ -431,7 +431,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		if (loggedIn) {
 			Teken.textDrawMetKleur(drawable, gl, "You are logged in as", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 0f, 0f);
-			Teken.textDrawMetKleur(drawable, gl, "Last appearance: " + accDate, 730f / 1920f * screenWidth, 20f/1080f * screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, "Last logon: " + accDate, 730f / 1920f * screenWidth, 20f/1080f * screenHeight, 30, 1f, 1f, 1f);
 		} else {
 			Teken.textDrawMetKleur(drawable, gl, "You are not logged in", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			if(Calendar.getInstance().getTimeInMillis() - MEMtime > 5000){
