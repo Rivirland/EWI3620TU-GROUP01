@@ -1,7 +1,5 @@
 package engine;
 
-import model.Vector3d;
-
 public class Vertex {
 	public double x;
 	public double y;

@@ -1,5 +1,6 @@
 package model;
 
+import engine.Vector;
 import engine.Vertex;
 
 public class Vector3d {
@@ -12,7 +13,7 @@ public class Vector3d {
 		this.z = z;
 	}
 	
-	public Vector3d crossproduct(Vector3d v1) {
+	public Vector crossproduct(Vector v1) {
 		double i = this.y * v1.z - this.z*v1.y;
 		double j = this.x * v1.z - this.z*v1.x;
 		double k = this.x * v1.y - this.y*v1.x;
@@ -30,14 +31,14 @@ public class Vector3d {
 		this.z = this.z / length;
 	}
 
-	public static Vector3d calcNormal(Vector3d v1v2, Vector3d v1v3) {
+	public static Vector calcNormal(Vector v1v2, Vector v1v3) {
 		Vector3d n = v1v2.crossproduct(v1v3);
 		n.normalize();
 		return n;
 	}
-	public static Vector3d calcNormal(Vertex v1, Vertex v2, Vertex v3){
-		Vector3d v1v2 = v2.substract(v1);
-		Vector3d v1v3 = v3.substract(v1);
+	public static Vector calcNormal(Vertex v1, Vertex v2, Vertex v3){
+		Vector v1v2 = v2.substract(v1);
+		Vector v1v3 = v3.substract(v1);
 		return calcNormal(v1v2, v1v3);
 	}
 }

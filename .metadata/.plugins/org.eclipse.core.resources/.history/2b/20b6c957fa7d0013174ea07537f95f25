@@ -431,7 +431,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private void displayAccMsg(GLAutoDrawable drawable, GL gl) {
 		if (loggedIn) {
 			Teken.textDrawMetKleur(drawable, gl, "You are logged in as", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-
+<<<<<<< HEAD
 			if (mainErrorMessage.equals("")) {
 				Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 0f, 0f);
 				if (!accName.equals("Guest")) {
@@ -445,7 +445,10 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 				}
 				Teken.textDrawMetKleur(drawable, gl, mainErrorMessage, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			}
-
+=======
+			Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Last logon: " + accDate, 730f / 1920f * screenWidth, 20f/1080f * screenHeight, 30, 1f, 1f, 1f);
+>>>>>>> e5fef451c1c7fc213cebe7c2ddd0cdd0fd567325
 		} else {
 			Teken.textDrawMetKleur(drawable, gl, "You are not logged in", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			if (Calendar.getInstance().getTimeInMillis() - MEMtime > 5000) {
