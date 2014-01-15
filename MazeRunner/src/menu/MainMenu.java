@@ -112,6 +112,10 @@ public class MainMenu {
 					// The fourth button is clicked
 					gamestate = QUIT;
 				}
+			} else if (1820/1920f * screenWidth < me.getX() && me.getX() < 1920f / 1920f *screenWidth){
+				if (930f/1080f * screenHeight < me.getY() && me.getY() < 1030f/1080f * screenHeight){
+					System.out.println("hiermee zouden we de databases kunnen clearen ofzo");
+				}
 			}
 		}
 		return gamestate;
