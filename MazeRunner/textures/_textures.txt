@@ -40,3 +40,4 @@
 41: wallnormal7.png
 42: wallshootable7.jpg
 43: MenuBackground3Buttons.jpg
+44: leveleditorbg.jpg

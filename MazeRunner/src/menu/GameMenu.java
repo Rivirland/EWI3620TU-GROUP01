@@ -11,6 +11,7 @@ public class GameMenu {
 
 	private int screenWidth, screenHeight;
 
+	final byte MAINMENU = 0;
 	final byte GAMEMENU = 1;
 	final byte INGAME = 5;
 	final byte LOADGAME = 8;
@@ -56,9 +57,9 @@ public class GameMenu {
 		// ik beweeg over de derde knop => deze licht rood op
 		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
 				&& (650f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 750f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Delete Game (?)", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Back", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
 		} else {
-			Teken.textDraw(gl, "Delete Game (?)", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
+			Teken.textDraw(gl, "Back", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
 		}
 
 	}
@@ -90,7 +91,7 @@ public class GameMenu {
 					}
 				} else if (600f / 1080f * screenHeight < me.getY() && me.getY() < 700f / 1080f * screenHeight) {
 					// The third button is clicked
-					gamestate = GAMEMENU;
+					gamestate = MAINMENU;
 				}
 			}
 		}

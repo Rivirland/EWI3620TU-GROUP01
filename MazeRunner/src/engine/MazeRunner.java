@@ -83,7 +83,7 @@ public class MazeRunner {
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel, trapModel, uh60body, uh60rotor, uh60backrotor;
+	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel, uh60body, uh60rotor, uh60backrotor;
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
@@ -510,7 +510,18 @@ public class MazeRunner {
 	public void loadModels(GL gl) {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
+		
+		try {
+			String currentdir = System.getProperty("user.dir");
+			String filename = currentdir + "\\models\\uh60.obj";
+			copterModel = OBJLoader.loadTexturedModel(new File(filename));
 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60body.obj";
