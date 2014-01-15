@@ -5,6 +5,7 @@ import javax.media.opengl.GL;
 import menu.Teken;
 import enemies.Enemy;
 import engine.Animator;
+import engine.ChangeGL;
 import engine.GameObject;
 import engine.MazeRunner;
 
@@ -36,6 +37,7 @@ public class TrapDropped extends Item {
 
 	@Override
 	public void display(GL gl) {
+		ChangeGL.GLtoTexturedItem(gl);
 		if (this.inair){
 			Animator.thrownTrapDropped(this);
 		}

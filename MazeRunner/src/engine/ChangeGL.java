@@ -28,5 +28,13 @@ public static void GLto2D (GL gl){
 	gl.glDisable(GL.GL_LIGHT0);
 	
 }
+public static void GLtoColoredItem(GL gl){
+	gl.glDisable(GL.GL_TEXTURE_2D);
+	gl.glDisable(GL.GL_LIGHTING);
+}
+public static void GLtoTexturedItem(GL gl){
+	gl.glEnable(GL.GL_TEXTURE_2D);
+	gl.glEnable(GL.GL_LIGHTING);
+}
 
 }

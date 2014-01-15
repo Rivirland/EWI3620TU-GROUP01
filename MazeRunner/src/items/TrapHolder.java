@@ -3,6 +3,7 @@ package items;
 import javax.media.opengl.GL;
 
 import menu.Teken;
+import engine.ChangeGL;
 import engine.GameObject;
 import engine.MazeRunner;
 import engine.Player;
@@ -26,7 +27,7 @@ public class TrapHolder extends Item {
 		double zmax = sizeZ;
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
-		// drawCuboid
+		ChangeGL.GLtoTexturedItem(gl);
 		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, 14);
 		gl.glPopMatrix();
 

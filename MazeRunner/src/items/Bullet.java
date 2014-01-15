@@ -4,6 +4,7 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
+import engine.ChangeGL;
 import engine.GameObject;
 import engine.Player;
 import engine.VisibleObject;
@@ -22,6 +23,7 @@ public class Bullet extends GameObject implements VisibleObject {
 
 	public void display(GL gl) {
 		GLUT glut = new GLUT();
+		ChangeGL.GLtoColoredItem(gl);
 		gl.glColor3d(0.0, 0.0, 0.0);
 		gl.glPushMatrix();
 		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
