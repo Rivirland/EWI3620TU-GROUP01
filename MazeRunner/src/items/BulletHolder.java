@@ -3,6 +3,7 @@ package items;
 import javax.media.opengl.GL;
 
 import menu.Teken;
+import engine.ChangeGL;
 import engine.GameObject;
 import engine.MazeRunner;
 import engine.Player;
@@ -26,11 +27,10 @@ public class BulletHolder extends Item {
 		double ymax = sizeY;
 		double zmin = 0;
 		double zmax = sizeZ;
-		// Setting the trapHolder color and material.
 
 		gl.glPushMatrix();
 		gl.glTranslated(super.locationX, super.locationY, super.locationZ);
-		// drawCuboid
+		ChangeGL.GLtoTexturedItem(gl);
 		Teken.drawCuboid(gl, xmin, xmax, ymin, ymax, zmin, zmax, 27);
 		gl.glPopMatrix();
 

@@ -67,7 +67,7 @@ public class Player extends GameObject {
 		begZ = z;
 		begH = h;
 		begV = v;
-		horAngle = h;
+		horAngle = -90-h*90;
 		verAngle = v;
 		speed = .01;
 		nrOfTraps = MazeRunner.level.startingTraps;

@@ -199,13 +199,13 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		init();
 		run = false;
 		}
-		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glEnable(GL.GL_DEPTH_TEST);
 		// gl.glEnable(GL.GL_SCISSOR_TEST);
 
 	//	stencil(gl);
-		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		update();
-		
+
+		gl.glLoadIdentity();		
 		gl.glPushMatrix();
 		
 		gl.glTranslated(xmidden, ymidden, 0);

@@ -19,7 +19,7 @@ public class Level {
 	public static double minGlobalY;
 	public static int startingBullets, startingTraps;
 	private int[] orderedMazes;
-	private static double startX, startY, startZ;
+	private static double startX, startY, startZ, startHorAngle;
 	
 	// The constructor.
 	public Level(String string) {
@@ -262,6 +262,9 @@ public class Level {
 		return res;
 	}
 
+	public static double getStartHorAngle(){
+		return startHorAngle;
+	}
 	public int getStartingBullets() {
 		return this.startingBullets;
 	}
@@ -269,8 +272,11 @@ public class Level {
 	public int getStartingTraps() {
 		return this.startingTraps;
 	}
+	public static void setStartHorAngle(double horAngle){
+		startHorAngle = horAngle;
+	}
 
-	public static void setStartX(double objectX) {;
+	public static void setStartX(double objectX) {
 		startX = objectX;
 	}
 	

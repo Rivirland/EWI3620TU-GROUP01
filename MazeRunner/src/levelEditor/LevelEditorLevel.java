@@ -50,7 +50,7 @@ public class LevelEditorLevel {
 		File file = new File(filename);
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
-		// sc.nextLine(); ???vreemd
+		// sc.nextLine(); TODO: ???vreemd
 
 		// tel het aantal rijen en kolommen in de matrix
 		int rows = 0;
@@ -125,14 +125,11 @@ public class LevelEditorLevel {
 					double objectNumber = Double.parseDouble(st.nextToken());
 					if (objectNumber == 129) {
 						// Portal
-						double[] portal = new double[6];
+						double[] portal = new double[4];
 						portal[0] = objectNumber;
 						portal[1] = Double.parseDouble(st.nextToken()); // objectX
 						portal[2] = Double.parseDouble(st.nextToken()); // objectZ
-						portal[3] = Double.parseDouble(st.nextToken()); // facing
-																		// direction
-						portal[4] = Double.parseDouble(st.nextToken()); // portalID
-						portal[5] = Double.parseDouble(st.nextToken()); // portalConID
+						portal[3] = Double.parseDouble(st.nextToken()); // facing direction
 						itemlist.add(portal);
 						continue;
 					} else if (objectNumber == 229) {
@@ -173,10 +170,11 @@ public class LevelEditorLevel {
 						itemlist.add(exit);
 					} else if (objectNumber == 132) {
 						// Starting Point
-						double[] start = new double[3];
+						double[] start = new double[4];
 						start[0] = objectNumber;
 						start[1] = Double.parseDouble(st.nextToken()); // objectX
 						start[2] = Double.parseDouble(st.nextToken()); // objectZ
+						start[3] = Double.parseDouble(st.nextToken()); // horAngle
 						itemlist.add(start);
 					}
 				}

@@ -180,7 +180,7 @@ public class Portal {
 
 		gl.glRotatef(facingdirection * 90, 0, 1, 0);
 
-//		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 
 		gl.glVertex3d(0, 0, -breedte * 0.5);
@@ -245,11 +245,13 @@ public class Portal {
 
 	public static void connectPortals(int[] mazes) {
 		if (MazeRunner.portalList.size() > 0) {
-			System.out.println("Number of portals detected: " + MazeRunner.portalList.size());
+
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
+				System.out.println("Connecting portal " + (i*2 + 1) + " with portal " + (i+1)*2);
 			}
 			portalConnection(MazeRunner.portalList.get(mazes.length * 2 - 1), MazeRunner.portalList.get(0));
+			System.out.println("Connecting portal" + (mazes.length*2 - 1) + " with portal " + 0);
 		}
 	}
 

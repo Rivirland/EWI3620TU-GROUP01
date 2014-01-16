@@ -15,7 +15,12 @@ public class KiesFileUitBrowser {
 		f.setAlwaysOnTop(true);
 		f.setUndecorated(true);
 		f.requestFocus();
+		f.toFront();
+		f.repaint();
 		FileDialog fd = new FileDialog(f, title, FileDialog.LOAD);
+		fd.requestFocus();
+		fd.toFront();
+		fd.repaint();
 		fd.setFile(fileType);
 		fd.setDirectory(defDir);
 		fd.setLocation(50, 50);
@@ -29,7 +34,12 @@ public class KiesFileUitBrowser {
 		f.setAlwaysOnTop(true);
 		f.setUndecorated(true);
 		f.requestFocus();
+		f.toFront();
+		f.repaint();
 		FileDialog fd = new FileDialog(f, title, FileDialog.SAVE);
+		fd.requestFocus();
+		fd.toFront();
+		fd.repaint();
 		fd.setFile(fileType);
 		fd.setDirectory(defDir);
 		fd.setLocation(50, 50);

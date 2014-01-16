@@ -5,9 +5,9 @@ import items.TrapDropped;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
-import engine.MazeRunner;
-import engine.Sound;
 import menu.Teken;
+import engine.ChangeGL;
+import engine.MazeRunner;
 
 public class PlayerStateTrap extends PlayerState {
 
@@ -53,6 +53,7 @@ public class PlayerStateTrap extends PlayerState {
 
 	public void displayItem(GL gl) {
 		if (MazeRunner.player.nrOfTraps > 0) {
+			ChangeGL.GLtoTexturedItem(gl);
 			gl.glPushMatrix();
 			gl.glTranslated(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ());
 			double s = Math.toRadians(MazeRunner.player.getHorAngle());

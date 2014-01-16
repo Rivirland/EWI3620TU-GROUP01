@@ -182,9 +182,11 @@ public class Maze implements VisibleObject {
 					} else if (objectNumber == 132){
 						double objectX = Double.parseDouble(st.nextToken());
 						double objectZ = Double.parseDouble(st.nextToken());
+						double horAngle = Double.parseDouble(st.nextToken());
 						Level.setStartX(mazeX + objectX);
 						Level.setStartY(mazeY + 2.5);
 						Level.setStartZ(mazeZ + objectZ);
+						Level.setStartHorAngle(horAngle);
 					}
 				}
 			} catch (IOException e) {

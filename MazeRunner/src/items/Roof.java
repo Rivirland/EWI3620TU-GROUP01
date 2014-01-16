@@ -2,6 +2,7 @@ package items;
 
 import javax.media.opengl.GL;
 
+import engine.ChangeGL;
 import engine.GameObject;
 import engine.Maze;
 import engine.MazeRunner;
@@ -16,7 +17,6 @@ public class Roof extends Item {
 
 	public Roof(double x, double y, double z, int mazeID, double WL, int row, int col) {
 		super(x, y, z, mazeID);
-//		Maze maze = MazeRunner.level.getMaze(mazeID);
 		ROOF_LENGTH = WL;
 		ROOF_HEIGHT= WL/2;
 		matrixX = row;
@@ -27,6 +27,7 @@ public class Roof extends Item {
 
 	@Override
 	public void display(GL gl) {
+		ChangeGL.GLtoTexturedItem(gl);
 		gl.glDisable(GL.GL_CULL_FACE);
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
@@ -51,10 +52,10 @@ public class Roof extends Item {
 	}
 
 	public static void drawRoof(GL gl) {
+		ChangeGL.GLtoTexturedItem(gl);
 		gl.glDisable(GL.GL_CULL_FACE);
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 4); //TODO: 2keer binden?
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 

@@ -37,6 +37,7 @@ import com.sun.opengl.util.texture.TextureIO;
 import engine.Database;
 import engine.Level;
 import engine.MazeRunner;
+import engine.Sound;
 import engine.UserInput;
 
 public class Main extends Frame implements GLEventListener, MouseListener, KeyListener, MouseMotionListener {
@@ -62,7 +63,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final static byte DELETEGAME = 9;
 	final static byte LOADLEVEL = 10;
 
-	final boolean fullscreenboolean = true;
+	final boolean fullscreenboolean = false;
 
 	boolean mousemode = false; // a parameter to correctly change when the
 								// mousecursor should appear
@@ -146,14 +147,14 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		if (fullscreenboolean) {
 			screenWidth = fullscreen.getWidth();
 			screenHeight = fullscreen.getHeight();
-		}
-		setSize(screenWidth, screenHeight);
-		if (fullscreenboolean) {
-			// fullscreen.init(this);
 			setFocusable(true);
 			setUndecorated(true);
+			// fullscreen.init(this);
+			
 			// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
 		}
+		setSize(screenWidth, screenHeight);
+		
 
 		// setBackground(new Color(0f, 0f, 0f));
 
@@ -230,7 +231,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		db = new Database();
 		loadTextures(gl);
 		// TODO: geluid weer aanzetten en fixen en shit
-		// Sound.init();
+		 Sound.init();
 
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the

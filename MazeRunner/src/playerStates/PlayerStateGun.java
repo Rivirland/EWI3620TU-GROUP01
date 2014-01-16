@@ -6,6 +6,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import menu.Teken;
+import engine.ChangeGL;
 import engine.MazeRunner;
 import engine.Sound;
 
@@ -66,8 +67,8 @@ public class PlayerStateGun extends PlayerState {
 
 	@Override
 	public void displayItem(GL gl) {
-		// System.out.println(MazeRunner.player.getHorAngle() + " " +
-		// MazeRunner.player.getVerAngle());
+		ChangeGL.GLtoTexturedItem(gl);
+		
 		gl.glPushMatrix();
 		gl.glTranslated(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ());
 		double s = Math.toRadians(MazeRunner.player.getHorAngle());
