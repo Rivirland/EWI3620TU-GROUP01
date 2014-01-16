@@ -1539,35 +1539,35 @@ public class LevelEditor {
 
 	}
 
-	private void saveAs() throws FileNotFoundException {
-		// PrintWriter bestand = new
-		// PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
-		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
-		String filename = kfub.saveFile(new Frame(), "Opslaan als...", ".\\", "*");
-		// als de bestandsnaam al eindigt op .txt , knip dat er dan af
-		if (filename.substring(filename.length() - 4, filename.length()).equals(".txt")) {
-			filename = filename.substring(0, filename.length() - 4);
-		}
-		String currentdir = System.getProperty("user.dir");
-		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
-		bestand.println("0,0,0,");
-		for (int i = 0; i != wereld.length; i++) {
-			for (int j = 0; j != wereld[0].length; j++) {
-				bestand.print(wereld[i][j] + ",");
-			}
-			bestand.println();
-		}
-		bestand.close();
-
-		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
-		for (int i = 0; i != textures.length; i++) {
-			for (int j = 0; j != textures[0].length; j++) {
-				bestand2.print(textures[i][j] + ",");
-			}
-			bestand2.println();
-		}
-		bestand2.close();
-	}
+//	private void saveAs() throws FileNotFoundException {
+//		// PrintWriter bestand = new
+//		// PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
+//		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+//		String filename = kfub.saveFile(new Frame(), "Opslaan als...", ".\\", "*");
+//		// als de bestandsnaam al eindigt op .txt , knip dat er dan af
+//		if (filename.substring(filename.length() - 4, filename.length()).equals(".txt")) {
+//			filename = filename.substring(0, filename.length() - 4);
+//		}
+//		String currentdir = System.getProperty("user.dir");
+//		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
+//		bestand.println("0,0,0,");
+//		for (int i = 0; i != wereld.length; i++) {
+//			for (int j = 0; j != wereld[0].length; j++) {
+//				bestand.print(wereld[i][j] + ",");
+//			}
+//			bestand.println();
+//		}
+//		bestand.close();
+//
+//		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
+//		for (int i = 0; i != textures.length; i++) {
+//			for (int j = 0; j != textures[0].length; j++) {
+//				bestand2.print(textures[i][j] + ",");
+//			}
+//			bestand2.println();
+//		}
+//		bestand2.close();
+//	}
 
 	public static int[][] defaultMatrix() {
 		int[][] defaultmatrix = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },

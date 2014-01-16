@@ -3,8 +3,12 @@ package menu;
 import java.awt.Frame;
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 
 import javax.media.opengl.*;
+
+import levelEditor.LevelEditor;
+import levelEditor.LevelEditorWorld;
 
 public class LevelMenu {
 	
@@ -64,7 +68,25 @@ public class LevelMenu {
 				}
 				else if (450f/1080f*screenHeight < me.getY() && me.getY() < 550f/1080f*screenHeight) {
 					// The second button is clicked
-					gamestate = LOADLEVEL;
+//					gamestate = LOADLEVEL;
+					
+
+//					if (Main.currentstate != gamestate) {
+						if (!Main.selectedL) {
+							//TODO: dit zichtbaar maken!
+							Main.selectedL = true;
+							KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
+							String currentdir2 = System.getProperty("user.dir");
+							String filename2 = kfub2.loadFile(new Frame(), "Open world...", currentdir2 + "\\worlds\\", "*.txt");
+							if (filename2 == null) {
+								filename2 = "world.txt";
+							}
+							filename2 = currentdir2 + "\\worlds\\" + filename2;
+							System.out.println(filename2);
+							Main.loadLevelName = filename2;
+						}
+						gamestate = LOADLEVEL;
+//					}
 				}
 				else if (600f/1080f*screenHeight < me.getY() && me.getY() < 700f/1080f*screenHeight) {
 					// The third button is clicked

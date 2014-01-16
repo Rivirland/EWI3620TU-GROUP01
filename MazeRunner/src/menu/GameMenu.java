@@ -1,5 +1,6 @@
 package menu;
 
+import java.awt.Frame;
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 
@@ -85,6 +86,18 @@ public class GameMenu {
 						MazeRunner.bulletList.clear();
 						MazeRunner.roofList.clear();
 						MazeRunner.playingTime = 0;
+						if (!Main.selectedG) {
+							Main.selectedG = true;
+							KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+							String currentdir = System.getProperty("user.dir");
+							String filename = kfub.loadFile(new Frame(), "Open...", currentdir + "\\worlds\\", "*.txt");
+							// filename = currentdir + "\\levels\\" + filename;
+							if (filename == null) {
+								filename = "world.txt";
+							}
+							Main.loadGameName = filename.substring(0,filename.length()-4);
+						}
+						
 						gamestate = LOADGAME;
 					} else {
 						Main.setMainErrorMessage("You need to log in before you can play");

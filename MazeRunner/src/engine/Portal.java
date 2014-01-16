@@ -498,4 +498,21 @@ public class Portal {
 		return this.dz;
 	}
 
+	public static void drawPortal(GL gl) {
+		gl.glDisable(GL.GL_CULL_FACE);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2d(0,0);
+		gl.glVertex3d(-0.5,-1.5,0);
+		gl.glTexCoord2d(1,0);
+		gl.glVertex3d(-0.5,1.5,0);
+		gl.glTexCoord2d(1,1);
+		gl.glVertex3d(0.5,1.5,0);
+		gl.glTexCoord2d(0,1);
+		gl.glVertex3d(0.5,-1.5,0);
+		gl.glEnd();
+		
+	}
+
 }

@@ -1,6 +1,5 @@
 package menu;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -14,10 +13,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 
+import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -43,22 +44,23 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	public static ArrayList<Texture> textureList = null;
 
 	// Screen size.
-	private int screenWidth = 800, screenHeight = 600;
+	private static int screenWidth = 800;
+	private static int screenHeight = 600;
 	private float buttonSize = screenHeight / 10.0f;
 	public Teken teken;
 
 	// all the different states and their corresponding number
-	final byte MAINMENU = 0;
-	final byte GAMEMENU = 1;
-	final byte LEVELMENU = 2;
-	final byte LOGIN = 3;
-	final byte QUIT = 4;
-	final byte INGAME = 5;
-	final byte LEVELEDITOR = 6;
-	final byte PAUZE = 7;
-	final byte LOADGAME = 8;
-	final byte DELETEGAME = 9;
-	final byte LOADLEVEL = 10;
+	final static byte MAINMENU = 0;
+	final static byte GAMEMENU = 1;
+	final static byte LEVELMENU = 2;
+	final static byte LOGIN = 3;
+	final static byte QUIT = 4;
+	final static byte INGAME = 5;
+	final static byte LEVELEDITOR = 6;
+	final static byte PAUZE = 7;
+	final static byte LOADGAME = 8;
+	final static byte DELETEGAME = 9;
+	final static byte LOADLEVEL = 10;
 
 	final boolean fullscreenboolean = true;
 
@@ -75,43 +77,45 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	private long ingamepausetime;
 	// time the pause is resumed
 	private long pausedtime;
-	private boolean selectedG = false;
-	private boolean selectedL = false;
+	public static boolean selectedG = false;
+	public static boolean selectedL = false;
 	private static String mainErrorMessage;
 	private static long MEMtime;
 
 	// private boolean mouselookMode;
 	// the gamestate
-	private static int gamestate;
+	public static int gamestate;
 	// to check if a gamestate was changed
-	private static int currentstate = gamestate;
+	public static int currentstate = gamestate;
 	// if the ingame is started
 	private boolean ingamestarted = false;
 
 	// constructors for the different gamestates
-	LevelEditor leveleditor;
+	static LevelEditor leveleditor;
 	MainMenu mainmenu;
 	GameMenu gamemenu;
 	LevelMenu levelmenu;
 	Quit quit;
 	LogIn login;
-	UserInput userinput;
-	MazeRunner mazerunner;
+	static UserInput userinput;
+	static MazeRunner mazerunner;
 	public static Database db;
 
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
-	private GLCanvas canvas;
+	public static GLCanvas canvas;
 
 	Fullscreen fullscreen = new Fullscreen();
+	public static String loadGameName;
 
-	GL gl;
-	GLU glu;
-	GLAutoDrawable drawable;
+	public static GL gl;
+	public static GLU glu;
+	public static GLAutoDrawable drawable;
 	public static boolean loggedIn;
 	public static String accName;
 	public static String accDate;
 	public static boolean everplayed;
+	public static String loadLevelName;
 
 	/*
 	 * public long getTime (){ return time; }
@@ -126,6 +130,11 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	 */
 	public Main() {
 		super("Skyland");
+		try {
+			this.setIconImage(ImageIO.read(new File(System.getProperty("user.dir") + "\\textures\\gameicon.png")));
+		} catch (IOException e) {
+
+		}
 
 		loggedIn = true;
 		gamestate = MAINMENU;
@@ -140,11 +149,13 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		}
 		setSize(screenWidth, screenHeight);
 		if (fullscreenboolean) {
-			fullscreen.init(this);
+			// fullscreen.init(this);
 			setFocusable(true);
+			setUndecorated(true);
+			// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
 		}
 
-		setBackground(new Color(0f, 0f, 0f));
+		// setBackground(new Color(0f, 0f, 0f));
 
 		// When the "X" close button is called, the application should exit.
 		this.addWindowListener(new WindowAdapter() {
@@ -184,6 +195,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		// With everything set up, the frame can now be displayed to the user.
 		setVisible(true);
+
 	}
 
 	@Override
@@ -357,18 +369,12 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			break;
 
 		case LOADGAME:
-			if (!selectedG) {
-				selectedG = true;
-				KiesFileUitBrowser kfub = new KiesFileUitBrowser();
-				String currentdir = System.getProperty("user.dir");
-				String filename = kfub.loadFile(new Frame(), "Open...", currentdir + "\\worlds\\", "*.txt");
-				// filename = currentdir + "\\levels\\" + filename;
-				if (filename == null) {
-					filename = "world.txt";
-				}
-				mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(filename.substring(0, filename.length() - 4)));
-				gamestate = INGAME;
-			}
+			// TODO: dit zichtbaar maken!
+			if (loadGameName != null)
+
+				mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(loadGameName));
+			gamestate = INGAME;
+
 			break;
 
 		case LEVELEDITOR:
@@ -400,27 +406,19 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		case LOADLEVEL:
 			// leveleditor = new LevelEditor(screenWidth, screenHeight);
-			if (currentstate != gamestate) {
-				if (!selectedL) {
-					selectedL = true;
-					KiesFileUitBrowser kfub2 = new KiesFileUitBrowser();
-					String currentdir2 = System.getProperty("user.dir");
-					String filename2 = kfub2.loadFile(new Frame(), "Open world...", currentdir2 + "\\worlds\\", "*.txt");
-					if (filename2 == null) {
-						filename2 = "world.txt";
-					}
-					filename2 = currentdir2 + "\\worlds\\" + filename2;
-					System.out.println(filename2);
-					try {
-						leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(filename2));
-					} catch (FileNotFoundException e) {
-						System.out.println("file niet gevonden");
-					}
-					gl.glMatrixMode(GL.GL_PROJECTION);
-					gl.glLoadIdentity();
-					gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
+
+			if (loadLevelName != null) {
+				try {
+					Main.leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(loadLevelName));
+				} catch (FileNotFoundException e) {
+					System.out.println("file niet gevonden");
 				}
+				gl.glMatrixMode(GL.GL_PROJECTION);
+				gl.glLoadIdentity();
+				gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 			}
+
+			loadLevelName = null;
 			gamestate = LEVELEDITOR;
 			break;
 		}
@@ -779,5 +777,24 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		gl.glOrtho(0, screenWidth, 0, screenHeight, -10000, 10000);
 		Teken.plaatsTexture(gl, 0, 0, screenWidth, screenHeight, 44);
 	}
+
+	// public static void loadGame() {
+	// if (!selectedG) {
+	// selectedG = true;
+	// KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+	// String currentdir = System.getProperty("user.dir");
+	// String filename = kfub.loadFile(new Frame(), "Open...", currentdir +
+	// "\\worlds\\", "*.txt");
+	// // filename = currentdir + "\\levels\\" + filename;
+	// if (filename == null) {
+	// filename = "world.txt";
+	// }
+	// mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable,
+	// gl, glu, userinput, new Level(filename.substring(0, filename.length() -
+	// 4)));
+	// gamestate = INGAME;
+	// }
+
+	// }
 
 }

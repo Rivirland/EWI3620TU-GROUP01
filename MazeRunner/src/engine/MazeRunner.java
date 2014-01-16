@@ -217,7 +217,7 @@ public class MazeRunner {
 		 * current matrix.
 		 */
 		// @gamestate switch
-		glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
+		Main.glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
 																// parameters
 																// for
 																// perspective

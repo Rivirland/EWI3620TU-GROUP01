@@ -1,19 +1,17 @@
 package levelEditor;
 
-import java.awt.event.MouseEvent;
-
+import items.Exit;
 import items.Roof;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
+import java.awt.event.MouseEvent;
 
-import com.sun.opengl.util.GLUT;
+import javax.media.opengl.GL;
 
 import menu.Teken;
-import engine.ChangeGL;
-import engine.Maze;
-import engine.MazeRunner;
+import enemies.EnemySmart;
 import enemies.EnemySpooky;
+import engine.Maze;
+import engine.Portal;
 
 public class LevelEditorModelViewer extends LevelEditorViewer {
 
@@ -173,7 +171,21 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 				gl.glRotated(rotationX, 0, 1, 0);
 
 				gl.glScaled(scalef * 2, scalef * 2, scalef * 2);
-				EnemySpooky.showEnemy(gl);
+				
+				if(textureMode == 129){
+					Portal.drawPortal(gl);
+				}else if (textureMode == 229){
+					EnemySpooky.showEnemy(gl);
+				}else if (textureMode == 130){
+					EnemySmart.showEnemy(gl);
+				}else if (textureMode == 230){
+					Teken.drawCuboid(gl, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 27);
+				}else if (textureMode == 131){
+					Teken.drawCuboid(gl, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 14);
+				}else if (textureMode == 231){
+					Exit.drawExit(gl);
+				}
+				
 				// MazeRunner.visibleIterator(gl);
 				break;
 
