@@ -285,7 +285,7 @@ public class LevelEditorLevel {
 	public void open() throws FileNotFoundException {
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
 		String currentdir = System.getProperty("user.dir");
-		 String filename = kfub.loadFile(new Frame(), "Open level...", currentdir + "\\levels\\", "*.txt");
+		String filename = kfub.loadFile(new Frame(), "Open level...", currentdir + "\\levels\\", "*.txt");
 		if(filename == null){
 			filename = "standardmaze.txt";
 		}

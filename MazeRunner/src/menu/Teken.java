@@ -5,9 +5,10 @@ import java.awt.Font;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
+import model.Vector3d;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
-import engine.Vector;
 import engine.Vertex;
 
 public class Teken {
@@ -162,7 +163,7 @@ public class Teken {
 		gl.glEnd();
 	}
 
-	public static void drawQuad(GL gl, Vertex v1, Vertex v2, Vertex v3, Vertex v4, Vector n1) {
+	public static void drawQuad(GL gl, Vertex v1, Vertex v2, Vertex v3, Vertex v4, Vector3d n1) {
 		gl.glBegin(GL.GL_QUADS);
 		gl.glNormal3d(n1.x, n1.y, n1.z);
 		gl.glTexCoord2d(0.0, 0.0);
@@ -177,7 +178,7 @@ public class Teken {
 	}
 
 	public static void drawQuad(GL gl, Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
-		Vector n1 = Vector.calcNormal(v1, v2, v3);
+		Vector3d n1 = Vector3d.calcNormal(v1, v2, v3);
 		drawQuad(gl, v1, v2, v3, v4, n1);
 	}
 

@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workingSetManager>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389391295705_0" label="Window Working Set" name="Aggregate for window 1389391295703"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389525885634_1" label="Window Working Set" name="Aggregate for window 1389525885617"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389603180722_2" label="Window Working Set" name="Aggregate for window 1389603180721"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389631912737_3" label="Window Working Set" name="Aggregate for window 1389631912719"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389686569534_4" label="Window Working Set" name="Aggregate for window 1389686569508"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389693137735_5" label="Window Working Set" name="Aggregate for window 1389693137734"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389719935693_6" label="Window Working Set" name="Aggregate for window 1389719935673"/>
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389726932711_7" label="Window Working Set" name="Aggregate for window 1389726932710"/>
-<<<<<<< HEAD
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389794146283_8" label="Window Working Set" name="Aggregate for window 1389794146283"/>
-=======
-<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389792314217_8" label="Window Working Set" name="Aggregate for window 1389792314217"/>
->>>>>>> ff94ea007899ff503f3b095e8c1bab684e0d1dac
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1389810129756_0" label="Window Working Set" name="Aggregate for window 1389810129726"/>
 </workingSetManager>

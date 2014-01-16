@@ -217,7 +217,7 @@ public class MazeRunner {
 		 * current matrix.
 		 */
 		// @gamestate switch
-		glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
+		Main.glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
 																// parameters
 																// for
 																// perspective
@@ -383,13 +383,9 @@ public class MazeRunner {
 				visibleObjects.remove(next);
 				System.out.println("removed TrapDropped");
 			} else if (next instanceof EnemySmart && ((EnemySmart) next).getDead()) {
-				setEventMessage("Killed a smart enemy! +100 points");
-				player.score += 100;
 				visibleObjects.remove(next);
 				System.out.println("removed EnemySmart");
 			} else if (next instanceof EnemySpooky && ((EnemySpooky) next).getDead()) {
-				setEventMessage("Killed a spooky enemy! +100 points");
-				player.score += 100;
 				visibleObjects.remove(next);
 				System.out.println("removed EnemySpooky");
 			} else if (next instanceof Roof && !((Roof) next).getLegal()) {
@@ -673,7 +669,17 @@ public class MazeRunner {
 							TrapDroppedGBS tdGBS = new TrapDroppedGBS(item.locationX, item.locationY, item.locationZ, item.mazeID, currentTime);
 							visibleObjects.add(tdGBS);
 						}
+						if (enemy instanceof EnemySpooky){
+							setEventMessage("Killed a spooky enemy with a trap! +100 points");
+							player.score += 100;
+						}
+						else if (enemy instanceof EnemySmart){
+							setEventMessage("Killed a smart enemy with a trap! +100 points");
+							player.score += 100;
+						}
 					}
+					
+					
 
 				}
 			}
@@ -723,6 +729,8 @@ public class MazeRunner {
 					visibleObjects.remove(b);
 					bulletList.remove(b);
 					enemyList.remove(e);
+					setEventMessage("Killed a smart enemy with a bullet! +100 points");
+					player.score += 100;
 					break;
 				}
 			}
@@ -738,7 +746,7 @@ public class MazeRunner {
 				if (r.locationY < maze.mazeY + 0.5) {
 					
 					try{
-						Sound.play("roofCrash.wav");
+						Sound.play("crash.wav");
 					}catch (Exception e){
 						System.out.println("no noBullets sound");
 					}

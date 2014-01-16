@@ -60,5 +60,12 @@ public class Exit extends Item {
 		}
 		return false;
 	}
-
+	
+	public static void drawExit(GL gl){
+		gl.glPushMatrix();
+		gl.glScaled(0.5,0.5,0.5);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 20);
+		MazeRunner.copterModel.display(gl);
+		gl.glPopMatrix();
+	}
 }

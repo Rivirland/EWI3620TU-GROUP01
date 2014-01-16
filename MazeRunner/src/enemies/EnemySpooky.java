@@ -190,7 +190,7 @@ public class EnemySpooky extends Enemy implements VisibleObject {
 	}
 
 	public static void showEnemy(GL gl) {
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 23);
 		MazeRunner.spookyModel.display(gl);
 	}
 

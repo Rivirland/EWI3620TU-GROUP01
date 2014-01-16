@@ -250,4 +250,9 @@ public class EnemySmart extends Enemy implements VisibleObject {
 		gl.glEnable(GL.GL_CULL_FACE);
 	}
 
+	public static void showEnemy(GL gl) {
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 22);
+		MazeRunner.spookyModel.display(gl);
+	}
+
 }

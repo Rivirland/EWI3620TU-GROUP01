@@ -1,12 +1,11 @@
-#Wed Jan 15 15:25:36 CET 2014
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
 >>>>>>>=396e3dfe13ac22a9b4b8765c9047cbe214fe97c2
 IMPORT_FILES_AND_FOLDERS_RELATIVE=true
-SWITCH_PERSPECTIVE_ON_PROJECT_CREATION=never
+IMPORT_FILES_AND_FOLDERS_TYPE=23,1
 PROBLEMS_FILTERS_MIGRATE=true
-<<<<<<<=HEAD
+SWITCH_PERSPECTIVE_ON_PROJECT_CREATION=never
+eclipse.preferences.version=1
+platformState=1385025546484
 quickStart=false
 tipsAndTricks=true
-eclipse.preferences.version=1
-platformState=1378467212186
-IMPORT_FILES_AND_FOLDERS_TYPE=23,1
-=\=\=\=\=\=\=

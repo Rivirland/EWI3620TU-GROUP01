@@ -1,5 +1,7 @@
 package engine;
 
+import model.Vector3d;
+
 public class Vertex {
 	public double x;
 	public double y;
@@ -11,11 +13,11 @@ public class Vertex {
 		this.z = z;
 	}
 
-	public Vector substract(Vertex v1) {
+	public Vector3d substract(Vertex v1) {
 		double diffX = this.x - v1.x;
 		double diffY = this.y - v1.y;
 		double diffZ = this.z - v1.z;
-		return new Vector(diffX, diffY, diffZ);
+		return new Vector3d(diffX, diffY, diffZ);
 	}
 
 	public String toString() {
