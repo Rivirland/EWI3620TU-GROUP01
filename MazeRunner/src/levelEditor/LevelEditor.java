@@ -91,6 +91,10 @@ public class LevelEditor {
 	private boolean addportaldirection = false;
 	private float xportal;
 	private float yportal;
+	
+	private boolean addplayerdirection = false;
+	private float xplayer;
+	private float yplayer;
 
 	LevelEditorModelViewer modelviewer;
 	LevelEditorWorldViewer worldviewer;
@@ -817,36 +821,68 @@ public class LevelEditor {
 
 			// portaldirection klik
 			if (addportaldirection) {
-				double portalID = 1;
-				double connectionID = 1;
+				
 				if (Math.abs(me.getX() - xportal) >= Math.abs(screenHeight - me.getY() - yportal)) {
 					// links
 					if ((me.getX() - xportal) < 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 3, portalID, connectionID });
+						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 3 });
 						addportaldirection = false;
-						System.out.println("ik ben false: " + addportaldirection);
+						System.out.println("addportaldirection: " + addportaldirection);
 						// items.get(items.size()-1)[3]=2;
 					}
 					// rechts
 					else if ((me.getX() - xportal) >= 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 1, portalID, connectionID });
+						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 1 });
 						addportaldirection = false;
-						System.out.println("ik ben false: " + addportaldirection);
+						System.out.println("addportaldirection: " + addportaldirection);
 						// items.get(items.size()-1)[3]=0;
 					}
 				} else if (Math.abs(me.getX() - xportal) < Math.abs(screenHeight - me.getY() - yportal)) {
 					// onder
 					if ((screenHeight - me.getY() - yportal) < 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 2, portalID, connectionID });
+						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 2 });
 						addportaldirection = false;
-						System.out.println("ik ben false: " + addportaldirection);
+						System.out.println("addportaldirection: " + addportaldirection);
 						// items.get(items.size()-1)[3]=1;
 					}
 					// boven
 					else if ((screenHeight - me.getY() - yportal) >= 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 0, portalID, connectionID });
+						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 0 });
 						addportaldirection = false;
-						System.out.println("ik ben false: " + addportaldirection);
+						System.out.println("addportaldirection: " + addportaldirection);
+						// items.get(items.size()-1)[3]=3;
+					}
+				}
+			// playerdirection klik
+			} else if (addplayerdirection){
+				if (Math.abs(me.getX() - xplayer) >= Math.abs(screenHeight - me.getY() - yplayer)) {
+					// links
+					if ((me.getX() - xplayer) < 0) {
+						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 3 });
+						addplayerdirection = false;
+						System.out.println("addplayerdirection: " + addplayerdirection);
+						// items.get(items.size()-1)[3]=2;
+					}
+					// rechts
+					else if ((me.getX() - xplayer) >= 0) {
+						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 1 });
+						addplayerdirection = false;
+						System.out.println("addplayerdirection: " + addplayerdirection);
+						// items.get(items.size()-1)[3]=0;
+					}
+				} else if (Math.abs(me.getX() - xplayer) < Math.abs(screenHeight - me.getY() - yplayer)) {
+					// onder
+					if ((screenHeight - me.getY() - yplayer) < 0) {
+						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 2 });
+						addplayerdirection = false;
+						System.out.println("addplayerdirection: " + addplayerdirection);
+						// items.get(items.size()-1)[3]=1;
+					}
+					// boven
+					else if ((screenHeight - me.getY() - yplayer) >= 0) {
+						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 0 });
+						addplayerdirection = false;
+						System.out.println("addplayerdirection: " + addplayerdirection);
 						// items.get(items.size()-1)[3]=3;
 					}
 				}
@@ -1085,7 +1121,7 @@ public class LevelEditor {
 					xportal = gridklikx;
 					yportal = gridkliky;
 					addportaldirection = true;
-					System.out.println("ik ben true: " + addportaldirection);
+					System.out.println("addportaldirection: " + addportaldirection);
 				}
 				if (textureMode == 229) {
 					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance });
@@ -1108,8 +1144,11 @@ public class LevelEditor {
 					// (gridkliky-ymin)*7f/distance,
 					// (gridklikx-xmin)*7f/distance, hoogteMode});
 				}
-				if (textureMode == 132){
-					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance });
+				if (textureMode == 132 && !addplayerdirection){
+					xplayer = gridklikx;
+					yplayer = gridkliky;
+					addplayerdirection = true;
+					System.out.println("addplayerdirection: " + addplayerdirection);
 				}
 			}
 
@@ -1405,7 +1444,7 @@ public class LevelEditor {
 		for (int rij = 1; rij < wereld.length - 1; rij = rij + 2) {
 			for (int kolom = 1; kolom < wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] == 129) {
-					// onderstaande moet veranderen in een daktexture
+					// TODO: onderstaande moet veranderen in een daktexture, geldt dit nog?
 					Teken.plaatsTexture(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1) * distance, ymax - (rij / 2 + 1) * distance, 7);
 				}
 				if (wereld[rij][kolom] != 0 && heightsOn) {
@@ -1466,6 +1505,7 @@ public class LevelEditor {
 		// teken items
 		for (int item = 0; item < items.size(); item++) {
 			// System.out.println(item);
+			// Portal
 			if (items.get(item)[0] == 129) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
@@ -1511,17 +1551,25 @@ public class LevelEditor {
 						/ 4, 20);
 			}
 			if (items.get(item)[0] == 132){
-
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
 				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
 						/ 4, 15);
+				if (items.get(item)[3] == 0)
+					Teken.pijlboven(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
+				else if (items.get(item)[3] == 1)
+					Teken.pijlrechts(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
+				else if (items.get(item)[3] == 2)
+					Teken.pijlonder(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
+				else if (items.get(item)[3] == 3)
+					Teken.pijllinks(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
 			}
 		}
 
 		// teken portal pijl
 		if (addportaldirection) {
 			Teken.plaatsTexture(gl, xportal - distance / 4, yportal - distance / 4, xportal + distance / 4, yportal + distance / 4, 26);
+			gl.glClearColor(0, 0, 0, 0);
 			float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX()) - xportal);
 			float dY = (float) (screenHeight + 30f - MouseInfo.getPointerInfo().getLocation().getY() - yportal);
 			if (Math.abs(dX) >= Math.abs(dY)) {
@@ -1534,6 +1582,22 @@ public class LevelEditor {
 					Teken.pijlboven(gl, xportal, yportal, distance);
 				else
 					Teken.pijlonder(gl, xportal, yportal, distance);
+			}
+		} else if (addplayerdirection){
+			Teken.plaatsTexture(gl, xplayer - distance / 4, yplayer - distance / 4, xplayer + distance / 4, yplayer + distance / 4, 15);
+			gl.glClearColor(0, 0, 0, 0);
+			float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX()) - xplayer);
+			float dY = (float) (screenHeight + 30f - MouseInfo.getPointerInfo().getLocation().getY() - yplayer);
+			if (Math.abs(dX) >= Math.abs(dY)) {
+				if (dX > 0)
+					Teken.pijlrechts(gl, xplayer, yplayer, distance);
+				else
+					Teken.pijllinks(gl, xplayer, yplayer, distance);
+			} else if (Math.abs(dY) > Math.abs(dX)) {
+				if (dY > 0)
+					Teken.pijlboven(gl, xplayer, yplayer, distance);
+				else
+					Teken.pijlonder(gl, xplayer, yplayer, distance);
 			}
 		}
 

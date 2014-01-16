@@ -171,7 +171,7 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(Level.getStartX(), Level.getStartY(), Level.getStartZ(), -90, 0);
+		player = new Player(Level.getStartX(), Level.getStartY(), Level.getStartZ(), Level.getStartHorAngle(), 0);
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
 		for (int i = 0; i < enemyList.size(); i++) {
