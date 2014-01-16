@@ -407,7 +407,7 @@ public class MazeRunner {
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
 		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
-		// Portal.activePortaldisplay(gl);
+		 Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 

@@ -1,2 +1,3 @@
-12,34,
-0,0,0,stomlevel
+0,0,
+0.0,20.0,0.0,testlevel
+0.0,0.0,0.0,standardmazestart

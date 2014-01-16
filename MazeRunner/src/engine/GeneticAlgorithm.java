@@ -114,9 +114,9 @@ public class GeneticAlgorithm {
 					double distance = Integer.MAX_VALUE;
 					for (int x = 0; x < 2; x++) {
 						for (int y = 0; y < 2; y++) {
-							float dX = MazeRunner.portalList.get(i * 2 + x).getX() - MazeRunner.portalList.get(j * 2 + y).getX();
-							float dY = MazeRunner.portalList.get(i * 2 + x).getY() - MazeRunner.portalList.get(j * 2 + y).getY();
-							float dZ = MazeRunner.portalList.get(i * 2 + x).getZ() - MazeRunner.portalList.get(j * 2 + y).getZ();
+							double dX = MazeRunner.portalList.get(i * 2 + x).getX() - MazeRunner.portalList.get(j * 2 + y).getX();
+							double dY = MazeRunner.portalList.get(i * 2 + x).getY() - MazeRunner.portalList.get(j * 2 + y).getY();
+							double dZ = MazeRunner.portalList.get(i * 2 + x).getZ() - MazeRunner.portalList.get(j * 2 + y).getZ();
 							if (Math.sqrt(dX * dX + dY * dY + dZ * dZ) < distance) {
 								distance = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
 							}

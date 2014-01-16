@@ -6,15 +6,16 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import menu.Main;
+import menu.Teken;
 
 import com.sun.opengl.util.GLUT;
 
 public class Portal {
 
 	// coordinaten van de portal
-	private float x;
-	private float y;
-	private float z;
+	private double x;
+	private double y;
+	private double z;
 //	public int portalID;
 //	public int portalConnectionID;
 	
@@ -37,6 +38,7 @@ public class Portal {
 	// 0 = positieve x richting, 1 = positieve z richting enz....
 
 	private GLU glu = new GLU();
+	private static GLUT glut = new GLUT();
 
 	private Portal toportal;
 	private boolean connected;
@@ -50,7 +52,7 @@ public class Portal {
 	/*
 	 * Creates a Portal object that has an position and a facing direction
 	 */
-	public Portal(float x, float y, float z, int facingdirection) {
+	public Portal(double x, double y, double z, int facingdirection) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -76,12 +78,19 @@ public class Portal {
 	 * de levels in zelfde sequentie worden geladen als de portals
 	 */
 	public static void activePortaldisplay(GL gl) {
-
+//gl.glLoadIdentity();
 		// finding the activeportals, portals are identified with an integer
 		// number
 		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		Portal.portalList= MazeRunner.portalList;
 		Portal.mazeList= Level.mazelist;
+		
+		// all portal cameras are updated
+		for(int i=0; i<portalList.size(); i++){
+			portalList.get(i).calcPortaltoPlayer(MazeRunner.player);
+			portalList.get(i).updateCamera(glut, gl, MazeRunner.getPlayer());
+		}
+		
 		
 		if (mazeID != -1){
 		activep = new int[amountmazep]; 
@@ -101,6 +110,8 @@ public class Portal {
 		//TODO tijdelijk om 1 keer stencil te testen
 //		stencil(gl, portalList.get(activep[0]), 0);
 		
+	}else{
+		displayInactivePortals(gl, portalList);
 	}
 		
 }
@@ -127,7 +138,7 @@ public class Portal {
 		 //1. sfail: the test from glStencilFunc failed
 		 //2. dpfail: the test from glStencilFunc passed, but the depth buffer test failed
 		 //3. dppass: the test from glStencilFunc passed, and the depth buffer passed or is disabled
-		 gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
+		 gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_KEEP);
 		 
 		 //control the bits of an operation
 		 gl.glStencilMask(0xff);
@@ -165,11 +176,11 @@ public class Portal {
 	public void stencilDisplay(GL gl) {
 
 		gl.glPushMatrix();
-		gl.glTranslatef(this.x, (float) (this.y), this.z);
+		gl.glTranslated(this.x,  (this.y), this.z);
 
 		gl.glRotatef(facingdirection * 90, 0, 1, 0);
 
-		gl.glDisable(GL.GL_CULL_FACE);
+//		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
 
 		gl.glVertex3d(0, 0, -breedte * 0.5);
@@ -182,13 +193,13 @@ public class Portal {
 	}
 
 	public static void portalView(GL gl, Camera portalcamera) {
-
+		
 		//ArrayList<Portal> portalList=MazeRunner.portalList;
 		GLU glu=new GLU();
 		GLUT glut = new GLUT();
 		gl.glViewport(0, 0, MazeRunner.getScreenWidth(), MazeRunner.getScreenHeight());
 		//gl.glLoadIdentity();
-		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
+		//glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
 		
 //		Hier skybox displayen
 		//Skybox.displaySkybox(gl);
@@ -198,9 +209,13 @@ public class Portal {
 //		gl.glColor3d(1, 1, 1);
 //		De grond displayen	
 		
-		gl.glLoadIdentity();
+//		gl.glLoadIdentity();
 		
-		Skybox.displaySkybox(gl);
+		Skybox.displaySkybox(gl, portalcamera);
+		glu.gluLookAt(
+				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
+				portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),
+				portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
 		Maze.drawSingleFloorTile(gl, mazeList.get(mazeID).getMazeX(),mazeList.get(mazeID).getMazeZ());
 		MazeRunner.visibleIterator(gl);
 		
@@ -209,6 +224,7 @@ public class Portal {
 	
 	public static void displayInactivePortals(GL gl, ArrayList<Portal> portalList) {
 		GLUT glut = new GLUT();
+		if (mazeID!=-1){
 		for (int i = 0; i < portalList.size(); i++) {
 			boolean check = true;
 			for (int j = 0; j < amountmazep; j++) {
@@ -217,6 +233,11 @@ public class Portal {
 				}
 			}
 			if (check) {
+				portalList.get(i).displayPortal(glut, gl);
+			}
+		}}
+		else{
+			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).displayPortal(glut, gl);
 			}
 		}
@@ -264,6 +285,8 @@ public class Portal {
 		float playerx = (float) player.getLocationX();
 		float playery = (float) player.getLocationY();
 		float playerz = (float) player.getLocationZ();
+		
+		
 
 		float range = (float) breedte; // deze waarde wordt de breedte van de
 										// portal
@@ -271,7 +294,7 @@ public class Portal {
 		// als de speler van de ene kant van de portal naar de andere is gegaan
 		// dan teleporteert hij aan de facingdirection bij de andere portal
 
-		// if()
+		//TODO  currentmaze moet extern verkregen worden als parameter
 		if (MazeRunner.level.getCurrentMaze(player) != -1) {
 			if (Math.abs(player.locationY - this.y) < 5) {
 				if (facingdirection == 0 || facingdirection == 2) {
@@ -297,7 +320,6 @@ public class Portal {
 		}
 		// hier wordt toteleport aangeroepen na elke check, als teleportation
 		// true is wordt de speler naar de coordinaten van de toportal gestuurd
-
 		toteleport(player, teleportation);
 
 	}
@@ -308,7 +330,7 @@ public class Portal {
 		gl.glPushMatrix();
 
 		gl.glClearColor(0, 0, 0, 0);
-		gl.glTranslatef(this.x, (float) (this.y), this.z);
+		gl.glTranslated(this.x,  (this.y), this.z);
 
 		// lineOnScreen(gl, this.x, (float) (this.y+0.5*hoogte), this.z,
 		// this.x+5, (float) (this.y+0.5*hoogte), this.z);
@@ -339,7 +361,7 @@ public class Portal {
 		gl.glPushMatrix();
 		gl.glColor3f(1,1,1);
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		// gl.glCullFace(GL.GL_BACK);
+		//gl.glCullFace(GL.GL_BACK);
 		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glColor4d(0, 0, 0, 0);
 		gl.glPopMatrix();
@@ -362,7 +384,11 @@ public class Portal {
 	 */
 	public static boolean Equals(Portal p1, Portal p2) {
 		// TODO: compare the portals
-		return false;
+		boolean equal=false;
+		if (p1.getX()==p2.getX() && p1.getY()==p2.getY() && p1.getX()==p2.getX() && p1.getFacingdirection()==p2.getFacingdirection()){
+			equal = true;
+		}
+		return equal;
 	}
 
 	public void setconnectedTo(Portal p) {
@@ -370,7 +396,7 @@ public class Portal {
 	}
 
 	public static void portalConnection(Portal p1, Portal p2) {
-		if (!Equals(p1, p2)) {
+//		if (!Equals(p1, p2)) {
 			p1.setconnectedTo(p2);
 			p2.setconnectedTo(p1);
 //			System.out.println("Connected portal: " + p1.portalID + " and portal: " + p2.portalID);
@@ -378,55 +404,93 @@ public class Portal {
 			p2.setisConnected(true);
 
 			// p1.}
-		} else {
-			System.out.println("Connected portals cannot be the same portal, dummiexD \n No PortalConnection is made");
-		}
+//		} else {
+//			System.out.println("Connected portals cannot be the same portal, dummiexD \n No PortalConnection is made");
+		
+
 	}
 
 	public void calcPortaltoPlayer(Player player) {
 
 		this.dx = (float) (player.getLocationX() - this.x);
+		//TODO testmodus, y moet weer aan
 		this.dy = (float) (player.getLocationY() - this.y);
 		this.dz = (float) (player.getLocationZ() - this.z);
+		
+//		System.out.println("x "+dx+"y "+dy+"z "+dz);
 		// this.playerhorAngle = (float) player.getHorAngle();
 		// this.playerverAngle = (float) player.getVerAngle();
 	}
 
 	// make vector between positions of playerobject and portal object
 
-	public void updateCamera(GLUT glut, GL gl) {
+	public void updateCamera(GLUT glut, GL gl, Player player) {
 		if (connected) {
-			GLU glu = new GLU();
 			// de camera die wordt vertoont op p1 staat op evengrote omgekeerde
 			// afstand van de facing direction van portal p2 als de speler tot
 			// portal p1
 			// de camera staat gericht in dezelfde facing direction als de
 			// facing direction van p2
-
-			float x = this.toportal.getX() + this.dx;
-			float y = this.toportal.getY() + this.dy;
-			float z = this.toportal.getZ() + this.dz;
+			
+//			double x = this.toportal.getX() + this.dx;
+//			double y = this.toportal.getY() + this.dy;
+//			double z = this.toportal.getZ() + this.dz;
+			
+			// het verschil in facingdirection berekenen
+	//		facingdirection = this.facingdirection - toportal.getFacingdirection();
+			
+			int facingdirection = this.facingdirection - toportal.getFacingdirection();
+			
+			double xtransform = Math.cos(90*facingdirection)*(player.getLocationX()- this.x) 
+					- Math.sin(90*facingdirection)*(this.toportal.getZ()-this.z) + toportal.getX();
+			double ytransform = player.getLocationY() - this.y + toportal.getY();
+			double ztransform = Math.sin(90*facingdirection)*(player.getLocationX()- this.x) 
+					- Math.cos(90*facingdirection)*(toportal.getZ()-this.z) + toportal.getZ();
+			
+			
+			
+			
 			gl.glPushMatrix();
-
-			// de translatie moet geflipt worden op de facing direction van de
-			// portal
-
-			// juiste coordinaat = geflipte coordinaat - portal coordinaat
-
-			gl.glRotatef(facingdirection * -90, 0, 1, 0);
-			gl.glTranslatef(x, y, z);
-
-			// voor nu is een wirecube gebruikt om de camera te representeren
-
+//			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
+//			gl.glRotated(90*this.facingdirection, 0, 1, 0);
+//			gl.glTranslated(-this.x, -this.y, -this.z);
+gl.			glTranslated(xtransform, ytransform, ztransform);
 			glut.glutSolidCube(2);
 			gl.glPopMatrix();
-			portalcamera.setLocationX(x);
-			portalcamera.setLocationY(y);
-			portalcamera.setLocationZ(z);
+			
+			
+//			gl.glPushMatrix();
+//
+//			
+//			//TODO: x en z moeten keer de facingdirection 90 graden draaien (clockwise)
+//			// de translatie moet geflipt worden op de facing direction van de
+//			// portal
+//
+//			// juiste coordinaat = geflipte coordinaat - portal coordinaat
+//
+//			gl.glRotatef(facingdirection * -90, 0, 1, 0);
+//			gl.glTranslated(x, y, z);
+//	//		System.out.println("x "+x+"y "+y+"z "+z);
+//
+//			// voor nu is een wirecube gebruikt om de camera te representeren
+//
+//			glut.glutSolidCube(2);
+//			gl.glPopMatrix();
+////			Teken.lineOnScreen(gl, x, z, this.toportal.getX(), this.toportal.getZ());
+
+			
+			portalcamera.setLocationX(xtransform);
+			portalcamera.setLocationY(ytransform);
+			portalcamera.setLocationZ(ztransform);
 			portalcamera.calculateVRP();
 
 		}
+		
 
+	}
+	
+	public static void displayCamera(Camera portalcamera){
+		
 	}
 
 	// create new camera with the same distance and direction as the camera at
@@ -466,7 +530,7 @@ public class Portal {
 		this.connected = connected;
 	}
 
-	public float getX() {
+	public double getX() {
 		return this.x;
 	}
 	
@@ -474,11 +538,11 @@ public class Portal {
 		return this.portalcamera;
 	}
 
-	public float getY() {
+	public double getY() {
 		return this.y;
 	}
 
-	public float getZ() {
+	public double getZ() {
 		return this.z;
 	}
 
@@ -497,22 +561,9 @@ public class Portal {
 	public float getPlayerdz() {
 		return this.dz;
 	}
-
-	public static void drawPortal(GL gl) {
-		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, 6);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2d(0,0);
-		gl.glVertex3d(-0.5,-1.5,0);
-		gl.glTexCoord2d(1,0);
-		gl.glVertex3d(-0.5,1.5,0);
-		gl.glTexCoord2d(1,1);
-		gl.glVertex3d(0.5,1.5,0);
-		gl.glTexCoord2d(0,1);
-		gl.glVertex3d(0.5,-1.5,0);
-		gl.glEnd();
-		
+	
+	public Portal gettoPortal() {
+		return toportal;
 	}
 
 }

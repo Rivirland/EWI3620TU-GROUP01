@@ -28,50 +28,50 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 		scalef = screenWidth * 50 / 782;
 	}
 
-	public void stencil(GL gl) {
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glColorMask(false, false, false, false);
-		gl.glDepthMask(false);
-		gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
-		gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
-
-		gl.glStencilMask(0xFF);
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-
-		// Teken.rechthoek(gl, x1, y1, x2, y2);
-
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-		gl.glVertex2f(x1, y1);
-		gl.glVertex2f(x1, y2);
-		gl.glVertex2f(x2, y2);
-		gl.glVertex2f(x2, y1);
-
-		gl.glEnd();
-
-		// float xc,yc,angle;
-		// gl.glBegin(GL.GL_TRIANGLE_FAN);
-		// gl.glVertex2f((x2+x1)/2,(y2+y1)/2);
-		//
-		// for (angle=1.0f; angle <361; angle=0.2f+angle){
-		// xc = (float) ((x2+x1)/2+Math.sin(angle)*100);
-		// yc = (float) ((float) ((y2+y1)/2)+Math.cos(angle)*100);
-		//
-		// gl.glVertex2f(xc,yc);
-		// }
-		//
-		// gl.glEnd();
-		//
-
-		gl.glColorMask(true, true, true, true);
-		gl.glDepthMask(true);
-		gl.glStencilMask(0);
-
-		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
-
-		gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
-
-	}
+//	public void stencil(GL gl) {
+//		gl.glEnable(GL.GL_STENCIL_TEST);
+//		gl.glColorMask(false, false, false, false);
+//		gl.glDepthMask(false);
+//		gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
+//		gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
+//
+//		gl.glStencilMask(0xFF);
+//		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+//
+//		// Teken.rechthoek(gl, x1, y1, x2, y2);
+//
+//		gl.glBegin(GL.GL_TRIANGLE_FAN);
+//
+//		gl.glVertex2f(x1, y1);
+//		gl.glVertex2f(x1, y2);
+//		gl.glVertex2f(x2, y2);
+//		gl.glVertex2f(x2, y1);
+//
+//		gl.glEnd();
+//
+//		// float xc,yc,angle;
+//		// gl.glBegin(GL.GL_TRIANGLE_FAN);
+//		// gl.glVertex2f((x2+x1)/2,(y2+y1)/2);
+//		//
+//		// for (angle=1.0f; angle <361; angle=0.2f+angle){
+//		// xc = (float) ((x2+x1)/2+Math.sin(angle)*100);
+//		// yc = (float) ((float) ((y2+y1)/2)+Math.cos(angle)*100);
+//		//
+//		// gl.glVertex2f(xc,yc);
+//		// }
+//		//
+//		// gl.glEnd();
+//		//
+//
+//		gl.glColorMask(true, true, true, true);
+//		gl.glDepthMask(true);
+//		gl.glStencilMask(0);
+//
+//		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
+//
+//		gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
+//
+//	}
 
 	public void display(GL gl, boolean catalogus, byte drawMode, int textureMode, int hoogteMode) {
 		// init(gl);
@@ -173,7 +173,7 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 				gl.glScaled(scalef * 2, scalef * 2, scalef * 2);
 				
 				if(textureMode == 129){
-					Portal.drawPortal(gl);
+	//				Portal.drawPortal(gl);
 				}else if (textureMode == 229){
 					EnemySpooky.showEnemy(gl);
 				}else if (textureMode == 130){

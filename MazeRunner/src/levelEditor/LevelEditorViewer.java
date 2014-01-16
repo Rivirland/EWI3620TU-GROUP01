@@ -47,26 +47,60 @@ public class LevelEditorViewer {
 		
 	}
 	
-	protected void init(GL gl){
-		//is niet goed zo
-		/*gl.glPushMatrix();
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glOrtho(0,0,screenWidth,screenHeight, -1000, 1000);
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		*/
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glEnable(GL.GL_SCISSOR_TEST);
-		gl.glScissor(x1,y1,(int) (x2*0.60),(int) (y2*0.89));
-		//gl.glViewport(0,0,screenWidth,screenHeight);
-		gl.glClearColor(0.7f,0.7f,0.7f,0.3f);
+	public void stencil(GL gl) {
 		
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glColorMask(false, false, false, false);
+		gl.glDepthMask(false);
+		gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
+		gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
+
+		gl.glStencilMask(0xFF);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+
+		// Teken.rechthoek(gl, x1, y1, x2, y2);
+
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+
+		gl.glVertex2f(x1, y1);
+		gl.glVertex2f(x1, y2);
+		gl.glVertex2f(x2, y2);
+		gl.glVertex2f(x2, y1);
+
+		gl.glEnd();
+
+		gl.glColorMask(true, true, true, true);
+		gl.glDepthMask(true);
+		gl.glStencilMask(0);
+
+		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
+
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
+
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-		gl.glFlush();
-		update();
-}
+
+	}
+	
+//	protected void init(GL gl){
+//		//is niet goed zo
+//		/*gl.glPushMatrix();
+//		gl.glMatrixMode(GL.GL_PROJECTION);
+//		gl.glOrtho(0,0,screenWidth,screenHeight, -1000, 1000);
+//		gl.glMatrixMode(GL.GL_MODELVIEW);
+//		gl.glDisable(GL.GL_CULL_FACE);
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+//		*/
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+////		gl.glEnable(GL.GL_SCISSOR_TEST);
+////		gl.glScissor(x1,y1,(int) (x2*0.60),(int) (y2*0.89));
+//		//gl.glViewport(0,0,screenWidth,screenHeight);
+//		gl.glClearColor(0.7f,0.7f,0.7f,0.3f);
+//		
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+//		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+//		gl.glFlush();
+//		update();
+//}
 	
 	public void mouseReleased(MouseEvent e){
 		mousemode = DRAAIMODE;

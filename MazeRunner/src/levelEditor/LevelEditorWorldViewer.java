@@ -2,6 +2,7 @@ package levelEditor;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
@@ -13,9 +14,14 @@ import com.sun.opengl.util.GLUT;
 
 
 
+
+
+
+import engine.Level;
 import engine.MazeRunner;
 import engine.Maze;
 import engine.Skybox;
+import engine.VisibleObject;
 
 public class LevelEditorWorldViewer extends LevelEditorViewer{
 
@@ -30,20 +36,29 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	
 	private boolean run = true;
 	private double minX, maxX, minZ, maxZ, minY, maxY;
+	public static ArrayList<VisibleObject> visibleObjects = new ArrayList<VisibleObject>(); 
 	
 	public LevelEditorWorldViewer(int screenWidth, int screenHeight, double x1,
 			double y1, double x2, double y2) {
 		super(screenWidth, screenHeight, x1, y1, x2, y2);
 	
 	}
-
 	
-	public void minvalueX(){
+	public void init(){
+	
+		LevelEditorWorldViewer.mazelist = Level.getMazeList();
+		if (mazelist.size()>0){
+		for (int i = 0; i < mazelist.size(); i++){
+			visibleObjects.add(LevelEditorWorldViewer.mazelist.get(i));		
+		}
+		centerLength();}
+		else{System.out.println("it's empty");}
 		
 	}
 
 	public void centerLength(){
-		LevelEditorWorldViewer.mazelist = MazeRunner.level.getMazeList();
+		
+		
 		
 		int size = mazelist.size();
 		System.out.println(size);
@@ -117,6 +132,8 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		}
 		this.maxY = maxY;
 		
+		
+		
 		System.out.println("minx "+minX);
 		System.out.println("maxx "+maxX);
 		System.out.println("minz "+minZ);
@@ -128,9 +145,31 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		this.ycenter = (minY+maxY)/2;
 		this.zcenter = (minZ+maxZ)/2;
 		
+		System.out.println("x1 "+x1);
+		System.out.println("x2 "+x2);
+		System.out.println("y1 "+y1);
+		System.out.println("y2 "+x2);
+		
 		System.out.println("xcenter "+xcenter);
 		System.out.println("ycenter "+ycenter);
 		System.out.println("zcenter "+zcenter);
+		
+		System.out.println("xmidden "+xmidden);
+		System.out.println("ymidden "+ymidden);
+		
+		
+	//	this.panX= -(x2+x1)/2;
+	//	this.panY = -(y2+y1)/2;
+		
+	//	panX = -(x2-x1)/2;
+	//	panY = -(y2-y1)/2;
+		
+		
+		
+//		System.out.println("beginX"+ panX);
+//		System.out.println("beginY"+ panY);
+//		
+//		
 		
 		// 1000 normaal
 		
@@ -140,7 +179,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		// dan scale=0.5
 		
 		//scalef = Math.abs((maxX + minX*-1)/(x2-x1)) ;
-		scalef = Math.abs((x2-x1)/(maxX + minX*-1));
+		scalef = Math.abs((x2-x1)/(maxX - minX));
 
 		
 	}
@@ -148,33 +187,54 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	
 	public void display(GL gl){
 		
+//	System.out.println("X "+panX);
+//	System.out.println("Y "+panY);
+//	
+	
+//double x = xcenter*scalef;
+//double y = ycenter *scalef;
+//double z = zcenter *scalef;
+
 		if (run){
-		centerLength();
+		init();
 		run = false;
 		}
-		init(gl);
-		
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		// gl.glEnable(GL.GL_SCISSOR_TEST);
+
+	//	stencil(gl);
+		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+		update();
 		
 		gl.glPushMatrix();
 		
-		gl.glTranslated(0, ymidden, 0);
-		gl.glTranslated(-2*panX,2*panY, 0);
+		gl.glTranslated(xmidden, ymidden, 0);
+//		gl.glTranslated(-2*panX,2*panY, 0);
 		//gl.glTranslated(2*panX,2*panY, 0);
 		
-		gl.glTranslated(xcenter*2, ycenter*2, zcenter*2); // center van rotatie veranderen
+		
+		
+		gl.glTranslated(xcenter, ycenter, zcenter); // center van rotatie veranderen	
 		
 		gl.glRotated(rotationY, 0.25, 0, 0);
 		gl.glRotated(rotationX, 0, 0.25, 0);
+	
+		gl.glTranslated(-xcenter, 2*ycenter,-zcenter);
+		
 		gl.glScaled(scalef,scalef,scalef);
 		
-		gl.glTranslated(-xcenter, -ycenter,-zcenter);
-		//gl.glTranslated(-2*panX,-2*panY, 0);
-		
-		//Skybox.displaySkybox(gl);
 		MazeRunner.visibleIterator(gl);
+		
+		
+		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
+				it.next().display(gl);
+				
+		}
+		
+
+		
 		gl.glColor3d(1, 1, 1);
 		Teken.rechthoek(gl, xmidden-5, ymidden-5, xmidden+5, ymidden+5);
-		
 		gl.glPopMatrix();
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_LIGHT0);
