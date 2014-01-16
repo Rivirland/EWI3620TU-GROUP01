@@ -224,13 +224,11 @@ public class Portal {
 
 	public static void connectPortals(int[] mazes) {
 		if (MazeRunner.portalList.size() > 0) {
-
+			System.out.println("Number of portals detected: " + MazeRunner.portalList.size());
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
-				System.out.println("Connecting portal " + (i*2 + 1) + " with portal " + (i+1)*2);
 			}
 			portalConnection(MazeRunner.portalList.get(mazes.length * 2 - 1), MazeRunner.portalList.get(0));
-			System.out.println("Connecting portal" + (mazes.length*2 - 1) + " with portal " + 0);
 		}
 	}
 

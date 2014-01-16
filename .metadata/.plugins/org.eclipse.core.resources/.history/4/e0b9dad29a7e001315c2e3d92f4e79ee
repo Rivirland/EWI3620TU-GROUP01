@@ -15,7 +15,7 @@ public class Model {
 
 	public void display(GL gl) {
 		gl.glBegin(GL.GL_TRIANGLES);
-		for (Face face : this.getFaces()) {
+		for (Fac0e face : this.getFaces()) {
 			if (hasNormals()) {
 				Vector3d n1 = this.getNormals().get(face.getNormalIndices()[0] - 1);
 				gl.glNormal3d(n1.x, n1.y, n1.z);

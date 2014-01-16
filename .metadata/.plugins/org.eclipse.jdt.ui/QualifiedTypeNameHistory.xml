@@ -4,4 +4,5 @@
 <fullyQualifiedTypeName name="levelEditor.LevelEditor"/>
 <fullyQualifiedTypeName name="playerStates.PlayerStateVictory"/>
 <fullyQualifiedTypeName name="menu.Main"/>
+<fullyQualifiedTypeName name="enemies.EnemySmart"/>
 </qualifiedTypeNameHistroy>

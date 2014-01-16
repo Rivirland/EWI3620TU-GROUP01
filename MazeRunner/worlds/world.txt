@@ -1,3 +1,7 @@
-10,10,
-0.0,0.0,0.0,standardmazestart
-0.0,30.0,0.0,standardmaze
+0,0,
+0.0,0.0,0.0,basicworldstart
+0.0,30.0,0.0,basicworld2
+0.0,60.0,0.0,basicworld3
+0.0,90.0,0.0,basicworld4
+0.0,120.0,0.0,basicworld5
+0.0,150.0,0.0,basicworldend
