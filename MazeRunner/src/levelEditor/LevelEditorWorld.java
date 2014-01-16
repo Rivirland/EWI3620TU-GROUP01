@@ -92,7 +92,9 @@ public class LevelEditorWorld {
 		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix(), new ArrayList<double[]>()));
 	}
 
-	public void saveAs() throws FileNotFoundException {
+	
+	
+	public String saveAs() throws FileNotFoundException {
 		// PrintWriter bestand = new
 		// PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
 		LevelEditor.setErrMsg("");
@@ -121,21 +123,27 @@ public class LevelEditorWorld {
 						bestand.println(levels.get(i).getName());
 					}
 					bestand.close();
+					
 
 					try {
 						Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + filename);
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
+					return filename;
 				} else {
 					LevelEditor.setErrMsg("You need to have at least one exit!");
+					
 				}
 			} else {
 				LevelEditor.setErrMsg("You need to have exactly one starting point!");
+				
 			}
 		}
+		return "basename"; 
 	}
 
+	
 	private void refreshLevels() throws FileNotFoundException {
 		for (int i = 0; i < levels.size(); i++) {
 			levels.get(i).saveAs(levels.get(i).getName());

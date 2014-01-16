@@ -227,8 +227,8 @@ public class MazeRunner {
 
 		// TODO: back-face weer aanzetten
 		// Enable back-face culling.
-		// gl.glCullFace(GL.GL_BACK);
-		// gl.glEnable(GL.GL_CULL_FACE);
+		 gl.glCullFace(GL.GL_BACK);
+		 gl.glEnable(GL.GL_CULL_FACE);
 
 		// @Enable Z-buffering, gamestate switch
 		// gl.glEnable(GL.GL_DEPTH_TEST);
@@ -404,7 +404,7 @@ public class MazeRunner {
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
 		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
-		// Portal.activePortaldisplay(gl);
+//		Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 

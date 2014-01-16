@@ -14,10 +14,10 @@ import java.util.StringTokenizer;
 public class Level {
 	public static ArrayList<Maze> mazelist;
 	// The amount of mazes.
-	private int aantal;
+	private static int aantal;
 	private String naam;
-	public double minGlobalY;
-	public int startingBullets, startingTraps;
+	public static double minGlobalY;
+	public static int startingBullets, startingTraps;
 	private int[] orderedMazes;
 	private static double startX, startY, startZ, startHorAngle;
 	
@@ -60,7 +60,7 @@ public class Level {
 	}
 
 	// Adds a maze toe the mazelist.
-	public void voegToe(Maze maze) {
+	public static void voegToe(Maze maze) {
 		mazelist.add(maze);
 		aantal = aantal + 1;
 	}
@@ -73,11 +73,11 @@ public class Level {
 		return naam;
 	}
 
-	public ArrayList<Maze> getMazeList() {
+	public static ArrayList<Maze> getMazeList() {
 		return Level.mazelist;
 	}
 
-	public Maze getMaze(int i) {
+	public static Maze getMaze(int i) {
 		if (i != -1) {
 			return Level.mazelist.get(i);
 		}
@@ -87,7 +87,7 @@ public class Level {
 	// Reads all the mazes from .txt files. If the base name is level1, it adds
 	// level1_1.txt, level1_2.txt etc until
 	// such files do not exist anymore.
-	public void leesLevels(String filename) {
+	public static void leesLevels(String filename) {
 		BufferedReader bufRdr = null;
 		String currentdir = System.getProperty("user.dir");
 
@@ -118,7 +118,7 @@ public class Level {
 					minGlobalY = y;
 				}
 				Maze maze = new Maze(m, i, x, y, z);
-				this.voegToe(maze);
+				Level.voegToe(maze);
 				i++;
 			}
 		} catch (IOException e) {
@@ -299,4 +299,10 @@ public class Level {
 	public static double getStartZ(){
 		return startZ;
 	}
+	
+	public static void clearMazeList(){
+		Level.mazelist.clear();
+	}
+	
+
 }

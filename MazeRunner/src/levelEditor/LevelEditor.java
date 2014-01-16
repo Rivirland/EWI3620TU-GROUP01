@@ -34,7 +34,9 @@ import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
 import engine.InputDialog;
+import engine.Level;
 import engine.Maze;
+import engine.MazeRunner;
 
 public class LevelEditor {
 	static final long serialVersionUID = 7526471155622776147L;
@@ -66,7 +68,7 @@ public class LevelEditor {
 	private float gridklikx = 10000; // 10000 is een default waarde buiten het
 										// scherm, omdat je die waarde nooit kan
 										// krijgen door ergens te klikken
-	private float gridkliky = 10000;
+	private float gridkliky	 = 10000;
 	private float gridklikxrechts = 10000;
 	private float gridklikyrechts = 10000;
 	private boolean gridklik = false;
@@ -74,7 +76,7 @@ public class LevelEditor {
 	private boolean catalogus = false;
 	private Texture backTexture;
 
-	private LevelEditorWorld levels;
+	private static LevelEditorWorld levels;
 	private double[] location;
 	private int[][] wereld;
 	private int[][] textures;
@@ -1706,8 +1708,21 @@ public class LevelEditor {
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_TAB) {
+			//MazeRunner.visibleObjects.clear();
+			MazeRunner.visibleObjects.clear();
+			String filename="";
+			try {
+				filename =levels.saveAs();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			Level.clearMazeList();
+			Level.leesLevels(filename);
+			System.out.println(filename);
 			this.worldview = !worldview;
+			
 		}
+		
 
 	}
 
@@ -1727,5 +1742,6 @@ public class LevelEditor {
 	public static void setErrMsgTime(long errMsgTime) {
 		LevelEditor.errMsgTime = errMsgTime;
 	}
-
+	
+	
 }
