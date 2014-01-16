@@ -1,0 +1,4 @@
+gunfire
+crash
+reload
+noBullets
