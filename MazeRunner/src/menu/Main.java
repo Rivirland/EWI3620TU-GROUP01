@@ -144,17 +144,17 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		MEMtime = Calendar.getInstance().getTimeInMillis();
 
 		// Set the desired size and background color of the frame
+
+		screenWidth = fullscreen.getWidth();
+		screenHeight = fullscreen.getHeight();
 		if (fullscreenboolean) {
-			screenWidth = fullscreen.getWidth();
-			screenHeight = fullscreen.getHeight();
 			setFocusable(true);
 			setUndecorated(true);
 			// fullscreen.init(this);
-			
+
 			// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(this);
 		}
 		setSize(screenWidth, screenHeight);
-		
 
 		// setBackground(new Color(0f, 0f, 0f));
 
@@ -231,7 +231,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		db = new Database();
 		loadTextures(gl);
 		// TODO: geluid weer aanzetten en fixen en shit
-		 Sound.init();
+		Sound.init();
 
 		/*
 		 * glOrtho performs an "orthogonal projection" transformation on the

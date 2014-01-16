@@ -46,10 +46,10 @@ public class Database {
 	}
 
 	public void printHighscores(GLAutoDrawable autodrawable, GL gl, String st) {
-		float h = 0.8f;
-		Teken.textDraw(autodrawable, gl, "Player Name", 0.1f * MazeRunner.screenWidth, 0.9f * MazeRunner.screenHeight, 60);
-		Teken.textDraw(autodrawable, gl, "Score", 0.5f * MazeRunner.screenWidth, 0.9f * MazeRunner.screenHeight, 60);
-		Teken.textDraw(autodrawable, gl, "Time", 0.8f * MazeRunner.screenWidth, 0.9f * MazeRunner.screenHeight, 60);
+		float h = 0.75f;
+		Teken.textDraw(autodrawable, gl, "Player Name", 0.1f * MazeRunner.screenWidth, 0.85f * MazeRunner.screenHeight, 60);
+		Teken.textDraw(autodrawable, gl, "Score", 0.5f * MazeRunner.screenWidth, 0.85f * MazeRunner.screenHeight, 60);
+		Teken.textDraw(autodrawable, gl, "Time", 0.8f * MazeRunner.screenWidth, 0.85f * MazeRunner.screenHeight, 60);
 		try {
 			rs = stat.executeQuery(st);
 			while (rs.next()) {

@@ -12,11 +12,13 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import engine.Maze;
 import menu.KiesFileUitBrowser;
 
 public class LevelEditorLevel {
 
 	private String name;
+	private static int rows, columns;
 	public double[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
@@ -53,11 +55,13 @@ public class LevelEditorLevel {
 		// sc.nextLine(); TODO: ???vreemd
 
 		// tel het aantal rijen en kolommen in de matrix
-		int rows = 0;
-		int columns = 0;
+		rows = 0;
+		columns = 0;
 		String string = "";
-		while (sc.hasNextLine()) {
-			string = sc.nextLine();
+		String line = sc.nextLine();
+		while (!line.equals("t")) {
+			string = line;
+			line = sc.nextLine();
 			rows++;
 		}
 		Scanner stringsc = new Scanner(string);
@@ -66,7 +70,7 @@ public class LevelEditorLevel {
 			stringsc.nextInt();
 			columns++;
 		}
-
+		System.out.println("Rows: "+ rows + ", columns: " + columns);
 		// lees de matrix
 		Scanner sc2 = new Scanner(file);
 		sc2.useDelimiter("\\s*,\\s*");
@@ -75,52 +79,41 @@ public class LevelEditorLevel {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				res[i][j] = sc2.nextInt();
+				System.out.println(res[i][j]);
 			}
 		}
+		Maze.printMatrix(res);
 		return res;
 	}
 
 	public static int[][] readTextures(String filename) throws FileNotFoundException {
-		File file = new File(filename.substring(0, filename.length() - 4) + "_t.txt");
+		File file = new File(filename.substring(0, filename.length() - 4) + ".txt");
 		Scanner sc = new Scanner(file);
 		sc.useDelimiter("\\s*,\\s*");
 
 		// tel het aantal rijen en kolommen in de matrix
-		int rows = 0;
-		int columns = 0;
-		String string = "";
-		while (sc.hasNextLine()) {
-			string = sc.nextLine();
-			rows++;
-		}
-		Scanner stringsc = new Scanner(string);
-		stringsc.useDelimiter("\\s*,\\s*");
-		while (stringsc.hasNext()) {
-			stringsc.nextInt();
-			columns++;
-		}
 
-		// lees de matrix
-		Scanner sc2 = new Scanner(file);
-		sc2.useDelimiter("\\s*,\\s*");
+		while(!sc.nextLine().equals("t")){}
 		int[][] res = new int[rows][columns];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				res[i][j] = sc2.nextInt();
+				res[i][j] = sc.nextInt();
 			}
 		}
+		Maze.printMatrix(res);
 		return res;
 	}
 
 	public static ArrayList<double[]> readObjects(String filename) {
 		ArrayList<double[]> itemlist = new ArrayList<double[]>();
 
-		BufferedReader bufRdrTex = null;
+		BufferedReader bufRdr = null;
 		try {
-			bufRdrTex = new BufferedReader(new FileReader(new File(filename.substring(0, filename.length() - 4) + "_o.txt")));
+			bufRdr = new BufferedReader(new FileReader(new File(filename.substring(0, filename.length() - 4) + ".txt")));
 			String line = null;
 			try {
-				while ((line = bufRdrTex.readLine()) != null) {
+				while(!bufRdr.readLine().equals("o")){}
+				while ((line = bufRdr.readLine()) != null) {
 					StringTokenizer st = new StringTokenizer(line, ",");
 					double objectNumber = Double.parseDouble(st.nextToken());
 					if (objectNumber == 129) {
@@ -214,37 +207,29 @@ public class LevelEditorLevel {
 			filename = "basename";
 		}
 		// als de bestandsnaam al eindigt op .txt , knip dat er dan af
-		if (filename.substring(filename.length() - 4, filename.length()).equals(".txt")) {
+		if (filename.length() > 4 && filename.substring(filename.length() - 4, filename.length()).equals(".txt")) {
 			filename = filename.substring(0, filename.length() - 4);
 		}
 		setName(filename);
 
-		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
-		for (int i = 0; i != gebouwen.length; i++) {
-			for (int j = 0; j != gebouwen[0].length; j++) {
-				bestand.print(gebouwen[i][j] + ",");
-			}
-			bestand.println();
-		}
-		bestand.close();
-
-		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
-		for (int i = 0; i != textures.length; i++) {
-			for (int j = 0; j != textures[0].length; j++) {
-				bestand2.print(textures[i][j] + ",");
-			}
-			bestand2.println();
-		}
-		bestand2.close();
-
-		PrintWriter bestand3 = new PrintWriter(currentdir + "\\levels\\" + filename + "_o.txt");
-		for (int item = 0; item != itemlist.size(); item++) {
-			for (int itemcontent = 0; itemcontent != itemlist.get(item).length; itemcontent++) {
-				bestand3.print(itemlist.get(item)[itemcontent] + ",");
-			}
-			bestand3.println();
-		}
-		bestand3.close();
+		saveAs(filename);
+//		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
+//		for (int i = 0; i != textures.length; i++) {
+//			for (int j = 0; j != textures[0].length; j++) {
+//				bestand2.print(textures[i][j] + ",");
+//			}
+//			bestand2.println();
+//		}
+//		bestand2.close();
+//
+//		PrintWriter bestand3 = new PrintWriter(currentdir + "\\levels\\" + filename + "_o.txt");
+//		for (int item = 0; item != itemlist.size(); item++) {
+//			for (int itemcontent = 0; itemcontent != itemlist.get(item).length; itemcontent++) {
+//				bestand3.print(itemlist.get(item)[itemcontent] + ",");
+//			}
+//			bestand3.println();
+//		}
+//		bestand3.close();
 	}
 	
 	public void saveAs(String filename) throws FileNotFoundException {
@@ -258,29 +243,23 @@ public class LevelEditorLevel {
 			for (int j = 0; j != gebouwen[0].length; j++) {
 				bestand.print(gebouwen[i][j] + ",");
 			}
-			bestand.println();
+			bestand.println("");
 		}
-		bestand.close();
-
-		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
+		bestand.println("t");
 		for (int i = 0; i != textures.length; i++) {
 			for (int j = 0; j != textures[0].length; j++) {
-				bestand2.print(textures[i][j] + ",");
+				bestand.print(textures[i][j] + ",");
 			}
-			bestand2.println();
+			bestand.println("");
 		}
-		bestand2.close();
-
-		PrintWriter bestand3 = new PrintWriter(currentdir + "\\levels\\" + filename + "_o.txt");
+		bestand.println("o");
 		for (int item = 0; item != itemlist.size(); item++) {
-			System.out.println(Arrays.toString(itemlist.get(item)));
 			for (int itemcontent = 0; itemcontent != itemlist.get(item).length; itemcontent++) {
-				bestand3.print(itemlist.get(item)[itemcontent] + ",");
+				bestand.print(itemlist.get(item)[itemcontent] + ",");
 			}
-			bestand3.println();
+			bestand.println();
 		}
-		bestand3.close();
-	}
+		bestand.close();	}
 
 	public void open() throws FileNotFoundException {
 		KiesFileUitBrowser kfub = new KiesFileUitBrowser();

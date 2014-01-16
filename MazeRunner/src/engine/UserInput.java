@@ -249,14 +249,14 @@ public class UserInput extends Control implements Runnable {
 		}
 
 		if (event.getKeyCode() == KeyEvent.VK_P) {
-			if (mouselookMode) {
-				mouselookMode = false;
-				mousechange = true;
-			} else {
-				mouselookMode = true;
-				mousechange = true;
-			}
-
+//			if (mouselookMode) {
+//				mouselookMode = false;
+//				mousechange = true;
+//			} else {
+//				mouselookMode = true;
+//				mousechange = true;
+//			}
+			MazeRunner.player.playerStateInt = 5;
 		}
 
 		if (event.getKeyCode() == KeyEvent.VK_L) {

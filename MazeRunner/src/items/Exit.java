@@ -54,7 +54,7 @@ public class Exit extends Item {
 		double diffZ = object.getGlobalZ() - this.getGlobalZ();
 
 		if (object instanceof Player) {
-			if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 5) {
+			if (Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ) < 3) {
 				return true;
 			}
 		}

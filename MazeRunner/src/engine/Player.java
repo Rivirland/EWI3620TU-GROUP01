@@ -37,7 +37,7 @@ public class Player extends GameObject {
 	public boolean falling = false;
 	public double fallingSpeed;
 	public long invisibleT;
-	public PlayerState PlayerStateCloak, PlayerStateDead, PlayerStateGun, PlayerStateTrap, PlayerStateVictory, PlayerStateFly;
+	public PlayerState playerStateCloak, playerStateDead, playerStateGun, playerStateTrap, playerStateVictory, playerStateFly;
 
 	/**
 	 * The Player constructor.
@@ -67,7 +67,7 @@ public class Player extends GameObject {
 		begZ = z;
 		begH = h;
 		begV = v;
-		horAngle = -90-h*90;
+		horAngle = -90 - h * 90;
 		verAngle = v;
 		speed = .01;
 		nrOfTraps = MazeRunner.level.startingTraps;
@@ -76,12 +76,12 @@ public class Player extends GameObject {
 		playerStateInt = 0;
 		fallingSpeed = 0.5;
 		score = 0;
-		this.PlayerStateCloak = new PlayerStateCloak();
-		this.PlayerStateDead = new PlayerStateDead();
-		this.PlayerStateGun = new PlayerStateGun();
-		this.PlayerStateTrap = new PlayerStateTrap();
-		this.PlayerStateVictory = new PlayerStateVictory();
-		this.PlayerStateFly = new PlayerStateFly();
+		this.playerStateCloak = new PlayerStateCloak();
+		this.playerStateDead = new PlayerStateDead();
+		this.playerStateGun = new PlayerStateGun();
+		this.playerStateTrap = new PlayerStateTrap();
+		this.playerStateVictory = new PlayerStateVictory();
+		this.playerStateFly = new PlayerStateFly();
 	}
 
 	/**
@@ -174,15 +174,19 @@ public class Player extends GameObject {
 	public void update(int deltaTime, GLAutoDrawable drawable) {
 		if (control.tab) {
 			control.tab = false;
-			if (control.minimap) {
-				System.out.println("1");
-				control.minimap = false;
-				control.info = true;
-			} else if (control.info) {
-				System.out.println("2");
-				control.info = false;
+			if (playerStateInt == 4) {
+				PlayerStateVictory.increaseHighscoreMode();
 			} else {
-				control.minimap = true;
+				if (control.minimap) {
+					System.out.println("1");
+					control.minimap = false;
+					control.info = true;
+				} else if (control.info) {
+					System.out.println("2");
+					control.info = false;
+				} else {
+					control.minimap = true;
+				}
 			}
 		}
 		minimapUpdate();
