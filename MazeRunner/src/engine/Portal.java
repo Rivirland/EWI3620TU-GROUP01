@@ -83,7 +83,7 @@ public class Portal {
 		// number
 		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		Portal.portalList= MazeRunner.portalList;
-		Portal.mazeList= Level.mazelist;
+		Portal.mazeList= World.mazelist;
 		
 		// all portal cameras are updated
 		for(int i=0; i<portalList.size(); i++){

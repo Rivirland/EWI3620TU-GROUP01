@@ -421,10 +421,10 @@ public class Maze implements VisibleObject {
 					double objectX = Double.parseDouble(st.nextToken());
 					double objectZ = Double.parseDouble(st.nextToken());
 					double horAngle = Double.parseDouble(st.nextToken());
-					Level.setStartX(mazeX + objectX);
-					Level.setStartY(mazeY + 2.5);
-					Level.setStartZ(mazeZ + objectZ);
-					Level.setStartHorAngle(horAngle);
+					World.setStartX(mazeX + objectX);
+					World.setStartY(mazeY + 2.5);
+					World.setStartZ(mazeZ + objectZ);
+					World.setStartHorAngle(horAngle);
 				}
 			}
 		} catch (IOException e) {

@@ -22,14 +22,12 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
-import playerStates.PlayerState;
-import playerStates.PlayerStateVictory;
 import menu.Main;
 import menu.Teken;
 import model.Model;
 import model.OBJLoader;
+import playerStates.PlayerState;
 import enemies.Enemy;
-import enemies.EnemyControl;
 import enemies.EnemySmart;
 import enemies.EnemySpooky;
 
@@ -57,29 +55,18 @@ public class MazeRunner {
 	 */
 
 	public static int screenWidth, screenHeight; // Screen size.
-	public static ArrayList<VisibleObject> visibleObjects = new ArrayList<VisibleObject>(); // A
-																							// list
-																							// of
-																							// objects
-	// that
-	// will be displayed
-	// on
-	// screen.
+	public static ArrayList<VisibleObject> visibleObjects = new ArrayList<VisibleObject>();
 	public static Player player; // The player object.
 	public static ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 	public static ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	public static ArrayList<Roof> roofList = new ArrayList<Roof>();
 	public static ArrayList<Portal> portalList = new ArrayList<Portal>();
-	// private int enemyListLength;
 	private Camera camera; // The camera object.
-	// private UserInput input; // The user input object that controls the
-	// player.
-	private EnemyControl enemyControl;
-	public static Level level; // hier wordt world bedoeld
-
-	// private long previousTime = Calendar.getInstance().getTimeInMillis();
-	// final private long startTime =
-	// Calendar.getInstance().getTimeInMillis();// Used
+	// IMPORTANT: THIS VARIABLE SHOULD'VE BEEN CALLED WORLD. \\
+	// We messed up the terminology early on in the project and this name is
+	// used quite often now. \\
+	// It would take quite some time to change this name, so we didn't. \\
+	public static World level;
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
@@ -108,7 +95,7 @@ public class MazeRunner {
 	 * controller.
 	 */
 
-	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas, GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput, Level level) {
+	public MazeRunner(int screenWidth, int screenHeight, GLCanvas canvas, GLAutoDrawable drawable, GL gl, GLU glu, UserInput userinput, World level) {
 		setScreen(screenWidth, screenHeight);
 		init(drawable, gl, glu);
 		initObjects(canvas, userinput, level);
@@ -146,14 +133,14 @@ public class MazeRunner {
 		input.noMousechange();
 	}
 
-	public void initObjects(GLCanvas canvas, UserInput input, Level l) {
+	public void initObjects(GLCanvas canvas, UserInput input, World l) {
 
 		// We define an ArrayList of VisibleObjects to store all the objects
 		// that need to be
 		// displayed by MazeRunner.
 		// Add the maze that we will be using
 		level = l;
-		GeneticAlgorithm GA = new GeneticAlgorithm(Level.mazelist, 50);
+		GeneticAlgorithm GA = new GeneticAlgorithm(World.mazelist, 50);
 		int[] worldConnection = GA.solve();
 		Portal.connectPortals(worldConnection);
 
@@ -171,11 +158,10 @@ public class MazeRunner {
 		}
 
 		// Initialize the player.
-		player = new Player(Level.getStartX(), Level.getStartY(), Level.getStartZ(), Level.getStartHorAngle(), 0);
+		player = new Player(World.getStartX(), World.getStartY(), World.getStartZ(), World.getStartHorAngle(), 0);
 		camera = new Camera(player.getLocationX(), player.getLocationY(), player.getLocationZ(), player.getHorAngle(), player.getVerAngle());
 
 		for (int i = 0; i < enemyList.size(); i++) {
-			enemyList.get(i).setControl(enemyControl);
 			visibleObjects.add(enemyList.get(i));
 		}
 		for (int i = 0; i < roofList.size(); i++) {
@@ -204,48 +190,23 @@ public class MazeRunner {
 	 * all in this method.
 	 */
 	public void init(GLAutoDrawable drawable, GL gl, GLU glu) {
-
-		// GLU glu = new GLU();
-		// drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
-		// pipeline to Debugging
-		// mode
-		/*
-		 * gl.glClearColor(0, 0, 0, 0); // Set the background color.
-		 * 
-		 * // Now we set up our viewpoint. gl.glMatrixMode(GL.GL_PROJECTION); //
-		 * We'll use orthogonal projection. gl.glLoadIdentity(); // Reset the
-		 * current matrix.
-		 */
-		// @gamestate switch
-		Main.glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up
-																		// the
-		// parameters
-		// for
-		// perspective
-		// viewing.
+		Main.glu.gluPerspective(60, screenWidth, screenHeight, 200);
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		// TODO: back-face weer aanzetten
 		// Enable back-face culling.
-		 gl.glCullFace(GL.GL_BACK);
-		 gl.glEnable(GL.GL_CULL_FACE);
+		gl.glCullFace(GL.GL_BACK);
+		gl.glEnable(GL.GL_CULL_FACE);
 
 		// @Enable Z-buffering, gamestate switch
 		// gl.glEnable(GL.GL_DEPTH_TEST);
 
-		// @ gamestate switch dit ook wanneer de mazerunner gebruikt wordt
-
 		initLighting(gl);
-
-		// Set the shading model.
 		gl.glShadeModel(GL.GL_SMOOTH);
-		// gl.glShadeModel(GL.GL_FLAT);
-		// Set the shading model.
-		//
-		// loadTextures(gl);
 		loadModels(gl);
+		
+		//Set the event to an empty message, so nothing is drawn on the screen.
 		eventMessage = "";
-		// @@
 	}
 
 	private void initLighting(GL gl) {
@@ -259,6 +220,7 @@ public class MazeRunner {
 		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, ambient_lighting, 0);
 	}
 
+	//Takes care of the pulsing effect when you are in cloakmode.
 	private void updateLighting(GL gl) {
 		long cT = currentTime;
 		float lI = 0.9f - (float) ((1 + Math.cos(cT / 600f)) / 2);
@@ -275,7 +237,7 @@ public class MazeRunner {
 		previousTime = time;
 	}
 
-	// function to test multiple views, and later to test portals
+	// TODO: DEZE METHODE WEGHALEN
 	public void multipleView(GLAutoDrawable drawable, GL gl) {
 
 		// 0,0
@@ -322,7 +284,9 @@ public class MazeRunner {
 	 * specifies how that object should be drawn. The object is passed a
 	 * reference of the GL context, so it knows where to draw.
 	 */
+	
 	public void display(GLAutoDrawable drawable, GL gl) {
+		//Sets the everplayed to true, so the text in the gamemenu changes to resume game instead of start game
 		Main.everplayed = true;
 		ChangeGL.GLto3D(gl);
 
@@ -338,24 +302,15 @@ public class MazeRunner {
 		deltaTime = (int) (currentTime - previousTime);
 		previousTime = currentTime;
 
+		//To prevent abuse (walking through walls, enemies walking out of levels etc), we reset the deltaTime if the input is too big/small.
 		if (deltaTime > 100 | deltaTime < 0) {
 			deltaTime = 0;
 		}
-
-		// time = previousTime-startTime;
-
-		// this.time;
-
-		// System.out.println(previousTime);s
-
-		// Update any movement since last frame.
-
+		
 		updateMovement(deltaTime, drawable);
 		updateCamera();
 		updatePlayingTime();
 		updateLighting(gl);
-
-		// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		Skybox.displaySkybox(gl);
 		if (player.getControl().minimap && player.playerStateInt != 4) {
@@ -368,30 +323,20 @@ public class MazeRunner {
 
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
-
-		// gl.glLoadIdentity();
-
-		// gl.glViewport(0, 0, screenWidth/2, screenHeight/2);
-		// gl.glScissor(0,0,screenWidth/2,screenHeight/2);
-		// gl.glEnable(GL.GL_SCISSOR_TEST);
-
+		
+		//Remove all the dead enemies, fallen roofs, exploded traps etc.
 		for (int i = 0; i < visibleObjects.size(); i++) {
 			VisibleObject next = visibleObjects.get(i);
 			if (next instanceof TrapDroppedGBS && ((TrapDroppedGBS) next).getUsed()) {
 				visibleObjects.remove(next);
-				System.out.println("removed TrapDroppedGBS");
 			} else if (next instanceof TrapDropped && !(next instanceof TrapDroppedGBS) && !((TrapDropped) next).getLegal()) {
 				visibleObjects.remove(next);
-				System.out.println("removed TrapDropped");
 			} else if (next instanceof EnemySmart && ((EnemySmart) next).getDead()) {
 				visibleObjects.remove(next);
-				System.out.println("removed EnemySmart");
 			} else if (next instanceof EnemySpooky && ((EnemySpooky) next).getDead()) {
 				visibleObjects.remove(next);
-				System.out.println("removed EnemySpooky");
 			} else if (next instanceof Roof && !((Roof) next).getLegal()) {
 				visibleObjects.remove(next);
-				System.out.println("removed Roof");
 			}
 		}
 
@@ -400,14 +345,16 @@ public class MazeRunner {
 			it.next().display(gl);
 		}
 
+		//We display the gun or trap here
 		gl.glDisable(GL.GL_CULL_FACE);
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
 		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
-//		Portal.activePortaldisplay(gl);
+		// Portal.activePortaldisplay(gl);
 
 		gl.glEnable(GL.GL_CULL_FACE);
 
+		//Draws the information!
 		if (player.getControl().info) {
 			PlayerState.getState(player.playerStateInt).drawInfo(drawable, gl);
 			if (!(player.playerStateInt == 3 || player.playerStateInt == 4)) {
@@ -415,6 +362,8 @@ public class MazeRunner {
 				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player) + 1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
 			}
 		}
+		
+		//If the message has been displayed for over 3 seconds, we reset it to an empty message. Then, we draw the message.
 		if (currentTime + startTime - eventMessageTime > 3000) {
 			setEventMessage("");
 		}
@@ -493,9 +442,7 @@ public class MazeRunner {
 	 * @throws IOException
 	 */
 
-	// Loads all the texture and stores them into the memory. We have to keep
-	// track of the order ourselves.
-
+	// Loads all the models!
 	public void loadModels(GL gl) {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
@@ -583,6 +530,7 @@ public class MazeRunner {
 		}
 	}
 
+	//Updates all the movement.
 	private void updateMovement(int deltaTime, GLAutoDrawable drawable) {
 
 		double previousX = player.getLocationX();
@@ -594,7 +542,7 @@ public class MazeRunner {
 		int currentMazeID = level.getCurrentMaze(player);
 		if (currentMazeID != -1) {
 			Maze currentMaze = level.getMaze(currentMazeID);
-
+			//If the player touches a pickup, he should now pick it up.
 			for (int i = 0; i < currentMaze.itemList.size(); i++) {
 				Item item = currentMaze.itemList.get(i);
 				if (item.touches(player)) {
@@ -633,8 +581,6 @@ public class MazeRunner {
 			currentMazeID = level.getCurrentMaze(enemy);
 			if (currentMazeID != -1) {
 				Maze currentMaze = level.getMaze(currentMazeID);
-				// double enemyX = enemy.getX();
-				// double enemyZ = enemy.getZ();
 				enemy.update(deltaTime, player);
 
 				// For each item
@@ -675,12 +621,14 @@ public class MazeRunner {
 			}
 
 		}
+		
+		//We update the bullets here
 		for (int bNr = 0; bNr < bulletList.size(); bNr++) {
 			Bullet b = bulletList.get(bNr);
 			b.update(deltaTime);
 			int i = MazeRunner.level.getCurrentMaze(b);
 			if (i != -1) {
-				Maze maze = Level.mazelist.get(i);
+				Maze maze = World.mazelist.get(i);
 				// Check for collision with floor
 				if (b.locationY < maze.mazeY + 0.1) {
 					visibleObjects.remove(b);
@@ -726,6 +674,8 @@ public class MazeRunner {
 			}
 
 		}
+		
+		//Here we update the roofs
 		for (int rNr = 0; rNr < roofList.size(); rNr++) {
 			Roof r = roofList.get(rNr);
 			if (!r.isOnWalls()) {
@@ -746,7 +696,8 @@ public class MazeRunner {
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
 						Enemy e = enemyList.get(eNr);
 						System.out.println(maze.coordToMatrixElement(e.getGlobalX() - maze.mazeX) + " " + r.matrixX + " " + maze.coordToMatrixElement(e.getGlobalZ() - maze.mazeZ) + " " + r.matrixZ);
-						if (e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(e.getGlobalZ() - maze.mazeZ) == r.matrixZ && Math.abs(r.getLocationY() - e.getLocationY()) < 5) {
+						if (e instanceof EnemySmart && maze.coordToMatrixElement(e.getGlobalX() - maze.mazeX) == r.matrixX && maze.coordToMatrixElement(e.getGlobalZ() - maze.mazeZ) == r.matrixZ
+								&& Math.abs(r.getLocationY() - e.getLocationY()) < 5) {
 							enemyList.remove(e);
 							player.score += 500;
 							setEventMessage("A roof dropped on a smart enemy! +500 points");
@@ -764,20 +715,7 @@ public class MazeRunner {
 			}
 		}
 
-		// dit hoort uiteindelijk in Portal en vervangt portalfunctionaliteit in
-		// updateMovement
-		// ****************
-		// public static void WillTeleport(boolean canTeleport,
-		// ArrayList<Portal> portalList){
-		// for (int i = 0; i < portalList.size(); i++) {
-		// portalList.get(i).checkteleportation(player, (float) previousX,
-		// (float) previousY, (float) previousZ);
-		//
-		// }
-		// } else {
-		// MazeRunner.player.canTeleport = true;
-		// }
-		// }
+		
 
 		// TODO dit hoort eigenlijk in de portal klasse
 		if (MazeRunner.player.canTeleport) {
@@ -789,8 +727,9 @@ public class MazeRunner {
 		} else {
 			MazeRunner.player.canTeleport = true;
 		}
-
-		for (Maze m : Level.mazelist) {
+		
+		//Checks if the player touches an exit point.
+		for (Maze m : World.mazelist) {
 			for (Item i : m.itemList) {
 				if (i instanceof Exit) {
 					if (i.touches(player) && player.playerStateInt != 4 && player.playerStateInt != 5) {

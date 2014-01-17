@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import menu.Teken;
-
+//This method is a lot like the minimap, but this draws the crosshair instead.
 public class Reticle {
 
 	private static int screenWidth=MazeRunner.screenWidth;;

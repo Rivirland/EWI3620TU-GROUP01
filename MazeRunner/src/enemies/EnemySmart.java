@@ -8,6 +8,7 @@ import engine.Player;
 import playerStates.*;
 import engine.VisibleObject;
 
+//This class is responsible for the smart enemies. They will run towards you if you are in a straight line with them without any walls. They are unable to see through doors. They can be killed by traps, bullets and roofs.
 public class EnemySmart extends Enemy implements VisibleObject {
 
 	public EnemySmart(double x, double y, double z, double speed, double h) {
@@ -16,49 +17,63 @@ public class EnemySmart extends Enemy implements VisibleObject {
 
 	public void update(int deltaTime, Player player) {
 		alert = false;
+		// Gets the current maze for the enemy
 		int currentMazeID = MazeRunner.level.getCurrentMaze(this);
 		Maze currentMaze = MazeRunner.level.getMaze(currentMazeID);
+
+		// Here, we will check if the enemy is in the same maze. If he is and
+		// the player is visible, we determine the enemies behavior:
 		if (MazeRunner.level.inSameMaze(this, player) != -1 && !player.invisible) {
-			int enemyMatrixX = currentMaze.coordToMatrixElement(locationX-currentMaze.mazeX);
-			int enemyMatrixZ = currentMaze.coordToMatrixElement(locationZ-currentMaze.mazeZ);
+			int enemyMatrixX = currentMaze.coordToMatrixElement(locationX - currentMaze.mazeX);
+			int enemyMatrixZ = currentMaze.coordToMatrixElement(locationZ - currentMaze.mazeZ);
 
 			double playerX = player.getLocalX();
 			double playerZ = player.getLocalZ();
 
 			int playerMatrixX = currentMaze.coordToMatrixElement(playerX);
 			int playerMatrixZ = currentMaze.coordToMatrixElement(playerZ);
-			
+
+			// They are not in the same line: the enemy should patrol
 			if (enemyMatrixX != playerMatrixX && enemyMatrixZ != playerMatrixZ) {
 				this.updateMovementPatrol();
-				
+
 			}
+			// They are in the same matrix element: the enemy should move
+			// towards the player and if he is close enough, the player should
+			// die.
 			if (enemyMatrixX == playerMatrixX && enemyMatrixZ == playerMatrixZ) {
-				if (locationX-currentMaze.mazeX > playerX) {
+				// Enemy speeds up if close to player.
+				if (locationX - currentMaze.mazeX > playerX) {
 					this.locationX -= this.speed * deltaTime;
 				}
-				if (locationX-currentMaze.mazeX < playerX) {
+				if (locationX - currentMaze.mazeX < playerX) {
 					this.locationX += this.speed * deltaTime;
 				}
-				if (locationZ-currentMaze.mazeZ > playerZ) {
+				if (locationZ - currentMaze.mazeZ > playerZ) {
 					this.locationZ -= this.speed * deltaTime;
 				}
-				if (locationZ-currentMaze.mazeZ < playerZ) {
+				if (locationZ - currentMaze.mazeZ < playerZ) {
 					this.locationZ += this.speed * deltaTime;
 				}
-				if (Math.sqrt(Math.pow(locationZ-currentMaze.mazeZ - playerZ, 2)
-						+ Math.pow(locationX-currentMaze.mazeX- playerX, 2)) < 1 && player.playerStateInt != 4 && player.playerStateInt != 5) {
+				// The enemy is very close! Kill the player if he hasn't
+				// finished yet.
+				if (Math.sqrt(Math.pow(locationZ - currentMaze.mazeZ - playerZ, 2) + Math.pow(locationX - currentMaze.mazeX - playerX, 2)) < 1 && player.playerStateInt != 4
+						&& player.playerStateInt != 5) {
 					PlayerState.getState(player.playerStateInt).leaving();
 					player.playerStateInt = 3;
 					PlayerState.getState(player.playerStateInt).entering();
 				}
 			}
+
+			// If the have the same x-coordinate but not the same z-coordinate,
+			// you check if there is a wall in the z-space. If there is no wall,
+			// the enemy should follow the player, else he patrols.
 			if (enemyMatrixX == playerMatrixX && enemyMatrixZ != playerMatrixZ) {
 				int diffZ = enemyMatrixZ - playerMatrixZ;
 				if (diffZ > 0) {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixZ; i > playerMatrixZ; i--) {
-						if (currentMaze.getElementOnCoords(enemyMatrixX, i) > 0
-								&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
+						if (currentMaze.getElementOnCoords(enemyMatrixX, i) > 0 && !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
 					}
@@ -71,8 +86,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				} else {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixZ; i < playerMatrixZ; i++) {
-						if (currentMaze.getElementOnCoords(enemyMatrixX, i) > 0
-								&& !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
+						if (currentMaze.getElementOnCoords(enemyMatrixX, i) > 0 && !(enemyMatrixX % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
 					}
@@ -84,13 +98,14 @@ public class EnemySmart extends Enemy implements VisibleObject {
 					}
 				}
 			}
+			
+			
 			if (enemyMatrixX != playerMatrixX && enemyMatrixZ == playerMatrixZ) {
 				int diffX = enemyMatrixX - playerMatrixX;
 				if (diffX > 0) {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixX; i > playerMatrixX; i--) {
-						if (currentMaze.getElementOnCoords(i, enemyMatrixZ) > 0
-								&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
+						if (currentMaze.getElementOnCoords(i, enemyMatrixZ) > 0 && !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
 					}
@@ -103,8 +118,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				} else {
 					boolean wallDetected = false;
 					for (int i = enemyMatrixX; i < playerMatrixX; i++) {
-						if (currentMaze.getElementOnCoords(i, enemyMatrixZ) > 0
-								&& !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
+						if (currentMaze.getElementOnCoords(i, enemyMatrixZ) > 0 && !(enemyMatrixZ % 2 == 1 && i % 2 == 1)) {
 							wallDetected = true;
 						}
 					}
@@ -117,110 +131,108 @@ public class EnemySmart extends Enemy implements VisibleObject {
 				}
 
 			}
-
+			// This makes sure the enemy stays in the maze. Also makes sure that
+			// if he walks north f.e. and that if the maze stops there, he will
+			// run into one of the other three directions.
 			boolean[] enemyCollide = MazeRunner.level.collides(this, 1);
 			if (enemyCollide[0]) {
 				this.setLocationX(locationX);
-				this.setRandomizer((int) (1 + 3 * Math.random()));
+				this.setDirection((int) (1 + 3 * Math.random()));
 			}
 			if (enemyCollide[1]) {
 				this.setLocationZ(locationZ);
 				int randomNumber = (int) (3 * Math.random());
 				if (randomNumber == 0) {
-					this.setRandomizer(0);
+					this.setDirection(0);
 				} else if (randomNumber == 1) {
-					this.setRandomizer(2);
+					this.setDirection(2);
 				} else {
-					this.setRandomizer(3);
+					this.setDirection(3);
 				}
 			}
 			if (enemyCollide[2]) {
 				this.setLocationX(locationX);
 				int randomNumber = (int) (3 * Math.random());
 				if (randomNumber == 0) {
-					this.setRandomizer(0);
+					this.setDirection(0);
 				} else if (randomNumber == 1) {
-					this.setRandomizer(1);
+					this.setDirection(1);
 				} else {
-					this.setRandomizer(3);
+					this.setDirection(3);
 				}
 			}
 			if (enemyCollide[3]) {
 				this.setLocationZ(locationZ);
-				this.setRandomizer((int) (3 * Math.random()));
+				this.setDirection((int) (3 * Math.random()));
 			}
-			
-			
 
 		} else {
 
-				this.updateMovementPatrol();
+			this.updateMovementPatrol();
 
-				boolean[] enemyCollide = MazeRunner.level.collides(this, 1);
-				if (enemyCollide[0]) {
-					this.setLocationX(locationX);
-					this.setRandomizer((int) (1 + 3 * Math.random()));
-				}
-				if (enemyCollide[1]) {
-					this.setLocationZ(locationZ);
-					int randomNumber = (int) (3 * Math.random());
-					if (randomNumber == 0) {
-						this.setRandomizer(0);
-					} else if (randomNumber == 1) {
-						this.setRandomizer(2);
-					} else {
-						this.setRandomizer(3);
-					}
-				}
-				if (enemyCollide[2]) {
-					this.setLocationX(locationX);
-					int randomNumber = (int) (3 * Math.random());
-					if (randomNumber == 0) {
-						this.setRandomizer(0);
-					} else if (randomNumber == 1) {
-						this.setRandomizer(1);
-					} else {
-						this.setRandomizer(3);
-					}
-				}
-				if (enemyCollide[3]) {
-					this.setLocationZ(locationZ);
-					this.setRandomizer((int) (3 * Math.random()));
+			boolean[] enemyCollide = MazeRunner.level.collides(this, 1);
+			if (enemyCollide[0]) {
+				this.setLocationX(locationX);
+				this.setDirection((int) (1 + 3 * Math.random()));
+			}
+			if (enemyCollide[1]) {
+				this.setLocationZ(locationZ);
+				int randomNumber = (int) (3 * Math.random());
+				if (randomNumber == 0) {
+					this.setDirection(0);
+				} else if (randomNumber == 1) {
+					this.setDirection(2);
+				} else {
+					this.setDirection(3);
 				}
 			}
-		
-		if (locationX > currentMaze.maxX - 1){
-			east = false;
-			this.setRandomizer((int) (1 + 3 * Math.random()));
+			if (enemyCollide[2]) {
+				this.setLocationX(locationX);
+				int randomNumber = (int) (3 * Math.random());
+				if (randomNumber == 0) {
+					this.setDirection(0);
+				} else if (randomNumber == 1) {
+					this.setDirection(1);
+				} else {
+					this.setDirection(3);
+				}
+			}
+			if (enemyCollide[3]) {
+				this.setLocationZ(locationZ);
+				this.setDirection((int) (3 * Math.random()));
+			}
 		}
-		if (locationX < currentMaze.minX + 1){
+
+		if (locationX > currentMaze.maxX - 1) {
+			east = false;
+			this.setDirection((int) (1 + 3 * Math.random()));
+		}
+		if (locationX < currentMaze.minX + 1) {
 			west = false;
 			int randomNumber = (int) (3 * Math.random());
 			if (randomNumber == 0) {
-				this.setRandomizer(0);
+				this.setDirection(0);
 			} else if (randomNumber == 1) {
-				this.setRandomizer(1);
+				this.setDirection(1);
 			} else {
-				this.setRandomizer(3);
+				this.setDirection(3);
 			}
 		}
 		if (locationZ < currentMaze.minZ + 1) {
 			north = false;
 			int randomNumber = (int) (3 * Math.random());
 			if (randomNumber == 0) {
-				this.setRandomizer(0);
+				this.setDirection(0);
 			} else if (randomNumber == 1) {
-				this.setRandomizer(2);
+				this.setDirection(2);
 			} else {
-				this.setRandomizer(3);
+				this.setDirection(3);
 			}
 		}
-		if (locationZ > currentMaze.maxZ - 1){
+		if (locationZ > currentMaze.maxZ - 1) {
 			west = false;
-			this.setRandomizer((int) (3 * Math.random()));
+			this.setDirection((int) (3 * Math.random()));
 		}
-		
-		
 
 		if (west) {
 			locationX -= speed * deltaTime;
@@ -240,10 +252,10 @@ public class EnemySmart extends Enemy implements VisibleObject {
 	@Override
 	public void drawEnemy(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glScaled(0.5,0.5,0.5);
-		if(alert){
+		gl.glScaled(0.5, 0.5, 0.5);
+		if (alert) {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 24);
-		}else{
+		} else {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 22);
 		}
 		MazeRunner.spookyModel.display(gl);

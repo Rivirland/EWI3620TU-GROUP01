@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+//This class takes care of everything that has something to do with the genetic algorithm.
 public class GeneticAlgorithm {
 	private ArrayList<Maze> mazes;
 	public int parentsPerIteration;
@@ -12,8 +13,10 @@ public class GeneticAlgorithm {
 
 	public GeneticAlgorithm(ArrayList<Maze> mazelist, int ppi) {
 		ArrayList<Maze> mazesWithPortals = new ArrayList<Maze>();
-		for(Maze m : mazelist){
-			if(m.hasPortals){
+
+		// We only take in consideration the mazes with a portal!
+		for (Maze m : mazelist) {
+			if (m.hasPortals) {
 				mazesWithPortals.add(m);
 			}
 		}
@@ -22,33 +25,18 @@ public class GeneticAlgorithm {
 		distances = calcDistances();
 	}
 
-	// public void assignPortalID() {
-	// int i = 0;
-	// for (Portal p : MazeRunner.portalList) {
-	// p.setPortalID(i);
-	// i++;
-	// }
-	// }
-
-	public void connectPortals() {
-
-	}
-
+	// Solve's the TSP-problem!
 	public int[] solve() {
+		// Generates the parents
 		int[][] parents = generateParents();
-		double min = Integer.MAX_VALUE;
 		for (int i = 0; i < 100; i++) {
 			parents = iterate(parents, i);
-			double l = calcDistance(parents[0]);
-			if (l < min) {
-				min = l;
-			}
 		}
 
-		// This is added to make sure the array doesn't get mixed up: sometimes,
+		// This is added to make sure the array doesn't get mixed up:
 		// [1,2,3,4,5] and [5,4,3,2,1] are both valid solutions. This ensures
 		// that the same one is always used, so your level doesn't end up
-		// backwards.
+		// backwards (of course this ignores cyclic permutations)
 		int pLength = parents[0].length;
 		if (parents[0][0] > parents[0][pLength - 1]) {
 			int[] parents2 = new int[pLength];
@@ -125,6 +113,10 @@ public class GeneticAlgorithm {
 		return parents;
 	}
 
+	// As the name suggests, calculates the distances between the levels. For each
+	// pair of mazes, it will take the four possible combinations of portals,
+	// calculate their distances and then take the lowest one as the final
+	// distance. They are stored in a matrix.
 	private double[][] calcDistances() {
 		double[][] res = new double[mazes.size()][mazes.size()];
 		for (int i = 0; i < mazes.size(); i++) {
@@ -151,6 +143,7 @@ public class GeneticAlgorithm {
 		return res;
 	}
 
+	// Implements the mutation
 	public static int[] mutation(int[] parent) {
 		double rand1 = Math.random();
 		if (rand1 < 0.05) {
@@ -206,7 +199,7 @@ public class GeneticAlgorithm {
 		return child;
 	}
 
-	// Checks if the chromosome contains a certain number
+	// Checks if the already chromosome contains a certain number
 	public static boolean containsNumber(int[] anArray, int city) {
 		for (int i = 0; i < anArray.length; i++) {
 			if (anArray[i] == city) {
@@ -215,7 +208,8 @@ public class GeneticAlgorithm {
 		}
 		return false;
 	}
-
+	
+	//Calculates the total distance a parent implies.
 	public int calcDistance(int[] parent) {
 		int d = 0;
 		for (int i = 0; i < parent.length - 1; i++) {

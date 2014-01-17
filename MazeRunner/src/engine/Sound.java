@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sun.opengl.util.texture.Texture;
-
+//This class is responsible for all the sounds.
 public class Sound implements Runnable{
 	
 	public static Map<String, Sound> sounds = new HashMap<String, Sound>();

@@ -100,6 +100,7 @@ public class Roof extends Item {
 		return false;
 	}
 
+	//Checks if a roof should fall or not. If there are not enough columns or walls to support him, this will return false.
 	public boolean isOnWalls() {
 		Maze maze = MazeRunner.level.getMaze(mazeID);
 		

@@ -7,7 +7,7 @@ import engine.ChangeGL;
 import engine.GameObject;
 import engine.MazeRunner;
 import engine.Player;
-
+//A trapholder is very much like a bulletholder, except this has exactly one trap instead of some bullets.
 public class TrapHolder extends Item {
 
 	public TrapHolder(double x, double y, double z, int i) {

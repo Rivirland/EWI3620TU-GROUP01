@@ -8,18 +8,17 @@ import javax.media.opengl.GLAutoDrawable;
 import menu.Teken;
 import engine.MazeRunner;
 import engine.Sound;
-
-
+//Once you've finished, you can freely fly around the world if you want. This state is responsible for that.
 public class PlayerStateFly extends PlayerState implements Runnable{
 
-
+	//A helicopter can shoot bullets, of course!
 	@Override
 	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
 			try{
 				Sound.play("gunfire.wav");
 			}catch (Exception e){
-				System.out.println("no noBullets sound");
+				System.out.println("no GunFire sound");
 			}
 			MazeRunner.player.nrOfBullets--;
 			double hAngle = MazeRunner.player.getHorAngle();
@@ -37,29 +36,19 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 				System.out.println("no noBullets sound");
 			}
 		}
-		System.out.println(MazeRunner.player.nrOfBullets);
 
-		// Shoot bullet if nrOfBullets > 0
 	}
 
 	
-
+	
 	@Override
 	public void entering() {
-		System.out.println("Entering GunMode");
-		try {
-			Sound.play("reload.wav");
-		} catch (NullPointerException e) {
-			System.out.println("no Reload sound");
-		}
-
+		//nothing
 	}
 
 	@Override
 	public void leaving() {
-
-		System.out.println("Leaving GunMode");
-
+		//nothing
 	}
 
 	@Override
@@ -67,10 +56,9 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 		Teken.textDraw(autodrawable, gl, "Number of bullets: " + MazeRunner.player.nrOfBullets, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), 30);
 	}
 
+	//Displays the helicopter.
 	@Override
 	public void displayItem(GL gl) {
-		// System.out.println(MazeRunner.player.getHorAngle() + " " +
-		// MazeRunner.player.getVerAngle());
 		gl.glPushMatrix();
 		gl.glTranslated(0, -10, -40);
 		gl.glTranslated(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ());
@@ -84,6 +72,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 		gl.glTranslated(0, 10, 40);
 		gl.glRotated(MazeRunner.player.getHorAngle(), 0, 1, 0);
 		gl.glRotated(MazeRunner.player.getVerAngle(), 1, 0, 0);
+		//Rotates the helicopter based on player input
 		if (MazeRunner.player.getControl().getRight()) {
 			gl.glRotated(-10, 0, 0, 1);
 		}
@@ -109,7 +98,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 		gl.glPopMatrix();	
 		
 		
-		
+		//This takes care of the rotating rotor
 		
 		gl.glPushMatrix();
 		gl.glTranslated(0, -10, -40);
@@ -145,7 +134,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		//nothing
 		
 
 	}

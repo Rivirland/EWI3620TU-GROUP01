@@ -17,7 +17,7 @@ import com.sun.opengl.util.GLUT;
 
 
 
-import engine.Level;
+import engine.World;
 import engine.MazeRunner;
 import engine.Maze;
 import engine.Skybox;
@@ -46,7 +46,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	
 	public void init(){
 	
-		LevelEditorWorldViewer.mazelist = Level.getMazeList();
+		LevelEditorWorldViewer.mazelist = World.getMazeList();
 		if (mazelist.size()>0){
 		for (int i = 0; i < mazelist.size(); i++){
 			visibleObjects.add(LevelEditorWorldViewer.mazelist.get(i));		
@@ -205,7 +205,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 	//	stencil(gl);
 		update();
 
-		gl.glLoadIdentity();		
+	//	gl.glLoadIdentity();		
 		gl.glPushMatrix();
 		
 		gl.glTranslated(xmidden, ymidden, 0);
@@ -214,27 +214,17 @@ public class LevelEditorWorldViewer extends LevelEditorViewer{
 		
 		
 		
-		gl.glTranslated(xcenter, ycenter, zcenter); // center van rotatie veranderen	
+		gl.glTranslated(-xcenter, -ycenter, -zcenter); // center van rotatie veranderen	
 		
 		gl.glRotated(rotationY, 0.25, 0, 0);
 		gl.glRotated(rotationX, 0, 0.25, 0);
 	
-		gl.glTranslated(-xcenter, 2*ycenter,-zcenter);
+		gl.glTranslated(xcenter, ycenter, zcenter);
 		
 		gl.glScaled(scalef,scalef,scalef);
 		
 		MazeRunner.visibleIterator(gl);
 		
-		
-		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
-				it.next().display(gl);
-				
-		}
-		
-
-		
-		gl.glColor3d(1, 1, 1);
-		Teken.rechthoek(gl, xmidden-5, ymidden-5, xmidden+5, ymidden+5);
 		gl.glPopMatrix();
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_LIGHT0);

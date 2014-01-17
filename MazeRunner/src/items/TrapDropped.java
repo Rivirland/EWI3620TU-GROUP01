@@ -8,7 +8,7 @@ import engine.Animator;
 import engine.ChangeGL;
 import engine.GameObject;
 import engine.MazeRunner;
-
+//A dropped trap can kill an enemy. A lot of the attributes here are to display the throwing animation.
 public class TrapDropped extends Item {
 	protected boolean used;
 	private long timeUsed;

@@ -1,5 +1,5 @@
 package items;
-
+//This are the bullets! They are created when you click the mouse when you're in gunmode or helicoptermode. All the methods here are very easy.
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;

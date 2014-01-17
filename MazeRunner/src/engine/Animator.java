@@ -2,7 +2,7 @@ package engine;
 
 import items.*;
 import enemies.Enemy;
-
+//This class takes care of the animations for throwing a trap and the beam that appears when an enemy is sucked into a trap.
 public abstract class Animator {
 
 	public static void trapAnimation(TrapDroppedGBS t) {

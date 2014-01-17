@@ -34,7 +34,7 @@ import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
 import engine.InputDialog;
-import engine.Level;
+import engine.World;
 import engine.Maze;
 import engine.MazeRunner;
 
@@ -1716,8 +1716,8 @@ public class LevelEditor {
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
-			Level.clearMazeList();
-			Level.leesLevels(filename);
+			World.clearMazeList();
+			World.leesLevels(filename);
 			System.out.println(filename);
 			this.worldview = !worldview;
 			

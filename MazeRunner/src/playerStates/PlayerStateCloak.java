@@ -5,25 +5,23 @@ import javax.media.opengl.GLAutoDrawable;
 
 import menu.Teken;
 import engine.MazeRunner;
-
+//Cloakmode makes you invisible to the enemy. You can use a total of 10 seconds of cloak, triggered by clicking the mouse. Clicking again will stop the timer and make you visible again.
 public class PlayerStateCloak extends PlayerState {
 	public double duration;
 
 	@Override
 	public void itemUse() {
-		System.out.println("Toggle Cloak!");
 		MazeRunner.player.invisible = !MazeRunner.player.invisible;
 	}
 
 	@Override
 	public void entering() {
-		System.out.println("Entering Cloak mode");
 	}
 
+	//When leaving this mode, you will automatically become visible again.
 	@Override
 	public void leaving() {
 		MazeRunner.player.invisible = false;
-		System.out.println("Leaving Cloak mode");
 	}
 
 	@Override
@@ -38,6 +36,7 @@ public class PlayerStateCloak extends PlayerState {
 		}
 	}
 
+	//TODO: Dit is zo fucking lelijk xD
 	public void displayItem(GL gl) {
 		if (MazeRunner.player.invisible) {
 			MazeRunner.player.cloakSeconds -= MazeRunner.deltaTime;

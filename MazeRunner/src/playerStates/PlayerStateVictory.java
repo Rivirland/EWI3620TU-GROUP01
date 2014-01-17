@@ -9,7 +9,7 @@ import engine.InputDialog;
 import engine.MazeRunner;
 import menu.Main;
 import menu.Teken;
-
+//This class is responsible for what happens once you reach the finish: this takes care of drawing the highscores, being invulnerable and having the possibility to transition into flymode.
 public class PlayerStateVictory extends PlayerState {
 
 	private static int highscoreMode = 1;
@@ -19,6 +19,7 @@ public class PlayerStateVictory extends PlayerState {
 		MazeRunner.player.playerStateInt = 5;
 	}
 
+	//Once you enter this state, your performance is put into the database
 	@Override
 	public void entering() {
 		MazeRunner.player.getControl().info = true;
@@ -31,11 +32,8 @@ public class PlayerStateVictory extends PlayerState {
 			Main.db.stat.executeUpdate("INSERT INTO highscores" + MazeRunner.level.getNaam() + " (naam, score, time) values ('" + name + "', " + MazeRunner.player.score + ", "
 					+ MazeRunner.playingTime + ");");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Main.db.printHighscores("SELECT * FROM highscores" +
-		// MazeRunner.level.getNaam() + " ORDER BY score DESC LIMIT 0,4");
 	}
 
 	@Override
@@ -61,6 +59,7 @@ public class PlayerStateVictory extends PlayerState {
 		// nothing
 	}
 	
+	//These are the four different highscores we show: global and personal time- and score-based highscores.
 	public static void drawScoreHighscores(GLAutoDrawable autodrawable, GL gl){
 		String st = "SELECT * FROM highscores" + MazeRunner.level.getNaam() + " ORDER BY score DESC, time ASC LIMIT 0,5";
 		Main.db.printHighscores(autodrawable, gl, st);

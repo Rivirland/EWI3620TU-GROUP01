@@ -6,16 +6,22 @@ import com.sun.opengl.util.GLUT;
 
 import engine.*;
 
+//This class is the baseline for both our enemies. It has some methods both of the enemies will have to use and if we want to add more enemies, they should also have those to maintain functionality.
+
 public abstract class Enemy extends GameObject implements VisibleObject {
-	private EnemyControl enemyControl;
+	// The different characteristics of an enemy
 	public double speed;
 	public double begX, begY, begZ, begSpeed;
 	private double horAngle;
+
+	// Deciding which directions the enemy is heading
 	protected boolean west = false;
 	protected boolean east = false;
 	protected boolean north = false;
 	protected boolean south = false;
-	private int randomizer;
+	private int direction;
+
+	// Attributes that make sure the death animations are played correctly
 	public long TOD;
 	protected boolean trapped;
 	protected boolean dead;
@@ -23,8 +29,11 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	private double trappedX;
 	private double trappedY;
 	private double trappedZ;
+
+	// This is true if the enemy moves towards a player. This will change the
+	// color of the enemy.
 	protected boolean alert;
-	
+
 	public Enemy(double x, double y, double z, double speed, double h) {
 		super(x, y, z);
 		this.begX = x;
@@ -44,21 +53,12 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		setLocationY(begY);
 		setLocationZ(begZ);
 	}
-
-	public void setControl(EnemyControl enemyControl) {
-		this.enemyControl = enemyControl;
+	public void setDirection(int r) {
+		this.direction = r;
 	}
 
-	public EnemyControl getControl() {
-		return this.enemyControl;
-	}
-
-	public void setRandomizer(int r) {
-		this.randomizer = r;
-	}
-
-	public int getRandomizer() {
-		return this.randomizer;
+	public int getDirection() {
+		return this.direction;
 	}
 
 	public void setHorAngle(double horangle) {
@@ -79,18 +79,21 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 
 	public abstract void update(int deltaTime, Player player);
 
+	// Patrolling means they wander through the level until they touch a wall,
+	// because they do not see the player. They do this in one of the four main
+	// directions.
 	public void updateMovementPatrol() {
 		east = false;
 		west = false;
 		north = false;
 		south = false;
-		if (randomizer == 1) {
+		if (direction == 1) {
 			north = true;
 			setHorAngle(0);
-		} else if (randomizer == 2) {
+		} else if (direction == 2) {
 			west = true;
 			setHorAngle(90);
-		} else if (randomizer == 3) {
+		} else if (direction == 3) {
 			south = true;
 			setHorAngle(180);
 		} else {
@@ -99,15 +102,18 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		}
 	}
 
+	//This makes the enemy move towards the player.
 	public void updateMovementFollow(Player player) {
 		east = false;
 		west = false;
 		north = false;
 		south = false;
+		
 		double xdiff = player.getLocationX() - getLocationX();
 		double zdiff = player.getLocationZ() - getLocationZ();
 		double diff = Math.sqrt(xdiff * xdiff + zdiff * zdiff);
 
+		//Calculates the rotation the enemy has to make so he faces the player
 		double alpha = Math.toDegrees(Math.acos(Math.abs(zdiff / diff)));
 		// System.out.println("xdiff: " + xdiff + " zdiff: " + zdiff + " diff: "
 		// + diff + " alpha: "+ alpha);
@@ -125,23 +131,24 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 			}
 		}
 		setHorAngle(alpha);
-
+		
+		//Calculates the direction the enemy should head towards
 		if (Math.abs(xdiff) > 0.2) {
 			if (xdiff > 0) {
 				east = true;
-				randomizer = 0;
+				direction = 0;
 			} else if (xdiff < 0) {
 				west = true;
-				randomizer = 2;
+				direction = 2;
 			}
 		}
 		if (Math.abs(zdiff) > 0.2) {
 			if (zdiff > 0) {
 				south = true;
-				randomizer = 3;
+				direction = 3;
 			} else if (zdiff < 0) {
 				north = true;
-				randomizer = 1;
+				direction = 1;
 			}
 		}
 	}
@@ -174,17 +181,20 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 
 	@Override
 	public double getGlobalX() {
-		return locationX;// + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
+		return locationX;// +
+							// MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
 	}
 
 	@Override
 	public double getGlobalY() {
-		return locationY;// + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+		return locationY;// +
+							// MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
 	}
 
 	@Override
 	public double getGlobalZ() {
-		return locationZ;// + MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+		return locationZ;// +
+							// MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
 	}
 
 	public void setTOD(long currentTime) {
@@ -222,24 +232,28 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	}
 
 	public void setTrappedX(double locationX) {
-		this.trappedX=locationX;
-		
+		this.trappedX = locationX;
+
 	}
-	public void setTrappedZ(double locationZ){
-		this.trappedZ=locationZ;
+
+	public void setTrappedZ(double locationZ) {
+		this.trappedZ = locationZ;
 	}
-	public double getTrappedX(){
+
+	public double getTrappedX() {
 		return this.trappedX;
 	}
-	public double getTrappedZ(){
+
+	public double getTrappedZ() {
 		return this.trappedZ;
 	}
 
 	public void setTrappedY(double locationY) {
-		this.trappedY=locationY;
-		
+		this.trappedY = locationY;
+
 	}
-	public double getTrappedY(){
+
+	public double getTrappedY() {
 		return this.trappedY;
 	}
 
