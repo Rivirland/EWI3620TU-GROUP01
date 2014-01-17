@@ -211,7 +211,7 @@ public class Portal {
 		
 //		gl.glLoadIdentity();
 		
-		Skybox.displaySkybox(gl, portalcamera);
+		Skybox.displaySkybox(gl);
 		glu.gluLookAt(
 				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
 				portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),

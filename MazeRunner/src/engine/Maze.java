@@ -57,6 +57,7 @@ public class Maze implements VisibleObject {
 	public double minX, minZ;
 	public int mazeID;
 	public double maxX, maxZ;
+	public boolean hasPortals;
 	public ArrayList<Item> itemList = new ArrayList<Item>();
 	public int[][] maze = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
 	public int[][] textureMatrix = new int[MAZE_SIZE_X][MAZE_SIZE_Z];
@@ -64,6 +65,7 @@ public class Maze implements VisibleObject {
 	public int maxHeight;
 
 	public Maze(String filename, int i, double x, double y, double z) {
+		hasPortals = false;
 		mazeID = i - 1;
 		mazeX = x;
 		mazeY = y;
@@ -375,6 +377,7 @@ public class Maze implements VisibleObject {
 					Portal portal = new Portal((float) (mazeX + objectX), (float) mazeY, (float) (mazeZ + objectZ), fd);
 					MazeRunner.portalList.add(portal);
 					System.out.println("Adding portal for maze: " + mazeID);
+					hasPortals = true;
 					// Portal portal = new Portal((float)objectX,
 					// (float)objectY, objectZ, fd);
 					// System.out.println("Maakt portal " + portalID +

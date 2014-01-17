@@ -11,7 +11,13 @@ public class GeneticAlgorithm {
 	public double[][] distances;
 
 	public GeneticAlgorithm(ArrayList<Maze> mazelist, int ppi) {
-		mazes = mazelist;
+		ArrayList<Maze> mazesWithPortals = new ArrayList<Maze>();
+		for(Maze m : mazelist){
+			if(m.hasPortals){
+				mazesWithPortals.add(m);
+			}
+		}
+		mazes = mazesWithPortals;
 		parentsPerIteration = ppi;
 		distances = calcDistances();
 	}

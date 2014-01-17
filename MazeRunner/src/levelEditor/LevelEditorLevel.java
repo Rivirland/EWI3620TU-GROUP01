@@ -194,8 +194,8 @@ public class LevelEditorLevel {
 	}
 
 	public void saveAs() throws FileNotFoundException {
-		if (countPortals(itemlist) != 2) {
-			LevelEditor.setErrMsg("You need exactly two portals in a level!");
+		if (countPortals(itemlist) != 0 && countPortals(itemlist) != 2) {
+			LevelEditor.setErrMsg("You need exactly zero two portals in a level!");
 			return;
 		}
 		// PrintWriter bestand = new
@@ -233,7 +233,7 @@ public class LevelEditorLevel {
 	}
 	
 	public void saveAs(String filename) throws FileNotFoundException {
-		if (countPortals(itemlist) != 2) {
+		if (countPortals(itemlist) != 0 && countPortals(itemlist) != 2) {
 			LevelEditor.setErrMsg("You need exactly two portals in a level!");
 			return;
 		}
