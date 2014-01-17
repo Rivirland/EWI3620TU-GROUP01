@@ -18,7 +18,7 @@ import menu.KiesFileUitBrowser;
 public class LevelEditorLevel {
 
 	private String name;
-	public static int rows, columns;
+	private static int rows, columns;
 	public double[] location;
 	private int[][] gebouwen;
 	private int[][] textures;
