@@ -456,7 +456,7 @@ public class Portal {
 //			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
 //			gl.glRotated(90*this.facingdirection, 0, 1, 0);
 //			gl.glTranslated(-this.x, -this.y, -this.z);
-			gl.glTranslated(xtransform, ytransform, ztransform);
+gl.			glTranslated(xtransform, ytransform, ztransform);
 			glut.glutSolidCube(2);
 			gl.glPopMatrix();
 			
