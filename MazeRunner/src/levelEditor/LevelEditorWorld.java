@@ -152,6 +152,7 @@ public class LevelEditorWorld {
 		for (int i = 0; i < length; i++) {
 			System.out.println("Current i: " + i + ", current length: " + levels.size());
 			String name = levels.get(i).getName();
+			System.out.println(name);
 			double[] loc = levels.get(i).getLocation();
 			String filename = System.getProperty("user.dir") + "\\levels\\" + name + ".txt";
 			LevelEditorLevel l = LevelEditorLevel.readLevel(name, loc, filename);
@@ -205,6 +206,7 @@ public class LevelEditorWorld {
 			if (xmax < x && x < xmax + 34f / 1920f * screenWidth) {
 				if (ymax - ((ymax - ymin) * (i + 1) / 20) < y && y < ymax - (ymax - ymin) * i / 20) {
 					if (popup) {
+						System.out.println("HOI");
 						levels.get(i).saveAs();
 					}
 				}

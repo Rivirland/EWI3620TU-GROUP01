@@ -19,6 +19,9 @@ public class Portal {
 //	public int portalID;
 //	public int portalConnectionID;
 	
+	private static int[][] portalconnectionlist;
+	//private int[] connectedportals;
+	
 	public static int mazeID;
 	public static ArrayList<Portal> portalList;
 	public static ArrayList<Maze> mazeList;
@@ -101,6 +104,7 @@ public class Portal {
 		//displaying all the portals that aren't active
 		displayInactivePortals(gl, portalList);
 		
+		
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
 		//** dit wordt hier niet gedaan MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
@@ -168,7 +172,7 @@ public class Portal {
 		  // if buffervalue equal to 1 then it gets overwritten
 		  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
 
-		  portalView(gl, p.portalcamera);
+		  portalView(gl, p.portalcamera, num);
 		  gl.glDisable(GL.GL_STENCIL_TEST);
 		 //displayInactivePortals(gl, MazeRunner.portalList);
 	}
@@ -192,7 +196,7 @@ public class Portal {
 
 	}
 
-	public static void portalView(GL gl, Camera portalcamera) {
+	public static void portalView(GL gl, Camera portalcamera,int num) {
 		
 		//ArrayList<Portal> portalList=MazeRunner.portalList;
 		GLU glu=new GLU();
@@ -216,11 +220,23 @@ public class Portal {
 				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
 				portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),
 				portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
-		Maze.drawSingleFloorTile(gl, mazeList.get(mazeID).getMazeX(),mazeList.get(mazeID).getMazeZ());
+		
+	
+//		Here only the maze should be shown that the portalview leads to...
+		int i=0;
+		while(Portal.Equals(portalList.get(activep[num]).gettoPortal(), portalList.get(i))!=false){
+			i++;
+		}
+		
+		
+		
+		
+		
 		MazeRunner.visibleIterator(gl);
 		
+	}
 		
-		}
+		
 	
 	public static void displayInactivePortals(GL gl, ArrayList<Portal> portalList) {
 		GLUT glut = new GLUT();
@@ -245,10 +261,13 @@ public class Portal {
 
 	public static void connectPortals(int[] mazes) {
 		if (MazeRunner.portalList.size() > 0) {
-
+//			portalconnectionlist = new int[MazeRunner.portalList.size()][amountmazep-1];
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
 				System.out.println("Connecting portal " + (i*2 + 1) + " with portal " + (i+1)*2);
+//				for (int j=0; j<amountmazep; j++){
+
+//				}
 			}
 			portalConnection(MazeRunner.portalList.get(mazes.length * 2 - 1), MazeRunner.portalList.get(0));
 			System.out.println("Connecting portal" + (mazes.length*2 - 1) + " with portal " + 0);
@@ -308,7 +327,6 @@ public class Portal {
 				} else {
 					if (playerx > this.x - range && playerx < this.x + range) {
 						if (previousZ < z && playerz > z || previousZ > z && playerz < z) {
-
 							teleportation = true;
 							// System.out.println(teleportation);
 						}
@@ -441,22 +459,23 @@ public class Portal {
 			// het verschil in facingdirection berekenen
 	//		facingdirection = this.facingdirection - toportal.getFacingdirection();
 			
-			int facingdirection = this.facingdirection - toportal.getFacingdirection();
+			int facingdirection = this.facingdirection - toportal.getFacingdirection()+2;
 			
-			double xtransform = Math.cos(90*facingdirection)*(player.getLocationX()- this.x) 
-					- Math.sin(90*facingdirection)*(this.toportal.getZ()-this.z) + toportal.getX();
+			double xtransform = Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
+					- Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getX();
 			double ytransform = player.getLocationY() - this.y + toportal.getY();
-			double ztransform = Math.sin(90*facingdirection)*(player.getLocationX()- this.x) 
-					- Math.cos(90*facingdirection)*(toportal.getZ()-this.z) + toportal.getZ();
-			
+			double ztransform = Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
+					+ Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getZ();
 			
 			
 			
 			gl.glPushMatrix();
-//			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
-//			gl.glRotated(90*this.facingdirection, 0, 1, 0);
-//			gl.glTranslated(-this.x, -this.y, -this.z);
-			gl.glTranslated(xtransform, ytransform, ztransform);
+			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
+			gl.glRotated(90*facingdirection, 0, 1, 0);
+			gl.glTranslated(-this.x, -this.y, -this.z);
+			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
+			//gl.glRotated(90, 0, 1, 0);
+			//gl.glTranslated(xtransform, ytransform, ztransform);
 			glut.glutSolidCube(2);
 			gl.glPopMatrix();
 			
@@ -484,7 +503,9 @@ public class Portal {
 			portalcamera.setLocationX(xtransform);
 			portalcamera.setLocationY(ytransform);
 			portalcamera.setLocationZ(ztransform);
-			portalcamera.calculateVRP();
+			portalcamera.setHorAngle(player.getHorAngle());
+			portalcamera.setVerAngle(player.getVerAngle());
+			portalcamera.calculateVRP(facingdirection+2);
 
 		}
 		

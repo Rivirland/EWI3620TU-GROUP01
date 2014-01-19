@@ -1,0 +1,16 @@
+0,0,
+<<<<<<< HEAD
+0.0,0.0,0.0,basiclevel1
+10.0,20.0,0.0,basiclevel2
+0.0,35.0,0.0,basiclevel3
+15.0,50.0,15.0,basiclevel4
+30.0,60.0,30.0,basiclevel5
+0.0,75.0,0.0,basiclevel6
+=======
+0.0,0.0,0.0,basicworldstart
+0.0,30.0,0.0,basicworld2
+0.0,60.0,0.0,basicworld3
+0.0,90.0,0.0,basicworld4
+0.0,120.0,0.0,basicworld5
+0.0,150.0,0.0,basicworldend
+>>>>>>> 200ad8c06c0e8cdc1f58f669ff82680ef72065f5

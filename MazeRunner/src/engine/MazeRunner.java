@@ -217,17 +217,18 @@ public class MazeRunner {
 		 * current matrix.
 		 */
 		// @gamestate switch
-		Main.glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up the
-																// parameters
-																// for
-																// perspective
-																// viewing.
+		Main.glu.gluPerspective(60, screenWidth, screenHeight, 200); // Set up
+																		// the
+		// parameters
+		// for
+		// perspective
+		// viewing.
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		// TODO: back-face weer aanzetten
 		// Enable back-face culling.
-		// gl.glCullFace(GL.GL_BACK);
-		// gl.glEnable(GL.GL_CULL_FACE);
+		 gl.glCullFace(GL.GL_BACK);
+		 gl.glEnable(GL.GL_CULL_FACE);
 
 		// @Enable Z-buffering, gamestate switch
 		// gl.glEnable(GL.GL_DEPTH_TEST);
@@ -403,8 +404,9 @@ public class MazeRunner {
 		PlayerState.getState(MazeRunner.player.playerStateInt).displayItem(gl);
 
 		// Hier wordt de aanroep gedaan voor alle portaldisplay functies
-		 Portal.activePortaldisplay(gl);
+		Portal.activePortaldisplay(gl);
 
+//		Portal.DefaultPortalDisplay(gl);
 		gl.glEnable(GL.GL_CULL_FACE);
 
 		if (player.getControl().info) {
@@ -414,19 +416,11 @@ public class MazeRunner {
 				Teken.textDraw(drawable, gl, "Current Maze: " + (level.getCurrentMaze(player) + 1), (float) (0.05 * screenHeight), (float) (0.11 * screenWidth), 30);
 			}
 		}
-		//TODO: Dit mooier maken, ik wilde alleen even kijken of m'n SQL goed werkte :P
-		if (player.getControl().minimap && player.playerStateInt == 4) {
-			PlayerStateVictory.drawNonPersonalHighscores(drawable, gl);
-		}
-
-		if (!player.getControl().minimap && !player.getControl().info && player.playerStateInt == 4) {
-			PlayerStateVictory.drawPersonalHighscores(drawable, gl);
-		}
-		if(currentTime + startTime - eventMessageTime > 3000){
+		if (currentTime + startTime - eventMessageTime > 3000) {
 			setEventMessage("");
 		}
-		Teken.textDraw(drawable, gl, eventMessage, 0.4f * screenWidth, 0.9f*screenHeight, 30);		
-		
+		Teken.textDraw(drawable, gl, eventMessage, 0.4f * screenWidth, 0.9f * screenHeight, 30);
+
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 		// gl.glDisable(GL.GL_STENCIL_TEST);
@@ -506,7 +500,7 @@ public class MazeRunner {
 	public void loadModels(GL gl) {
 
 		gl.glEnable(GL.GL_TEXTURE_2D);
-		
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60.obj";
@@ -517,7 +511,7 @@ public class MazeRunner {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\uh60body.obj";
@@ -669,17 +663,14 @@ public class MazeRunner {
 							TrapDroppedGBS tdGBS = new TrapDroppedGBS(item.locationX, item.locationY, item.locationZ, item.mazeID, currentTime);
 							visibleObjects.add(tdGBS);
 						}
-						if (enemy instanceof EnemySpooky){
+						if (enemy instanceof EnemySpooky) {
 							setEventMessage("Killed a spooky enemy with a trap! +100 points");
 							player.score += 100;
-						}
-						else if (enemy instanceof EnemySmart){
+						} else if (enemy instanceof EnemySmart) {
 							setEventMessage("Killed a smart enemy with a trap! +100 points");
 							player.score += 100;
 						}
 					}
-					
-					
 
 				}
 			}
@@ -744,13 +735,13 @@ public class MazeRunner {
 				Maze maze = level.getMaze(r.mazeID);
 
 				if (r.locationY < maze.mazeY + 0.5) {
-					
-					try{
+
+					try {
 						Sound.play("crash.wav");
-					}catch (Exception e){
+					} catch (Exception e) {
 						System.out.println("no noBullets sound");
 					}
-					
+
 					roofList.remove(r);
 					r.setLegal(false);
 					for (int eNr = 0; eNr < enemyList.size(); eNr++) {
@@ -790,11 +781,15 @@ public class MazeRunner {
 		// }
 
 		// TODO dit hoort eigenlijk in de portal klasse
+//		if(!player.canTeleport){player.canTeleport = true;}
+		
 		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
+//				MazeRunner.player.canTeleport = false;
 				// portal2.checkteleportation(player, (float) previousX, (float)
 				// previousY, (float) previousZ);
+
 			}
 		} else {
 			MazeRunner.player.canTeleport = true;
@@ -827,8 +822,8 @@ public class MazeRunner {
 	public static int getScreenHeight() {
 		return screenHeight;
 	}
-	
-	public static void setEventMessage(String eveMsg){
+
+	public static void setEventMessage(String eveMsg) {
 		eventMessageTime = Calendar.getInstance().getTimeInMillis();
 		eventMessage = eveMsg;
 	}

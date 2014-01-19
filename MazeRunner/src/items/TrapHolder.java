@@ -35,11 +35,11 @@ public class TrapHolder extends Item {
 
 	@Override
 	public boolean touches(GameObject object) {
-		double diffX = object.getGlobalX() - this.getGlobalX();
-		double diffY = object.getGlobalY() - this.getGlobalY();
-		double diffZ = object.getGlobalZ() - this.getGlobalZ();
+		double diffX = object.getLocationX() - this.getLocationX();
+		double diffY = object.getLocationY() - this.getLocationY();
+		double diffZ = object.getLocationZ() - this.getLocationZ();
 
-		if (Math.sqrt(diffX * diffX + diffZ * diffZ) < 2 && diffY<5) {
+		if (Math.sqrt(diffX * diffX + diffZ * diffZ) < 4 && diffY < 5) {
 			if (object instanceof Player) {
 				return true;
 			} else {

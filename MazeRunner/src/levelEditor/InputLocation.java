@@ -48,6 +48,14 @@ public class InputLocation
 				int[] res = new int[2];
 				res[0] = Integer.parseInt(st.nextToken());
 				res[1] = Integer.parseInt(st.nextToken());
+				if(res[0] < 0){
+					res[0] = -res[0];
+					LevelEditor.setErrMsg("Values may have been turned positive.");
+				}
+				if(res[1] < 0){
+					res[1] = -res[1];
+					LevelEditor.setErrMsg("Values may have been turned positive.");
+				}
 				return res;
 			} else {
 				LevelEditor.setErrMsg("Please enter according to format");

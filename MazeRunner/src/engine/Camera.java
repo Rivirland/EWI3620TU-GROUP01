@@ -45,6 +45,12 @@ public class Camera extends GameObject {
 		vrpY = locationY + Math.sin( Math.PI * verAngle / 180 );
 		vrpZ = locationZ + -Math.cos( Math.PI * horAngle / 180 ) * Math.cos( Math.PI * verAngle / 180 );
 	}
+	
+	public void calculateVRP(int facingdirection) {
+		vrpX = locationX + -Math.sin( Math.PI * (horAngle+facingdirection*90) / 180 ) * Math.cos( Math.PI * verAngle / 180 );
+		vrpY = locationY + Math.sin( Math.PI * verAngle / 180 );
+		vrpZ = locationZ + -Math.cos( Math.PI * (horAngle+facingdirection*90) / 180 ) * Math.cos( Math.PI * verAngle / 180 );
+	}
 
 	/**
 	 * Returns the horizontal angle of the orientation.
