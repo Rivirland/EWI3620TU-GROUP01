@@ -4,8 +4,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import engine.MazeRunner;
-
+//This class is the baseline for all the playerstates. The entering and leaving methods are called when the player switches playerstates.
 public abstract class PlayerState {
+	
 	
 	public abstract void itemUse();
 	public abstract void entering();

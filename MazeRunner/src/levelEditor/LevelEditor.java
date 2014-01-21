@@ -34,7 +34,7 @@ import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
 import engine.InputDialog;
-import engine.Level;
+import engine.World;
 import engine.Maze;
 import engine.MazeRunner;
 

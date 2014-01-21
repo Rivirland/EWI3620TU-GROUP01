@@ -35,7 +35,7 @@ import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
 import engine.Database;
-import engine.Level;
+import engine.World;
 import engine.MazeRunner;
 import engine.Sound;
 import engine.UserInput;
@@ -226,7 +226,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 		login = new LogIn(screenWidth, screenHeight);
 		levelmenu = new LevelMenu(screenWidth, screenHeight);
 		userinput = new UserInput(canvas);
-		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level("world"));
+		mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new World("world"));
 		leveleditor = new LevelEditor(gl, screenWidth, screenHeight, new LevelEditorWorld());
 		db = new Database();
 		loadTextures(gl);
@@ -373,7 +373,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			// TODO: dit zichtbaar maken!
 			if (loadGameName != null)
 
-				mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new Level(loadGameName));
+				mazerunner = new MazeRunner(screenWidth, screenHeight, canvas, drawable, gl, glu, userinput, new World(loadGameName));
 			gamestate = INGAME;
 
 			break;

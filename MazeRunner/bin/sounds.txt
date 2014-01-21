@@ -1,3 +1,0 @@
-Gunfire
-noBullets
-reload

@@ -1,5 +1,7 @@
 0,0,
-0.0,0.0,0.0,tower1
-7.0,6.0,7.0,tower2
-14.0,12.0,14.0,tower3
-21.0,23.0,21.0,tower4
+0.0,0.0,0.0,basiclevel1
+10.0,20.0,0.0,basiclevel2
+0.0,35.0,0.0,basiclevel3
+15.0,50.0,15.0,basiclevel4
+30.0,30.0,30.0,basiclevel5
+0.0,60.0,0.0,basiclevel6

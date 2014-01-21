@@ -83,7 +83,7 @@ public class Portal {
 		// number
 		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		Portal.portalList= MazeRunner.portalList;
-		Portal.mazeList= Level.mazelist;
+		Portal.mazeList= World.mazelist;
 		
 		// all portal cameras are updated
 		for(int i=0; i<portalList.size(); i++){
@@ -211,7 +211,7 @@ public class Portal {
 		
 //		gl.glLoadIdentity();
 		
-		Skybox.displaySkybox(gl, portalcamera);
+		Skybox.displaySkybox(gl);
 		glu.gluLookAt(
 				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
 				portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),

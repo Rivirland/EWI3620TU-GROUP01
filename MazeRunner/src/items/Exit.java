@@ -61,6 +61,7 @@ public class Exit extends Item {
 		return false;
 	}
 	
+	//This method makes sure the leveleditor can make a preview of the helicopter.
 	public static void drawExit(GL gl){
 		gl.glPushMatrix();
 		gl.glScaled(0.5,0.5,0.5);

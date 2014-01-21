@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 
 import engine.*;
 
-
+//The abstract class all the items extend
 public abstract class Item extends GameObject implements VisibleObject{
 	public int mazeID;
 	

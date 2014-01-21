@@ -1,0 +1,315 @@
+package engine;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+//A world consists of several mazes (aka levels). In this class, we can import mazes from a .txt file and store them into an ArrayList.
+//Because this class contains all the mazes, we also implemented the collision detection here.
+public class World {
+	public static ArrayList<Maze> mazelist;
+	// The amount of mazes.
+	private static int aantal;
+	private String naam;
+	public static double minGlobalY;
+	public static int startingBullets, startingTraps;
+	private int[] orderedMazes;
+	private static double startX, startY, startZ, startHorAngle;
+	
+	// The constructor.
+	public World(String string) {
+		World.mazelist = new ArrayList<Maze>();
+		this.aantal = 0;
+		minGlobalY = Double.MAX_VALUE;
+		naam = string;
+		leesLevels(string);
+		orderedMazes = orderMazesOnHeight();
+	}
+	
+	//Orders the mazes on height. This must implemented, because if you order them in another order problems may appear: if mazes are created like this
+	//
+	//   |   |     | |
+	//   |   |__x__| |
+	//   |           |
+	//   |___________|
+	//
+	//and you check the lower maze first, it will detect that you are in that maze, so you will start falling through the floor. 
+	//This way, you land on the higher maze first.
+	private int[] orderMazesOnHeight() {
+		int[] res = new int[this.aantal];
+		double[] temp = new double[this.aantal];
+		for (int i = 0; i < this.aantal; i++) {
+			temp[i] = mazelist.get(i).mazeY;
+		}
+		Arrays.sort(temp);
+
+		for (int i = 0; i < this.aantal; i++) {
+			double height = temp[this.aantal - i - 1];
+			for (int j = 0; j < this.aantal; j++) {
+				if (mazelist.get(j).mazeY == height && !contains(res, j)) {
+					res[i] = j;
+				}
+			}
+		}
+		return res;
+	}
+
+	private boolean contains(int[] res, int j) {
+		for (int i = 0; i < res.length; i++) {
+			if (res[i] == j) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Adds a maze toe the mazelist.
+	public static void voegToe(Maze maze) {
+		mazelist.add(maze);
+		aantal = aantal + 1;
+	}
+
+	public int getAantal() {
+		return this.aantal;
+	}
+
+	public String getNaam() {
+		return naam;
+	}
+
+	public static ArrayList<Maze> getMazeList() {
+		return World.mazelist;
+	}
+
+	public static Maze getMaze(int i) {
+		if (i != -1) {
+			return World.mazelist.get(i);
+		}
+		return null;
+	}
+
+	// Reads all the mazes from the .txt file
+	public static void leesLevels(String filename) {
+		BufferedReader bufRdr = null;
+		String currentdir = System.getProperty("user.dir");
+
+		filename = currentdir + "\\worlds\\" + filename;
+		// System.out.println(filename);
+		File worldFile = new File(filename + ".txt");
+		try {
+			bufRdr = new BufferedReader(new FileReader(worldFile));
+		} catch (FileNotFoundException e) {
+			System.out.println("WorldFile not found!");
+			e.printStackTrace();
+		}
+
+		int i = 1;
+		String line = null;
+		try {
+			line = bufRdr.readLine();
+			StringTokenizer StrTok = new StringTokenizer(line, ",");
+			startingBullets = Integer.parseInt(StrTok.nextToken());
+			startingTraps = Integer.parseInt(StrTok.nextToken());
+			while ((line = bufRdr.readLine()) != null) {
+				StringTokenizer st = new StringTokenizer(line, ",");
+				double x = Double.parseDouble(st.nextToken());
+				double y = Double.parseDouble(st.nextToken());
+				double z = Double.parseDouble(st.nextToken());
+				String m = st.nextToken();
+				if (y < minGlobalY) {
+					minGlobalY = y;
+				}
+				Maze maze = new Maze(m, i, x, y, z);
+				World.voegToe(maze);
+				i++;
+			}
+		} catch (IOException e) {
+			System.out.println("Fout bij inlezen");
+			e.printStackTrace();
+		}
+	}
+
+	// Returns true if two objects are in the same maze, otherwise it returns
+	// false.
+	public int inSameMaze(GameObject object1, GameObject object2) {
+		if (getCurrentMaze(object1) == getCurrentMaze(object2)) {
+			return getCurrentMaze(object1);
+		}
+		return -1;
+	}
+
+	public int getCurrentMaze(GameObject object) {
+		for (int i = 0; i < this.getAantal(); i++) {
+			Maze maze = this.getMaze(orderedMazes[i]);
+			// You check if you are actually in the maze
+			if (object.locationX > maze.getMinX() && object.locationX < maze.getMaxX() && object.locationZ > maze.getMinZ() && object.locationZ < maze.getMaxZ() && object.locationY >= maze.getMazeY()
+					&& object.locationY <= maze.getMazeY() + Maze.ITEM_HEIGHT * maze.maxHeight) {
+				return orderedMazes[i];
+			}
+		}
+		return -1;
+	}
+
+	public boolean checkNonZeroEntryOnPosition(int mazeID, int X, int Z){
+		Maze maze = mazelist.get(mazeID);
+		return checkNonZeroEntryOnPosition(maze, X, Z);
+	}
+	public boolean checkNonZeroEntryOnPosition(Maze maze, int X, int Z){
+		if (!(X % 2 == 1 && Z % 2 == 1) && (maze.getElementOnCoords(X, Z) > 0)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// This methods detects collision.
+	public boolean[] collides(GameObject object, double margin) {
+		// If you do not implement a margin (or set it to 0), you can still look
+		// through the walls
+		boolean[] res = { false, false, false, false };
+		int i = getCurrentMaze(object);
+		if (i != -1) {
+			Maze maze = mazelist.get(i);
+			// You check if there is a wall a non-zero entry on your position.
+			// We translate the
+			// position into the corresponding matrix element in the maze and
+			// also make sure
+			// you do not collide with a roof, since you can walk under them.
+			double x = object.locationX - maze.getMinX();
+			double z = object.locationZ - maze.getMinZ();
+			int newX0 = maze.coordToMatrixElement(x + margin);
+			int newZ0 = maze.coordToMatrixElement(z);
+			int newX1 = maze.coordToMatrixElement(x);
+			int newZ1 = maze.coordToMatrixElement(z - margin);
+			int newX2 = maze.coordToMatrixElement(x - margin);
+			int newZ2 = maze.coordToMatrixElement(z);
+			int newX3 = maze.coordToMatrixElement(x);
+			int newZ3 = maze.coordToMatrixElement(z + margin);
+			double objectZ = object.locationZ;
+			double objectY = object.locationY;
+			double objectX = object.locationX;
+			
+			if (checkNonZeroEntryOnPosition(i, newX0, newZ0)){
+				// Checks if it's a wall
+				if (maze.getTextureElementOnCoords(newX0, newZ0) > 100 && maze.getTextureElementOnCoords(newX0, newZ0) < 200) {
+					res[0] = true;
+				}
+				// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX0, newZ0) > 200) {
+					double[] wallXZ = maze.MatrixElementToCoords(newX0, newZ0);
+					if (!(objectZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[0]=true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[0]=true;
+						}
+					}
+
+				}
+			}
+			
+			if (checkNonZeroEntryOnPosition(i, newX1, newZ1)){
+				// Checks if it's a wall
+				if (maze.getTextureElementOnCoords(newX1, newZ1) > 100 && maze.getTextureElementOnCoords(newX1, newZ1) < 200) {
+					res[1] = true;
+				}
+				// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX1, newZ1) > 200) {
+					double[] wallXZ = maze.MatrixElementToCoords(newX1, newZ1);
+					if (!(objectX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[1]=true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[1]=true;
+						}
+					}
+					
+				}
+			}
+			if (checkNonZeroEntryOnPosition(i, newX2, newZ2)){
+				// Checks if it's a wall
+				if (maze.getTextureElementOnCoords(newX2, newZ2) > 100 && maze.getTextureElementOnCoords(newX2, newZ2) < 200) {
+					res[2] = true;
+				}
+				// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX2, newZ2) > 200) {
+					double[] wallXZ = maze.MatrixElementToCoords(newX2, newZ2);
+					if (!(objectZ > wallXZ[1] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectZ < wallXZ[1] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[2] = true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[2]=true;
+						}
+					}
+				}
+			}
+			if (checkNonZeroEntryOnPosition(i, newX3, newZ3)){
+				// Checks if it's a wall
+				if (maze.getTextureElementOnCoords(newX3, newZ3) > 100 && maze.getTextureElementOnCoords(newX3, newZ3) < 200) {
+					res[3] = true;
+				}// Checks if it's a door
+				else if (maze.getTextureElementOnCoords(newX3, newZ3) > 200) {
+					double[] wallXZ = maze.MatrixElementToCoords(newX3, newZ3);
+					if (!(objectX > wallXZ[0] + ((Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2) && objectX < wallXZ[0] + Maze.WALL_LENGTH - (Maze.WALL_LENGTH - Maze.DOOR_WIDTH) / 2)) {
+						res[3]=true;
+					} else {
+						if (objectY > maze.mazeY + Maze.DOOR_HEIGHT && objectY < maze.mazeY + Maze.ITEM_HEIGHT){
+							res[3]=true;
+						}
+					}
+
+				}
+			}
+		}
+		return res;
+	}
+
+	public static double getStartHorAngle(){
+		return startHorAngle;
+	}
+	public int getStartingBullets() {
+		return this.startingBullets;
+	}
+
+	public int getStartingTraps() {
+		return this.startingTraps;
+	}
+	public static void setStartHorAngle(double horAngle){
+		startHorAngle = horAngle;
+	}
+
+	public static void setStartX(double objectX) {
+		startX = objectX;
+	}
+	
+	public static void setStartY(double objectY) {
+		startY = objectY;
+	}
+	
+	public static void setStartZ(double objectZ) {
+		startZ = objectZ;
+	}
+	
+	public static double getStartX(){
+		return startX;
+	}
+	
+	public static double getStartY(){
+		return startY;
+	}
+	
+	public static double getStartZ(){
+		return startZ;
+	}
+	
+	public static void clearMazeList(){
+		World.mazelist.clear();
+	}
+	
+
+}

@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
+//This class is responsible for all the sounds.
+
 public class Sound implements Runnable{
 	
 	public static Map<String, Sound> sounds = new HashMap<String, Sound>();

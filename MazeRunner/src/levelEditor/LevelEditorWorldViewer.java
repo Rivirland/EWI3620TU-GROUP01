@@ -1,22 +1,17 @@
 package levelEditor;
 
 import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
 import menu.Teken;
-
-import com.sun.opengl.util.GLUT;
-
 import engine.ChangeGL;
-import engine.Level;
-import engine.MazeRunner;
 import engine.Maze;
-import engine.Skybox;
+import engine.MazeRunner;
 import engine.VisibleObject;
+import engine.World;
 
 public class LevelEditorWorldViewer extends LevelEditorViewer {
 
@@ -50,11 +45,12 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 		} catch (Exception e) {
 			System.out.println("Temp.txt, cannot load WorldViewer");
 		}
-		Level.clearMazeList();
-		Level.leesLevels(filename);
-		mazelist = Level.getMazeList();
+		World.clearMazeList();
+		World.leesLevels(filename);
+		mazelist = World.getMazeList();
 		fillVisibleObjects();
 	}
+
 
 	public void fillVisibleObjects() {
 		// Add enemies
@@ -212,12 +208,17 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_SCISSOR_TEST);
 
+//<<<<<<< HEAD
 		stencil(gl);
 		update();
 		// gl.glLoadIdentity();
+//=======
+//	//	gl.glLoadIdentity();		
+//>>>>>>> e8c7d5a69602ad6924df49dcd2df6f411c63b147
 		gl.glPushMatrix();
 
 		gl.glTranslated(xmidden, ymidden, 0);
+//<<<<<<< HEAD
 		gl.glTranslated(-panX, panY, 0);
 
 		gl.glRotated(rotationY, 1, 0, 0);
@@ -239,6 +240,24 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 			VisibleObject next = it.next();
 			next.display(gl);
 		}
+//=======
+////		gl.glTranslated(-2*panX,2*panY, 0);
+//		//gl.glTranslated(2*panX,2*panY, 0);
+//		
+//		
+//		
+//		gl.glTranslated(-xcenter, -ycenter, -zcenter); // center van rotatie veranderen	
+//		
+//		gl.glRotated(rotationY, 0.25, 0, 0);
+//		gl.glRotated(rotationX, 0, 0.25, 0);
+//	
+//		gl.glTranslated(xcenter, ycenter, zcenter);
+//		
+//		gl.glScaled(scalef,scalef,scalef);
+//		
+//		MazeRunner.visibleIterator(gl);
+//		
+//>>>>>>> e8c7d5a69602ad6924df49dcd2df6f411c63b147
 		gl.glPopMatrix();
 		ChangeGL.GLtoColoredItem(gl);
 		gl.glColor3d(1, 1, 1);

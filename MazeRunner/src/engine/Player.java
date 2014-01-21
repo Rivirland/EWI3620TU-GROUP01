@@ -166,31 +166,35 @@ public class Player extends GameObject {
 	}
 
 	/**
-	 * Updates the physical location and orientation of the player
+	 * Updates the physical location and orientation of the player, and some
+	 * other things as well
 	 * 
 	 * @param deltaTime
 	 *            The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime, GLAutoDrawable drawable) {
+		// If tab is pressed, switch to the next mode: if you finished, switch
+		// to the next highscore. Else, you switch to the next
+		// displaystate(info, minimap or nothing)
 		if (control.tab) {
 			control.tab = false;
 			if (playerStateInt == 4) {
 				PlayerStateVictory.increaseHighscoreMode();
 			} else {
 				if (control.minimap) {
-					System.out.println("1");
 					control.minimap = false;
 					control.info = true;
 				} else if (control.info) {
-					System.out.println("2");
 					control.info = false;
 				} else {
 					control.minimap = true;
 				}
 			}
 		}
+		//Update the minimap
 		minimapUpdate();
 
+		//If you aren't in helicoptermode, this takes care of the player falling
 		if (playerStateInt != 5) {
 			if (MazeRunner.level.getCurrentMaze(this) == -1) {
 				falling = true;
@@ -209,7 +213,8 @@ public class Player extends GameObject {
 				}
 			}
 		}
-
+		
+		//You die if your y-location is too low
 		if (locationY < MazeRunner.level.minGlobalY && playerStateInt != 5) {
 			PlayerState.getState(MazeRunner.player.playerStateInt).leaving();
 			MazeRunner.player.playerStateInt = 3;
@@ -318,6 +323,7 @@ public class Player extends GameObject {
 		}
 	}
 
+	//Updates the playerstate
 	public void playerStateUpdate() {
 		if (control.playerStateUp) {
 			control.playerStateUp = false;

@@ -2,9 +2,13 @@ package levelEditor;
 
 import java.awt.Frame;
 import java.awt.MouseInfo;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -12,6 +16,7 @@ import javax.media.opengl.GLAutoDrawable;
 import menu.KiesFileUitBrowser;
 import menu.Main;
 import menu.Teken;
+import engine.Maze;
 
 public class LevelEditorWorld {
 	private ArrayList<LevelEditorLevel> levels;
@@ -38,8 +43,9 @@ public class LevelEditorWorld {
 			double ly = Double.parseDouble(st.nextToken());
 			double lz = Double.parseDouble(st.nextToken());
 			String name = st.nextToken();
-			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] { lx, ly, lz }, currentdir + "\\levels\\" + name
-					+ ".txt"));
+
+			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] { lx, ly, lz }, currentdir + "\\levels\\" + name	+ ".txt"));
+
 			System.out.println(name + " added to list of levels");
 		}
 		scannames.close();

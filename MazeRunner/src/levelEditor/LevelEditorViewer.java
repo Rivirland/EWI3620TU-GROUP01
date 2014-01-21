@@ -46,38 +46,40 @@ public class LevelEditorViewer {
 		
 	}
 	
-	public void stencil(GL gl) {
+	public void stencil(GL gl){
+	
+			
+			gl.glEnable(GL.GL_STENCIL_TEST);
+			gl.glColorMask(false, false, false, false);
+			gl.glDepthMask(false);
+			gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
+			gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
+
+			gl.glStencilMask(0xFF);
+			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+
+			// Teken.rechthoek(gl, x1, y1, x2, y2);
+
+			gl.glBegin(GL.GL_TRIANGLE_FAN);
+
+			gl.glVertex2f(x1, y1);
+			gl.glVertex2f(x1, y2);
+			gl.glVertex2f(x2, y2);
+			gl.glVertex2f(x2, y1);
+
+			gl.glEnd();
+
+			gl.glColorMask(true, true, true, true);
+			gl.glDepthMask(true);
+			gl.glStencilMask(0);
+
+			gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
+
+			gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
+
+			gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+
 		
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glColorMask(false, false, false, false);
-		gl.glDepthMask(false);
-		gl.glStencilFunc(GL.GL_NEVER, 1, 0xFF);
-		gl.glStencilOp(GL.GL_REPLACE, GL.GL_KEEP, GL.GL_KEEP);
-
-		gl.glStencilMask(0xFF);
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-
-		// Teken.rechthoek(gl, x1, y1, x2, y2);
-
-		gl.glBegin(GL.GL_TRIANGLE_FAN);
-
-		gl.glVertex2f(x1, y1);
-		gl.glVertex2f(x1, y2);
-		gl.glVertex2f(x2, y2);
-		gl.glVertex2f(x2, y1);
-
-		gl.glEnd();
-
-		gl.glColorMask(true, true, true, true);
-		gl.glDepthMask(true);
-		gl.glStencilMask(0);
-
-		gl.glStencilFunc(GL.GL_EQUAL, 0, 0xFF);
-
-		gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
-
-		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-
 	}
 	
 //	protected void init(GL gl){
