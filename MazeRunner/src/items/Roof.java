@@ -28,12 +28,11 @@ public class Roof extends Item {
 	@Override
 	public void display(GL gl) {
 		ChangeGL.GLtoTexturedItem(gl);
+		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_CULL_FACE);
-
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+//		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
-
 		gl.glTexCoord2d(0.5, 1.0);
 		gl.glVertex3d(locationX+ROOF_HEIGHT, locationY + 2, locationZ+ROOF_HEIGHT);
 		gl.glTexCoord2d(0.0, 0.0);
@@ -49,10 +48,10 @@ public class Roof extends Item {
 		gl.glTexCoord2d(1.0, 0.0);
 		gl.glEnd();
 		gl.glEnable(GL.GL_CULL_FACE);
+		
 	}
 
 	public static void drawRoof(GL gl) {
-		ChangeGL.GLtoTexturedItem(gl);
 		gl.glDisable(GL.GL_CULL_FACE);
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);

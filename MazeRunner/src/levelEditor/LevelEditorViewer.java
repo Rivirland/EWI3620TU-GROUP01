@@ -15,8 +15,7 @@ public class LevelEditorViewer {
 	protected double rotationX;
 	protected double rotationY;
 	
-	protected double panX;
-	protected double panY;
+	protected static double panY, panX;
 	
 	protected double scalef;
 	
@@ -36,12 +35,12 @@ public class LevelEditorViewer {
 		this.screenWidth=screenWidth;
 		this.screenHeight=screenHeight;
 		this.x1= (int) x1;
-		this.y1=(int) y1;
-		this.x2=(int) x2;
-		this.y2=(int) y2;
+		this.y1= (int) y1;
+		this.x2= (int) x2;
+		this.y2= (int) y2;
 		
-		xmidden= (int) (((x2-x1)/2)+x1);
-		ymidden= (int) (((y2-y1)/2)+y1);
+		this.xmidden= (int) (((x2-x1)/2)+x1);
+		this.ymidden= (int) (((y2-y1)/2)+y1);
 		
 		//scalef = screenWidth*50/782;
 		
@@ -106,6 +105,12 @@ public class LevelEditorViewer {
 	
 	public void mouseReleased(MouseEvent e){
 		mousemode = DRAAIMODE;
+		// levellistklik
+		if (e.getButton() == 1) {
+			LevelEditor.selectedLevel = LevelEditor.levels.mouseReleased(e.getX(), screenHeight - e.getY(), 622f / 1920f * screenWidth,
+					90f / 1080f * screenHeight, 740f / 1920f * screenWidth - 24f / 1920f * screenWidth,
+					776f / 1080f * screenHeight, LevelEditor.selectedLevel);
+		}
 	}
 
 	public void mouseDragged(MouseEvent e) {

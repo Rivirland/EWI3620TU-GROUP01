@@ -43,29 +43,34 @@ public class LevelEditorWorld {
 			double ly = Double.parseDouble(st.nextToken());
 			double lz = Double.parseDouble(st.nextToken());
 			String name = st.nextToken();
-			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] { lx, ly, lz }, currentdir + "\\levels\\" + name + ".txt"));
-			
+
+			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] { lx, ly, lz }, currentdir + "\\levels\\" + name	+ ".txt"));
+
 			System.out.println(name + " added to list of levels");
 		}
 		scannames.close();
 		return lijst;
 	}
 
-	public void drawLevelList(GLAutoDrawable drawable, GL gl, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight, int selectedLevel) {
+	public void drawLevelList(GLAutoDrawable drawable, GL gl, float xmin, float ymin, float xmax, float ymax, float screenWidth,
+			float screenHeight, int selectedLevel) {
 		// System.out.println(MouseInfo.getPointerInfo().getLocation().getX());
 		// Teken.tekenButton(gl, xmin, ymin, xmax, ymax);
 		for (int i = levels.size() - 1; i > -1; i--) {
 			// lijst
 			if (selectedLevel == i) {
-				Teken.tekenButtonMetKleur(gl, xmin, ymax - (ymax - ymin) * (i + 1) / 20, xmax, ymax - (ymax - ymin) * i / 20, 0.76f, 0.76f, 0.76f);
+				Teken.tekenButtonMetKleur(gl, xmin, ymax - (ymax - ymin) * (i + 1) / 20, xmax, ymax - (ymax - ymin) * i / 20,
+						0.76f, 0.76f, 0.76f);
 				gl.glColor3f(0.16f, 0.16f, 0.16f);
-				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f * screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20)
-						- 10f / 1080f * screenHeight);
+				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f
+						* screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20) - 10f / 1080f
+						* screenHeight);
 			} else {
 				Teken.tekenButton(gl, xmin, ymax - ((ymax - ymin) * (i + 1) / 20), xmax, ymax - ((ymax - ymin) * i / 20));
 				gl.glColor3f(0.76f, 0.76f, 0.76f);
-				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f * screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20)
-						- 10f / 1080f * screenHeight);
+				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f
+						* screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20) - 10f / 1080f
+						* screenHeight);
 			}
 			String levelName = levels.get(i).getName();
 			if (levelName.length() > 6) {
@@ -76,15 +81,19 @@ public class LevelEditorWorld {
 			// popup menu
 			if (xmin < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < xmax) {
 				if (screenHeight - (ymax - (ymax - ymin) * i / 20) < MouseInfo.getPointerInfo().getLocation().getY() - 30f
-						&& MouseInfo.getPointerInfo().getLocation().getY() - 30f < screenHeight - (ymax - (ymax - ymin) * (i + 1) / 20)) {
+						&& MouseInfo.getPointerInfo().getLocation().getY() - 30f < screenHeight
+								- (ymax - (ymax - ymin) * (i + 1) / 20)) {
 					popup = true;
 				}
 			}
 			if (popup) {
-				if (xmin < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < xmax + 41f / 1920f * screenWidth) {
+				if (xmin < MouseInfo.getPointerInfo().getLocation().getX()
+						&& MouseInfo.getPointerInfo().getLocation().getX() < xmax + 41f / 1920f * screenWidth) {
 					if (screenHeight - (ymax - (ymax - ymin) * i / 20) < MouseInfo.getPointerInfo().getLocation().getY() - 30f
-							&& MouseInfo.getPointerInfo().getLocation().getY() - 30f < screenHeight - (ymax - (ymax - ymin) * (i + 1) / 20)) {
-						Teken.tekenButtonMetKleur(gl, xmax, ymax - (ymax - ymin) * (i + 1) / 20, xmax + 34f / 1920f * screenWidth, ymax - (ymax - ymin) * i / 20, 0.3f, 0.3f, 0.8f);
+							&& MouseInfo.getPointerInfo().getLocation().getY() - 30f < screenHeight
+									- (ymax - (ymax - ymin) * (i + 1) / 20)) {
+						Teken.tekenButtonMetKleur(gl, xmax, ymax - (ymax - ymin) * (i + 1) / 20,
+								xmax + 34f / 1920f * screenWidth, ymax - (ymax - ymin) * i / 20, 0.3f, 0.3f, 0.8f);
 					}
 				} else {
 					popup = false;
@@ -95,15 +104,13 @@ public class LevelEditorWorld {
 	}
 
 	public void addLevel() {
-		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix(), new ArrayList<double[]>()));
+		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor
+				.defaultMatrix(), new ArrayList<double[]>()));
 	}
 
-	
-	
 	public String saveAs() throws FileNotFoundException {
 		// PrintWriter bestand = new
 		// PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
-		LevelEditor.setErrMsg("");
 		refreshLevels();
 		if (LevelEditor.getErrMsg().equals("")) {
 			if (nrOfStartingPoints() == 1) {
@@ -129,7 +136,6 @@ public class LevelEditorWorld {
 						bestand.println(levels.get(i).getName());
 					}
 					bestand.close();
-					
 
 					try {
 						Main.db.stat.executeUpdate("DROP TABLE IF EXISTS highscores" + filename);
@@ -139,18 +145,18 @@ public class LevelEditorWorld {
 					return filename;
 				} else {
 					LevelEditor.setErrMsg("You need to have at least one exit!");
-					
+
 				}
 			} else {
 				LevelEditor.setErrMsg("You need to have exactly one starting point!");
-				
+
 			}
 		}
-		return "basename"; 
+		return "basename";
 	}
 
-	
-	private void refreshLevels() throws FileNotFoundException {
+	public void refreshLevels() throws FileNotFoundException {
+		LevelEditor.setErrMsg("");
 		for (int i = 0; i < levels.size(); i++) {
 			levels.get(i).saveAs(levels.get(i).getName());
 		}
@@ -163,6 +169,11 @@ public class LevelEditorWorld {
 			String filename = System.getProperty("user.dir") + "\\levels\\" + name + ".txt";
 			LevelEditorLevel l = LevelEditorLevel.readLevel(name, loc, filename);
 			levels.set(i, l);
+		}
+		if (nrOfStartingPoints() !=1){
+			LevelEditor.setErrMsg("You need to have exactly one starting point!");
+		} else if (nrOfExits() < 1){
+			LevelEditor.setErrMsg("You need to have at least one exit!");
 		}
 	}
 
@@ -200,6 +211,8 @@ public class LevelEditorWorld {
 			if (xmin < x && x < xmax) {
 				if (ymax - ((ymax - ymin) * (i + 1) / 20) < y && y < ymax - (ymax - ymin) * i / 20) {
 					selectedLevel = i;
+					LevelEditorWorldViewer.panX=0;
+					LevelEditorWorldViewer.panY=0;
 				}
 			}
 		}
@@ -207,7 +220,8 @@ public class LevelEditorWorld {
 	}
 
 	// save level As
-	public void mouseReleased2(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight) throws FileNotFoundException {
+	public void mouseReleased2(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth,
+			float screenHeight) throws FileNotFoundException {
 		for (int i = 0; i < levels.size(); i++) {
 			if (xmax < x && x < xmax + 34f / 1920f * screenWidth) {
 				if (ymax - ((ymax - ymin) * (i + 1) / 20) < y && y < ymax - (ymax - ymin) * i / 20) {
@@ -221,7 +235,8 @@ public class LevelEditorWorld {
 	}
 
 	// remove level
-	public boolean mouseReleased3(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight) {
+	public boolean mouseReleased3(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth,
+			float screenHeight) {
 		boolean remove = false;
 		for (int i = 0; i < levels.size(); i++) {
 			if (xmax - 24f / 1920f * screenWidth < x && x < xmax) {
@@ -236,7 +251,8 @@ public class LevelEditorWorld {
 	}
 
 	// open level
-	public boolean mousePressed(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight) throws FileNotFoundException {
+	public boolean mousePressed(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth,
+			float screenHeight) throws FileNotFoundException {
 		boolean open = false;
 		for (int i = 0; i < levels.size(); i++) {
 			if (xmin < x && x < xmax - 24f / 1920f * screenWidth) {
@@ -271,6 +287,35 @@ public class LevelEditorWorld {
 
 	public void setStartingTraps(int i) {
 		startingTraps = i;
+	}
+
+	public String saveAsTemp() throws FileNotFoundException {
+		String filename="temp";
+		refreshLevels();
+		if (LevelEditor.getErrMsg().equals("")){
+			if (nrOfStartingPoints() == 1) {
+				if (nrOfExits() > 0) {
+					String currentdir = System.getProperty("user.dir");
+					if (filename.substring(filename.length() - 4, filename.length()).equals(".txt")) {
+						filename = filename.substring(0, filename.length() - 4);
+					}
+					PrintWriter bestand = new PrintWriter(currentdir + "\\worlds\\" + filename + ".txt");
+					bestand.println(startingBullets + "," + startingTraps + ",");
+					for (int i = 0; i != levels.size(); i++) {
+						for (int j = 0; j < 3; j++) {
+							bestand.print(levels.get(i).location[j] + ",");
+						}
+						bestand.println(levels.get(i).getName());
+					}
+					bestand.close();
+				}
+			} else{
+				LevelEditor.setErrMsg("You need to have exactly one starting point!");
+			}
+		} else{
+			LevelEditor.setErrMsg("You need to have at least one exit!");
+		}
+		return "temp";
 	}
 
 }

@@ -235,7 +235,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 			gl.glTranslated(-xtrans, -ytrans, -ztrans);
 		}
 		ChangeGL.GLtoTexturedItem(gl);
-
+>>>>>>> ebd459e0406023cc598c985f4233d0ad51ccac4e
 		gl.glDisable(GL.GL_LIGHTING);
 		// MazeRunner.visibleIterator(gl);
 

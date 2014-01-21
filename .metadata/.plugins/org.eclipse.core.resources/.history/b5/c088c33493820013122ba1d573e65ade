@@ -1830,7 +1830,16 @@ public class LevelEditor {
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_TAB) {
+<<<<<<< HEAD
+			//MazeRunner.visibleObjects.clear();
 
+			MazeRunner.visibleObjects.clear();
+			String filename="";
+			try {
+				filename =levels.saveAs();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+=======
 			worldview = !worldview;
 			if (worldview) {
 				try {
@@ -1844,7 +1853,7 @@ public class LevelEditor {
 					System.out.println("Fout in keyPressed TAB (levels.refreshLevels()");
 					e1.printStackTrace();
 				}
-
+>>>>>>> ebd459e0406023cc598c985f4233d0ad51ccac4e
 			}
 		}
 	}

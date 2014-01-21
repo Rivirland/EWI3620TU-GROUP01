@@ -211,15 +211,36 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_SCISSOR_TEST);
 
-
+//<<<<<<< HEAD
 		stencil(gl);
 		update();
 		// gl.glLoadIdentity();
-
+//=======
+//	//	gl.glLoadIdentity();		
+//>>>>>>> e8c7d5a69602ad6924df49dcd2df6f411c63b147
+>>>>>>> ebd459e0406023cc598c985f4233d0ad51ccac4e
 		gl.glPushMatrix();
 
 		gl.glTranslated(xmidden, ymidden, 0);
+<<<<<<< HEAD
+//		gl.glTranslated(-2*panX,2*panY, 0);
+		gl.glTranslated(2*panX,2*panY, 0);
+		
+		
+		
+		gl.glTranslated(-xcenter, -ycenter, -zcenter); // center van rotatie veranderen	
+		
+		gl.glRotated(rotationY, 0.25, 0, 0);
+		gl.glRotated(rotationX, 0, 0.25, 0);
+	
+		gl.glTranslated(xcenter, ycenter, zcenter);
+		
+		gl.glScaled(scalef,scalef,scalef);
+		
+		MazeRunner.visibleIterator(gl);
 
+		gl.glPopMatrix();
+=======
 //<<<<<<< HEAD
 		gl.glTranslated(-panX, panY, 0);
 
@@ -235,7 +256,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 			gl.glTranslated(-xtrans, -ytrans, -ztrans);
 		}
 		ChangeGL.GLtoTexturedItem(gl);
-
+>>>>>>> ebd459e0406023cc598c985f4233d0ad51ccac4e
 		gl.glDisable(GL.GL_LIGHTING);
 		// MazeRunner.visibleIterator(gl);
 

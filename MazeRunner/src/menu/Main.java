@@ -411,6 +411,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			if (loadLevelName != null) {
 				try {
 					Main.leveleditor = new LevelEditor(gl, screenWidth, screenHeight, LevelEditorWorld.readWorld(loadLevelName));
+					LevelEditor.worldview=false;
 				} catch (FileNotFoundException e) {
 					System.out.println("file niet gevonden");
 				}
@@ -695,7 +696,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	}
 
 	public void loadTextures(GL gl) {
-		System.out.println("Texture loading... ");
+		System.out.println("\nTexture loading... ");
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		String curDir = System.getProperty("user.dir") + "\\textures\\";
 		File f = new File(curDir + "_textures.txt");
