@@ -198,7 +198,7 @@ public class LevelEditorModelViewer extends LevelEditorViewer {
 		}
 
 		gl.glPopMatrix();
-		gl.glPopMatrix();
+//		gl.glPopMatrix();
 		// gl.glOrtho(0,0,screenWidth,screenHeight, -1, 1);
 		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		// gl.glClear(GL.GL_DEPTH_BUFFER_BIT);

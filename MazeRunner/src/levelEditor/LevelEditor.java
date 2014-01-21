@@ -68,7 +68,7 @@ public class LevelEditor {
 	private float gridklikx = 10000; // 10000 is een default waarde buiten het
 										// scherm, omdat je die waarde nooit kan
 										// krijgen door ergens te klikken
-	private float gridkliky	 = 10000;
+	private float gridkliky = 10000;
 	private float gridklikxrechts = 10000;
 	private float gridklikyrechts = 10000;
 	private boolean gridklik = false;
@@ -76,7 +76,7 @@ public class LevelEditor {
 	private boolean catalogus = false;
 	private Texture backTexture;
 
-	private static LevelEditorWorld levels;
+	public static LevelEditorWorld levels;
 	private double[] location;
 	private int[][] wereld;
 	private int[][] textures;
@@ -84,16 +84,16 @@ public class LevelEditor {
 
 	public static Texture wallTexture1;
 
-	private int selectedLevel = 0;
+	public static int selectedLevel = 0;
 	private int selectedLevelPrevious = 0;
 	private boolean remove = false;
 	private boolean open = false;
-	private boolean worldview = false;
+	public static boolean worldview = false;
 
 	private boolean addportaldirection = false;
 	private float xportal;
 	private float yportal;
-	
+
 	private boolean addplayerdirection = false;
 	private float xplayer;
 	private float yplayer;
@@ -120,30 +120,36 @@ public class LevelEditor {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.levels = levels;
-		try{
-		this.location = levels.get(0).getLocation();
-		this.wereld = levels.get(0).getGebouwen();
-		this.textures = levels.get(0).getTextures();
-		this.items = levels.get(0).getItemList();
-		setErrMsg("");
-		
-		
-		gridrows = (wereld.length - 1) / 2;
-		gridcolumns = (wereld[0].length - 1) / 2;
-		}catch(IndexOutOfBoundsException e){};
+		try {
+			this.location = levels.get(0).getLocation();
+			this.wereld = levels.get(0).getGebouwen();
+			this.textures = levels.get(0).getTextures();
+			this.items = levels.get(0).getItemList();
+			setErrMsg("");
+
+			gridrows = (wereld.length - 1) / 2;
+			gridcolumns = (wereld[0].length - 1) / 2;
+		} catch (IndexOutOfBoundsException e) {
+		}
+		;
 		loadTextures(gl);
-		modelviewer = new LevelEditorModelViewer(screenWidth, screenHeight, (90f / 1920f * screenWidth), (90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
-		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
+		modelviewer = new LevelEditorModelViewer(screenWidth, screenHeight, (90f / 1920f * screenWidth),
+				(90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
+		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f
+				* screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
+	
 		// worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight,
 		// screenWidth/2, screenHeight/2, screenWidth, screenHeight);
-		
+
 	}
 
 	public void setScreen(int screenWidth, int screenHeight) {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-		modelviewer.reshape(screenWidth, screenHeight, (90f / 1920f * screenWidth), (90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
-		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
+		modelviewer.reshape(screenWidth, screenHeight, (90f / 1920f * screenWidth), (90f / 1080f * screenHeight),
+				(589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
+		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f
+				* screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
 	}
 
 	/**
@@ -161,18 +167,23 @@ public class LevelEditor {
 		plaatsTexture(gl, 0f, 0f, 1920f, 1080f, 44);
 		tekenLevelEditorAchtergrond(drawable, gl);
 
-		levels.drawLevelList(drawable, gl, 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight, screenWidth, screenHeight, selectedLevel);
+		levels.drawLevelList(drawable, gl, 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth,
+				776f / 1080f * screenHeight, screenWidth, screenHeight, selectedLevel);
 		updateLevel();
 
 		// als er geen level is geselecteerd dan komt er geen grid
 
 		if (selectedLevel >= 0 && worldview == false) {
-			Teken.textDrawMetKleur(drawable, gl, (levels.getStartingBullets() + ", " + levels.getStartingTraps()), 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-			Teken.textDrawMetKleur(drawable, gl, (gridcolumns + " x " + gridrows), 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]), 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, (levels.getStartingBullets() + ", " + levels.getStartingTraps()),
+					622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, (gridcolumns + " x " + gridrows), 622f / 1920f * screenWidth,
+					948f / 1080f * screenHeight, 30, 1f, 1f, 1f);
+			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]),
+					622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-			drawGrid(gl, 830f / 1920f * screenWidth, 90f / 1080f * screenHeight, 1830f / 1920f * screenWidth, 990f / 1080f * screenHeight, gridcolumns, gridrows);
+			drawGrid(gl, 830f / 1920f * screenWidth, 90f / 1080f * screenHeight, 1830f / 1920f * screenWidth,
+					990f / 1080f * screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
 			// veranderMatrixVolgensKlikInGrid(gl);
 		}
@@ -183,11 +194,11 @@ public class LevelEditor {
 		if (worldview) {
 			worldviewer.display(gl);
 		}
-		
-		if(Calendar.getInstance().getTimeInMillis()-errMsgTime > 5000){
+
+		if (Calendar.getInstance().getTimeInMillis() - errMsgTime > 5000) {
 			setErrMsg("");
 		}
-		Teken.textDrawMetKleur(drawable, gl, getErrMsg(), 800f/1920f * screenHeight, 20f/1080f*screenWidth, 30, 1f, 1f, 1f);
+		Teken.textDrawMetKleur(drawable, gl, getErrMsg(), 800f / 1920f * screenHeight, 20f / 1080f * screenWidth, 30, 1f, 1f, 1f);
 		// Teken.rechthoek(gl, (775)/1920f*screenWidth,
 		// (90f-40f)/1080f*screenHeight, 1880/1920f*screenWidth,
 		// 1050/1080f*screenHeight);
@@ -311,7 +322,8 @@ public class LevelEditor {
 		float buildbymax = 990f / 1080f * screenHeight;
 
 		// homebutton
-		tekenButtonMetKleur(gl, 15f / 1920f * screenWidth, 1000f / 1080f * screenHeight, 85f / 1920f * screenWidth, 1070f / 1080f * screenHeight, 0.3f, 0.3f, 0.8f);
+		tekenButtonMetKleur(gl, 15f / 1920f * screenWidth, 1000f / 1080f * screenHeight, 85f / 1920f * screenWidth,
+				1070f / 1080f * screenHeight, 0.3f, 0.3f, 0.8f);
 
 		// button1
 		if (drawMode == 1)
@@ -383,54 +395,92 @@ public class LevelEditor {
 
 		// zwart onder de buttons
 		gl.glColor3f(0f, 0f, 0f);
-		rechthoek(gl, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth, 860f / 1080f * screenHeight);
+		rechthoek(gl, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth,
+				860f / 1080f * screenHeight);
 
 		gl.glLineWidth(3);
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
-		lineOnScreen(gl, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth, 90f / 1080f * screenHeight);
-		lineOnScreen(gl, 589f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth, 860f / 1080f * screenHeight);
-		lineOnScreen(gl, 589f / 1920f * screenWidth, 860f / 1080f * screenHeight, 90f / 1920f * screenWidth, 860f / 1080f * screenHeight);
-		lineOnScreen(gl, 90f / 1920f * screenWidth, 860f / 1080f * screenHeight, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight);
+		lineOnScreen(gl, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth,
+				90f / 1080f * screenHeight);
+		lineOnScreen(gl, 589f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth,
+				860f / 1080f * screenHeight);
+		lineOnScreen(gl, 589f / 1920f * screenWidth, 860f / 1080f * screenHeight, 90f / 1920f * screenWidth,
+				860f / 1080f * screenHeight);
+		lineOnScreen(gl, 90f / 1920f * screenWidth, 860f / 1080f * screenHeight, 90f / 1920f * screenWidth,
+				90f / 1080f * screenHeight);
 
 		gl.glColor3f(0.76f, 0.76f, 0.76f);
-//		// grijs hoogte min
-//		rechthoek(gl, (340f - 55f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f - 35f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-//		// grijs hoogte midden
-//		rechthoek(gl, (340f - 20f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 20f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-		Teken.textDrawMetKleur(drawable, gl, String.valueOf(hoogteMode), 320f / 1920f * screenWidth, 52f / 1080f * screenHeight, 30, 0, 0, 0);
-//		gl.glColor3f(0.76f, 0.76f, 0.76f);
-//		// grijs hoogte plus
-//		rechthoek(gl, (340f + 35f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (340f + 55f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-//
-//		// grijs min boven
-//		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
-//		// grijs plus boven
-//		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (990f + 20f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (990f + 40f) / 1080f * screenHeight);
-//		// grijs min onder
-//		rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-//		// grijs plus onder
-//		rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (90f - 40f) / 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (90f - 20f) / 1080f * screenHeight);
-//		// grijs min links
-//		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
-//		// grijs plus links
-//		rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
-//		// grijs min rechts
-//		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f + 28f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f + 8f) / 1080f * screenHeight);
-//		// grijs plus rechts
-//		rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f - 8f) / 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f - 28f) / 1080f * screenHeight);
+		// // grijs hoogte min
+		// rechthoek(gl, (340f - 55f) / 1920f * screenWidth, (90f - 40f) / 1080f
+		// * screenHeight, (340f - 35f) / 1920f * screenWidth, (90f - 20f) /
+		// 1080f * screenHeight);
+		// // grijs hoogte midden
+		// rechthoek(gl, (340f - 20f) / 1920f * screenWidth, (90f - 40f) / 1080f
+		// * screenHeight, (340f + 20f) / 1920f * screenWidth, (90f - 20f) /
+		// 1080f * screenHeight);
+		Teken.textDrawMetKleur(drawable, gl, String.valueOf(hoogteMode), 320f / 1920f * screenWidth, 52f / 1080f * screenHeight,
+				30, 0, 0, 0);
+		// gl.glColor3f(0.76f, 0.76f, 0.76f);
+		// // grijs hoogte plus
+		// rechthoek(gl, (340f + 35f) / 1920f * screenWidth, (90f - 40f) / 1080f
+		// * screenHeight, (340f + 55f) / 1920f * screenWidth, (90f - 20f) /
+		// 1080f * screenHeight);
+		//
+		// // grijs min boven
+		// rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (990f + 20f) /
+		// 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (990f +
+		// 40f) / 1080f * screenHeight);
+		// // grijs plus boven
+		// rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (990f + 20f) /
+		// 1080f * screenHeight, (1330f + 28f) / 1920f * screenWidth, (990f +
+		// 40f) / 1080f * screenHeight);
+		// // grijs min onder
+		// rechthoek(gl, (1330f - 28f) / 1920f * screenWidth, (90f - 40f) /
+		// 1080f * screenHeight, (1330f - 8f) / 1920f * screenWidth, (90f - 20f)
+		// / 1080f * screenHeight);
+		// // grijs plus onder
+		// rechthoek(gl, (1330f + 8f) / 1920f * screenWidth, (90f - 40f) / 1080f
+		// * screenHeight, (1330f + 28f) / 1920f * screenWidth, (90f - 20f) /
+		// 1080f * screenHeight);
+		// // grijs min links
+		// rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f + 28f) /
+		// 1080f * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f + 8f)
+		// / 1080f * screenHeight);
+		// // grijs plus links
+		// rechthoek(gl, (830f - 40f) / 1920f * screenWidth, (540f - 8f) / 1080f
+		// * screenHeight, (830f - 20f) / 1920f * screenWidth, (540f - 28f) /
+		// 1080f * screenHeight);
+		// // grijs min rechts
+		// rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f + 28f) /
+		// 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f +
+		// 8f) / 1080f * screenHeight);
+		// // grijs plus rechts
+		// rechthoek(gl, (1830f + 20f) / 1920f * screenWidth, (540f - 8f) /
+		// 1080f * screenHeight, (1830f + 40f) / 1920f * screenWidth, (540f -
+		// 28f) / 1080f * screenHeight);
 
 		// grijs naast de buttons
 		gl.glColor3f(0.5f, 0.5f, 0.5f);
-//		rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f * screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f * screenHeight);
-//		rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f * screenHeight, 740f / 1920f * screenWidth, 990f / 1080f * screenHeight);
-//		rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 740f / 1920f * screenWidth, 932f / 1080f * screenHeight);
+		// rechthoek(gl, 622f / 1920f * screenWidth, 1010f / 1080f *
+		// screenHeight, 740f / 1920f * screenWidth, 1052f / 1080f *
+		// screenHeight);
+		// rechthoek(gl, 622f / 1920f * screenWidth, 948f / 1080f *
+		// screenHeight, 740f / 1920f * screenWidth, 990f / 1080f *
+		// screenHeight);
+		// rechthoek(gl, 622f / 1920f * screenWidth, 890f / 1080f *
+		// screenHeight, 740f / 1920f * screenWidth, 932f / 1080f *
+		// screenHeight);
 
 		// levelbuttons
-		tekenButton(gl, 622f / 1920f * screenWidth, (860f - 51f) / 1080f * screenHeight, (622f + 51f) / 1920f * screenWidth, 860f / 1080f * screenHeight);
+		tekenButton(gl, 622f / 1920f * screenWidth, (860f - 51f) / 1080f * screenHeight, (622f + 51f) / 1920f * screenWidth,
+				860f / 1080f * screenHeight);
 		gl.glColor3f(1f, 1f, 1f);
-		Teken.lineOnScreen(gl, 632f / 1920f * screenWidth, (860f - 25f) / 1080f * screenHeight, (622f + 41f) / 1920f * screenWidth, (860f - 25f) / 1080f * screenHeight);
-		Teken.lineOnScreen(gl, (622f + 25f) / 1920f * screenWidth, (860f - 41f) / 1080f * screenHeight, (622f + 25f) / 1920f * screenWidth, 850f / 1080f * screenHeight);
-		tekenButton(gl, (740f - 51f) / 1920f * screenWidth, (860f - 51f) / 1080f * screenHeight, 740f / 1920f * screenWidth, 860f / 1080f * screenHeight);
+		Teken.lineOnScreen(gl, 632f / 1920f * screenWidth, (860f - 25f) / 1080f * screenHeight, (622f + 41f) / 1920f
+				* screenWidth, (860f - 25f) / 1080f * screenHeight);
+		Teken.lineOnScreen(gl, (622f + 25f) / 1920f * screenWidth, (860f - 41f) / 1080f * screenHeight, (622f + 25f) / 1920f
+				* screenWidth, 850f / 1080f * screenHeight);
+		tekenButton(gl, (740f - 51f) / 1920f * screenWidth, (860f - 51f) / 1080f * screenHeight, 740f / 1920f * screenWidth,
+				860f / 1080f * screenHeight);
 
 	}
 
@@ -445,7 +495,8 @@ public class LevelEditor {
 	}
 
 	public void updateLevel() {
-		if ((selectedLevelPrevious != selectedLevel || open || (remove && levels.getSize() != selectedLevel)) && levels.getSize() > 0) {
+		if ((selectedLevelPrevious != selectedLevel || open || (remove && levels.getSize() != selectedLevel))
+				&& levels.getSize() > 0) {
 			this.location = levels.get(selectedLevel).getLocation();
 			this.wereld = levels.get(selectedLevel).getGebouwen();
 			this.textures = levels.get(selectedLevel).getTextures();
@@ -477,508 +528,531 @@ public class LevelEditor {
 		modelviewer.mouseReleased(me);
 		if (worldview) {
 			worldviewer.mouseReleased(me);
-		}
+		} else {
+			// afmetingen grid
+			// klikken op grid
+			float xmin = 830f / 1920f * screenWidth;
+			float ymin = 90f / 1080f * screenHeight;
+			float xmax = 1830f / 1920f * screenWidth;
+			float ymax = 990f / 1080f * screenHeight;
 
-		// afmetingen grid
-		// klikken op grid
-		float xmin = 830f / 1920f * screenWidth;
-		float ymin = 90f / 1080f * screenHeight;
-		float xmax = 1830f / 1920f * screenWidth;
-		float ymax = 990f / 1080f * screenHeight;
+			float xmidden = (xmax + xmin) / 2;
+			float ymidden = (ymax + ymin) / 2;
 
-		float xmidden = (xmax + xmin) / 2;
-		float ymidden = (ymax + ymin) / 2;
+			float columndist = (xmax - xmin) / (gridcolumns);
+			float rowdist = (ymax - ymin) / (gridrows);
+			float distance = 1; // willekeurig
 
-		float columndist = (xmax - xmin) / (gridcolumns);
-		float rowdist = (ymax - ymin) / (gridrows);
-		float distance = 1; // willekeurig
-
-		if (columndist < rowdist) {
-			distance = columndist;
-			ymin = ymidden - distance * gridrows / 2;
-			ymax = ymidden + distance * gridrows / 2;
-		} else if (columndist > rowdist) {
-			distance = rowdist;
-			xmin = xmidden - (distance * gridcolumns) / 2;
-			xmax = xmidden + (distance * gridcolumns) / 2;
-		}
-
-		// linkermuisknop
-		if (me.getButton() == 1) {
-			// drawMode knoppen
-			if (90f / 1080f * screenHeight < me.getY() && me.getY() < 190f / 1080f * screenHeight) {
-				if (90f / 1920f * screenWidth < me.getX() && me.getX() < 190f / 1920f * screenWidth) {
-					// The first button is clicked
-					drawMode = KOLOM;
-					System.out.println("Mode: KOLOM");
-					catalogus = true;
-				} else if (223f / 1920f * screenWidth < me.getX() && me.getX() < 323f / 1920f * screenWidth) {
-					// The second button is clicked
-					drawMode = MUUR;
-					System.out.println("Mode: MUUR");
-					catalogus = true;
-				} else if (356f / 1920f * screenWidth < me.getX() && me.getX() < 456f / 1920f * screenWidth) {
-					// The third button is clicked
-					drawMode = DAK;
-					System.out.println("Mode: DAK");
-					catalogus = true;
-				} else if (489f / 1920f * screenWidth < me.getX() && me.getX() < 589f / 1920f * screenWidth) {
-					// The fourth button is clicked
-					drawMode = ITEM;
-					System.out.println("Mode: ITEM");
-					catalogus = true;
-				}
-
+			if (columndist < rowdist) {
+				distance = columndist;
+				ymin = ymidden - distance * gridrows / 2;
+				ymax = ymidden + distance * gridrows / 2;
+			} else if (columndist > rowdist) {
+				distance = rowdist;
+				xmin = xmidden - (distance * gridcolumns) / 2;
+				xmax = xmidden + (distance * gridcolumns) / 2;
 			}
 
-			// catalogus knoppen
-			if (catalogus) {
-				if ((1 - 851.25f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 751.25f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+			// linkermuisknop
+			if (me.getButton() == 1) {
+				// drawMode knoppen
+				if (90f / 1080f * screenHeight < me.getY() && me.getY() < 190f / 1080f * screenHeight) {
+					if (90f / 1920f * screenWidth < me.getX() && me.getX() < 190f / 1920f * screenWidth) {
 						// The first button is clicked
-						textureMode = 129;
-						System.out.println("Catalogus: TEXTURE 1");
-						catalogus = false;
-					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+						drawMode = KOLOM;
+						System.out.println("Mode: KOLOM");
+						catalogus = true;
+					} else if (223f / 1920f * screenWidth < me.getX() && me.getX() < 323f / 1920f * screenWidth) {
 						// The second button is clicked
-						textureMode = 229;
-						System.out.println("Catalogus: TEXTURE 2");
-						catalogus = false;
-					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+						drawMode = MUUR;
+						System.out.println("Mode: MUUR");
+						catalogus = true;
+					} else if (356f / 1920f * screenWidth < me.getX() && me.getX() < 456f / 1920f * screenWidth) {
 						// The third button is clicked
-						textureMode = 130;
-						System.out.println("Catalogus: TEXTURE 3");
-						catalogus = false;
+						drawMode = DAK;
+						System.out.println("Mode: DAK");
+						catalogus = true;
+					} else if (489f / 1920f * screenWidth < me.getX() && me.getX() < 589f / 1920f * screenWidth) {
+						// The fourth button is clicked
+						drawMode = ITEM;
+						System.out.println("Mode: ITEM");
+						catalogus = true;
 					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 230;
-						System.out.println("Catalogus: TEXTURE 4");
-						catalogus = false;
-					}
+
 				}
-				if ((1 - 742.50f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 642.50f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
-						// The first button is clicked
-						textureMode = 131;
-						System.out.println("Catalogus: TEXTURE 5");
-						catalogus = false;
+
+				// catalogus knoppen
+				if (catalogus) {
+					if ((1 - 851.25f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 751.25f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 129;
+							System.out.println("Catalogus: TEXTURE 1");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 229;
+							System.out.println("Catalogus: TEXTURE 2");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 130;
+							System.out.println("Catalogus: TEXTURE 3");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 230;
+							System.out.println("Catalogus: TEXTURE 4");
+							catalogus = false;
+						}
 					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
-						// The second button is clicked
-						textureMode = 231;
-						System.out.println("Catalogus: TEXTURE 6");
-						catalogus = false;
+					if ((1 - 742.50f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 642.50f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 131;
+							System.out.println("Catalogus: TEXTURE 5");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 231;
+							System.out.println("Catalogus: TEXTURE 6");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 132;
+							System.out.println("Catalogus: TEXTURE 7");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 232;
+							System.out.println("Catalogus: TEXTURE 8");
+							catalogus = false;
+						}
 					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 132;
-						System.out.println("Catalogus: TEXTURE 7");
-						catalogus = false;
+					if ((1 - 633.75f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 533.75f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 133;
+							System.out.println("Catalogus: TEXTURE 9");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 233;
+							System.out.println("Catalogus: TEXTURE 10");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 134;
+							System.out.println("Catalogus: TEXTURE 11");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 234;
+							System.out.println("Catalogus: TEXTURE 12");
+							catalogus = false;
+						}
 					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 232;
-						System.out.println("Catalogus: TEXTURE 8");
-						catalogus = false;
+					if ((1 - 525f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 425f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 135;
+							System.out.println("Catalogus: TEXTURE 13");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 235;
+							System.out.println("Catalogus: TEXTURE 14");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 136;
+							System.out.println("Catalogus: TEXTURE 15");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 236;
+							System.out.println("Catalogus: TEXTURE 16");
+							catalogus = false;
+						}
 					}
+					if ((1 - 416.25f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 316.25f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 137;
+							System.out.println("Catalogus: TEXTURE 17");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 237;
+							System.out.println("Catalogus: TEXTURE 18");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 138;
+							System.out.println("Catalogus: TEXTURE 19");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 238;
+							System.out.println("Catalogus: TEXTURE 20");
+							catalogus = false;
+						}
+					}
+					if ((1 - 307.50f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 207.50f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 139;
+							System.out.println("Catalogus: TEXTURE 21");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 239;
+							System.out.println("Catalogus: TEXTURE 22");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 140;
+							System.out.println("Catalogus: TEXTURE 23");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 240;
+							System.out.println("Catalogus: TEXTURE 24");
+							catalogus = false;
+						}
+					}
+					if ((1 - 198.75f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 98.75f / 1080) * screenHeight) {
+						if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
+							// The first button is clicked
+							textureMode = 141;
+							System.out.println("Catalogus: TEXTURE 25");
+							catalogus = false;
+						}
+						if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
+							// The second button is clicked
+							textureMode = 241;
+							System.out.println("Catalogus: TEXTURE 26");
+							catalogus = false;
+						}
+						if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 142;
+							System.out.println("Catalogus: TEXTURE 27");
+							catalogus = false;
+						}
+						if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
+							// The third button is clicked
+							textureMode = 242;
+							System.out.println("Catalogus: TEXTURE 28");
+							catalogus = false;
+						}
+					}
+
 				}
-				if ((1 - 633.75f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 533.75f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
-						// The first button is clicked
-						textureMode = 133;
-						System.out.println("Catalogus: TEXTURE 9");
-						catalogus = false;
+
+				// hoogte knoppen
+
+				if ((1 - (90f - 20f) / 1080) * screenHeight < me.getY() && me.getY() < (1 - (90f - 40f) / 1080) * screenHeight) {
+					// minknop
+					if ((340f - 55f) / 1920 * screenWidth < me.getX() && me.getX() < (340f - 35f) / 1920 * screenWidth) {
+						if (hoogteMode > 1) {
+							hoogteMode--;
+						}
+						System.out.println("Hoogte: " + hoogteMode);
 					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
-						// The second button is clicked
-						textureMode = 233;
-						System.out.println("Catalogus: TEXTURE 10");
-						catalogus = false;
-					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 134;
-						System.out.println("Catalogus: TEXTURE 11");
-						catalogus = false;
-					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 234;
-						System.out.println("Catalogus: TEXTURE 12");
-						catalogus = false;
-					}
-				}
-				if ((1 - 525f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 425f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
-						// The first button is clicked
-						textureMode = 135;
-						System.out.println("Catalogus: TEXTURE 13");
-						catalogus = false;
-					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
-						// The second button is clicked
-						textureMode = 235;
-						System.out.println("Catalogus: TEXTURE 14");
-						catalogus = false;
-					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 136;
-						System.out.println("Catalogus: TEXTURE 15");
-						catalogus = false;
-					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 236;
-						System.out.println("Catalogus: TEXTURE 16");
-						catalogus = false;
-					}
-				}
-				if ((1 - 416.25f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 316.25f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
-						// The first button is clicked
-						textureMode = 137;
-						System.out.println("Catalogus: TEXTURE 17");
-						catalogus = false;
-					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
-						// The second button is clicked
-						textureMode = 237;
-						System.out.println("Catalogus: TEXTURE 18");
-						catalogus = false;
-					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 138;
-						System.out.println("Catalogus: TEXTURE 19");
-						catalogus = false;
-					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 238;
-						System.out.println("Catalogus: TEXTURE 20");
-						catalogus = false;
-					}
-				}
-				if ((1 - 307.50f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 207.50f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
-						// The first button is clicked
-						textureMode = 139;
-						System.out.println("Catalogus: TEXTURE 21");
-						catalogus = false;
-					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
-						// The second button is clicked
-						textureMode = 239;
-						System.out.println("Catalogus: TEXTURE 22");
-						catalogus = false;
-					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 140;
-						System.out.println("Catalogus: TEXTURE 23");
-						catalogus = false;
-					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 240;
-						System.out.println("Catalogus: TEXTURE 24");
-						catalogus = false;
-					}
-				}
-				if ((1 - 198.75f / 1080) * screenHeight < me.getY() && me.getY() < (1 - 98.75f / 1080) * screenHeight) {
-					if (109.8f / 1920 * screenWidth < me.getX() && me.getX() < 209.8f / 1920 * screenWidth) {
-						// The first button is clicked
-						textureMode = 141;
-						System.out.println("Catalogus: TEXTURE 25");
-						catalogus = false;
-					}
-					if (229.6f / 1920 * screenWidth < me.getX() && me.getX() < 329.6f / 1920 * screenWidth) {
-						// The second button is clicked
-						textureMode = 241;
-						System.out.println("Catalogus: TEXTURE 26");
-						catalogus = false;
-					}
-					if (349.4f / 1920 * screenWidth < me.getX() && me.getX() < 449.4f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 142;
-						System.out.println("Catalogus: TEXTURE 27");
-						catalogus = false;
-					}
-					if (469.2f / 1920 * screenWidth < me.getX() && me.getX() < 569.2f / 1920 * screenWidth) {
-						// The third button is clicked
-						textureMode = 242;
-						System.out.println("Catalogus: TEXTURE 28");
-						catalogus = false;
+					// plusknop
+					if ((340f + 35f) / 1920 * screenWidth < me.getX() && me.getX() < (340f + 55f) / 1920 * screenWidth) {
+						hoogteMode++;
+						System.out.println("Hoogte: " + hoogteMode);
 					}
 				}
 
-			}
+				// grid knoppen
 
-			// hoogte knoppen
-
-			if ((1 - (90f - 20f) / 1080) * screenHeight < me.getY() && me.getY() < (1 - (90f - 40f) / 1080) * screenHeight) {
-				// minknop
-				if ((340f - 55f) / 1920 * screenWidth < me.getX() && me.getX() < (340f - 35f) / 1920 * screenWidth) {
-					if (hoogteMode > 1) {
-						hoogteMode--;
-					}
-					System.out.println("Hoogte: " + hoogteMode);
-				}
-				// plusknop
-				if ((340f + 35f) / 1920 * screenWidth < me.getX() && me.getX() < (340f + 55f) / 1920 * screenWidth) {
-					hoogteMode++;
-					System.out.println("Hoogte: " + hoogteMode);
-				}
-			}
-
-			// grid knoppen
-
-			if ((1f - (990f + 20f) / 1080f) * screenHeight > me.getY() && me.getY() > (1f - (990f + 40f) / 1080f) * screenHeight) {
-				if ((1330f - 28f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f - 8f) / 1920f * screenWidth) {
-					// minknop boven
-					if (gridrows != 1) {
-						gridrows = gridrows - 1;
+				if ((1f - (990f + 20f) / 1080f) * screenHeight > me.getY()
+						&& me.getY() > (1f - (990f + 40f) / 1080f) * screenHeight) {
+					if ((1330f - 28f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f - 8f) / 1920f * screenWidth) {
+						// minknop boven
+						if (gridrows != 1) {
+							gridrows = gridrows - 1;
+							System.out.println("Aantal rijen: " + gridrows);
+							wereld = veranderMatrixGrootte2(wereld);
+							textures = veranderMatrixGrootte2(textures);
+						}
+					} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
+						// plusknop boven
+						gridrows = gridrows + 1;
 						System.out.println("Aantal rijen: " + gridrows);
 						wereld = veranderMatrixGrootte2(wereld);
 						textures = veranderMatrixGrootte2(textures);
 					}
-				} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
-					// plusknop boven
-					gridrows = gridrows + 1;
-					System.out.println("Aantal rijen: " + gridrows);
-					wereld = veranderMatrixGrootte2(wereld);
-					textures = veranderMatrixGrootte2(textures);
 				}
-			}
 
-			if ((1f - (90f - 40f) / 1080f) * screenHeight > me.getY() && me.getY() > (1f - (90f - 20f) / 1080f) * screenHeight) {
-				if ((1330f - 28f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f - 8f) / 1920f * screenWidth) {
-					// minknop onder
-					if (gridrows != 1) {
-						gridrows = gridrows - 1;
+				if ((1f - (90f - 40f) / 1080f) * screenHeight > me.getY()
+						&& me.getY() > (1f - (90f - 20f) / 1080f) * screenHeight) {
+					if ((1330f - 28f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f - 8f) / 1920f * screenWidth) {
+						// minknop onder
+						if (gridrows != 1) {
+							gridrows = gridrows - 1;
+							System.out.println("Aantal rijen: " + gridrows);
+							wereld = veranderMatrixGrootte(wereld);
+							textures = veranderMatrixGrootte(textures);
+							for (int item = 0; item != items.size(); item++) {
+								items.get(item)[1] -= 7d;
+							}
+						}
+					} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
+						// plusknop onder
+						gridrows = gridrows + 1;
 						System.out.println("Aantal rijen: " + gridrows);
 						wereld = veranderMatrixGrootte(wereld);
 						textures = veranderMatrixGrootte(textures);
 						for (int item = 0; item != items.size(); item++) {
-							items.get(item)[1] -= 7d;
+							items.get(item)[1] += 7d;
 						}
 					}
-				} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
-					// plusknop onder
-					gridrows = gridrows + 1;
-					System.out.println("Aantal rijen: " + gridrows);
-					wereld = veranderMatrixGrootte(wereld);
-					textures = veranderMatrixGrootte(textures);
-					for (int item = 0; item != items.size(); item++) {
-						items.get(item)[1] += 7d;
-					}
 				}
-			}
 
-			if ((830f - 40f) / 1920f * screenWidth < me.getX() && me.getX() < (830f - 20f) / 1920f * screenWidth) {
-				if ((1f - (540f + 8f) / 1080f) * screenHeight > me.getY() && me.getY() > (1f - (540f + 28f) / 1080f) * screenHeight) {
-					// minknop links
-					if (gridcolumns != 1) {
-						gridcolumns = gridcolumns - 1;
+				if ((830f - 40f) / 1920f * screenWidth < me.getX() && me.getX() < (830f - 20f) / 1920f * screenWidth) {
+					if ((1f - (540f + 8f) / 1080f) * screenHeight > me.getY()
+							&& me.getY() > (1f - (540f + 28f) / 1080f) * screenHeight) {
+						// minknop links
+						if (gridcolumns != 1) {
+							gridcolumns = gridcolumns - 1;
+							System.out.println("Aantal kolommen: " + gridcolumns);
+							wereld = veranderMatrixGrootte2(wereld);
+							textures = veranderMatrixGrootte2(textures);
+							for (int item = 0; item != items.size(); item++) {
+								items.get(item)[2] -= 7d;
+							}
+						}
+					} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY()
+							&& me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
+						// plusknop links
+						gridcolumns = gridcolumns + 1;
 						System.out.println("Aantal kolommen: " + gridcolumns);
 						wereld = veranderMatrixGrootte2(wereld);
 						textures = veranderMatrixGrootte2(textures);
 						for (int item = 0; item != items.size(); item++) {
-							items.get(item)[2] -= 7d;
+							items.get(item)[2] += 7d;
 						}
 					}
-				} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY() && me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
-					// plusknop links
-					gridcolumns = gridcolumns + 1;
-					System.out.println("Aantal kolommen: " + gridcolumns);
-					wereld = veranderMatrixGrootte2(wereld);
-					textures = veranderMatrixGrootte2(textures);
-					for (int item = 0; item != items.size(); item++) {
-						items.get(item)[2] += 7d;
-					}
 				}
-			}
 
-			if ((1830f + 20f) / 1920f * screenWidth < me.getX() && me.getX() < (1830f + 40f) / 1920f * screenWidth) {
-				if ((1f - (540f + 8f) / 1080f) * screenHeight > me.getY() && me.getY() > (1f - (540f + 28f) / 1080f) * screenHeight) {
-					// minknop rechts
-					if (gridcolumns != 1) {
-						gridcolumns = gridcolumns - 1;
+				if ((1830f + 20f) / 1920f * screenWidth < me.getX() && me.getX() < (1830f + 40f) / 1920f * screenWidth) {
+					if ((1f - (540f + 8f) / 1080f) * screenHeight > me.getY()
+							&& me.getY() > (1f - (540f + 28f) / 1080f) * screenHeight) {
+						// minknop rechts
+						if (gridcolumns != 1) {
+							gridcolumns = gridcolumns - 1;
+							System.out.println("Aantal kolommen: " + gridcolumns);
+							wereld = veranderMatrixGrootte(wereld);
+							textures = veranderMatrixGrootte(textures);
+						}
+					} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY()
+							&& me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
+						// plusknop rechts
+						gridcolumns = gridcolumns + 1;
 						System.out.println("Aantal kolommen: " + gridcolumns);
 						wereld = veranderMatrixGrootte(wereld);
 						textures = veranderMatrixGrootte(textures);
 					}
-				} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY() && me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
-					// plusknop rechts
-					gridcolumns = gridcolumns + 1;
-					System.out.println("Aantal kolommen: " + gridcolumns);
-					wereld = veranderMatrixGrootte(wereld);
-					textures = veranderMatrixGrootte(textures);
 				}
-			}
 
-			// portaldirection klik
-			if (addportaldirection) {
-				
-				if (Math.abs(me.getX() - xportal) >= Math.abs(screenHeight - me.getY() - yportal)) {
-					// links
-					if ((me.getX() - xportal) < 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 3 });
-						addportaldirection = false;
-						System.out.println("addportaldirection: " + addportaldirection);
-						// items.get(items.size()-1)[3]=2;
-					}
-					// rechts
-					else if ((me.getX() - xportal) >= 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 1 });
-						addportaldirection = false;
-						System.out.println("addportaldirection: " + addportaldirection);
-						// items.get(items.size()-1)[3]=0;
-					}
-				} else if (Math.abs(me.getX() - xportal) < Math.abs(screenHeight - me.getY() - yportal)) {
-					// onder
-					if ((screenHeight - me.getY() - yportal) < 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 2 });
-						addportaldirection = false;
-						System.out.println("addportaldirection: " + addportaldirection);
-						// items.get(items.size()-1)[3]=1;
-					}
-					// boven
-					else if ((screenHeight - me.getY() - yportal) >= 0) {
-						items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance, (xportal - xmin) * 7f / distance, 0 });
-						addportaldirection = false;
-						System.out.println("addportaldirection: " + addportaldirection);
-						// items.get(items.size()-1)[3]=3;
-					}
-				}
-			// playerdirection klik
-			} else if (addplayerdirection){
-				if (Math.abs(me.getX() - xplayer) >= Math.abs(screenHeight - me.getY() - yplayer)) {
-					// links
-					if ((me.getX() - xplayer) < 0) {
-						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 3 });
-						addplayerdirection = false;
-						System.out.println("addplayerdirection: " + addplayerdirection);
-						// items.get(items.size()-1)[3]=2;
-					}
-					// rechts
-					else if ((me.getX() - xplayer) >= 0) {
-						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 1 });
-						addplayerdirection = false;
-						System.out.println("addplayerdirection: " + addplayerdirection);
-						// items.get(items.size()-1)[3]=0;
-					}
-				} else if (Math.abs(me.getX() - xplayer) < Math.abs(screenHeight - me.getY() - yplayer)) {
-					// onder
-					if ((screenHeight - me.getY() - yplayer) < 0) {
-						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 2 });
-						addplayerdirection = false;
-						System.out.println("addplayerdirection: " + addplayerdirection);
-						// items.get(items.size()-1)[3]=1;
-					}
-					// boven
-					else if ((screenHeight - me.getY() - yplayer) >= 0) {
-						items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance, (xplayer - xmin) * 7f / distance, 0 });
-						addplayerdirection = false;
-						System.out.println("addplayerdirection: " + addplayerdirection);
-						// items.get(items.size()-1)[3]=3;
-					}
-				}
-			} else {
-				// gridklik
-				if (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5 && screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5) {
-					float gridklikx = me.getX();
-					float gridkliky = screenHeight - me.getY();
-					gridklik = true;
-					veranderMatrixVolgensKlikInGrid(gridklikx, gridkliky);
-				}
-			}
+				// portaldirection klik
+				if (addportaldirection) {
 
-			// locatie knop
-			if ((1 - 932f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - 890f / 1080f) * screenHeight) {
-				if (622f / 1920f * screenWidth < me.getX() && me.getX() < 740f / 1920f * screenWidth) {
-					InputLocation il = new InputLocation();
-					this.location = il.getLocation();
-				}
-			}
-
-			if ((1 - 1052f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - 1010f / 1080f) * screenHeight) {
-				if (622f / 1920f * screenWidth < me.getX() && me.getX() < 740f / 1920f * screenWidth) {
-					InputLocation il = new InputLocation();
-					int[] info = il.getStartingInfo();
-					levels.setStartingBullets(info[0]);
-					levels.setStartingTraps(info[1]);
-				}
-			}
-
-			// level knoppen
-			if (622f / 1920f * screenWidth < me.getX() && me.getX() < (622f + 51f) / 1920f * screenWidth) {
-				// add level
-				if ((1 - 860f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - (860f - 51f) / 1080f) * screenHeight) {
-					levels.addLevel();
-					if (selectedLevel < 0) { // als er nog geen levels in deze
-												// wereld waren, wordt de 0de
-												// geselecteerd
-						selectedLevel = 0;
+					if (Math.abs(me.getX() - xportal) >= Math.abs(screenHeight - me.getY() - yportal)) {
+						// links
+						if ((me.getX() - xportal) < 0) {
+							items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance,
+									(xportal - xmin) * 7f / distance, 3 });
+							addportaldirection = false;
+							System.out.println("addportaldirection: " + addportaldirection);
+							// items.get(items.size()-1)[3]=2;
+						}
+						// rechts
+						else if ((me.getX() - xportal) >= 0) {
+							items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance,
+									(xportal - xmin) * 7f / distance, 1 });
+							addportaldirection = false;
+							System.out.println("addportaldirection: " + addportaldirection);
+							// items.get(items.size()-1)[3]=0;
+						}
+					} else if (Math.abs(me.getX() - xportal) < Math.abs(screenHeight - me.getY() - yportal)) {
+						// onder
+						if ((screenHeight - me.getY() - yportal) < 0) {
+							items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance,
+									(xportal - xmin) * 7f / distance, 2 });
+							addportaldirection = false;
+							System.out.println("addportaldirection: " + addportaldirection);
+							// items.get(items.size()-1)[3]=1;
+						}
+						// boven
+						else if ((screenHeight - me.getY() - yportal) >= 0) {
+							items.add(new double[] { textureMode, (yportal - ymin) * 7f / distance,
+									(xportal - xmin) * 7f / distance, 0 });
+							addportaldirection = false;
+							System.out.println("addportaldirection: " + addportaldirection);
+							// items.get(items.size()-1)[3]=3;
+						}
 					}
-				}
-			}
-
-			// levellistklik
-			selectedLevel = levels.mouseReleased(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth - 24f / 1920f * screenWidth,
-					776f / 1080f * screenHeight, selectedLevel);
-
-			// saveLevelAs
-			try {
-				levels.mouseReleased2(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight,
-						screenWidth, screenHeight);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-
-			// remove level from list
-			remove = levels.mouseReleased3(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight,
-					screenWidth, screenHeight);
-
-			// saveWorldAs (tijdelijk)
-			if (10f / 1080f * screenHeight < me.getY() && me.getY() < 80f / 1080f * screenHeight)
-				if (15f / 1920f * screenWidth < me.getX() && me.getX() < 85f / 1920f * screenWidth) {
-					try {
-						levels.saveAs();
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
+					// playerdirection klik
+				} else if (addplayerdirection) {
+					if (Math.abs(me.getX() - xplayer) >= Math.abs(screenHeight - me.getY() - yplayer)) {
+						// links
+						if ((me.getX() - xplayer) < 0) {
+							items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance,
+									(xplayer - xmin) * 7f / distance, 3 });
+							addplayerdirection = false;
+							System.out.println("addplayerdirection: " + addplayerdirection);
+							// items.get(items.size()-1)[3]=2;
+						}
+						// rechts
+						else if ((me.getX() - xplayer) >= 0) {
+							items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance,
+									(xplayer - xmin) * 7f / distance, 1 });
+							addplayerdirection = false;
+							System.out.println("addplayerdirection: " + addplayerdirection);
+							// items.get(items.size()-1)[3]=0;
+						}
+					} else if (Math.abs(me.getX() - xplayer) < Math.abs(screenHeight - me.getY() - yplayer)) {
+						// onder
+						if ((screenHeight - me.getY() - yplayer) < 0) {
+							items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance,
+									(xplayer - xmin) * 7f / distance, 2 });
+							addplayerdirection = false;
+							System.out.println("addplayerdirection: " + addplayerdirection);
+							// items.get(items.size()-1)[3]=1;
+						}
+						// boven
+						else if ((screenHeight - me.getY() - yplayer) >= 0) {
+							items.add(new double[] { textureMode, (yplayer - ymin) * 7f / distance,
+									(xplayer - xmin) * 7f / distance, 0 });
+							addplayerdirection = false;
+							System.out.println("addplayerdirection: " + addplayerdirection);
+							// items.get(items.size()-1)[3]=3;
+						}
 					}
-					System.out.println("World saved");
-				}
-		}
-
-		// rechtermuisknop
-		else if (me.getButton() == 3) {
-			if (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5 && screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5) {
-				// gridklikxrechts = me.getX();
-				// gridklikyrechts = screenHeight - me.getY();
-				gridklik = true;
-				veranderMatrixVolgensKlikInGridrechts(me.getX(), screenHeight - me.getY());
-			} else {
-				if (heightsOn) {
-					heightsOn = false;
 				} else {
-					heightsOn = true;
+					// gridklik
+					if (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5
+							&& screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5) {
+						float gridklikx = me.getX();
+						float gridkliky = screenHeight - me.getY();
+						gridklik = true;
+						veranderMatrixVolgensKlikInGrid(gridklikx, gridkliky);
+					}
+				}
+
+				// locatie knop
+				if ((1 - 932f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - 890f / 1080f) * screenHeight) {
+					if (622f / 1920f * screenWidth < me.getX() && me.getX() < 740f / 1920f * screenWidth) {
+						InputLocation il = new InputLocation();
+						this.location = il.getLocation();
+					}
+				}
+
+				if ((1 - 1052f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - 1010f / 1080f) * screenHeight) {
+					if (622f / 1920f * screenWidth < me.getX() && me.getX() < 740f / 1920f * screenWidth) {
+						InputLocation il = new InputLocation();
+						int[] info = il.getStartingInfo();
+						levels.setStartingBullets(info[0]);
+						levels.setStartingTraps(info[1]);
+					}
+				}
+
+				// level knoppen
+				if (622f / 1920f * screenWidth < me.getX() && me.getX() < (622f + 51f) / 1920f * screenWidth) {
+					// add level
+					if ((1 - 860f / 1080f) * screenHeight < me.getY() && me.getY() < (1 - (860f - 51f) / 1080f) * screenHeight) {
+						levels.addLevel();
+						if (selectedLevel < 0) { // als er nog geen levels in
+													// deze
+													// wereld waren, wordt de
+													// 0de
+													// geselecteerd
+							selectedLevel = 0;
+						}
+					}
+				}
+
+				// levellistklik
+				selectedLevel = levels.mouseReleased(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth,
+						90f / 1080f * screenHeight, 740f / 1920f * screenWidth - 24f / 1920f * screenWidth,
+						776f / 1080f * screenHeight, selectedLevel);
+				
+
+				// saveLevelAs
+				try {
+					levels.mouseReleased2(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth,
+							90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight, screenWidth,
+							screenHeight);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+
+				// remove level from list
+				remove = levels.mouseReleased3(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth,
+						90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight, screenWidth,
+						screenHeight);
+
+				// saveWorldAs (tijdelijk)
+				if (10f / 1080f * screenHeight < me.getY() && me.getY() < 80f / 1080f * screenHeight)
+					if (15f / 1920f * screenWidth < me.getX() && me.getX() < 85f / 1920f * screenWidth) {
+						try {
+							levels.saveAs();
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+						System.out.println("World saved");
+					}
+			}
+
+			// rechtermuisknop
+			else if (me.getButton() == 3) {
+				if (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5
+						&& screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5) {
+					// gridklikxrechts = me.getX();
+					// gridklikyrechts = screenHeight - me.getY();
+					gridklik = true;
+					veranderMatrixVolgensKlikInGridrechts(me.getX(), screenHeight - me.getY());
+				} else {
+					if (heightsOn) {
+						heightsOn = false;
+					} else {
+						heightsOn = true;
+					}
 				}
 			}
-		}
 
+		}
 	}
 
 	public void mousePressed(MouseEvent me) throws FileNotFoundException {
 		// openlevel
 		if (me.getClickCount() == 2) {
-			open = levels.mousePressed(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth, 90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight,
-					screenWidth, screenHeight);
+			open = levels.mousePressed(me.getX(), screenHeight - me.getY(), 622f / 1920f * screenWidth,
+					90f / 1080f * screenHeight, 740f / 1920f * screenWidth, 776f / 1080f * screenHeight, screenWidth,
+					screenHeight);
 		}
 
 		// modelviewer
@@ -1026,7 +1100,8 @@ public class LevelEditor {
 			if (drawMode == DAK) {
 				for (int kolom = 1; kolom <= gridcolumns; kolom++) {
 					for (int rij = 1; rij <= gridrows; rij++) {
-						if (xmin + (kolom - 1) * distance < gridklikx && gridklikx < xmin + kolom * distance && ymax - rij * distance < gridkliky && gridkliky < ymax - (rij - 1) * distance) {
+						if (xmin + (kolom - 1) * distance < gridklikx && gridklikx < xmin + kolom * distance
+								&& ymax - rij * distance < gridkliky && gridkliky < ymax - (rij - 1) * distance) {
 							wereld[2 * rij - 1][2 * kolom - 1] = hoogteMode;
 							textures[2 * rij - 1][2 * kolom - 1] = textureMode;
 
@@ -1047,8 +1122,10 @@ public class LevelEditor {
 			if (drawMode == KOLOM) {
 				for (int kolom = 1; kolom <= gridcolumns + 1; kolom++) {
 					for (int rij = 1; rij <= gridrows + 1; rij++) {
-						if (xmin + (kolom - 1) * distance - distance / 5 < gridklikx && gridklikx < xmin + (kolom - 1) * distance + distance / 5
-								&& ymax - (rij - 1) * distance - distance / 5 < gridkliky && gridkliky < ymax - (rij - 1) * distance + distance / 5) {
+						if (xmin + (kolom - 1) * distance - distance / 5 < gridklikx
+								&& gridklikx < xmin + (kolom - 1) * distance + distance / 5
+								&& ymax - (rij - 1) * distance - distance / 5 < gridkliky
+								&& gridkliky < ymax - (rij - 1) * distance + distance / 5) {
 							wereld[2 * rij - 2][2 * kolom - 2] = hoogteMode;
 							textures[2 * rij - 2][2 * kolom - 2] = textureMode;
 
@@ -1069,7 +1146,9 @@ public class LevelEditor {
 			if (drawMode == MUUR) {
 				for (int kolom = 1; kolom <= gridcolumns + 1; kolom++) {
 					for (int rij = 1; rij <= gridrows + 1; rij++) {
-						if (xmin + (kolom - 1) * distance - distance / 5 < gridklikx && gridklikx < xmin + (kolom - 1) * distance + distance / 5 && ymax - rij * distance + distance / 5 < gridkliky
+						if (xmin + (kolom - 1) * distance - distance / 5 < gridklikx
+								&& gridklikx < xmin + (kolom - 1) * distance + distance / 5
+								&& ymax - rij * distance + distance / 5 < gridkliky
 								&& gridkliky < ymax - (rij - 1) * distance - distance / 5) {
 							wereld[2 * rij - 1][2 * kolom - 2] = hoogteMode;
 							textures[2 * rij - 1][2 * kolom - 2] = textureMode;
@@ -1093,7 +1172,9 @@ public class LevelEditor {
 			if (drawMode == MUUR) {
 				for (int kolom = 1; kolom <= gridcolumns + 1; kolom++) {
 					for (int rij = 1; rij <= gridrows + 1; rij++) {
-						if (xmin + (kolom - 1) * distance + distance / 5 < gridklikx && gridklikx < xmin + kolom * distance - distance / 5 && ymax - (rij - 1) * distance - distance / 5 < gridkliky
+						if (xmin + (kolom - 1) * distance + distance / 5 < gridklikx
+								&& gridklikx < xmin + kolom * distance - distance / 5
+								&& ymax - (rij - 1) * distance - distance / 5 < gridkliky
 								&& gridkliky < ymax - (rij - 1) * distance + distance / 5) {
 							wereld[2 * rij - 2][2 * kolom - 1] = hoogteMode;
 							textures[2 * rij - 2][2 * kolom - 1] = textureMode;
@@ -1132,7 +1213,8 @@ public class LevelEditor {
 					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance });
 				}
 				if (textureMode == 230) {
-					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance, hoogteMode });
+					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance,
+							hoogteMode });
 				}
 				if (textureMode == 131) {
 					items.add(new double[] { textureMode, (gridkliky - ymin) * 7f / distance, (gridklikx - xmin) * 7f / distance });
@@ -1146,7 +1228,7 @@ public class LevelEditor {
 					// (gridkliky-ymin)*7f/distance,
 					// (gridklikx-xmin)*7f/distance, hoogteMode});
 				}
-				if (textureMode == 132 && !addplayerdirection){
+				if (textureMode == 132 && !addplayerdirection) {
 					xplayer = gridklikx;
 					yplayer = gridkliky;
 					addplayerdirection = true;
@@ -1189,8 +1271,10 @@ public class LevelEditor {
 
 				for (int kolom = 1; kolom <= gridcolumns; kolom++) {
 					for (int rij = 1; rij <= gridrows; rij++) {
-						if (xmin + (kolom - 1) * distance + distance / 10 < gridklikxrechts && gridklikxrechts < xmin + kolom * distance - distance / 10
-								&& ymax - rij * distance + distance / 10 < gridklikyrechts && gridklikyrechts < ymax - (rij - 1) * distance - distance / 10) {
+						if (xmin + (kolom - 1) * distance + distance / 10 < gridklikxrechts
+								&& gridklikxrechts < xmin + kolom * distance - distance / 10
+								&& ymax - rij * distance + distance / 10 < gridklikyrechts
+								&& gridklikyrechts < ymax - (rij - 1) * distance - distance / 10) {
 							wereld[2 * rij - 1][2 * kolom - 1] = 0;
 							textures[2 * rij - 1][2 * kolom - 1] = 0;
 
@@ -1210,8 +1294,10 @@ public class LevelEditor {
 
 				for (int kolom = 1; kolom <= gridcolumns + 1; kolom++) {
 					for (int rij = 1; rij <= gridrows + 1; rij++) {
-						if (xmin + (kolom - 1) * distance - distance / 10 < gridklikxrechts && gridklikxrechts < xmin + (kolom - 1) * distance + distance / 10
-								&& ymax - (rij - 1) * distance - distance / 10 < gridklikyrechts && gridklikyrechts < ymax - (rij - 1) * distance + distance / 10) {
+						if (xmin + (kolom - 1) * distance - distance / 10 < gridklikxrechts
+								&& gridklikxrechts < xmin + (kolom - 1) * distance + distance / 10
+								&& ymax - (rij - 1) * distance - distance / 10 < gridklikyrechts
+								&& gridklikyrechts < ymax - (rij - 1) * distance + distance / 10) {
 							wereld[2 * rij - 2][2 * kolom - 2] = 0;
 							textures[2 * rij - 2][2 * kolom - 2] = 0;
 
@@ -1231,8 +1317,10 @@ public class LevelEditor {
 
 				for (int kolom = 1; kolom <= gridcolumns + 1; kolom++) {
 					for (int rij = 1; rij <= gridrows + 1; rij++) {
-						if (xmin + (kolom - 1) * distance - distance / 10 < gridklikxrechts && gridklikxrechts < xmin + (kolom - 1) * distance + distance / 10
-								&& ymax - rij * distance + distance / 10 < gridklikyrechts && gridklikyrechts < ymax - (rij - 1) * distance - distance / 10) {
+						if (xmin + (kolom - 1) * distance - distance / 10 < gridklikxrechts
+								&& gridklikxrechts < xmin + (kolom - 1) * distance + distance / 10
+								&& ymax - rij * distance + distance / 10 < gridklikyrechts
+								&& gridklikyrechts < ymax - (rij - 1) * distance - distance / 10) {
 							wereld[2 * rij - 1][2 * kolom - 2] = 0;
 							textures[2 * rij - 1][2 * kolom - 2] = 0;
 
@@ -1252,8 +1340,10 @@ public class LevelEditor {
 
 				for (int kolom = 1; kolom <= gridcolumns + 1; kolom++) {
 					for (int rij = 1; rij <= gridrows + 1; rij++) {
-						if (xmin + (kolom - 1) * distance + distance / 10 < gridklikxrechts && gridklikxrechts < xmin + kolom * distance - distance / 10
-								&& ymax - (rij - 1) * distance - distance / 10 < gridklikyrechts && gridklikyrechts < ymax - (rij - 1) * distance + distance / 10) {
+						if (xmin + (kolom - 1) * distance + distance / 10 < gridklikxrechts
+								&& gridklikxrechts < xmin + kolom * distance - distance / 10
+								&& ymax - (rij - 1) * distance - distance / 10 < gridklikyrechts
+								&& gridklikyrechts < ymax - (rij - 1) * distance + distance / 10) {
 							wereld[2 * rij - 2][2 * kolom - 1] = 0;
 							textures[2 * rij - 2][2 * kolom - 1] = 0;
 
@@ -1273,8 +1363,10 @@ public class LevelEditor {
 				for (int item = 0; item != items.size(); item++) {
 					float x = (float) items.get(item)[1];
 					float z = (float) items.get(item)[2];
-					if (xmin + z / 7f * distance - distance / 4 < gridklikxrechts && gridklikxrechts < xmin + z / 7f * distance + distance / 4) {
-						if (ymin + x / 7f * distance - distance / 4 < gridklikyrechts && gridklikyrechts < ymin + x / 7f * distance + distance / 4) {
+					if (xmin + z / 7f * distance - distance / 4 < gridklikxrechts
+							&& gridklikxrechts < xmin + z / 7f * distance + distance / 4) {
+						if (ymin + x / 7f * distance - distance / 4 < gridklikyrechts
+								&& gridklikyrechts < ymin + x / 7f * distance + distance / 4) {
 							items.remove(item);
 							item--;
 						}
@@ -1286,13 +1378,15 @@ public class LevelEditor {
 	}
 
 	public void checkVoorAangrenzendeMurenVerticaal(int rij, int kolom) {
-		if (checkIfExists((2 * rij - 1) + 1, (2 * kolom - 2) - 1) || checkIfExists((2 * rij - 1) + 2, 2 * kolom - 2) || checkIfExists((2 * rij - 1) + 1, (2 * kolom - 2) + 1)) {
+		if (checkIfExists((2 * rij - 1) + 1, (2 * kolom - 2) - 1) || checkIfExists((2 * rij - 1) + 2, 2 * kolom - 2)
+				|| checkIfExists((2 * rij - 1) + 1, (2 * kolom - 2) + 1)) {
 			if (wereld[(2 * rij - 1) + 1][2 * kolom - 2] == 0) {
 				wereld[(2 * rij - 1) + 1][2 * kolom - 2] = hoogteMode;
 				textures[(2 * rij - 1) + 1][2 * kolom - 2] = textureMode;
 			}
 		}
-		if (checkIfExists((2 * rij - 1) - 1, (2 * kolom - 2) - 1) || checkIfExists((2 * rij - 1) - 2, 2 * kolom - 2) || checkIfExists((2 * rij - 1) - 1, (2 * kolom - 2) + 1)) {
+		if (checkIfExists((2 * rij - 1) - 1, (2 * kolom - 2) - 1) || checkIfExists((2 * rij - 1) - 2, 2 * kolom - 2)
+				|| checkIfExists((2 * rij - 1) - 1, (2 * kolom - 2) + 1)) {
 			if (wereld[(2 * rij - 1) - 1][2 * kolom - 2] == 0) {
 				wereld[(2 * rij - 1) - 1][2 * kolom - 2] = hoogteMode;
 				textures[(2 * rij - 1) - 1][2 * kolom - 2] = textureMode;
@@ -1301,13 +1395,15 @@ public class LevelEditor {
 	}
 
 	public void checkVoorAangrenzendeMurenHorizontaal(int rij, int kolom) {
-		if (checkIfExists((2 * rij - 2) - 1, (2 * kolom - 1) - 1) || checkIfExists(2 * rij - 2, (2 * kolom - 1) - 2) || checkIfExists((2 * rij - 2) + 1, (2 * kolom - 1) - 1)) {
+		if (checkIfExists((2 * rij - 2) - 1, (2 * kolom - 1) - 1) || checkIfExists(2 * rij - 2, (2 * kolom - 1) - 2)
+				|| checkIfExists((2 * rij - 2) + 1, (2 * kolom - 1) - 1)) {
 			if (wereld[2 * rij - 2][(2 * kolom - 1) - 1] == 0) {
 				wereld[2 * rij - 2][(2 * kolom - 1) - 1] = hoogteMode;
 				textures[2 * rij - 2][(2 * kolom - 1) - 1] = textureMode;
 			}
 		}
-		if (checkIfExists((2 * rij - 2) - 1, (2 * kolom - 1) + 1) || checkIfExists(2 * rij - 2, (2 * kolom - 1) + 2) || checkIfExists((2 * rij - 2) + 1, (2 * kolom - 1) + 1)) {
+		if (checkIfExists((2 * rij - 2) - 1, (2 * kolom - 1) + 1) || checkIfExists(2 * rij - 2, (2 * kolom - 1) + 2)
+				|| checkIfExists((2 * rij - 2) + 1, (2 * kolom - 1) + 1)) {
 			if (wereld[2 * rij - 2][(2 * kolom - 1) + 1] == 0) {
 				wereld[2 * rij - 2][(2 * kolom - 1) + 1] = hoogteMode;
 				textures[2 * rij - 2][(2 * kolom - 1) + 1] = textureMode;
@@ -1446,12 +1542,14 @@ public class LevelEditor {
 		for (int rij = 1; rij < wereld.length - 1; rij = rij + 2) {
 			for (int kolom = 1; kolom < wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] == 129) {
-					// TODO: onderstaande moet veranderen in een daktexture, geldt dit nog?
-					Teken.plaatsTexture(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1) * distance, ymax - (rij / 2 + 1) * distance, 7);
+					// TODO: onderstaande moet veranderen in een daktexture,
+					// geldt dit nog?
+					Teken.plaatsTexture(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1)
+							* distance, ymax - (rij / 2 + 1) * distance, 7);
 				}
 				if (wereld[rij][kolom] != 0 && heightsOn) {
-					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin + (kolom / 2) * distance + distance / 2, ymax - (rij / 2 + 1) * distance + distance / 2, 30, 1f, 1f,
-							1f);
+					Teken.textDrawMetKleur(drawable, gl, String.valueOf(wereld[rij][kolom]), xmin + (kolom / 2) * distance
+							+ distance / 2, ymax - (rij / 2 + 1) * distance + distance / 2, 30, 1f, 1f, 1f);
 				}
 			}
 		}
@@ -1461,11 +1559,13 @@ public class LevelEditor {
 			for (int kolom = 0; kolom <= wereld[0].length; kolom = kolom + 2) {
 				if (textures[rij][kolom] > 200) {
 					// onderstaande moet veranderen in een kolomtexture
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
-							ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 200);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance
+							+ distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax - (rij + 1) / 2 * distance
+							- distance / 10, textures[rij][kolom] - 200);
 				} else if (textures[rij][kolom] > 100) {
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10,
-							ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 100);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance
+							+ distance / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax - (rij + 1) / 2 * distance
+							- distance / 10, textures[rij][kolom] - 100);
 				}
 			}
 		}
@@ -1475,16 +1575,19 @@ public class LevelEditor {
 			for (int kolom = 0; kolom <= wereld[0].length; kolom = kolom + 2) {
 				if (textures[rij][kolom] > 200) {
 					// onderstaande moet veranderen in een muurtexture
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance
-							/ 10, ymax - (rij + 1) / 2 * distance + distance * 6 / 10, textures[rij][kolom] - 200);
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 4 / 10, xmin + ((kolom + 1) / 2) * distance + distance
-							/ 10, ymax - (rij + 1) / 2 * distance + distance / 10, textures[rij][kolom] - 200);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance
+							+ distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax - (rij + 1) / 2
+							* distance + distance * 6 / 10, textures[rij][kolom] - 200);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance
+							+ distance * 4 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax - (rij + 1) / 2
+							* distance + distance / 10, textures[rij][kolom] - 200);
 				} else if (textures[rij][kolom] > 100) {
 					// onderstaande moet veranderen in een muurtexture
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance + distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance
-							/ 10, ymax - (rij + 1) / 2 * distance + distance / 10, textures[rij][kolom] - 100);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2 * distance
+							+ distance * 9 / 10, xmin + ((kolom + 1) / 2) * distance + distance / 10, ymax - (rij + 1) / 2
+							* distance + distance / 10, textures[rij][kolom] - 100);
 				}
-				
+
 			}
 		}
 
@@ -1492,14 +1595,17 @@ public class LevelEditor {
 		for (int rij = 0; rij <= wereld.length; rij = rij + 2) {
 			for (int kolom = 1; kolom <= wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] > 200) {
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance
-							* 6 / 10, ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 200);
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 4 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance
-							/ 10, ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 200);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2
+							* distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance * 6 / 10, ymax - (rij + 1)
+							/ 2 * distance - distance / 10, textures[rij][kolom] - 200);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 4 / 10, ymax - (rij + 1) / 2
+							* distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2
+							* distance - distance / 10, textures[rij][kolom] - 200);
 				} else if (textures[rij][kolom] > 100) {
 					// onderstaande moet veranderen in een muurtexture
-					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2 * distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance
-							/ 10, ymax - (rij + 1) / 2 * distance - distance / 10, textures[rij][kolom] - 100);
+					Teken.plaatsTexture(gl, xmin + ((kolom + 1) / 2) * distance - distance * 9 / 10, ymax - (rij + 1) / 2
+							* distance + distance / 10, xmin + ((kolom + 1) / 2) * distance - distance / 10, ymax - (rij + 1) / 2
+							* distance - distance / 10, textures[rij][kolom] - 100);
 				}
 			}
 		}
@@ -1511,8 +1617,8 @@ public class LevelEditor {
 			if (items.get(item)[0] == 129) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 26);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 26);
 				if (items.get(item)[3] == 0)
 					Teken.pijlboven(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
 				else if (items.get(item)[3] == 1)
@@ -1525,38 +1631,38 @@ public class LevelEditor {
 			if (items.get(item)[0] == 229) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 17);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 17);
 			}
 			if (items.get(item)[0] == 130) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 18);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 18);
 			}
 			if (items.get(item)[0] == 230) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 27);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 27);
 			}
 			if (items.get(item)[0] == 131) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 14);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 14);
 			}
 			if (items.get(item)[0] == 231) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 20);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 20);
 			}
-			if (items.get(item)[0] == 132){
+			if (items.get(item)[0] == 132) {
 				float x = (float) items.get(item)[1];
 				float z = (float) items.get(item)[2];
-				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin + z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance
-						/ 4, 15);
+				Teken.plaatsTexture(gl, xmin + z / 7f * distance - distance / 4, ymin + x / 7f * distance - distance / 4, xmin
+						+ z / 7f * distance + distance / 4, ymin + x / 7f * distance + distance / 4, 15);
 				if (items.get(item)[3] == 0)
 					Teken.pijlboven(gl, xmin + z / 7f * distance, ymin + x / 7f * distance, distance);
 				else if (items.get(item)[3] == 1)
@@ -1570,7 +1676,8 @@ public class LevelEditor {
 
 		// teken portal pijl
 		if (addportaldirection) {
-			Teken.plaatsTexture(gl, xportal - distance / 4, yportal - distance / 4, xportal + distance / 4, yportal + distance / 4, 26);
+			Teken.plaatsTexture(gl, xportal - distance / 4, yportal - distance / 4, xportal + distance / 4, yportal + distance
+					/ 4, 26);
 			gl.glClearColor(0, 0, 0, 0);
 			float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX()) - xportal);
 			float dY = (float) (screenHeight + 30f - MouseInfo.getPointerInfo().getLocation().getY() - yportal);
@@ -1585,8 +1692,9 @@ public class LevelEditor {
 				else
 					Teken.pijlonder(gl, xportal, yportal, distance);
 			}
-		} else if (addplayerdirection){
-			Teken.plaatsTexture(gl, xplayer - distance / 4, yplayer - distance / 4, xplayer + distance / 4, yplayer + distance / 4, 15);
+		} else if (addplayerdirection) {
+			Teken.plaatsTexture(gl, xplayer - distance / 4, yplayer - distance / 4, xplayer + distance / 4, yplayer + distance
+					/ 4, 15);
 			gl.glClearColor(0, 0, 0, 0);
 			float dX = (float) ((MouseInfo.getPointerInfo().getLocation().getX()) - xplayer);
 			float dY = (float) (screenHeight + 30f - MouseInfo.getPointerInfo().getLocation().getY() - yplayer);
@@ -1605,46 +1713,60 @@ public class LevelEditor {
 
 	}
 
-//	private void saveAs() throws FileNotFoundException {
-//		// PrintWriter bestand = new
-//		// PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
-//		KiesFileUitBrowser kfub = new KiesFileUitBrowser();
-//		String filename = kfub.saveFile(new Frame(), "Opslaan als...", ".\\", "*");
-//		// als de bestandsnaam al eindigt op .txt , knip dat er dan af
-//		if (filename.substring(filename.length() - 4, filename.length()).equals(".txt")) {
-//			filename = filename.substring(0, filename.length() - 4);
-//		}
-//		String currentdir = System.getProperty("user.dir");
-//		PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" + filename + ".txt");
-//		bestand.println("0,0,0,");
-//		for (int i = 0; i != wereld.length; i++) {
-//			for (int j = 0; j != wereld[0].length; j++) {
-//				bestand.print(wereld[i][j] + ",");
-//			}
-//			bestand.println();
-//		}
-//		bestand.close();
-//
-//		PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" + filename + "_t.txt");
-//		for (int i = 0; i != textures.length; i++) {
-//			for (int j = 0; j != textures[0].length; j++) {
-//				bestand2.print(textures[i][j] + ",");
-//			}
-//			bestand2.println();
-//		}
-//		bestand2.close();
-//	}
+	// private void saveAs() throws FileNotFoundException {
+	// // PrintWriter bestand = new
+	// //
+	// PrintWriter("C:\\Users\\Martijn\\Dropbox\\EWI3620TU Minorproject SOT Groep 01\\Level1_1_l.txt");
+	// KiesFileUitBrowser kfub = new KiesFileUitBrowser();
+	// String filename = kfub.saveFile(new Frame(), "Opslaan als...", ".\\",
+	// "*");
+	// // als de bestandsnaam al eindigt op .txt , knip dat er dan af
+	// if (filename.substring(filename.length() - 4,
+	// filename.length()).equals(".txt")) {
+	// filename = filename.substring(0, filename.length() - 4);
+	// }
+	// String currentdir = System.getProperty("user.dir");
+	// PrintWriter bestand = new PrintWriter(currentdir + "\\levels\\" +
+	// filename + ".txt");
+	// bestand.println("0,0,0,");
+	// for (int i = 0; i != wereld.length; i++) {
+	// for (int j = 0; j != wereld[0].length; j++) {
+	// bestand.print(wereld[i][j] + ",");
+	// }
+	// bestand.println();
+	// }
+	// bestand.close();
+	//
+	// PrintWriter bestand2 = new PrintWriter(currentdir + "\\levels\\" +
+	// filename + "_t.txt");
+	// for (int i = 0; i != textures.length; i++) {
+	// for (int j = 0; j != textures[0].length; j++) {
+	// bestand2.print(textures[i][j] + ",");
+	// }
+	// bestand2.println();
+	// }
+	// bestand2.close();
+	// }
 
 	public static int[][] defaultMatrix() {
-		int[][] defaultmatrix = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		int[][] defaultmatrix = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
 		return defaultmatrix;
 	}
@@ -1708,22 +1830,21 @@ public class LevelEditor {
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_TAB) {
-			//MazeRunner.visibleObjects.clear();
-			MazeRunner.visibleObjects.clear();
-			String filename="";
-			try {
-				filename =levels.saveAs();
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
+			worldview = !worldview;
+			if (worldview) {
+				try {
+					levels.refreshLevels();
+					if (getErrMsg().equals("")) {
+						worldviewer.init();
+					} else{
+						worldview=!worldview;
+					}
+				} catch (FileNotFoundException e1) {
+					System.out.println("Fout in keyPressed TAB (levels.refreshLevels()");
+					e1.printStackTrace();
+				}
 			}
-			Level.clearMazeList();
-			Level.leesLevels(filename);
-			System.out.println(filename);
-			this.worldview = !worldview;
-			
 		}
-		
-
 	}
 
 	public static String getErrMsg() {
@@ -1742,6 +1863,5 @@ public class LevelEditor {
 	public static void setErrMsgTime(long errMsgTime) {
 		LevelEditor.errMsgTime = errMsgTime;
 	}
-	
-	
+
 }

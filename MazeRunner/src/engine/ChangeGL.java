@@ -29,12 +29,16 @@ public static void GLto2D (GL gl){
 	
 }
 public static void GLtoColoredItem(GL gl){
+	gl.glColor3d(1, 1, 1);
 	gl.glDisable(GL.GL_TEXTURE_2D);
 	gl.glDisable(GL.GL_LIGHTING);
 }
 public static void GLtoTexturedItem(GL gl){
+	gl.glColor3d(1,1,1);
 	gl.glEnable(GL.GL_TEXTURE_2D);
-	gl.glEnable(GL.GL_LIGHTING);
+	gl.glDisable(GL.GL_LIGHTING);
+	float matAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+	gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, matAmbient, 0);
 }
 
 }

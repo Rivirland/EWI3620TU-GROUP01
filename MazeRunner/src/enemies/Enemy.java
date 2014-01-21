@@ -161,8 +161,9 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
 		gl.glScaled(getSize(), getSize(), getSize());
 		rotateEnemy(gl);
+		ChangeGL.GLtoTexturedItem(gl);
 		drawEnemy(gl);
-
+		ChangeGL.GLtoColoredItem(gl);
 		gl.glPopMatrix();
 		gl.glFlush(); // Flush drawing routines
 	}

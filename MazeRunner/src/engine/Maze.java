@@ -4,6 +4,7 @@ import items.BulletHolder;
 import items.Exit;
 import items.Item;
 import items.Roof;
+import items.Start;
 import items.TrapHolder;
 
 import java.io.BufferedReader;
@@ -422,6 +423,9 @@ public class Maze implements VisibleObject {
 					Level.setStartY(mazeY + 2.5);
 					Level.setStartZ(mazeZ + objectZ);
 					Level.setStartHorAngle(horAngle);
+					Start s = new Start(mazeX + objectX, mazeY , mazeZ + objectZ, mazeID);
+					itemList.add(s);
+					MazeRunner.visibleObjects.add(s);
 				}
 			}
 		} catch (IOException e) {
@@ -579,8 +583,9 @@ public class Maze implements VisibleObject {
 						// Here you calculate the coordinates for which the
 						// bottom left point of the element has to be drawn
 						double xtrans = Math.floor(((double) i + 1) / 2) * COLUMN_WIDTH + Math.floor((double) i / 2) * WALL_LENGTH;
+						double ytrans = 0;
 						double ztrans = Math.floor(((double) j + 1) / 2) * COLUMN_WIDTH + Math.floor((double) j / 2) * WALL_LENGTH;
-						gl.glTranslated(xtrans, 0.0, ztrans);
+						gl.glTranslated(xtrans, ytrans, ztrans);
 						if (textureMatrix[i][j] > 200) {
 							gl.glBindTexture(GL.GL_TEXTURE_2D, textureMatrix[i][j] - 200);
 						} else {
@@ -604,7 +609,7 @@ public class Maze implements VisibleObject {
 						// (even,odd) paints a wall in the X-direction
 						if (i % 2 == 0 && j % 2 != 0) {
 							if (height == 0 && textureMatrix[i][j] > 200) {
-								paintDoorXFromQuad(gl, height * ITEM_HEIGHT, i, j);
+								paintDoorXFromQuad(gl, height * ITEM_HEIGHT);
 							} else {
 								drawWallXFromQuad(gl, height * ITEM_HEIGHT);
 							}
@@ -673,12 +678,20 @@ public class Maze implements VisibleObject {
 		Teken.drawCuboid(gl, 0.0, WALL_LENGTH, h, ITEM_HEIGHT + h, 0.0, WALL_WIDTH);
 	}
 
-	private void paintDoorXFromQuad(GL gl, double h, int i, int j) {
+	private void paintDoorXFromQuad2(GL gl, double h) {
 		gl.glPushMatrix();
 		gl.glRotated(90, 0, 1, 0);
 		gl.glTranslated(-WALL_LENGTH, 0, 0);
 		drawDoorZFromQuad(gl, h);
 		gl.glPopMatrix();
+	}
+	private void paintDoorXFromQuad(GL gl, double h) {
+		// Links van de deur
+		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, h, ITEM_HEIGHT + h, 0.0, (WALL_LENGTH - DOOR_WIDTH) / 2);
+		// Rechts van de deur
+		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, h, ITEM_HEIGHT + h, (WALL_LENGTH + DOOR_WIDTH) / 2, WALL_LENGTH);
+		// Boven de deur
+		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, DOOR_HEIGHT + h, ITEM_HEIGHT + h, (WALL_LENGTH - DOOR_WIDTH) / 2, (WALL_LENGTH + DOOR_WIDTH) / 2);
 	}
 
 	public static void drawDoorZFromQuad(GL gl, double h) {

@@ -3,12 +3,11 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.sun.opengl.util.texture.Texture;
 
 public class Sound implements Runnable{
 	
@@ -37,9 +36,10 @@ public class Sound implements Runnable{
 				sounds.put(line, temp);
 				System.out.println("Sound loaded succesfully: " + line);
 			}
-		} catch (Exception e){
-			System.out.println("Error in Sound.init()");
-			e.printStackTrace();
+		} catch (FileNotFoundException e){
+			System.out.println("Error in Sound.init(): FileNotFoundException: " + e.getMessage());
+		} catch (IOException e){
+			System.out.println("Error in Sound.init(): IO Exception: " + e.getMessage());
 		}
 		System.out.println("Sounds loaded succesfully\n");
 	}
