@@ -7,7 +7,7 @@ import engine.ChangeGL;
 import engine.GameObject;
 import engine.MazeRunner;
 import engine.Player;
-
+//A BulletHolder contains a set amount of bullets. Again, the methods are easy to understand.
 public class BulletHolder extends Item {
 	public final int amount;
 

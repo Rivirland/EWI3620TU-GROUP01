@@ -34,7 +34,7 @@ import com.sun.opengl.util.texture.TextureIO;
 
 import engine.ChangeGL;
 import engine.InputDialog;
-import engine.Level;
+import engine.World;
 import engine.Maze;
 import engine.MazeRunner;
 
@@ -1709,17 +1709,17 @@ public class LevelEditor {
 
 		if (e.getKeyCode() == KeyEvent.VK_TAB) {
 			//MazeRunner.visibleObjects.clear();
-//			MazeRunner.visibleObjects.clear();
-			//TODO WEER ACTIVEREN
-//			String filename="";
-//			try {
-//				filename =levels.saveAs();
-//			} catch (FileNotFoundException e1) {
-//				e1.printStackTrace();
-//			}
-//			Level.clearMazeList();
-//			Level.leesLevels(filename);
-//			System.out.println(filename);
+
+			MazeRunner.visibleObjects.clear();
+			String filename="";
+			try {
+				filename =levels.saveAs();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			World.clearMazeList();
+			World.leesLevels(filename);
+			System.out.println(filename);
 			this.worldview = !worldview;
 			
 		}

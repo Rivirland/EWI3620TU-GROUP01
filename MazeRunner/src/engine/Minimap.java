@@ -2,13 +2,15 @@ package engine;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-
+//This class will draw the minimap!
 public class Minimap {
+	//Sets the drawable space to 40% of the height and width of your screen.
 	private static int minimapX = (int) (.4 * MazeRunner.screenWidth);
 	private static int minimapZ = (int) (.4 * MazeRunner.screenHeight);
 	static double columnPercentageX, columnPercentageZ;
 	static double wallPercentageX, wallPercentageZ;
 
+	//Displays the minimap. First it disables the 3D scene, then draws, and then reenables it
 	public static void displayMinimap(GL gl) {
 		GLU glu = new GLU();
 		gl.glMatrixMode(GL.GL_PROJECTION);
@@ -21,7 +23,9 @@ public class Minimap {
 		gl.glDisable(GL.GL_TEXTURE_2D);
 		// gl.glDisable(GL.GL_DEPTH_TEST);
 		
+		//Checks which parts of the matrix you're in you have discovered and then draws them
 		iterateOverMatrix(gl);
+		//Draws the background
 		drawBackground(gl);
 		
 		gl.glMatrixMode(GL.GL_PROJECTION);
@@ -31,15 +35,14 @@ public class Minimap {
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_TEXTURE_2D);
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-
-		// gl.glLoadIdentity();
 		gl.glPopMatrix();
 	}
 
+	
 	public static void iterateOverMatrix(GL gl) {
 		int mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		if (mazeID != -1) {
+			//Calculates how big the columns and walls should be.
 			Maze curMaze = MazeRunner.level.getMaze(mazeID);
 			double totalX = curMaze.maxX - curMaze.minX;
 			double totalZ = curMaze.maxZ - curMaze.minZ;
@@ -49,6 +52,7 @@ public class Minimap {
 			wallPercentageZ = Maze.WALL_LENGTH / totalZ;
 			// System.out.println(wallPercentageX+ " " + wallPercentageZ);
 			
+			//Draws the scene if you have visited that spot before.
 			for (int i = 0; i < curMaze.visitedMatrix.length; i++) {
 				for (int j = 0; j < curMaze.visitedMatrix[0].length; j++) {
 					if (curMaze.visitedMatrix[i][j] == 1) {

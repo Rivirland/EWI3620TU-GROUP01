@@ -5,8 +5,10 @@ import javax.media.opengl.GLAutoDrawable;
 import engine.MazeRunner;
 import menu.Teken;
 
+//You enter this state once you are killed.
 public class PlayerStateDead extends PlayerState{
 
+	//Upon clicking, everything gets reset.
 	@Override
 	public void itemUse() {
 		MazeRunner.player.reset();
@@ -19,6 +21,7 @@ public class PlayerStateDead extends PlayerState{
 		MazeRunner.player.canMove = true;
 	}
 
+	//Entering this state will make you unable to move and it will remove the minimap from view.
 	@Override
 	public void entering() {
 		MazeRunner.player.getControl().info = true;

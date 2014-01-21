@@ -1,4 +1,0 @@
-gunfire
-crash
-reload
-noBullets

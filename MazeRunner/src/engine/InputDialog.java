@@ -2,7 +2,7 @@ package engine;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+//This class makes the frame where you can enter a String pop up. The user can provide us their name, password, worlds starting locations etc.
 public class InputDialog
 {
 	public JFrame frame;
@@ -14,15 +14,4 @@ public class InputDialog
 		String res = JOptionPane.showInputDialog(frame, text);
 		return res;
 	}
-//  public static void main(String[] args)
-//  {
-//    // a jframe here isn't strictly necessary, but it makes the example a little more real
-//    JFrame 
-//
-//    // prompt the user to enter their name
-//    String name = JOptionPane.showInputDialog(frame, "What's your name?");
-//
-//    // get the user's input. note that if they press Cancel, 'name' will be null
-//    System.exit(0);
-//  }
 }

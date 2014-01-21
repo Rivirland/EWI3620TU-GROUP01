@@ -75,6 +75,7 @@ public class UserInput extends Control implements Runnable {
 	 *            The GLCanvas to which to add the listeners.
 	 */
 	public UserInput(GLCanvas canvas) {
+		//These lines are needed, because otherwise TAB would not be a detectable key somehow.
 		KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 
 		kfm.setDefaultFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);

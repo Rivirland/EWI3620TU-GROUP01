@@ -9,7 +9,7 @@ import menu.Teken;
 import engine.ChangeGL;
 import engine.MazeRunner;
 import engine.Sound;
-
+//When in gunmode, you should be able to shoot bullets if you have them. A shooting sound is played if you shoot, otherwise you hear a vague clicking sound.
 public class PlayerStateGun extends PlayerState {
 
 	@Override
@@ -44,7 +44,6 @@ public class PlayerStateGun extends PlayerState {
 
 	@Override
 	public void entering() {
-		System.out.println("Entering GunMode");
 		try {
 			Sound.play("reload.wav");
 		} catch (NullPointerException e) {
@@ -65,6 +64,7 @@ public class PlayerStateGun extends PlayerState {
 		Teken.textDraw(autodrawable, gl, "Number of bullets: " + MazeRunner.player.nrOfBullets, (float) (0.05 * MazeRunner.screenHeight), (float) (0.08 * MazeRunner.screenWidth), 30);
 	}
 
+	//Displaying the gun
 	@Override
 	public void displayItem(GL gl) {
 		ChangeGL.GLtoTexturedItem(gl);

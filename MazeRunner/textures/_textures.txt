@@ -41,3 +41,4 @@
 42: wallshootable7.jpg
 43: MenuBackground3Buttons.jpg
 44: leveleditorbg.jpg
+45: glow.png

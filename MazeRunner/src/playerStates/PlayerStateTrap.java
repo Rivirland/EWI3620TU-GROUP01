@@ -8,7 +8,7 @@ import javax.media.opengl.GLAutoDrawable;
 import menu.Teken;
 import engine.ChangeGL;
 import engine.MazeRunner;
-
+//Very much like the gunstate, but in here you can throw traps instead. You do not see an item if you have no traps to throw.
 public class PlayerStateTrap extends PlayerState {
 
 	@Override

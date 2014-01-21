@@ -11,6 +11,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import menu.Teken;
 
+//This class is responsible for managing the database and printing the highscores from the database.
 public class Database {
 	public Connection conn;
 	public Statement stat;
@@ -40,13 +41,15 @@ public class Database {
 		try {
 			stat.executeUpdate(st);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	//This prints the highscores.
 	public void printHighscores(GLAutoDrawable autodrawable, GL gl, String st) {
 		float h = 0.75f;
+		
+		//Prints the titles for the different columns.
 		Teken.textDraw(autodrawable, gl, "Player Name", 0.1f * MazeRunner.screenWidth, 0.85f * MazeRunner.screenHeight, 60);
 		Teken.textDraw(autodrawable, gl, "Score", 0.5f * MazeRunner.screenWidth, 0.85f * MazeRunner.screenHeight, 60);
 		Teken.textDraw(autodrawable, gl, "Time", 0.8f * MazeRunner.screenWidth, 0.85f * MazeRunner.screenHeight, 60);
@@ -57,13 +60,17 @@ public class Database {
 				// Retrieve the values from the rows, by specifying the column
 				// name.
 				String name = rs.getString("naam");
-				if(name.length() > 10){
-					name = name.substring(0,9);
+				//If the name is too long, it is cut off. This prevents the name from drawing over the scores.
+				if (name.length() > 10) {
+					name = name.substring(0, 9);
 				}
+				
+				//Prints the name, score and time on the screen on the specified height. 
 				Teken.textDraw(autodrawable, gl, name, 0.1f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
 				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("score")), 0.5f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
-				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("time")/1000), 0.8f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
+				Teken.textDraw(autodrawable, gl, Integer.toString(rs.getInt("time") / 1000), 0.8f * MazeRunner.screenWidth, h * MazeRunner.screenHeight, 60);
 
+				//We decrease h, so the next player's stats will be drawn below the current one's.
 				h -= 0.1;
 			}
 		} catch (Exception e) {
@@ -80,55 +87,4 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
-	// try{
-	// Class.forName("org.sqlite.JDBC");
-	// /* Create a connection to a database stored in a local file. The
-	// DriverManager will select
-	// * the driver that we just loaded. To initially create a database file, */
-	// Connection conn =
-	// DriverManager.getConnection("jdbc:sqlite:db/mydatabase.db");
-	//
-	// /* A Statement object is used to send SQL statements and retrieve its
-	// results. */
-	// Statement stat = conn.createStatement();
-	//
-	// /* A few example statements, these are executed at once. */
-	//
-	// // This sample recreates the database each time it is run.
-	// stat.executeUpdate("DROP TABLE IF EXISTS students;");
-	// stat.executeUpdate("CREATE TABLE students (studentnumber INT, name STRING);");
-	//
-	// // Insert some student data
-	// stat.executeUpdate("INSERT INTO students (studentnumber, name) values (123456, 'Piet');");
-	// stat.executeUpdate("INSERT INTO students (studentnumber, name) values (654321, 'Maria');");
-	//
-	//
-	// // Select all columns from the table 'students'
-	// ResultSet rs = stat.executeQuery("SELECT * FROM students");
-	//
-	// System.out.println("Students in database:");
-	//
-	// /* The result set contains multiple rows of results. rs.next() selects
-	// the next row and returns true only if it exists.
-	// * Initially, the cursor is placed before the first row. */
-	//
-	// // While there are rows of requested data left
-	// while (rs.next()) {
-	// // Retrieve the values from the rows, by specifying the column name.
-	// System.out.println("Student number = " + rs.getInt("studentnumber"));
-	// System.out.println("Name = " + rs.getString("name"));
-	// }
-	//
-	// /* It is important to manually close the connection when we're done, so
-	// that the database server is not overloaded
-	// * with connections waiting to time out. */
-	// rs.close();
-	// stat.close();
-	// conn.close();
-	// }
-	// catch(Exception e){
-	// System.out.println("Zaidmanexception occured!");
-	// e.printStackTrace();
-	// }
-
 }

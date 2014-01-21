@@ -6,7 +6,7 @@ import com.sun.opengl.util.GLUT;
 
 import engine.Animator;
 import engine.MazeRunner;
-
+//Displays the animation that occurs when an enemy walks into a trap.
 public class TrapDroppedGBS extends TrapDropped {
 	private double radius = 0.0;
 	private double height = 2.5;

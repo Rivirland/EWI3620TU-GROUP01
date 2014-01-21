@@ -18,14 +18,19 @@ public class Portal {
 	private double z;
 //	public int portalID;
 //	public int portalConnectionID;
+	private double border=0.2;
 	
 	private static int[][] portalconnectionlist;
 	//private int[] connectedportals;
 	
 	public static int mazeID;
+	
+	private int connectedmazeID;
 	public static ArrayList<Portal> portalList;
 	public static ArrayList<Maze> mazeList;
-
+	private static boolean run = false;
+	private static int pcounter=-1;
+	
 	private Camera portalcamera;
 
 	private static int amountmazep = 2;
@@ -74,7 +79,20 @@ public class Portal {
 //		this.portalConnectionID = cID;
 //	}
 
-
+/**
+ * to calculate the corresponing worlds each portal is linked to, so that only one world to a portal has to
+ * be drawn
+ */
+	public static void privatemazeID(){
+		for (int i =0; i<portalList.size(); i++){
+			for(int j=0; j<portalList.size(); j++){
+			if(Portal.Equals(portalList.get(j).gettoPortal(), portalList.get(i))){
+				portalList.get(i).setConnectedlevelID(Math.round(j/amountmazep));
+				System.out.println ("het level waar portal "+i+" connected mee is: "+portalList.get(i).getConnectedlevelID());
+	}
+		}
+		}
+	}
 
 	/**
 	 * Portals vinden voor het level waar de player nu in zit, dit werkt omdat
@@ -82,18 +100,22 @@ public class Portal {
 	 */
 	public static void activePortaldisplay(GL gl) {
 //gl.glLoadIdentity();
+
 		// finding the activeportals, portals are identified with an integer
 		// number
 		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		Portal.portalList= MazeRunner.portalList;
-		Portal.mazeList= Level.mazelist;
+		Portal.mazeList= World.mazelist;
+//		MazeRunner.setEventMessage("mazeID "+mazeID);
 		
-		// all portal cameras are updated
-		for(int i=0; i<portalList.size(); i++){
-			portalList.get(i).calcPortaltoPlayer(MazeRunner.player);
-			portalList.get(i).updateCamera(glut, gl, MazeRunner.getPlayer());
+		
+		// to calculate the corresponing worlds each portal is linked to
+		if(!run){
+			privatemazeID();
+			run = true;
 		}
 		
+
 		
 		if (mazeID != -1){
 		activep = new int[amountmazep]; 
@@ -101,14 +123,20 @@ public class Portal {
 			activep[i] = mazeID*amountmazep+i;
 		}
 		
+		// all portal cameras are updated
+		for(int i=0; i<portalList.size(); i++){
+			portalList.get(i).calcPortaltoPlayer(MazeRunner.player);
+			portalList.get(i).updateCamera(glut, gl, MazeRunner.getPlayer(), i);
+		}
+		
+		
 		//displaying all the portals that aren't active
 		displayInactivePortals(gl, portalList);
 		
-		
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
-		//** dit wordt hier niet gedaan MazeRunner.portalList.get(activep[i]).calcPortaltoPlayer(MazeRunner.getPlayer());
-		stencil(gl, MazeRunner.portalList.get(activep[i]), i);
+		portalList.get(activep[i]).stencilborder(gl);
+		stencil(gl, portalList.get(activep[i]), activep[i]);
 		}
 		
 		//TODO tijdelijk om 1 keer stencil te testen
@@ -119,7 +147,33 @@ public class Portal {
 	}
 		
 }
+public void stencilborder(GL gl){
+	
+//	gl.glColor3d(1, 1, 1);
+	gl.glClearColor(1, 1, 1, 0);
+	
+	gl.glPushMatrix();
+	gl.glTranslated(this.x,  (this.y), this.z);
+	gl.glRotatef(facingdirection * 90, 0, 1, 0);
+	gl.glDisable(GL.GL_CULL_FACE);
+	gl.glBindTexture(GL.GL_TEXTURE_2D, 45);
+	gl.glBegin(GL.GL_QUADS);
+	
+	gl.glTexCoord2d(0.0, 0.0);
+	gl.glVertex3d(0, 0, -breedte * 0.5-border);
+	gl.glTexCoord2d(0.0, 1.0);
+	gl.glVertex3d(0, hoogte+border, -breedte * 0.5-border);
+	gl.glTexCoord2d(1.0, 1.0);
+	gl.glVertex3d(0, hoogte+border, breedte * 0.5+border);
+	gl.glTexCoord2d(1.0, 0.0);
+	gl.glVertex3d(0, 0, breedte * 0.5+border);
+	gl.glEnd();
+	gl.glPopMatrix();
+	
 
+}
+
+	
 	public static void stencil (GL gl, Portal p, int num){
 		
 		GLUT glut=new GLUT();
@@ -137,7 +191,9 @@ public class Portal {
 		 // first parameter is the test function
 		 // second is the stencil value that is being compared
 		 // third is mask: a mask applied to both ref and the stencil pixel; you can use 0xFF (if you have 8 bitplanes) to disable the mask
-		 gl.glStencilFunc(GL.GL_NEVER, 1, 0xff);
+		 gl.glStencilFunc(GL.GL_NEVER, 1, -1);
+//		 gl.glStencilFunc(GL.GL_NOTEQUAL, 1, -1);
+		 
 		 
 		 //1. sfail: the test from glStencilFunc failed
 		 //2. dpfail: the test from glStencilFunc passed, but the depth buffer test failed
@@ -145,24 +201,19 @@ public class Portal {
 		 gl.glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_KEEP);
 		 
 		 //control the bits of an operation
-		 gl.glStencilMask(0xff);
+		 gl.glStencilMask(-1);
 		 // clear the stencil buffer so everything else is unaffected
-		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT); 
-		  
+		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		 
 		 // Teken.rechthoek(gl, x1, y1, x2, y2);
 	
 		 // portal die getest wordt op view
 		 p.stencilDisplay(gl);
-		 
-		 //TODO om te testen of het werkt, moet stencilDisplay worden
-		 //p.displayPortal(glut, gl);
-		 
+
 		  gl.glColorMask(true,true,true,true);
 		  gl.glDepthMask(true);
 		  
 		//TODO hier moet de view voor de portal gegeven worden
-		  
-		  
 		  
 		  gl.glStencilMask(0);
 		  
@@ -173,6 +224,7 @@ public class Portal {
 		  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
 
 		  portalView(gl, p.portalcamera, num);
+		  
 		  gl.glDisable(GL.GL_STENCIL_TEST);
 		 //displayInactivePortals(gl, MazeRunner.portalList);
 	}
@@ -181,12 +233,9 @@ public class Portal {
 
 		gl.glPushMatrix();
 		gl.glTranslated(this.x,  (this.y), this.z);
-
 		gl.glRotatef(facingdirection * 90, 0, 1, 0);
-
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
-
 		gl.glVertex3d(0, 0, -breedte * 0.5);
 		gl.glVertex3d(0, hoogte, -breedte * 0.5);
 		gl.glVertex3d(0, hoogte, breedte * 0.5);
@@ -198,24 +247,24 @@ public class Portal {
 
 	public static void portalView(GL gl, Camera portalcamera,int num) {
 		
-		//ArrayList<Portal> portalList=MazeRunner.portalList;
 		GLU glu=new GLU();
 		GLUT glut = new GLUT();
 		gl.glViewport(0, 0, MazeRunner.getScreenWidth(), MazeRunner.getScreenHeight());
-		//gl.glLoadIdentity();
+
 		//glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(), portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
+		//method to only use use gl clear only once each portal flow
+//		if (num>pcounter){
+//			gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+//			pcounter = num +1;
+//		}else {
+//			pcounter = -1;
+//		}
+		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+//		gl.glClear(GL.GL)
 		
-//		Hier skybox displayen
-		//Skybox.displaySkybox(gl);
 		
-//		om de vloer te tekenen	
+		Skybox.displaySkybox(gl);
 		
-//		gl.glColor3d(1, 1, 1);
-//		De grond displayen	
-		
-//		gl.glLoadIdentity();
-		
-		Skybox.displaySkybox(gl, portalcamera);
 		glu.gluLookAt(
 				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
 				portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),
@@ -223,17 +272,11 @@ public class Portal {
 		
 	
 //		Here only the maze should be shown that the portalview leads to...
-		int i=0;
-		while(Portal.Equals(portalList.get(activep[num]).gettoPortal(), portalList.get(i))!=false){
-			i++;
-		}
-		
-		
-		
-		
-		
-		MazeRunner.visibleIterator(gl);
-		
+		mazeList.get(portalList.get(num).getConnectedlevelID()).display(gl);
+//		MazeRunner.setEventMessage("portalnum: "+num+"level to be drawn:"+portalList.get(num).getConnectedlevelID());
+
+//		MazeRunner.visibleIterator(gl);
+//		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 	}
 		
 		
@@ -444,7 +487,7 @@ public class Portal {
 
 	// make vector between positions of playerobject and portal object
 
-	public void updateCamera(GLUT glut, GL gl, Player player) {
+	public void updateCamera(GLUT glut, GL gl, Player player, int num) {
 		if (connected) {
 			// de camera die wordt vertoont op p1 staat op evengrote omgekeerde
 			// afstand van de facing direction van portal p2 als de speler tot
@@ -456,18 +499,18 @@ public class Portal {
 //			double y = this.toportal.getY() + this.dy;
 //			double z = this.toportal.getZ() + this.dz;
 			
-			// het verschil in facingdirection berekenen
-	//		facingdirection = this.facingdirection - toportal.getFacingdirection();
 			
 			int facingdirection = this.facingdirection - toportal.getFacingdirection()+2;
 			
 			double xtransform = Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
 					- Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getX();
-			double ytransform = player.getLocationY() - this.y + toportal.getY();
+			double ytransform = player.getLocationY() - this.y + toportal.getY() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY ;
 			double ztransform = Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
 					+ Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getZ();
 			
 			
+			
+			MazeRunner.setEventMessage("hcurrent: "+ mazeList.get(mazeID).mazeY+" hconnected: "+mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY+"connectedmazeID"+portalList.get(num).getConnectedlevelID());
 			
 			gl.glPushMatrix();
 			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
@@ -476,7 +519,7 @@ public class Portal {
 			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
 			//gl.glRotated(90, 0, 1, 0);
 			//gl.glTranslated(xtransform, ytransform, ztransform);
-			glut.glutSolidCube(2);
+			glut.glutSolidCube(1);
 			gl.glPopMatrix();
 			
 			
@@ -506,6 +549,7 @@ public class Portal {
 			portalcamera.setHorAngle(player.getHorAngle());
 			portalcamera.setVerAngle(player.getVerAngle());
 			portalcamera.calculateVRP(facingdirection+2);
+	//		portalcamera.calculateVRP(facingdirection);
 
 		}
 		
@@ -588,5 +632,17 @@ public class Portal {
 	public Portal gettoPortal() {
 		return toportal;
 	}
+	
+	private void setConnectedlevelID(int ID){
+		this.connectedmazeID =ID;
+	}
+	
+	private int getConnectedlevelID (){
+		return this.connectedmazeID;
+	}
 
+	
+	public static void Portaltoconnectionreset(){
+		Portal.run = false;
+	}
 }
