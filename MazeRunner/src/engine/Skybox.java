@@ -50,8 +50,7 @@ public class Skybox {
 
 	}
 
-	// de SkyBox heeft nog een displayfunctie specifiek voor portals
-
+	// de SkyBox heeft nog een displayfunctie specifiek voor portals	
 	public static void displaySkybox(GL gl, Camera portalcamera) {
 		GLU glu = new GLU();
 		gl.glLoadIdentity();
@@ -109,6 +108,7 @@ public class Skybox {
 		// gl.glDisable(GL.GL_TEXTURE_2D);
 		gl.glPopMatrix();
 
+		
 	}
 
 }

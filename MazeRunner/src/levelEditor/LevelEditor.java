@@ -1830,6 +1830,7 @@ public class LevelEditor {
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getKeyCode() == KeyEvent.VK_TAB) {
+
 			worldview = !worldview;
 			if (worldview) {
 				try {
@@ -1843,6 +1844,7 @@ public class LevelEditor {
 					System.out.println("Fout in keyPressed TAB (levels.refreshLevels()");
 					e1.printStackTrace();
 				}
+
 			}
 		}
 	}

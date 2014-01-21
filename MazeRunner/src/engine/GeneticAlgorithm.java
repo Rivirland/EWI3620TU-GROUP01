@@ -23,6 +23,7 @@ public class GeneticAlgorithm {
 		mazes = mazesWithPortals;
 		parentsPerIteration = ppi;
 		distances = calcDistances();
+		Portal.Portaltoconnectionreset();
 	}
 
 	// Solve's the TSP-problem!

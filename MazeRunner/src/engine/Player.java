@@ -370,5 +370,5 @@ public class Player extends GameObject {
 	public double getLocalZ() {
 		return this.locationZ - MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
 	}
-
+	
 }

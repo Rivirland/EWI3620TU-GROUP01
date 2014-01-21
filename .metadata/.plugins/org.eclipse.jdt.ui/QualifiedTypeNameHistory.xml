@@ -6,4 +6,5 @@
 <fullyQualifiedTypeName name="menu.Main"/>
 <fullyQualifiedTypeName name="enemies.EnemySmart"/>
 <fullyQualifiedTypeName name="engine.Maze"/>
+<fullyQualifiedTypeName name="engine.MazeRunner"/>
 </qualifiedTypeNameHistroy>
