@@ -407,46 +407,24 @@ public class LevelEditor {
 
 		gl.glColor3f(0.71f, 0.90f, 0.11f);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(443f / 1600f * screenWidth, 803f / 900f * screenHeight);
-		gl.glVertex2f(453f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(443f / 1600f * screenWidth, 793f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 793f / 900f * screenHeight);
 		gl.glVertex2f(453f / 1600f * screenWidth, 770f / 900f * screenHeight);
 		gl.glVertex2f(443f / 1600f * screenWidth, 770f / 900f * screenHeight);
 		gl.glEnd();
 		gl.glColor3f(0.13f, 0.69f, 0.30f);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(443f / 1600f * screenWidth, 803f / 900f * screenHeight);
-		gl.glVertex2f(453f / 1600f * screenWidth, 803f / 900f * screenHeight);
-		gl.glVertex2f(458f / 1600f * screenWidth, 806f / 900f * screenHeight);
-		gl.glVertex2f(448f / 1600f * screenWidth, 806f / 900f * screenHeight);
+		gl.glVertex2f(443f / 1600f * screenWidth, 793f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 793f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 796f / 900f * screenHeight);
+		gl.glVertex2f(448f / 1600f * screenWidth, 796f / 900f * screenHeight);
 		gl.glEnd();
 		gl.glColor3f(0.42f, 0.68f, 0.14f);
 		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(453f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 793f / 900f * screenHeight);
 		gl.glVertex2f(453f / 1600f * screenWidth, 770f / 900f * screenHeight);
-		gl.glVertex2f(458f / 1600f * screenWidth, 773f / 900f * screenHeight);
-		gl.glVertex2f(458f / 1600f * screenWidth, 806f / 900f * screenHeight);
-		gl.glEnd();
-		
-		gl.glColor3f(0.71f, 0.90f, 0.11f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(443f / 1600f * screenWidth, 760f / 900f * screenHeight);
-		gl.glVertex2f(453f / 1600f * screenWidth, 760f / 900f * screenHeight);
-		gl.glVertex2f(453f / 1600f * screenWidth, 750f / 900f * screenHeight);
-		gl.glVertex2f(443f / 1600f * screenWidth, 750f / 900f * screenHeight);
-		gl.glEnd();
-		gl.glColor3f(0.13f, 0.69f, 0.30f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(443f / 1600f * screenWidth, 760f / 900f * screenHeight);
-		gl.glVertex2f(453f / 1600f * screenWidth, 760f / 900f * screenHeight);
-		gl.glVertex2f(458f / 1600f * screenWidth, 763f / 900f * screenHeight);
-		gl.glVertex2f(448f / 1600f * screenWidth, 763f / 900f * screenHeight);
-		gl.glEnd();
-		gl.glColor3f(0.42f, 0.68f, 0.14f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(453f / 1600f * screenWidth, 760f / 900f * screenHeight);
-		gl.glVertex2f(453f / 1600f * screenWidth, 750f / 900f * screenHeight);
-		gl.glVertex2f(458f / 1600f * screenWidth, 753f / 900f * screenHeight);
-		gl.glVertex2f(458f / 1600f * screenWidth, 763f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 973f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 796f / 900f * screenHeight);
 		gl.glEnd();
 		
 		// zwart onder de buttons
