@@ -409,6 +409,12 @@ public class MazeRunner {
 		if (player.playerStateInt != 3 && player.playerStateInt != 4) {
 			playingTime += deltaTime;
 		}
+		if (player.invisible) {
+			player.cloakSeconds -= MazeRunner.deltaTime;
+			if (player.cloakSeconds <= 0) {
+				player.invisible = false;
+			}
+		}
 	}
 
 	/**
