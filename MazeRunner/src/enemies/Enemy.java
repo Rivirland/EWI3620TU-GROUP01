@@ -12,13 +12,20 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	// The different characteristics of an enemy
 	public double speed;
 	public double begX, begY, begZ, begSpeed;
-	private double horAngle;
-
+	public double horAngle;
+	public int currentMazeID;
+	public Maze currentMaze;
+	
+	// To check for multiple interactions with the player and maze
+	public boolean inSameMazeAsPlayer;
+	public boolean[] enemyCollide = {false, false, false, false};
+	public boolean patrol;
+	
 	// Deciding which directions the enemy is heading
-	protected boolean west = false;
-	protected boolean east = false;
-	protected boolean north = false;
-	protected boolean south = false;
+	public boolean west = false;
+	public boolean east = false;
+	public boolean north = false;
+	public boolean south = false;
 	private int direction;
 
 	// Attributes that make sure the death animations are played correctly
@@ -45,7 +52,13 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		this.trapped = false;
 		this.dead = false;
 		this.size = 1;
-		this.alert = false;
+		this.setAlert(false);
+		try {
+			updateCurrentMaze();
+		} catch(Exception e){
+			this.currentMazeID=-1;
+			this.currentMaze=null;
+		}
 	}
 
 	public void reset() {
@@ -99,6 +112,14 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 		} else {
 			east = true;
 			setHorAngle(-90);
+		}
+	}
+	protected void updateCurrentMaze() {
+		try{
+			this.currentMazeID=MazeRunner.level.getCurrentMaze(this);
+			this.currentMaze=World.getMaze(currentMazeID); 
+		} catch( Exception e){
+			System.out.println("Fout in updateCurrentMaze");
 		}
 	}
 
@@ -155,6 +176,108 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 
 	public void rotateEnemy(GL gl) {
 		gl.glRotated(horAngle, 0, 1, 0);
+	}
+	protected void checkCollision() {
+		try{
+			enemyCollide = MazeRunner.level.collides(this, 1);
+		} catch (Exception e){
+			enemyCollide[0]=true;
+			enemyCollide[1]=true;
+			enemyCollide[2]=true;
+			enemyCollide[3]=true;
+		}
+		if (enemyCollide[0]) {
+			this.setLocationX(locationX);
+			this.setDirection((int) (1 + 3 * Math.random()));
+		}
+		if (enemyCollide[1]) {
+			this.setLocationZ(locationZ);
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(2);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (enemyCollide[2]) {
+			this.setLocationX(locationX);
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(1);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (enemyCollide[3]) {
+			this.setLocationZ(locationZ);
+			this.setDirection((int) (3 * Math.random()));
+		}
+		
+	}
+	protected void checkOuterBoundsMaze() {
+		if (locationX > currentMaze.maxX - 1) {
+			east = false;
+			this.setDirection((int) (1 + 3 * Math.random()));
+		}
+		if (locationX < currentMaze.minX + 1) {
+			west = false;
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(1);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (locationZ < currentMaze.minZ + 1) {
+			north = false;
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(2);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (locationZ > currentMaze.maxZ - 1) {
+			west = false;
+			this.setDirection((int) (3 * Math.random()));
+		}
+		
+	}
+	public void actualMovement(int deltaTime){
+		if (west) {
+			locationX -= speed * deltaTime;
+		}
+		if (east) {
+			locationX += speed * deltaTime;
+		}
+		if (north) {
+			locationZ -= speed * deltaTime;
+		}
+		if (south) {
+			locationZ += speed * deltaTime;
+		}
+	}
+	protected void speedUp(Player player, int deltaTime) {
+		if (locationX - currentMaze.mazeX > player.getLocalX()) {
+			this.locationX -= this.speed * deltaTime;
+		}
+		if (locationX - currentMaze.mazeX < player.getLocalX()) {
+			this.locationX += this.speed * deltaTime;
+		}
+		if (locationZ - currentMaze.mazeZ > player.getLocalZ()) {
+			this.locationZ -= this.speed * deltaTime;
+		}
+		if (locationZ - currentMaze.mazeZ < player.getLocalZ()) {
+			this.locationZ += this.speed * deltaTime;
+		}
 	}
 
 	
@@ -257,5 +380,38 @@ public abstract class Enemy extends GameObject implements VisibleObject {
 	public double getTrappedY() {
 		return this.trappedY;
 	}
+	public int getCurrentMazeID(){
+		return this.currentMazeID;
+	}
+	public void setCurrentMazeID(int id){
+		this.currentMazeID=id;
+	}
+	public Maze getCurrentMaze(){
+		return this.currentMaze;
+	}
+	public void setCurrentMaze(Maze maze){
+		this.currentMaze=maze;
+	}
 
+	public void checkInSameMaze(Player player) {
+		if (MazeRunner.level.inSameMaze(this, player) != -1){
+			this.inSameMazeAsPlayer=true;
+		} else {
+			this.inSameMazeAsPlayer=false;
+		}		
+	}
+
+	public boolean getAlert() {
+		return this.alert;
+	}
+
+	public void setAlert(boolean alert) {
+		this.alert = alert;
+	}
+	public double getLocalX(){
+		return locationX - currentMaze.mazeX;
+	}
+	public double getLocalZ(){
+		return locationZ - currentMaze.mazeZ;
+	}
 }

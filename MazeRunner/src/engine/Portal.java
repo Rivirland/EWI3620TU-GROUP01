@@ -1,6 +1,10 @@
 package engine;
 
+import items.Item;
+import items.Roof;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
@@ -9,6 +13,8 @@ import menu.Main;
 import menu.Teken;
 
 import com.sun.opengl.util.GLUT;
+
+import enemies.Enemy;
 
 public class Portal {
 
@@ -23,17 +29,23 @@ public class Portal {
 	private static int[][] portalconnectionlist;
 	//private int[] connectedportals;
 	
+	public static int previousmazeID;
 	public static int mazeID;
 	
 	private int connectedmazeID;
 	public static ArrayList<Portal> portalList;
 	public static ArrayList<Maze> mazeList;
+	public static ArrayList<Roof> rooflist;
+	public static ArrayList<Enemy> enemyList;
+	//public static ArrayList<VisibleObject> visibleObjects= new ArrayList<VisibleObject>();
+	public static ArrayList<ArrayList<VisibleObject>> visibleArray = new ArrayList<ArrayList<VisibleObject>>();
 	private static boolean run = false;
 	private static int pcounter=-1;
 	
 	private Camera portalcamera;
-
+// the amount of portals in every maze
 	private static int amountmazep = 2;
+// the active portals (their number) this iteration
 	private static int[] activep;
 
 	// eigenschappen van de portal
@@ -69,16 +81,6 @@ public class Portal {
 		this.portalcamera=new Camera(0,0,0, facingdirection*-90,0);
 	}
 
-//	public Portal(float x, float y, float z, int facingdirection, int ID, int cID) {
-//		this.x = x;
-//		this.y = y;
-//		this.z = z;
-//		this.facingdirection = facingdirection % 4; // als hoger dan 3 dan komt											// het toch goed
-//		this.setisConnected(false);
-//		this.portalID = ID;
-//		this.portalConnectionID = cID;
-//	}
-
 /**
  * to calculate the corresponing worlds each portal is linked to, so that only one world to a portal has to
  * be drawn
@@ -89,11 +91,49 @@ public class Portal {
 			if(Portal.Equals(portalList.get(j).gettoPortal(), portalList.get(i))){
 				portalList.get(i).setConnectedlevelID(Math.round(j/amountmazep));
 				System.out.println ("het level waar portal "+i+" connected mee is: "+portalList.get(i).getConnectedlevelID());
-	}
+				}
+			}
 		}
+	}
+	
+	/**
+	 * When the currentmazeID is changed visibleobjects is rewritten
+	 */
+	public static void checkmazeChange(){
+		if(mazeID != previousmazeID){
+			PortalvisibleobjectsRedraw();
+			previousmazeID = mazeID;
 		}
 	}
 
+	
+	public static void PortalvisibleobjectsRedraw(){
+		visibleArray.clear();
+		ArrayList<VisibleObject> visibleObjects= new ArrayList<VisibleObject>();
+		for (int i=0; i< amountmazep; i++){
+			visibleArray.add(visibleObjects);
+		}
+		
+		for (int i = 0; i<amountmazep; i++){
+			ArrayList<Item> tempitemlist= mazeList.get(portalList.get(activep[i]).getConnectedlevelID()).getItemList();
+			for (int j = 0; j<tempitemlist.size(); j++){
+				visibleArray.get(i).add(tempitemlist.get(j));
+				System.out.println("hallo "+visibleArray.size());
+			}
+			for (int j=0; j<MazeRunner.enemyList.size(); j++){
+			//TODO hier gaat iets niet goed met getcurrentmazeID, is dit dezelfde manier van tellen van mazes als in Portal?
+			if ((MazeRunner.enemyList.get(j).getCurrentMazeID()+1)==portalList.get(activep[i]).getConnectedlevelID()){
+				visibleArray.get(i).add(MazeRunner.enemyList.get(j));
+		}
+	}
+			for (int j=0; j<rooflist.size(); j++){
+				if (rooflist.get(j).getMazeID() == portalList.get(activep[i]).getConnectedlevelID()){
+					visibleArray.get(i).add(rooflist.get(j));
+		}
+			}
+		}
+		System.out.println(visibleArray.size());
+	}
 	/**
 	 * Portals vinden voor het level waar de player nu in zit, dit werkt omdat
 	 * de levels in zelfde sequentie worden geladen als de portals
@@ -106,22 +146,25 @@ public class Portal {
 		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		Portal.portalList= MazeRunner.portalList;
 		Portal.mazeList= World.mazelist;
+		Portal.rooflist = MazeRunner.getRoofList();
+		
 //		MazeRunner.setEventMessage("mazeID "+mazeID);
-		
-		
-		// to calculate the corresponing worlds each portal is linked to
-		if(!run){
-			privatemazeID();
-			run = true;
-		}
-		
-
 		
 		if (mazeID != -1){
 		activep = new int[amountmazep]; 
 		for(int i=0; i<amountmazep; i++){
 			activep[i] = mazeID*amountmazep+i;
 		}
+		
+		// to calculate the corresponing worlds each portal is linked to
+		if(!run){
+			privatemazeID();
+			run = true;
+			PortalvisibleobjectsRedraw();
+		}
+
+		
+		checkmazeChange();
 		
 		// all portal cameras are updated
 		for(int i=0; i<portalList.size(); i++){
@@ -136,12 +179,8 @@ public class Portal {
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
 		portalList.get(activep[i]).stencilborder(gl);
-		stencil(gl, portalList.get(activep[i]), activep[i]);
+		stencil(gl, portalList.get(activep[i]), activep[i], i);
 		}
-		
-		//TODO tijdelijk om 1 keer stencil te testen
-//		stencil(gl, portalList.get(activep[0]), 0);
-		
 	}else{
 		displayInactivePortals(gl, portalList);
 	}
@@ -174,7 +213,7 @@ public void stencilborder(GL gl){
 }
 
 	
-	public static void stencil (GL gl, Portal p, int num){
+	public static void stencil (GL gl, Portal p, int num, int count){
 		
 		GLUT glut=new GLUT();
 		
@@ -223,7 +262,7 @@ public void stencilborder(GL gl){
 		  // if buffervalue equal to 1 then it gets overwritten
 		  gl.glStencilFunc(GL.GL_EQUAL, 1, 0xFF);
 
-		  portalView(gl, p.portalcamera, num);
+		  portalView(gl, p.portalcamera, num, count);
 		  
 		  gl.glDisable(GL.GL_STENCIL_TEST);
 		 //displayInactivePortals(gl, MazeRunner.portalList);
@@ -245,7 +284,7 @@ public void stencilborder(GL gl){
 
 	}
 
-	public static void portalView(GL gl, Camera portalcamera,int num) {
+	public static void portalView(GL gl, Camera portalcamera,int num, int count) {
 		
 		GLU glu=new GLU();
 		GLUT glut = new GLUT();
@@ -263,7 +302,7 @@ public void stencilborder(GL gl){
 //		gl.glClear(GL.GL)
 		
 		
-		Skybox.displaySkybox(gl);
+		Skybox.displaySkybox(gl,(portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection() ));
 		
 		glu.gluLookAt(
 				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
@@ -273,10 +312,41 @@ public void stencilborder(GL gl){
 	
 //		Here only the maze should be shown that the portalview leads to...
 		mazeList.get(portalList.get(num).getConnectedlevelID()).display(gl);
-//		MazeRunner.setEventMessage("portalnum: "+num+"level to be drawn:"+portalList.get(num).getConnectedlevelID());
+		
+
+		gl.glPushMatrix();
+		
+		gl.glTranslated(mazeList.get(mazeID).mazeX-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX,
+				mazeList.get(mazeID).mazeY-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY,
+				mazeList.get(mazeID).mazeZ-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ);
+		System.out.println(visibleArray.size());
+		for (Iterator<VisibleObject> it = visibleArray.get(count).iterator(); it.hasNext();) {
+			it.next().display(gl);
+			gl.glPopMatrix();
+	}
+		//drawing the roofs
+//		MazeRunner.setEventMessage(rooflist.get(0).getLocationY()+"");
+//		MazeRunner.setEventMessage(mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX+"");
+		
+		
+		
+//		for (int i=0; i<rooflist.size(); i++){
+//			if (rooflist.get(i).getMazeID() == portalList.get(num).getConnectedlevelID()){
+//			gl.glPushMatrix();
+//		//	gl.glTranslated(0, -rooflist.get(i).getLocationY(), 0);
+//	gl.glTranslated(mazeList.get(mazeID).mazeX-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX,
+//					mazeList.get(mazeID).mazeY-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY,
+//					mazeList.get(mazeID).mazeZ-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ);
+//			rooflist.get(i).display(gl);
+//			gl.glPopMatrix();
+//			}
+//		}
+		
+		
+		// drawing the enemies
 
 //		MazeRunner.visibleIterator(gl);
-//		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+
 	}
 		
 		
@@ -502,9 +572,17 @@ public void stencilborder(GL gl){
 			
 			int facingdirection = this.facingdirection - toportal.getFacingdirection()+2;
 			
-			double xtransform = Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
+//			double xtransform = Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
+//					- Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getX();
+//			double ytransform = player.getLocationY() - this.y + toportal.getY() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY ;
+//			double ztransform = Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
+//					+ Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getZ();
+//			
+			
+			
+		double xtransform = Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
 					- Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getX();
-			double ytransform = player.getLocationY() - this.y + toportal.getY() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY ;
+			double ytransform = player.getLocationY() - this.y + toportal.getY() ;
 			double ztransform = Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
 					+ Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getZ();
 			

@@ -283,7 +283,7 @@ public class MazeRunner {
 		}
 
 		if (player.playerStateInt == 2) {
-			Reticle.display(gl);
+			//Reticle.display(gl);
 		}
 
 		gl.glLoadIdentity();
@@ -737,6 +737,10 @@ public class MazeRunner {
 	public static void setEventMessage(String eveMsg) {
 		eventMessageTime = Calendar.getInstance().getTimeInMillis();
 		eventMessage = eveMsg;
+	}
+	
+	public static ArrayList<Roof> getRoofList(){
+		return roofList;
 	}
 
 }

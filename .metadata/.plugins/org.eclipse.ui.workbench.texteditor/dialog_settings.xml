@@ -2,9 +2,9 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="305" key="DIALOG_WIDTH"/>
-		<item value="222" key="DIALOG_Y_ORIGIN"/>
+		<item value="182" key="DIALOG_Y_ORIGIN"/>
 		<item value="442" key="DIALOG_HEIGHT"/>
-		<item value="1012" key="DIALOG_X_ORIGIN"/>
+		<item value="1245" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="SolidCube" key="selection"/>
+		<item value="updateCamera" key="selection"/>
 		<list key="findhistory">
-			<item value="solidcube"/>
-			<item value="texture"/>
-			<item value="bind"/>
-			<item value="updatecamera"/>
-			<item value="updatecamear"/>
-			<item value="skybox"/>
 			<item value="updateCamera"/>
-			<item value="mazeID"/>
+			<item value="skybox"/>
+			<item value="updatecamera"/>
+			<item value="&#x09;&#x09; */"/>
+			<item value="currentMaze"/>
+			<item value="alert"/>
+			<item value="iterator"/>
+			<item value="getitem"/>
 		</list>
 		<list key="replacehistory">
 			<item value="connectedmazeID"/>

@@ -159,48 +159,10 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 
 		this.maxY = maxY;
 
-		// System.out.println("minx "+minX);
-		// System.out.println("maxx "+maxX);
-		// System.out.println("minz "+minZ);
-		// System.out.println("maxz "+maxZ);
-		// System.out.println("miny "+minY);
-		// System.out.println("maxy "+maxY);
-		//
 		this.xcenter = (minX + maxX) / 2;
 		this.ycenter = (minY + maxY) / 2;
 		this.zcenter = (minZ + maxZ) / 2;
-		//
-		// System.out.println("x1 "+x1);
-		// System.out.println("x2 "+x2);
-		// System.out.println("y1 "+y1);
-		// System.out.println("y2 "+x2);
-		//
-		// System.out.println("xcenter "+xcenter);
-		// System.out.println("ycenter "+ycenter);
-		// System.out.println("zcenter "+zcenter);
-		//
-		// System.out.println("xmidden "+xmidden);
-		// System.out.println("ymidden "+ymidden);
 
-		// this.panX= -(x2+x1)/2;
-		// this.panY = -(y2+y1)/2;
-
-		// panX = -(x2-x1)/2;
-		// panY = -(y2-y1)/2;
-
-		// System.out.println("beginX"+ panX);
-		// System.out.println("beginY"+ panY);
-		//
-		//
-
-		// 1000 normaal
-
-		// (Math.abs(maxX) + Math.abs(minX))/(x2-x1)
-		// window is 500
-
-		// dan scale=0.5
-
-		// scalef = Math.abs((maxX + minX*-1)/(x2-x1)) ;
 		scalef = Math.abs((x2 - x1) / (maxX - minX));
 
 	}
@@ -266,7 +228,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 		gl.glColor3d(1, 1, 1);
 
 		gl.glDisable(GL.GL_DEPTH_TEST);
-		Teken.rechthoek(gl, xmidden - 5, ymidden - 5, xmidden + 5, ymidden + 5);
+//		Teken.rechthoek(gl, xmidden - 5, ymidden - 5, xmidden + 5, ymidden + 5);
 		gl.glDisable(GL.GL_SCISSOR_TEST);
 		gl.glDisable(GL.GL_STENCIL_TEST);
 	}

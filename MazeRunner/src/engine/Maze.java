@@ -726,6 +726,10 @@ public class Maze implements VisibleObject {
 	public static double getItemHeight() {
 		return ITEM_HEIGHT;
 	}
+	
+	public ArrayList<Item> getItemList(){
+		return itemList;
+	}
 
 	public static double getColumnWidth() {
 		return COLUMN_WIDTH;

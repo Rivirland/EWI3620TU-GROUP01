@@ -50,7 +50,7 @@ public class Roof extends Item {
 		gl.glEnable(GL.GL_CULL_FACE);
 		
 	}
-
+// for the modelviewer
 	public static void drawRoof(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
 
@@ -147,4 +147,10 @@ public class Roof extends Item {
 	public static double getRoofLength(){
 		return ROOF_LENGTH;
 	}
+	
+	public int getMazeID(){
+		return mazeID;
+	}
+	
+
 }
