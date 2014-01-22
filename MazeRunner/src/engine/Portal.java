@@ -269,7 +269,7 @@ public class Portal {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		// gl.glClear(GL.GL)
 
-		Skybox.displaySkybox(gl);
+		Skybox.displaySkybox(gl,(portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection() ));
 
 		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),
 				portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
