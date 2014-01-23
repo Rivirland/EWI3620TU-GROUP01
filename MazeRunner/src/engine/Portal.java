@@ -321,7 +321,11 @@ public class Portal {
 
 	public void toteleport(Player player, boolean teleportation) {
 		if (teleportation) {
-
+			try {
+				Sound.play("portal.wav");
+			} catch (Exception e) {
+				System.out.println("no portal sound");
+			}
 			player.setLocationX(toportal.getX());
 			player.setLocationY(toportal.getY() + 2.5);
 			player.setLocationZ(toportal.getZ());

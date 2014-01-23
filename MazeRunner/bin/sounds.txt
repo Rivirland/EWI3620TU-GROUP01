@@ -1,3 +1,6 @@
 noBullets
-Gunfire
+gunfire
 crash
+reload
+death
+portal
