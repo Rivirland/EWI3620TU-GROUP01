@@ -6,6 +6,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import menu.Teken;
+import engine.ChangeGL;
 import engine.MazeRunner;
 import engine.Sound;
 //Once you've finished, you can freely fly around the world if you want. This state is responsible for that.
@@ -59,6 +60,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 	//Displays the helicopter.
 	@Override
 	public void displayItem(GL gl) {
+		ChangeGL.GLtoTexturedItem(gl);
 		gl.glPushMatrix();
 		gl.glTranslated(0, -10, -40);
 		gl.glTranslated(MazeRunner.player.getLocationX(), MazeRunner.player.getLocationY(), MazeRunner.player.getLocationZ());

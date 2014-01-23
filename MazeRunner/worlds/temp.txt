@@ -1,3 +1,3 @@
 100,100,
-0.0,12.0,0.0,mazetowerbase
-0.0,36.0,0.0,mazetowertop
+0.0,0.0,0.0,mazetowerbase
+10.0,36.0,10.0,mazetowertop

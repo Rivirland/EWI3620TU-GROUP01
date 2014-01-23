@@ -135,8 +135,8 @@ public class LevelEditor {
 		loadTextures(gl);
 		modelviewer = new LevelEditorModelViewer(screenWidth, screenHeight, (90f / 1920f * screenWidth),
 				(90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
-		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f
-				* screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
+		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (830f / 1920) * screenWidth, (90f/1080)
+				* screenHeight, 1830f / 1920 * screenWidth, 990f / 1080 * screenHeight);
 	
 		// worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight,
 		// screenWidth/2, screenHeight/2, screenWidth, screenHeight);
@@ -180,8 +180,6 @@ public class LevelEditor {
 					948f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]),
 					622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			drawGrid(gl, 830f / 1920f * screenWidth, 90f / 1080f * screenHeight, 1830f / 1920f * screenWidth,
 					990f / 1080f * screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
@@ -381,18 +379,74 @@ public class LevelEditor {
 		gl.glVertex2f(293f / 1920f * screenWidth, 964f / 1080f * screenHeight);
 		gl.glEnd();
 
-		// button3
+		// button3		
 		if (drawMode == 3)
 			tekenButtonMetKleur(gl, roofbxmin, roofbymin, roofbxmax, roofbymax, 0.76f, 0.76f, 0.76f);
 		else
 			tekenButton(gl, roofbxmin, roofbymin, roofbxmax, roofbymax);
 
+		gl.glColor3f(0.71f, 0.9f, 0.11f);
+		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glVertex2f(310f / 1600f * screenWidth, 770f / 900f * screenHeight);
+		gl.glVertex2f(370f / 1600f * screenWidth, 770f / 900f * screenHeight);
+		gl.glVertex2f(340f / 1600f * screenWidth, 795f / 900f * screenHeight);
+		gl.glEnd();
+		gl.glColor3f(0.42f, 0.68f, 0.14f);
+		gl.glBegin(GL.GL_TRIANGLES);
+		gl.glVertex2f(370f / 1600f * screenWidth, 770f / 900f * screenHeight);
+		gl.glVertex2f(340f / 1600f * screenWidth, 795f / 900f * screenHeight);
+		gl.glVertex2f(365f / 1600f * screenWidth, 780f / 900f * screenHeight);
+		gl.glEnd();
 		// button4
 		if (drawMode == 4)
 			tekenButtonMetKleur(gl, buildbxmin, buildbymin, buildbxmax, buildbymax, 0.76f, 0.76f, 0.76f);
 		else
 			tekenButton(gl, buildbxmin, buildbymin, buildbxmax, buildbymax);
 
+		gl.glColor3f(0.71f, 0.90f, 0.11f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2f(443f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 770f / 900f * screenHeight);
+		gl.glVertex2f(443f / 1600f * screenWidth, 770f / 900f * screenHeight);
+		gl.glEnd();
+		gl.glColor3f(0.13f, 0.69f, 0.30f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2f(443f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 806f / 900f * screenHeight);
+		gl.glVertex2f(448f / 1600f * screenWidth, 806f / 900f * screenHeight);
+		gl.glEnd();
+		gl.glColor3f(0.42f, 0.68f, 0.14f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2f(453f / 1600f * screenWidth, 803f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 770f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 773f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 806f / 900f * screenHeight);
+		gl.glEnd();
+		
+		gl.glColor3f(0.71f, 0.90f, 0.11f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2f(443f / 1600f * screenWidth, 760f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 760f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 750f / 900f * screenHeight);
+		gl.glVertex2f(443f / 1600f * screenWidth, 750f / 900f * screenHeight);
+		gl.glEnd();
+		gl.glColor3f(0.13f, 0.69f, 0.30f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2f(443f / 1600f * screenWidth, 760f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 760f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 763f / 900f * screenHeight);
+		gl.glVertex2f(448f / 1600f * screenWidth, 763f / 900f * screenHeight);
+		gl.glEnd();
+		gl.glColor3f(0.42f, 0.68f, 0.14f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex2f(453f / 1600f * screenWidth, 760f / 900f * screenHeight);
+		gl.glVertex2f(453f / 1600f * screenWidth, 750f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 753f / 900f * screenHeight);
+		gl.glVertex2f(458f / 1600f * screenWidth, 763f / 900f * screenHeight);
+		gl.glEnd();
+		
 		// zwart onder de buttons
 		gl.glColor3f(0f, 0f, 0f);
 		rechthoek(gl, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth,

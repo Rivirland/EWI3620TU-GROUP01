@@ -253,6 +253,7 @@ public class EnemySmart extends Enemy implements VisibleObject {
 	public void drawEnemy(GL gl) {
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glScaled(0.5, 0.5, 0.5);
+		gl.glScaled(1,15,1);
 		if (alert) {
 			gl.glBindTexture(GL.GL_TEXTURE_2D, 24);
 		} else {

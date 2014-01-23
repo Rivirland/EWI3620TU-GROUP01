@@ -16,6 +16,13 @@ import com.sun.opengl.util.GLUT;
 
 import enemies.Enemy;
 
+/**
+ * Class that aims to make Portals (as seen in the highly acclaimed Portal(tm) games) possible with the stencil buffer and applying the portal to enhance the
+ * gameplay
+ * @author Levi: Portal teleportation and viewing functionality, Martijn : Linear Transformation, Joris : Implementation of Portal to Genetic algorithm
+ * 
+ *
+ */
 public class Portal {
 
 	// coordinaten van de portal
@@ -26,12 +33,13 @@ public class Portal {
 //	public int portalConnectionID;
 	private double border=0.2;
 	
-	private static int[][] portalconnectionlist;
+	//private static int[][] portalconnectionlist;
 	//private int[] connectedportals;
 	
 	public static int previousmazeID;
 	public static int mazeID;
 	
+	private int connectedportalID;
 	private int connectedmazeID;
 	public static ArrayList<Portal> portalList;
 	public static ArrayList<Maze> mazeList;
@@ -42,11 +50,15 @@ public class Portal {
 	private static boolean run = false;
 	private static int pcounter=-1;
 	
+	private static double[] planebuffer;
+	
 	private Camera portalcamera;
 // the amount of portals in every maze
 	private static int amountmazep = 2;
 // the active portals (their number) this iteration
 	private static int[] activep;
+	
+	private static Player player;
 
 	// eigenschappen van de portal
 	private static float breedte = 2;
@@ -89,8 +101,10 @@ public class Portal {
 		for (int i =0; i<portalList.size(); i++){
 			for(int j=0; j<portalList.size(); j++){
 			if(Portal.Equals(portalList.get(j).gettoPortal(), portalList.get(i))){
+				portalList.get(i).setConnectedportalID(j);
 				portalList.get(i).setConnectedlevelID(Math.round(j/amountmazep));
 				System.out.println ("het level waar portal "+i+" connected mee is: "+portalList.get(i).getConnectedlevelID());
+				//System.out.println("portal: "+i +" is connected met portal: " +j);
 				}
 			}
 		}
@@ -114,25 +128,32 @@ public class Portal {
 			visibleArray.add(visibleObjects);
 		}
 		
+		
 		for (int i = 0; i<amountmazep; i++){
 			ArrayList<Item> tempitemlist= mazeList.get(portalList.get(activep[i]).getConnectedlevelID()).getItemList();
 			for (int j = 0; j<tempitemlist.size(); j++){
-				visibleArray.get(i).add(tempitemlist.get(j));
-				System.out.println("hallo "+visibleArray.size());
+				//visibleArray.get(i).add(tempitemlist.get(j));
 			}
+			
+			//for (int j = 0; j<mazeList.get(portalList.get(activep[i]).getConnectedlevelID());j++)
+			visibleArray.get(i).add(mazeList.get(portalList.get(activep[i]).getConnectedlevelID()));
 			for (int j=0; j<MazeRunner.enemyList.size(); j++){
 			//TODO hier gaat iets niet goed met getcurrentmazeID, is dit dezelfde manier van tellen van mazes als in Portal?
 			if ((MazeRunner.enemyList.get(j).getCurrentMazeID()+1)==portalList.get(activep[i]).getConnectedlevelID()){
 				visibleArray.get(i).add(MazeRunner.enemyList.get(j));
 		}
 	}
+			ArrayList<Roof> rooflisttemp = rooflist;
 			for (int j=0; j<rooflist.size(); j++){
 				if (rooflist.get(j).getMazeID() == portalList.get(activep[i]).getConnectedlevelID()){
+					//rooflist.get(j).setLocationY(20);
 					visibleArray.get(i).add(rooflist.get(j));
+					System.out.println("locationY: "+rooflist.get(j).locationY+" globalY: "+rooflist.get(j).getGlobalY()+" localY: "+rooflist.get(j).getLocalY());
 		}
 			}
+			System.out.println();
 		}
-		System.out.println(visibleArray.size());
+		//System.out.println(visibleArray.size());s
 	}
 	/**
 	 * Portals vinden voor het level waar de player nu in zit, dit werkt omdat
@@ -147,6 +168,7 @@ public class Portal {
 		Portal.portalList= MazeRunner.portalList;
 		Portal.mazeList= World.mazelist;
 		Portal.rooflist = MazeRunner.getRoofList();
+		Portal.player = MazeRunner.getPlayer();
 		
 //		MazeRunner.setEventMessage("mazeID "+mazeID);
 		
@@ -178,6 +200,7 @@ public class Portal {
 		
 		// the active portals are being calculated relative to the player, and both are sequentially being stencilled
 		for (int i=0; i < amountmazep; i++){
+		createPlaneBuffer(activep[i]);
 		portalList.get(activep[i]).stencilborder(gl);
 		stencil(gl, portalList.get(activep[i]), activep[i], i);
 		}
@@ -190,7 +213,7 @@ public void stencilborder(GL gl){
 	
 //	gl.glColor3d(1, 1, 1);
 	gl.glClearColor(1, 1, 1, 0);
-	
+	ChangeGL.GLtoTexturedItem(gl);
 	gl.glPushMatrix();
 	gl.glTranslated(this.x,  (this.y), this.z);
 	gl.glRotatef(facingdirection * 90, 0, 1, 0);
@@ -281,8 +304,55 @@ public void stencilborder(GL gl){
 		gl.glVertex3d(0, 0, breedte * 0.5);
 
 		gl.glEnd();
+//		
+//		double x1 = Math.sin(facingdirection)*-breedte * 0.5;
+//		double x2 = Math.sin(facingdirection)*-breedte *0.5;
+//		double x3 = Math.sin(facingdirection)*breedte *0.5;
+//		double y1 = 0;
+//		double y2 = hoogte;
+//		double y3 = hoogte;
+//		double z1 = Math.cos(facingdirection)*-breedte * 0.5;
+//		double z2 = Math.cos(facingdirection)*-breedte *0.5;
+//		double z3 = Math.cos(facingdirection)*breedte *0.5;
+//		createPlaneBuffer (x1,x2,x3,y1,y2,y3,z1,z2,z3);
+//		
 
 	}
+	// for now the planebuffer is drawn every frame the amount of amountmazep, can also be only when currentmaze
+	// changes because portals do not move
+	public static void createPlaneBuffer (int num){
+		planebuffer = new double [4];
+		//Portal clipportal = portalList.get(portalList.get(num).getConnectedportalID());
+		Portal clipportal = portalList.get(num).gettoPortal();
+		int fd = clipportal.getFacingdirection();
+		
+		double xplayer = player.getLocationX(), yplayer = player.getLocationY(), zplayer = player.getLocationZ();
+		
+		double x1 = (clipportal.getX()), y1 = clipportal.getY(), z1 = (clipportal.getZ());
+		double x2 = (clipportal.getX()), y2 = clipportal.getY()+1, z2 = (clipportal.getZ());
+		double x3 = (clipportal.getX()+Math.sin(Math.PI/2*fd)), y3 = clipportal.getY()-1, z3 = (clipportal.getZ()+Math.cos(Math.PI/2*fd));
+		
+		planebuffer[0]= (y1*(z2-z3)+y2*(z3-z1)+y3*(z1-z2));
+		planebuffer[1]= (z1*(x2-x3)+z2*(x3-x1)+z3*(x1-x2));
+		planebuffer[2]= (x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
+		planebuffer[3]= -x1*(y2*z3-y3*z2)-x2*(y3*z1-y1*z3)-x3*(y1*z2-y2*z1);
+		
+		double planetest = planebuffer[0]*xplayer+planebuffer[1]*yplayer+planebuffer[2]*zplayer+planebuffer[3];
+		if (planetest < 0){
+			for (int i=0;i<planebuffer.length;i++){
+				planebuffer[i]=-planebuffer[i];
+			}
+		}
+	}
+	
+//	public void createPlaneBuffer (double x1, double x2, double x3, 
+//			double y1, double y2, double y3, double z1, double z2, double z3){
+//		planebuffer = new double [4];
+//		planebuffer[0]= (y1*(z2-z3)+y2*(z3-z1)+y3*(z1-z2))*x1;
+//		planebuffer[1]= (z1*(x2-x3)+z2*(x3-x1)+z3*(x1-x2))*y1;
+//		planebuffer[2]= (x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))*z1;
+//		planebuffer[3]= -x1*(y2*z3-y3*z2)-x2*(y3*z1-y1*z3)-x3*(y1*z2-y2*z1);
+//	}
 
 	public static void portalView(GL gl, Camera portalcamera,int num, int count) {
 		
@@ -298,11 +368,14 @@ public void stencilborder(GL gl){
 //		}else {
 //			pcounter = -1;
 //		}
+//		if (count ==0){
+		
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+//	}
 //		gl.glClear(GL.GL)
 		
 		
-		Skybox.displaySkybox(gl,(portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection() ));
+		Skybox.displaySkybox(gl,(portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection()));
 		
 		glu.gluLookAt(
 				portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(),
@@ -311,19 +384,32 @@ public void stencilborder(GL gl){
 		
 	
 //		Here only the maze should be shown that the portalview leads to...
-		mazeList.get(portalList.get(num).getConnectedlevelID()).display(gl);
+	//	mazeList.get(portalList.get(num).getConnectedlevelID()).display(gl);
 		
-
+		//clipplane
+		//GL.GL_CLIP_PLANE1= 12289
+		//gl.glEnable(12288+count);
+		//gl.glClipPlane(12288+count, planebuffer,0);
+//		gl.glEnable(GL.GL_CLIP_PLANE1);
+		gl.glClipPlane(GL.GL_CLIP_PLANE1, planebuffer,0);
+		
+		
 		gl.glPushMatrix();
-		
-		gl.glTranslated(mazeList.get(mazeID).mazeX-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX,
-				mazeList.get(mazeID).mazeY-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY,
-				mazeList.get(mazeID).mazeZ-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ);
-		System.out.println(visibleArray.size());
+//		gl.glLoadIdentity();
+//		gl.glTranslated(mazeList.get(mazeID).mazeX-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX,
+//				mazeList.get(mazeID).mazeY-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY,
+//				mazeList.get(mazeID).mazeZ-mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ);
 		for (Iterator<VisibleObject> it = visibleArray.get(count).iterator(); it.hasNext();) {
-			it.next().display(gl);
+//			it.next().display(gl);
+			VisibleObject next = it.next();
+			next.display(gl);
+			if (next instanceof Enemy){
+//				System.out.println(next.toString());
+			}
 			gl.glPopMatrix();
 	}
+		gl.glDisable(GL.GL_CLIP_PLANE1);
+	//	gl.glDisable(12288+count);
 		//drawing the roofs
 //		MazeRunner.setEventMessage(rooflist.get(0).getLocationY()+"");
 //		MazeRunner.setEventMessage(mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX+"");
@@ -388,8 +474,8 @@ public void stencilborder(GL gl){
 	}
 
 	public void toteleport(Player player, boolean teleportation) {
-		if (teleportation) {
-
+		if (teleportation && MazeRunner.player.canTeleport) {
+			MazeRunner.player.canTeleport = false;
 			player.setLocationX(toportal.getX());
 			player.setLocationY(toportal.getY() + 2.5);
 			player.setLocationZ(toportal.getZ());
@@ -472,7 +558,7 @@ public void stencilborder(GL gl){
 		//gl.glColor3f(1, 1, 1);
 		
 		gl.glColor4d(1, 1, 1, 1);
-		
+		ChangeGL.GLtoColoredItem(gl);
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glDisable(GL.GL_CULL_FACE);
 		gl.glBegin(GL.GL_QUADS);
@@ -498,6 +584,7 @@ public void stencilborder(GL gl){
 		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glColor4d(0, 0, 0, 0);
 		gl.glPopMatrix();
+		
 
 		// gl.glLoadIdentity();
 
@@ -543,10 +630,10 @@ public void stencilborder(GL gl){
 
 	}
 
+
 	public void calcPortaltoPlayer(Player player) {
 
 		this.dx = (float) (player.getLocationX() - this.x);
-		//TODO testmodus, y moet weer aan
 		this.dy = (float) (player.getLocationY() - this.y);
 		this.dz = (float) (player.getLocationZ() - this.z);
 		
@@ -561,7 +648,6 @@ public void stencilborder(GL gl){
 		if (connected) {
 			// de camera die wordt vertoont op p1 staat op evengrote omgekeerde
 			// afstand van de facing direction van portal p2 als de speler tot
-			// portal p1
 			// de camera staat gericht in dezelfde facing direction als de
 			// facing direction van p2
 			
@@ -586,19 +672,18 @@ public void stencilborder(GL gl){
 			double ztransform = Math.sin(Math.toRadians(90*facingdirection))*(player.getLocationX()- this.x) 
 					+ Math.cos(Math.toRadians(90*facingdirection))*(player.getLocationZ()-this.z) + toportal.getZ();
 			
+		
+	//		MazeRunner.setEventMessage("hcurrent: "+ mazeList.get(mazeID).mazeY+" hconnected: "+mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY+"connectedmazeID"+portalList.get(num).getConnectedlevelID());
 			
-			
-			MazeRunner.setEventMessage("hcurrent: "+ mazeList.get(mazeID).mazeY+" hconnected: "+mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY+"connectedmazeID"+portalList.get(num).getConnectedlevelID());
-			
-			gl.glPushMatrix();
-			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
-			gl.glRotated(90*facingdirection, 0, 1, 0);
-			gl.glTranslated(-this.x, -this.y, -this.z);
-			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
-			//gl.glRotated(90, 0, 1, 0);
-			//gl.glTranslated(xtransform, ytransform, ztransform);
-			glut.glutSolidCube(1);
-			gl.glPopMatrix();
+//			gl.glPushMatrix();
+//			gl.glTranslated(this.toportal.getX(),this.toportal.getY(),this.toportal.getZ());
+//			gl.glRotated(90*facingdirection, 0, 1, 0);
+//			gl.glTranslated(-this.x, -this.y, -this.z);
+//			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
+//			//gl.glRotated(90, 0, 1, 0);
+//			//gl.glTranslated(xtransform, ytransform, ztransform);
+////			glut.glutSolidCube(1);
+//			gl.glPopMatrix();
 			
 			
 //			gl.glPushMatrix();
@@ -717,6 +802,14 @@ public void stencilborder(GL gl){
 	
 	private int getConnectedlevelID (){
 		return this.connectedmazeID;
+	}
+	
+	private int getConnectedportalID (){
+		return this.connectedportalID;
+	}
+	
+	private void setConnectedportalID(int ID){
+		this.connectedportalID = ID;
 	}
 
 	

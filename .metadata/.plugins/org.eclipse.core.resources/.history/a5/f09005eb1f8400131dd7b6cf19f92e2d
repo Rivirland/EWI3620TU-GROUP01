@@ -1,0 +1,419 @@
+package enemies;
+
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.GLUT;
+
+import engine.*;
+
+//This class is the baseline for both our enemies. It has some methods both of the enemies will have to use and if we want to add more enemies, they should also have those to maintain functionality.
+
+public abstract class Enemy extends GameObject implements VisibleObject {
+	// The different characteristics of an enemy
+	public double speed;
+	public double begX, begY, begZ, begSpeed;
+	public double horAngle;
+	public int currentMazeID;
+	public Maze currentMaze;
+	
+	// To check for multiple interactions with the player and maze
+	public boolean inSameMazeAsPlayer;
+	public boolean[] enemyCollide = {false, false, false, false};
+	public boolean patrol;
+	
+	// Deciding which directions the enemy is heading
+	public boolean west = false;
+	public boolean east = false;
+	public boolean north = false;
+	public boolean south = false;
+	private int direction;
+
+	// Attributes that make sure the death animations are played correctly
+	public long TOD;
+	protected boolean trapped;
+	protected boolean dead;
+	protected double size;
+	private double trappedX;
+	private double trappedY;
+	private double trappedZ;
+
+	// This is true if the enemy moves towards a player. This will change the
+	// color of the enemy.
+	protected boolean alert;
+
+	public Enemy(double x, double y, double z, double speed, double h) {
+		super(x, y, z);
+		this.begX = x;
+		this.begY = y;
+		this.begZ = z;
+		this.horAngle = h;
+		this.speed = speed;
+		this.begSpeed = speed;
+		this.trapped = false;
+		this.dead = false;
+		this.size = 1;
+		this.setAlert(false);
+		try {
+			updateCurrentMaze();
+		} catch(Exception e){
+			this.currentMazeID=-1;
+			this.currentMaze=null;
+		}
+	}
+
+	public void reset() {
+		setLocationX(begX);
+		setLocationY(begY);
+		setLocationZ(begZ);
+	}
+	public void setDirection(int r) {
+		this.direction = r;
+	}
+
+	public int getDirection() {
+		return this.direction;
+	}
+
+	public void setHorAngle(double horangle) {
+		this.horAngle = horangle;
+	}
+
+	public double getHorAngle() {
+		return this.horAngle;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public double getSpeed() {
+		return this.speed;
+	}
+
+	public abstract void update(int deltaTime, Player player);
+
+	// Patrolling means they wander through the level until they touch a wall,
+	// because they do not see the player. They do this in one of the four main
+	// directions.
+	public void updateMovementPatrol() {
+		east = false;
+		west = false;
+		north = false;
+		south = false;
+		if (direction == 1) {
+			north = true;
+			setHorAngle(0);
+		} else if (direction == 2) {
+			west = true;
+			setHorAngle(90);
+		} else if (direction == 3) {
+			south = true;
+			setHorAngle(180);
+		} else {
+			east = true;
+			setHorAngle(-90);
+		}
+	}
+	protected void updateCurrentMaze() {
+		try{
+			this.currentMazeID=MazeRunner.level.getCurrentMaze(this);
+			this.currentMaze=World.getMaze(currentMazeID); 
+		} catch( Exception e){
+			System.out.println("Fout in updateCurrentMaze");
+		}
+	}
+
+	//This makes the enemy move towards the player.
+	public void updateMovementFollow(Player player) {
+		east = false;
+		west = false;
+		north = false;
+		south = false;
+		
+		double xdiff = player.getLocationX() - getLocationX();
+		double zdiff = player.getLocationZ() - getLocationZ();
+		double diff = Math.sqrt(xdiff * xdiff + zdiff * zdiff);
+
+		//Calculates the rotation the enemy has to make so he faces the player
+		double alpha = Math.toDegrees(Math.acos(Math.abs(zdiff / diff)));
+		// System.out.println("xdiff: " + xdiff + " zdiff: " + zdiff + " diff: "
+		// + diff + " alpha: "+ alpha);
+		if (xdiff < 0) {
+			if (zdiff < 0) {
+
+			} else if (zdiff > 0) {
+				alpha = 180 - alpha;
+			}
+		} else if (xdiff > 0) {
+			if (zdiff < 0) {
+				alpha = -alpha;
+			} else if (zdiff > 0) {
+				alpha += 180;
+			}
+		}
+		setHorAngle(alpha);
+		
+		//Calculates the direction the enemy should head towards
+		if (Math.abs(xdiff) > 0.2) {
+			if (xdiff > 0) {
+				east = true;
+				direction = 0;
+			} else if (xdiff < 0) {
+				west = true;
+				direction = 2;
+			}
+		}
+		if (Math.abs(zdiff) > 0.2) {
+			if (zdiff > 0) {
+				south = true;
+				direction = 3;
+			} else if (zdiff < 0) {
+				north = true;
+				direction = 1;
+			}
+		}
+	}
+
+	public void rotateEnemy(GL gl) {
+		gl.glRotated(horAngle, 0, 1, 0);
+	}
+	protected void checkCollision() {
+		try{
+			enemyCollide = MazeRunner.level.collides(this, 1);
+		} catch (Exception e){
+			enemyCollide[0]=true;
+			enemyCollide[1]=true;
+			enemyCollide[2]=true;
+			enemyCollide[3]=true;
+		}
+		if (enemyCollide[0]) {
+			this.setLocationX(locationX);
+			this.setDirection((int) (1 + 3 * Math.random()));
+		}
+		if (enemyCollide[1]) {
+			this.setLocationZ(locationZ);
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(2);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (enemyCollide[2]) {
+			this.setLocationX(locationX);
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(1);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (enemyCollide[3]) {
+			this.setLocationZ(locationZ);
+			this.setDirection((int) (3 * Math.random()));
+		}
+		
+	}
+	protected void checkOuterBoundsMaze() {
+		if (locationX > currentMaze.maxX - 1) {
+			east = false;
+			this.setDirection((int) (1 + 3 * Math.random()));
+		}
+		if (locationX < currentMaze.minX + 1) {
+			west = false;
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(1);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (locationZ < currentMaze.minZ + 1) {
+			north = false;
+			int randomNumber = (int) (3 * Math.random());
+			if (randomNumber == 0) {
+				this.setDirection(0);
+			} else if (randomNumber == 1) {
+				this.setDirection(2);
+			} else {
+				this.setDirection(3);
+			}
+		}
+		if (locationZ > currentMaze.maxZ - 1) {
+			west = false;
+			this.setDirection((int) (3 * Math.random()));
+		}
+		
+	}
+	public void actualMovement(int deltaTime){
+		if (west) {
+			locationX -= speed * deltaTime;
+		}
+		if (east) {
+			locationX += speed * deltaTime;
+		}
+		if (north) {
+			locationZ -= speed * deltaTime;
+		}
+		if (south) {
+			locationZ += speed * deltaTime;
+		}
+	}
+	protected void speedUp(Player player, int deltaTime) {
+		if (locationX - currentMaze.mazeX > player.getLocalX()) {
+			this.locationX -= this.speed * deltaTime;
+		}
+		if (locationX - currentMaze.mazeX < player.getLocalX()) {
+			this.locationX += this.speed * deltaTime;
+		}
+		if (locationZ - currentMaze.mazeZ > player.getLocalZ()) {
+			this.locationZ -= this.speed * deltaTime;
+		}
+		if (locationZ - currentMaze.mazeZ < player.getLocalZ()) {
+			this.locationZ += this.speed * deltaTime;
+		}
+	}
+
+	
+	public void display(GL gl) {
+		if (trapped) {
+			Animator.disappearIntoTrap(this);
+		}
+		gl.glColor3d(0.0, 0.0, 1.0);
+		gl.glPushMatrix();
+
+		rotateEnemy(gl);
+		
+		gl.glTranslated(getLocationX(), getLocationY(), getLocationZ());
+		gl.glScaled(getSize(), getSize(), getSize());
+
+		ChangeGL.GLtoTexturedItem(gl);
+		drawEnemy(gl);
+		ChangeGL.GLtoColoredItem(gl);
+		gl.glPopMatrix();
+		gl.glFlush(); // Flush drawing routines
+	}
+
+	public void drawEnemy(GL gl) {
+		GLUT glut = new GLUT();
+		glut.glutSolidSphere(1, 10, 10);
+	}
+
+	@Override
+	public double getGlobalX() {
+		return locationX;// +
+							// MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeX;
+	}
+
+	@Override
+	public double getGlobalY() {
+		return locationY;// +
+							// MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeY;
+	}
+
+	@Override
+	public double getGlobalZ() {
+		return locationZ;// +
+							// MazeRunner.level.getMaze(MazeRunner.level.getCurrentMaze(this)).mazeZ;
+	}
+
+	public void setTOD(long currentTime) {
+		this.TOD = currentTime;
+
+	}
+
+	public long getTOD() {
+		return this.TOD;
+	}
+
+	public void setTrapped(boolean b) {
+		this.trapped = b;
+
+	}
+
+	public boolean getTrapped() {
+		return this.trapped;
+	}
+
+	public void setDead(boolean b) {
+		this.dead = b;
+	}
+
+	public boolean getDead() {
+		return this.dead;
+	}
+
+	public double getSize() {
+		return size;
+	}
+
+	public void setSize(double size) {
+		this.size = size;
+	}
+
+	public void setTrappedX(double locationX) {
+		this.trappedX = locationX;
+
+	}
+
+	public void setTrappedZ(double locationZ) {
+		this.trappedZ = locationZ;
+	}
+
+	public double getTrappedX() {
+		return this.trappedX;
+	}
+
+	public double getTrappedZ() {
+		return this.trappedZ;
+	}
+
+	public void setTrappedY(double locationY) {
+		this.trappedY = locationY;
+
+	}
+
+	public double getTrappedY() {
+		return this.trappedY;
+	}
+	public int getCurrentMazeID(){
+		return this.currentMazeID;
+	}
+	public void setCurrentMazeID(int id){
+		this.currentMazeID=id;
+	}
+	public Maze getCurrentMaze(){
+		return this.currentMaze;
+	}
+	public void setCurrentMaze(Maze maze){
+		this.currentMaze=maze;
+	}
+
+	public void checkInSameMaze(Player player) {
+		if (MazeRunner.level.inSameMaze(this, player) != -1){
+			this.inSameMazeAsPlayer=true;
+		} else {
+			this.inSameMazeAsPlayer=false;
+		}		
+	}
+
+	public boolean getAlert() {
+		return this.alert;
+	}
+
+	public void setAlert(boolean alert) {
+		this.alert = alert;
+	}
+	public double getLocalX(){
+		return locationX - currentMaze.mazeX;
+	}
+	public double getLocalZ(){
+		return locationZ - currentMaze.mazeZ;
+	}
+}

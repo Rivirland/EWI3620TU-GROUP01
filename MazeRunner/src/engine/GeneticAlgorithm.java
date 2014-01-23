@@ -219,4 +219,8 @@ public class GeneticAlgorithm {
 		return d;
 	}
 
+	public int getNrOfLevels() {
+		return mazes.size();
+	}
+
 }
