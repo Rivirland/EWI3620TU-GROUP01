@@ -320,8 +320,7 @@ public class Portal {
 	}
 
 	public void toteleport(Player player, boolean teleportation) {
-		if (teleportation && player.canTeleport) {
-			player.canTeleport = false;
+		if (teleportation) {
 
 			player.setLocationX(toportal.getX());
 			player.setLocationY(toportal.getY() + 2.5);

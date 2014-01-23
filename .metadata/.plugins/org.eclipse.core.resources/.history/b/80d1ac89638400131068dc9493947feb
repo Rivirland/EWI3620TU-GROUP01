@@ -239,6 +239,8 @@ public class MazeRunner {
 		previousTime = time;
 	}
 
+
+
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
 	 * new frame and handles all of the drawing.
@@ -284,9 +286,9 @@ public class MazeRunner {
 			Minimap.displayMinimap(gl);
 		}
 
-		// if (player.playerStateInt == 2) {
-		// Reticle.display(gl);
-		// }
+//		if (player.playerStateInt == 2) {
+//			Reticle.display(gl);
+//		}
 
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
@@ -304,22 +306,25 @@ public class MazeRunner {
 				visibleObjects.remove(next);
 			} else if (next instanceof Roof && !((Roof) next).getLegal()) {
 				visibleObjects.remove(next);
-			} else if (next instanceof Start) {
+			} else if (next instanceof Start){
 				visibleObjects.remove(next);
 			}
 		}
+		
+		
 
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
 
+		
 		// the portals!
 		Portal.activePortaldisplay(gl);
-
-		// We display the gun or trap here
+		
+		//We display the gun or trap here
 		gl.glDisable(GL.GL_CULL_FACE);
-		PlayerState.getState(player.playerStateInt).displayItem(gl);
+		PlayerState.getState(player.playerStateInt).displayItem(gl);		
 		gl.glEnable(GL.GL_CULL_FACE);
 
 		// Draws the information!
@@ -563,14 +568,13 @@ public class MazeRunner {
 							// Create trap GBS
 							TrapDroppedGBS tdGBS = new TrapDroppedGBS(item.locationX, item.locationY, item.locationZ, item.mazeID, currentTime);
 							visibleObjects.add(tdGBS);
-
-							if (enemy instanceof EnemySpooky) {
-								setEventMessage("Killed a spooky enemy with a trap! +100 points");
-								player.score += 100;
-							} else if (enemy instanceof EnemySmart) {
-								setEventMessage("Killed a smart enemy with a trap! +100 points");
-								player.score += 100;
-							}
+						}
+						if (enemy instanceof EnemySpooky) {
+							setEventMessage("Killed a spooky enemy with a trap! +100 points");
+							player.score += 100;
+						} else if (enemy instanceof EnemySmart) {
+							setEventMessage("Killed a smart enemy with a trap! +100 points");
+							player.score += 100;
 						}
 					}
 
@@ -673,12 +677,12 @@ public class MazeRunner {
 		}
 
 		// TODO dit hoort eigenlijk in de portal klasse
-		// if(!player.canTeleport){player.canTeleport = true;}
-
+//		if(!player.canTeleport){player.canTeleport = true;}
+		
 		if (MazeRunner.player.canTeleport) {
 			for (int i = 0; i < portalList.size(); i++) {
 				portalList.get(i).checkteleportation(player, (float) previousX, (float) previousY, (float) previousZ);
-				// MazeRunner.player.canTeleport = false;
+//				MazeRunner.player.canTeleport = false;
 				// portal2.checkteleportation(player, (float) previousX, (float)
 				// previousY, (float) previousZ);
 
