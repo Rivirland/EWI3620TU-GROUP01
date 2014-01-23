@@ -20,7 +20,7 @@ public class GeneticAlgorithm {
 				mazesWithPortals.add(m);
 			}
 		}
-		mazes = mazesWithPortals;
+		setMazes(mazesWithPortals);
 		parentsPerIteration = ppi;
 		distances = calcDistances();
 		Portal.Portaltoconnectionreset();
@@ -34,24 +34,28 @@ public class GeneticAlgorithm {
 			parents = iterate(parents, i);
 		}
 
+		return parent(parents);
+	}
+	
+	public int[] parent(int[][] parents){
 		// This is added to make sure the array doesn't get mixed up:
-		// [1,2,3,4,5] and [5,4,3,2,1] are both valid solutions. This ensures
-		// that the same one is always used, so your level doesn't end up
-		// backwards (of course this ignores cyclic permutations)
-		int pLength = parents[0].length;
-		if (parents[0][0] > parents[0][pLength - 1]) {
-			int[] parents2 = new int[pLength];
-			for (int i = 0; i < pLength; i++) {
-				parents2[i] = parents[0][pLength - 1 - i];
-			}
-			return parents2;
-		}
-		return parents[0];
+				// [1,2,3,4,5] and [5,4,3,2,1] are both valid solutions. This ensures
+				// that the same one is always used, so your level doesn't end up
+				// backwards (of course this ignores cyclic permutations)
+				int pLength = parents[0].length;
+				if (parents[0][0] > parents[0][pLength - 1]) {
+					int[] parents2 = new int[pLength];
+					for (int i = 0; i < pLength; i++) {
+						parents2[i] = parents[0][pLength - 1 - i];
+					}
+					return parents2;
+				}
+				return parents[0];
 	}
 
 	public int[][] iterate(int[][] parents, int iteration) {
 		// Saves all the new parents into the results matrix
-		int[][] results = new int[parentsPerIteration * 2][mazes.size()];
+		int[][] results = new int[parentsPerIteration * 2][getMazes().size()];
 		for (int row = 0; row < parentsPerIteration; row++) {
 			results[row] = parents[row];
 		}
@@ -75,7 +79,7 @@ public class GeneticAlgorithm {
 		int[] sorted = (int[]) lengths.clone();
 		Arrays.sort(sorted);
 
-		int[][] newParents = new int[parentsPerIteration][mazes.size()];
+		int[][] newParents = new int[parentsPerIteration][getMazes().size()];
 		for (int i = 0; i < parentsPerIteration; i++) {
 			for (int j = 0; j < lengths.length; j++) {
 				if (sorted[i] == lengths[j]) {
@@ -98,10 +102,10 @@ public class GeneticAlgorithm {
 
 	// Generates random parents
 	private int[][] generateParents() {
-		int[][] parents = new int[parentsPerIteration][mazes.size()];
+		int[][] parents = new int[parentsPerIteration][getMazes().size()];
 		for (int i = 0; i < parentsPerIteration; i++) {
 			List<Integer> data = new ArrayList<Integer>();
-			for (int j = 0; j < mazes.size(); j++) {
+			for (int j = 0; j < getMazes().size(); j++) {
 				data.add(j + 1);
 			}
 			Collections.shuffle(data);
@@ -119,8 +123,8 @@ public class GeneticAlgorithm {
 	// calculate their distances and then take the lowest one as the final
 	// distance. They are stored in a matrix.
 	private double[][] calcDistances() {
-		double[][] res = new double[mazes.size()][mazes.size()];
-		for (int i = 0; i < mazes.size(); i++) {
+		double[][] res = new double[getMazes().size()][getMazes().size()];
+		for (int i = 0; i < getMazes().size(); i++) {
 			for (int j = 0; j <= i; j++) {
 				if (j == i) {
 					res[i][j] = 0;
@@ -220,7 +224,15 @@ public class GeneticAlgorithm {
 	}
 
 	public int getNrOfLevels() {
-		return mazes.size();
+		return getMazes().size();
+	}
+
+	public ArrayList<Maze> getMazes() {
+		return mazes;
+	}
+
+	public void setMazes(ArrayList<Maze> mazes) {
+		this.mazes = mazes;
 	}
 
 }

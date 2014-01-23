@@ -499,13 +499,13 @@ public class Portal {
 			// double y = this.toportal.getY() + this.dy;
 			// double z = this.toportal.getZ() + this.dz;
 
-			int facingdirection = this.facingdirection - toportal.getFacingdirection() + 2;
+			int facingdirection = this.facingdirection - toportal.getFacingdirection()+2;
 
 			double xtransform = Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) - Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
-					+ toportal.getX();
+					+ toportal.getX()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX;
 			double ytransform = player.getLocationY() - this.y + toportal.getY() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY;
 			double ztransform = Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) + Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
-					+ toportal.getZ();
+					+ toportal.getZ()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ;
 
 			MazeRunner.setEventMessage("hcurrent: " + mazeList.get(mazeID).mazeY + " hconnected: " + mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY + "connectedmazeID"
 					+ portalList.get(num).getConnectedlevelID());
@@ -547,7 +547,7 @@ public class Portal {
 			portalcamera.setLocationZ(ztransform);
 			portalcamera.setHorAngle(player.getHorAngle());
 			portalcamera.setVerAngle(player.getVerAngle());
-			portalcamera.calculateVRP(facingdirection + 2);
+			portalcamera.calculateVRP(facingdirection+2);
 			// portalcamera.calculateVRP(facingdirection);
 
 		}
