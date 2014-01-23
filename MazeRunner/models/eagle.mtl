@@ -1,0 +1,21 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl eg2_body
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.360784 0.354510 0.260392
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Gebruiker\Desktop\eagle 2\eagle 2\EAGLE2.TIF
+
+newmtl eg2_eye
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.790588 0.752941
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2

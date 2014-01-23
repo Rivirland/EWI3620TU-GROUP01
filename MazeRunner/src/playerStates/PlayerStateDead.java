@@ -3,6 +3,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import engine.MazeRunner;
+import engine.Sound;
 import menu.Teken;
 
 //You enter this state once you are killed.
@@ -24,6 +25,11 @@ public class PlayerStateDead extends PlayerState{
 	//Entering this state will make you unable to move and it will remove the minimap from view.
 	@Override
 	public void entering() {
+		try {
+//			Sound.play("death.wav");
+		} catch (Exception e) {
+			System.out.println("no death sound");
+		}
 		MazeRunner.player.getControl().info = true;
 		MazeRunner.player.getControl().minimap = false;
 		MazeRunner.player.canMove = false;

@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 100,100,
 0.0,0.0,0.0,mazetowerbase
 10.0,36.0,10.0,mazetowertop
+=======
+0,20,
+0.0,0.0,0.0,enemypreview
+>>>>>>> da89e7a48eca804b654a93e2b8ce0618089b7ef2

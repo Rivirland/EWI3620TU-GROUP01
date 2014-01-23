@@ -17,7 +17,7 @@ public class PlayerStateFly extends PlayerState implements Runnable{
 	public void itemUse() {
 		if (MazeRunner.player.nrOfBullets > 0) {
 			try{
-				Sound.play("gunfire.wav");
+				Sound.play("Gunfire.wav");
 			}catch (Exception e){
 				System.out.println("no GunFire sound");
 			}

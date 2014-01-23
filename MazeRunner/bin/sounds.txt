@@ -1,0 +1,6 @@
+noBullets
+gunfire
+crash
+reload
+death
+portal

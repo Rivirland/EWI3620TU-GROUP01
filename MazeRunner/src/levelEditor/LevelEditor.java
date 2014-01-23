@@ -1596,8 +1596,6 @@ public class LevelEditor {
 		for (int rij = 1; rij < wereld.length - 1; rij = rij + 2) {
 			for (int kolom = 1; kolom < wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] == 129) {
-					// TODO: onderstaande moet veranderen in een daktexture,
-					// geldt dit nog?
 					Teken.plaatsTexture(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1)
 							* distance, ymax - (rij / 2 + 1) * distance, 7);
 				}

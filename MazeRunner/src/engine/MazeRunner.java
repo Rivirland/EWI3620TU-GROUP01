@@ -70,7 +70,7 @@ public class MazeRunner {
 
 	private static long previousTime = Calendar.getInstance().getTimeInMillis();
 	private long startTime = Calendar.getInstance().getTimeInMillis();
-	public static Model spookyModel, m21Model, torchModel, trapModel, copterModel, uh60body, uh60rotor, uh60backrotor;
+	public static Model spookyModel, m21Model, copterModel, uh60body, uh60rotor, uh60backrotor;
 
 	public int mazeX, mazeY, mazeZ;
 	private UserInput input;
@@ -375,6 +375,12 @@ public class MazeRunner {
 		if (player.playerStateInt != 3 && player.playerStateInt != 4) {
 			playingTime += deltaTime;
 		}
+		if (player.invisible) {
+			player.cloakSeconds -= MazeRunner.deltaTime;
+			if (player.cloakSeconds <= 0) {
+				player.invisible = false;
+			}
+		}
 	}
 
 	/**
@@ -471,24 +477,6 @@ public class MazeRunner {
 			String currentdir = System.getProperty("user.dir");
 			String filename = currentdir + "\\models\\m21.obj";
 			m21Model = OBJLoader.loadTexturedModel(new File(filename));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\medieval-torch.obj";
-			torchModel = OBJLoader.loadTexturedModel(new File(filename));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			String currentdir = System.getProperty("user.dir");
-			String filename = currentdir + "\\models\\cuboid.obj";
-			trapModel = OBJLoader.loadTexturedModel(new File(filename));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

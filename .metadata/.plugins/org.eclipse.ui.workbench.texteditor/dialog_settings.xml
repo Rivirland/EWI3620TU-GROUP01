@@ -13,6 +13,7 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
+<<<<<<< HEAD
 		<item value="stencilborder" key="selection"/>
 		<list key="findhistory">
 			<item value="stencilborder"/>
@@ -25,6 +26,27 @@
 			<item value="loadob"/>
 		</list>
 		<list key="replacehistory">
+=======
+		<item value="eagle" key="selection"/>
+		<list key="findhistory">
+			<item value="eagle"/>
+			<item value="model"/>
+			<item value="gl"/>
+			<item value="loadTe"/>
+			<item value="loadT"/>
+			<item value="loadTE"/>
+			<item value="1080"/>
+			<item value="1920"/>
+		</list>
+		<list key="replacehistory">
+			<item value="900"/>
+			<item value="1600"/>
+			<item value="1"/>
+			<item value="2"/>
+			<item value="Double"/>
+			<item value=" me"/>
+			<item value="me"/>
+>>>>>>> da89e7a48eca804b654a93e2b8ce0618089b7ef2
 		</list>
 	</section>
 </section>

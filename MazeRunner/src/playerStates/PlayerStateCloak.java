@@ -36,13 +36,6 @@ public class PlayerStateCloak extends PlayerState {
 		}
 	}
 
-	//TODO: Dit is zo fucking lelijk xD
 	public void displayItem(GL gl) {
-		if (MazeRunner.player.invisible) {
-			MazeRunner.player.cloakSeconds -= MazeRunner.deltaTime;
-			if (MazeRunner.player.cloakSeconds <= 0) {
-				MazeRunner.player.invisible = false;
-			}
-		}
 	}
 }
