@@ -10,4 +10,5 @@
 <fullyQualifiedTypeName name="items.Roof"/>
 <fullyQualifiedTypeName name="enemies.Enemy"/>
 <fullyQualifiedTypeName name="items.Item"/>
+<fullyQualifiedTypeName name="engine.ChangeGL"/>
 </qualifiedTypeNameHistroy>
