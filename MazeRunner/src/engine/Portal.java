@@ -507,8 +507,8 @@ public class Portal {
 			double ztransform = Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) + Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
 					+ toportal.getZ()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ;
 
-			MazeRunner.setEventMessage("hcurrent: " + mazeList.get(mazeID).mazeY + " hconnected: " + mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY + "connectedmazeID"
-					+ portalList.get(num).getConnectedlevelID());
+//			MazeRunner.setEventMessage("hcurrent: " + mazeList.get(mazeID).mazeY + " hconnected: " + mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY + "connectedmazeID"
+//					+ portalList.get(num).getConnectedlevelID());
 
 			gl.glPushMatrix();
 			gl.glTranslated(this.toportal.getX(), this.toportal.getY(), this.toportal.getZ());

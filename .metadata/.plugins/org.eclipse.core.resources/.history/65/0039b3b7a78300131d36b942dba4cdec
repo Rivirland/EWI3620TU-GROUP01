@@ -1,0 +1,11 @@
+0,0,
+0.0,0.0,0.0,basiclevel1
+10.0,20.0,0.0,basiclevel2
+0.0,35.0,0.0,basiclevel3
+15.0,50.0,15.0,basiclevel4
+30.0,30.0,30.0,basiclevel5
+<<<<<<< HEAD
+0.0,70.0,0.0,basename
+=======
+0.0,60.0,0.0,basiclevel6
+>>>>>>> e275bab7cf8888ec054a5f772532badc7d1e10b2

@@ -7,4 +7,8 @@
 <fullyQualifiedTypeName name="enemies.EnemySmart"/>
 <fullyQualifiedTypeName name="engine.Maze"/>
 <fullyQualifiedTypeName name="engine.MazeRunner"/>
+<fullyQualifiedTypeName name="items.Roof"/>
+<fullyQualifiedTypeName name="enemies.Enemy"/>
+<fullyQualifiedTypeName name="items.Item"/>
+<fullyQualifiedTypeName name="engine.ChangeGL"/>
 </qualifiedTypeNameHistroy>

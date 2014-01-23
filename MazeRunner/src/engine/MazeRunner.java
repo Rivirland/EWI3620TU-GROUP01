@@ -5,6 +5,7 @@ import items.BulletHolder;
 import items.Exit;
 import items.Item;
 import items.Roof;
+import items.Start;
 import items.TrapDropped;
 import items.TrapDroppedGBS;
 import items.TrapHolder;
@@ -304,6 +305,8 @@ public class MazeRunner {
 			} else if (next instanceof EnemySpooky && ((EnemySpooky) next).getDead()) {
 				visibleObjects.remove(next);
 			} else if (next instanceof Roof && !((Roof) next).getLegal()) {
+				visibleObjects.remove(next);
+			} else if (next instanceof Start){
 				visibleObjects.remove(next);
 			}
 		}
