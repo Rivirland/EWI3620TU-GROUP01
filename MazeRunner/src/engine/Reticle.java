@@ -14,7 +14,7 @@ public class Reticle {
 		GLU glu = new GLU();
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPushMatrix();
-		gl.glLoadIdentity();
+//		gl.glLoadIdentity();
 
 		glu.gluOrtho2D(0, MazeRunner.screenWidth, 0, MazeRunner.screenHeight);
 		gl.glMatrixMode(GL.GL_MODELVIEW);

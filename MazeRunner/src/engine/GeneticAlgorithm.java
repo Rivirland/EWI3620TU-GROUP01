@@ -23,6 +23,7 @@ public class GeneticAlgorithm {
 		mazes = mazesWithPortals;
 		parentsPerIteration = ppi;
 		distances = calcDistances();
+		Portal.Portaltoconnectionreset();
 	}
 
 	// Solve's the TSP-problem!
@@ -216,6 +217,10 @@ public class GeneticAlgorithm {
 			d += distances[parent[i] - 1][parent[i + 1] - 1];
 		}
 		return d;
+	}
+
+	public int getNrOfLevels() {
+		return mazes.size();
 	}
 
 }

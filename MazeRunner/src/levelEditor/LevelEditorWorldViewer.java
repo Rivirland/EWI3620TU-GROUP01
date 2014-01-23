@@ -154,7 +154,9 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 			if (current > maxY) {
 				maxY = current;
 			}
+
 		}
+
 		this.maxY = maxY;
 
 		// System.out.println("minx "+minX);
@@ -203,21 +205,21 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 
 	}
 
+
 	public void display(GL gl) {
 
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_SCISSOR_TEST);
 
-//<<<<<<< HEAD
+
 		stencil(gl);
 		update();
 		// gl.glLoadIdentity();
-//=======
-//	//	gl.glLoadIdentity();		
-//>>>>>>> e8c7d5a69602ad6924df49dcd2df6f411c63b147
+
 		gl.glPushMatrix();
 
 		gl.glTranslated(xmidden, ymidden, 0);
+
 //<<<<<<< HEAD
 		gl.glTranslated(-panX, panY, 0);
 
@@ -233,6 +235,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 			gl.glTranslated(-xtrans, -ytrans, -ztrans);
 		}
 		ChangeGL.GLtoTexturedItem(gl);
+
 		gl.glDisable(GL.GL_LIGHTING);
 		// MazeRunner.visibleIterator(gl);
 

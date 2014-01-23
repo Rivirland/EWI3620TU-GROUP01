@@ -362,7 +362,6 @@ public class Maze implements VisibleObject {
 			System.out.println("Fout in buildTextureMatrix");
 			e.printStackTrace();
 		}
-		printMatrix(textureMatrix);
 		try {
 			while ((line = bufRdr.readLine()) != null) {
 				StringTokenizer st = new StringTokenizer(line, ",");

@@ -82,7 +82,6 @@ public class LevelEditorLevel {
 				System.out.println(res[i][j]);
 			}
 		}
-		Maze.printMatrix(res);
 		return res;
 	}
 
@@ -100,7 +99,6 @@ public class LevelEditorLevel {
 				res[i][j] = sc.nextInt();
 			}
 		}
-		Maze.printMatrix(res);
 		return res;
 	}
 
