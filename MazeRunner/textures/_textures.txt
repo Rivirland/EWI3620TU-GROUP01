@@ -42,3 +42,4 @@
 43: MenuBackground3Buttons.jpg
 44: leveleditorbg.jpg
 45: glow.png
+46: eagle.jpg
