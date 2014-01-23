@@ -112,84 +112,89 @@ public class Maze implements VisibleObject {
 		}
 	}
 
-//	private void readObjects(File objectsFile) {
-//		BufferedReader bufRdrTex = null;
-//		try {
-//			bufRdrTex = new BufferedReader(new FileReader(objectsFile));
-//			String line = null;
-//			try {
-//				while ((line = bufRdrTex.readLine()) != null) {
-//					StringTokenizer st = new StringTokenizer(line, ",");
-//					double objectNumber = Double.parseDouble(st.nextToken());
-//					if (objectNumber == 129) {
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						int fd = (int) Double.parseDouble(st.nextToken());
-//						// int portalID = (int)
-//						// Double.parseDouble(st.nextToken());
-//						// int portalConID = (int)
-//						// Double.parseDouble(st.nextToken());
-//						Portal portal = new Portal((float) (mazeX + objectX), (float) mazeY, (float) (mazeZ + objectZ), fd);
-//						MazeRunner.portalList.add(portal);
-//						System.out.println("Adding portal for maze: " + mazeID);
-//						// Portal portal = new Portal((float)objectX,
-//						// (float)objectY, objectZ, fd);
-//						// System.out.println("Maakt portal " + portalID +
-//						// " naar " + portalConnectionID + " op " + objectX +
-//						// ", " + objectZ);
-//						continue;
-//					} else if (objectNumber == 229) {
-//						// EnemySpooky
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						EnemySpooky es = new EnemySpooky(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, 0.0015, mazeID);
-//						MazeRunner.enemyList.add(es);
-//						// System.out.println("Maakt enemySpooky op: " + objectX
-//						// + ", " + objectZ);
-//					} else if (objectNumber == 130) {
-//						// EnemySmart
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						EnemySmart es = new EnemySmart(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, 0.005, mazeID);
-//						MazeRunner.enemyList.add(es);
-//					} else if (objectNumber == 230) {
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						int amount = (int) Double.parseDouble(st.nextToken());
-//						BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID, amount);
-//						itemList.add(bh);
-//						MazeRunner.visibleObjects.add(bh);
-//					} else if (objectNumber == 131) {
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						TrapHolder th = new TrapHolder(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID);
-//						itemList.add(th);
-//						MazeRunner.visibleObjects.add(th);
-//					} else if (objectNumber == 231) {
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						Exit e = new Exit(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, mazeID);
-//						itemList.add(e);
-//						MazeRunner.visibleObjects.add(e);
-//					} else if (objectNumber == 132) {
-//						double objectX = Double.parseDouble(st.nextToken());
-//						double objectZ = Double.parseDouble(st.nextToken());
-//						double horAngle = Double.parseDouble(st.nextToken());
-//						Level.setStartX(mazeX + objectX);
-//						Level.setStartY(mazeY + 2.5);
-//						Level.setStartZ(mazeZ + objectZ);
-//						Level.setStartHorAngle(horAngle);
-//					}
-//				}
-//			} catch (IOException e) {
-//				System.out.println("Fout in readObjects");
-//				e.printStackTrace();
-//			}
-//
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	// private void readObjects(File objectsFile) {
+	// BufferedReader bufRdrTex = null;
+	// try {
+	// bufRdrTex = new BufferedReader(new FileReader(objectsFile));
+	// String line = null;
+	// try {
+	// while ((line = bufRdrTex.readLine()) != null) {
+	// StringTokenizer st = new StringTokenizer(line, ",");
+	// double objectNumber = Double.parseDouble(st.nextToken());
+	// if (objectNumber == 129) {
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// int fd = (int) Double.parseDouble(st.nextToken());
+	// // int portalID = (int)
+	// // Double.parseDouble(st.nextToken());
+	// // int portalConID = (int)
+	// // Double.parseDouble(st.nextToken());
+	// Portal portal = new Portal((float) (mazeX + objectX), (float) mazeY,
+	// (float) (mazeZ + objectZ), fd);
+	// MazeRunner.portalList.add(portal);
+	// System.out.println("Adding portal for maze: " + mazeID);
+	// // Portal portal = new Portal((float)objectX,
+	// // (float)objectY, objectZ, fd);
+	// // System.out.println("Maakt portal " + portalID +
+	// // " naar " + portalConnectionID + " op " + objectX +
+	// // ", " + objectZ);
+	// continue;
+	// } else if (objectNumber == 229) {
+	// // EnemySpooky
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// EnemySpooky es = new EnemySpooky(mazeX + objectX, mazeY + 2.5, mazeZ +
+	// objectZ, 0.0015, mazeID);
+	// MazeRunner.enemyList.add(es);
+	// // System.out.println("Maakt enemySpooky op: " + objectX
+	// // + ", " + objectZ);
+	// } else if (objectNumber == 130) {
+	// // EnemySmart
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// EnemySmart es = new EnemySmart(mazeX + objectX, mazeY + 2.5, mazeZ +
+	// objectZ, 0.005, mazeID);
+	// MazeRunner.enemyList.add(es);
+	// } else if (objectNumber == 230) {
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// int amount = (int) Double.parseDouble(st.nextToken());
+	// BulletHolder bh = new BulletHolder(mazeX + objectX, mazeY, mazeZ +
+	// objectZ, mazeID, amount);
+	// itemList.add(bh);
+	// MazeRunner.visibleObjects.add(bh);
+	// } else if (objectNumber == 131) {
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// TrapHolder th = new TrapHolder(mazeX + objectX, mazeY, mazeZ + objectZ,
+	// mazeID);
+	// itemList.add(th);
+	// MazeRunner.visibleObjects.add(th);
+	// } else if (objectNumber == 231) {
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// Exit e = new Exit(mazeX + objectX, mazeY + 2.5, mazeZ + objectZ, mazeID);
+	// itemList.add(e);
+	// MazeRunner.visibleObjects.add(e);
+	// } else if (objectNumber == 132) {
+	// double objectX = Double.parseDouble(st.nextToken());
+	// double objectZ = Double.parseDouble(st.nextToken());
+	// double horAngle = Double.parseDouble(st.nextToken());
+	// Level.setStartX(mazeX + objectX);
+	// Level.setStartY(mazeY + 2.5);
+	// Level.setStartZ(mazeZ + objectZ);
+	// Level.setStartHorAngle(horAngle);
+	// }
+	// }
+	// } catch (IOException e) {
+	// System.out.println("Fout in readObjects");
+	// e.printStackTrace();
+	// }
+	//
+	// } catch (FileNotFoundException e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	// private void buildTextureMatrix(File infile) throws
 	// NumberFormatException, IOException {
@@ -425,7 +430,7 @@ public class Maze implements VisibleObject {
 					World.setStartY(mazeY + 2.5);
 					World.setStartZ(mazeZ + objectZ);
 					World.setStartHorAngle(horAngle);
-					Start s = new Start(mazeX + objectX, mazeY , mazeZ + objectZ, mazeID);
+					Start s = new Start(mazeX + objectX, mazeY, mazeZ + objectZ, mazeID);
 					itemList.add(s);
 					MazeRunner.visibleObjects.add(s);
 				}
@@ -660,8 +665,25 @@ public class Maze implements VisibleObject {
 		setLighting(gl);
 
 		double thick = 1.0;
-		// Apply texture.
-		Teken.drawCuboid(gl, 0, size_x, -thick, 0, 0, size_z, 5);
+		double tileSize = Maze.CELL_SIZE;
+		double columnWidth = Maze.WALL_WIDTH;
+		for (double x = 0; x < size_x - tileSize - columnWidth; x += tileSize) {
+			for (double z = 0; z < size_z - tileSize - columnWidth; z += tileSize)
+				Teken.drawCuboid(gl, x, x + tileSize, -thick, 0, z, z + tileSize, 5);
+		}
+		for (double x = 0; x < size_x - tileSize - columnWidth; x += tileSize) {
+			Teken.drawCuboid(gl, x, x + tileSize, -thick, 0, size_z - tileSize - columnWidth, size_z);
+		}
+		for (double z = 0; z < size_z - tileSize - columnWidth; z += tileSize) {
+			Teken.drawCuboid(gl, size_x - tileSize - columnWidth, size_x, -thick, 0, z, z + tileSize);
+		}
+		Teken.drawCuboid(gl, size_x - tileSize - columnWidth, size_x, -thick, 0, size_z - tileSize - columnWidth, size_z);
+
+		// Teken.drawCuboid(gl, size_x - size_=x % tileSize, size_x, -thick, 0,
+		// , , 5);
+
+		// Teken.drawCuboid(gl, size_x - size_x % tileSize, size_x, -thick, 0,
+		// size_z - size_z % tileSize, size_z, 5);
 
 	}
 
@@ -687,6 +709,7 @@ public class Maze implements VisibleObject {
 		drawDoorZFromQuad(gl, h);
 		gl.glPopMatrix();
 	}
+
 	private void paintDoorXFromQuad(GL gl, double h) {
 		// Links van de deur
 		Teken.drawCuboid(gl, 0.0, WALL_WIDTH, h, ITEM_HEIGHT + h, 0.0, (WALL_LENGTH - DOOR_WIDTH) / 2);
