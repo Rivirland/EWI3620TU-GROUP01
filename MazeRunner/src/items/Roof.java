@@ -28,7 +28,6 @@ public class Roof extends Item {
 	@Override
 	public void display(GL gl) {
 		ChangeGL.GLtoTexturedItem(gl);
-		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_CULL_FACE);
 //		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 7);

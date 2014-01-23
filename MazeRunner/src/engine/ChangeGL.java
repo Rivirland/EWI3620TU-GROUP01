@@ -2,6 +2,8 @@ package engine;
 
 import javax.media.opengl.GL;
 
+import levelEditor.LevelEditor;
+
 //This class gives us an easy way to switch between drawing 2D and 3D. This is used for example when drawing the minimap over a 3D scene.
 public class ChangeGL {
 
@@ -17,7 +19,11 @@ public class ChangeGL {
 	public static void GLtoTexturedItem(GL gl) {
 		gl.glColor3d(1, 1, 1);
 		gl.glEnable(GL.GL_TEXTURE_2D);
-		gl.glDisable(GL.GL_LIGHTING);
+		if (LevelEditor.worldview){
+			gl.glDisable(GL.GL_LIGHTING);
+		} else {
+			gl.glEnable(GL.GL_LIGHTING);
+		}
 		float matAmbient[] = { 0.8f, 0.8f, 0.8f, 1.0f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, matAmbient, 0);
 	}

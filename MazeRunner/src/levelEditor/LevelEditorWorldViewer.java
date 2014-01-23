@@ -220,7 +220,7 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 
 		gl.glTranslated(xmidden, ymidden, 0);
 
-//<<<<<<< HEAD
+
 		gl.glTranslated(-panX, panY, 0);
 
 		gl.glRotated(rotationY, 1, 0, 0);
@@ -237,30 +237,12 @@ public class LevelEditorWorldViewer extends LevelEditorViewer {
 		ChangeGL.GLtoTexturedItem(gl);
 
 		gl.glDisable(GL.GL_LIGHTING);
-		// MazeRunner.visibleIterator(gl);
 
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			VisibleObject next = it.next();
 			next.display(gl);
 		}
-//=======
-////		gl.glTranslated(-2*panX,2*panY, 0);
-//		//gl.glTranslated(2*panX,2*panY, 0);
-//		
-//		
-//		
-//		gl.glTranslated(-xcenter, -ycenter, -zcenter); // center van rotatie veranderen	
-//		
-//		gl.glRotated(rotationY, 0.25, 0, 0);
-//		gl.glRotated(rotationX, 0, 0.25, 0);
-//	
-//		gl.glTranslated(xcenter, ycenter, zcenter);
-//		
-//		gl.glScaled(scalef,scalef,scalef);
-//		
-//		MazeRunner.visibleIterator(gl);
-//		
-//>>>>>>> e8c7d5a69602ad6924df49dcd2df6f411c63b147
+
 		gl.glPopMatrix();
 		ChangeGL.GLtoColoredItem(gl);
 		gl.glColor3d(1, 1, 1);

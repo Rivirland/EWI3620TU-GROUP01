@@ -224,7 +224,7 @@ public class MazeRunner {
 	// Takes care of the pulsing effect when you are in cloakmode.
 	private void updateLighting(GL gl) {
 		long cT = currentTime;
-		float lI = 0.9f - (float) ((1 + Math.cos(cT / 600f)) / 2);
+		float lI = 0.9f - (float) ((1 + Math.cos(cT / 200f)) / 2);
 		float lightAmbient0normal[] = { 0.9f, 0.9f, 0.9f, 1.0f };
 		float lightAmbient0cloak[] = { lI, lI, lI, 1.0f };
 		if (player.invisible) {
@@ -528,19 +528,6 @@ public class MazeRunner {
 						MazeRunner.player.nrOfBullets += ((BulletHolder) item).getAmount();
 						visibleObjects.remove(currentMaze.itemList.get(i));
 						currentMaze.itemList.remove(i);
-					}
-				}
-			}
-			// Check for collision between TrapDropped items, if so, call bounce
-			// method.
-			for (int i = 0; i < currentMaze.itemList.size(); i++) {
-				Item itemi = currentMaze.itemList.get(i);
-				if (itemi instanceof TrapDropped) {
-					for (int j = 0; j < currentMaze.itemList.size(); j++) {
-						Item itemj = currentMaze.itemList.get(j);
-						if (itemi.touches(itemj) && i != j && itemj instanceof TrapDropped) {
-							((TrapDropped) itemi).bounce((TrapDropped) itemj);
-						}
 					}
 				}
 			}

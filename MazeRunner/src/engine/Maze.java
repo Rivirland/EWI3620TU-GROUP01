@@ -656,15 +656,26 @@ public class Maze implements VisibleObject {
 	}
 
 	public static void drawSingleFloorTile(GL gl, double size_x, double size_z) {
-
 		setLighting(gl);
-
 		double thick = 1.0;
-		// Apply texture.
-		Teken.drawCuboid(gl, 0, size_x, -thick, 0, 0, size_z, 5);
-
+		double tileSize = Maze.CELL_SIZE;
+		double columnWidth = Maze.WALL_WIDTH;
+		for (double x = 0; x < size_x - tileSize - columnWidth; x += tileSize) {
+			for (double z = 0; z < size_z - tileSize - columnWidth; z += tileSize)
+				Teken.drawCuboid(gl, x, x + tileSize, -thick, 0, z, z + tileSize, 5);
+		}
+		for (double x = 0; x < size_x - tileSize - columnWidth; x += tileSize) {
+			Teken.drawCuboid(gl, x, x + tileSize, -thick, 0, size_z - tileSize - columnWidth, size_z, 5);
+		}
+		for (double z = 0; z < size_z - tileSize - columnWidth; z += tileSize) {
+			Teken.drawCuboid(gl, size_x - tileSize - columnWidth, size_x, -thick, 0, z, z + tileSize, 5);
+		}
+		Teken.drawCuboid(gl, size_x - tileSize - columnWidth, size_x, -thick, 0, size_z - tileSize - columnWidth, size_z, 5);
+		// Teken.drawCuboid(gl, size_x - size_=x % tileSize, size_x, -thick, 0,
+		// , , 5);
+		// Teken.drawCuboid(gl, size_x - size_x % tileSize, size_x, -thick, 0,
+		// size_z - size_z % tileSize, size_z, 5);
 	}
-
 	public static void paintWallZFromQuad(GL gl, double h, int texture) {
 		gl.glBindTexture(GL.GL_TEXTURE_2D, texture);
 		drawWallZFromQuad(gl, h);

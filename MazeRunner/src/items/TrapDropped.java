@@ -18,7 +18,6 @@ public class TrapDropped extends Item {
 	public double vy0, vx0, ay, ax;
 	public double horAngle;
 	public boolean inair;
-	public boolean onground;
 
 	public TrapDropped(double x, double y, double z, int i) {
 		super(x, y, z, i);
@@ -26,7 +25,6 @@ public class TrapDropped extends Item {
 		this.used = false;
 		this.horAngle=MazeRunner.player.getHorAngle();
 		this.inair=true; 
-		this.onground=false;
 		this.vy0=.11;
 		this.vx0=1.0;
 		this.ay=-0.1;
@@ -124,10 +122,5 @@ public class TrapDropped extends Item {
 	}
 	public long getT0(){
 		return this.t0;
-	}
-
-	public void bounce(TrapDropped trap) {
-		// TODO Auto-generated method stub
-		
 	}
 }

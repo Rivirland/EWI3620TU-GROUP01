@@ -681,6 +681,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			gamestate = MAINMENU;
+			LevelEditor.worldview=false;
 		}
 
 		if (gamestate == INGAME) {

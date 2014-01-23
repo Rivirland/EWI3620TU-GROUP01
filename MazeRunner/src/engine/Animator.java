@@ -127,15 +127,8 @@ public abstract class Animator {
 			if (t.getLocationY() <= curMaze.mazeY) {
 				t.inair = false;
 				t.setLocationY(curMaze.mazeY);
-				t.onground = true;
 			}
-		} else if (t.onground) {
-			// TODO: rotate
-			// TODO: also rotate according to horangle
 		}
-		// System.out.println("y; " + t.getLocationY() + "  vy0: " + t.vy0 * dT
-		// * i + " ay " + t.ay * dT * dT * i * i + " dT " + dT
-		// + " " + t.inair);
 
 	}
 }
