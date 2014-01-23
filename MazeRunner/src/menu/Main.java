@@ -63,7 +63,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final static byte DELETEGAME = 9;
 	final static byte LOADLEVEL = 10;
 
-	final boolean fullscreenboolean = false;
+	final boolean fullscreenboolean = true;
 
 	boolean mousemode = false; // a parameter to correctly change when the
 								// mousecursor should appear
@@ -433,7 +433,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 			Teken.textDrawMetKleur(drawable, gl, "You are logged in as", 730f / 1920f * screenWidth, 100f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 
 			if (mainErrorMessage.equals("")) {
-				Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 1f, 0f, 0f);
+				Teken.textDrawMetKleur(drawable, gl, accName, 730f / 1920f * screenWidth, 60f / 1080f * screenHeight, 30, 0.4f, 0.75f, 1f);
 				if (!accName.equals("Guest")) {
 					Teken.textDrawMetKleur(drawable, gl, "Last appearance: " + accDate, 730f / 1920f * screenWidth, 20f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 				} else {

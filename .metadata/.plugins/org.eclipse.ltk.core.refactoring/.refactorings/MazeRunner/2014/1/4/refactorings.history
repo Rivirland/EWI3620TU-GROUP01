@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 5 elements from project &apos;MazeRunner&apos;&#x0D;&#x0A;- Original project: &apos;MazeRunner&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     applause-2.mp3&#x0D;&#x0A;     applause-2.wav&#x0D;&#x0A;     crash-oud1.wav&#x0D;&#x0A;     fire.wav&#x0D;&#x0A;     Jump.wav" description="Delete elements" element1="src/applause-2.mp3" element2="src/crash-oud1.wav" element3="src/fire.wav" element4="src/applause-2.wav" element5="src/Jump.wav" elements="0" flags="589830" id="org.eclipse.jdt.ui.delete" resources="5" stamp="1390494195454" subPackages="false" version="1.0"/>
+</session>

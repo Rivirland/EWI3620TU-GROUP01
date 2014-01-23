@@ -35,14 +35,14 @@ public class GameMenu {
 		if (Main.everplayed) {
 			if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
 					&& (350f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f / 1080f * screenHeight)) {
-				Teken.textDrawMetKleur(drawable, gl, "Resume Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+				Teken.textDrawMetKleur(drawable, gl, "Resume Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 			} else {
 				Teken.textDraw(gl, "Resume Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60);
 			}
 		}else{
 			if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
 					&& (350f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f / 1080f * screenHeight)) {
-				Teken.textDrawMetKleur(drawable, gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+				Teken.textDrawMetKleur(drawable, gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 			} else {
 				Teken.textDraw(gl, "Start Game", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60);
 			}
@@ -51,14 +51,14 @@ public class GameMenu {
 		// ik beweeg over de tweede knop => deze licht rood op
 		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
 				&& (500f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 600f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Load Game", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Load Game", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "Load Game", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60);
 		}
 		// ik beweeg over de derde knop => deze licht rood op
 		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
 				&& (650f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 750f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Back", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Back", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "Back", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
 		}

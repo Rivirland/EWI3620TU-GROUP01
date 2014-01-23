@@ -1,0 +1,55 @@
+package items;
+
+import javax.media.opengl.GL;
+
+import levelEditor.LevelEditor;
+import menu.Main;
+import menu.Teken;
+import engine.ChangeGL;
+import engine.GameObject;
+
+public class Start extends Item {
+
+	public Start(double x, double y, double z, int i) {
+		super(x, y, z, i);
+	}
+
+	@Override
+	public void display(GL gl) {
+		if (LevelEditor.worldview) {
+			gl.glPushMatrix();
+			gl.glTranslated(super.locationX, super.locationY, super.locationZ);
+
+			gl.glDisable(GL.GL_CULL_FACE);
+
+			ChangeGL.GLtoColoredItem(gl);
+			Teken.drawCuboid(gl, -2, 2, 0, 0.3, -2, 2);
+
+			ChangeGL.GLtoTexturedItem(gl);
+			gl.glEnable(GL.GL_CULL_FACE);
+			gl.glPopMatrix();
+		}
+	}
+
+	@Override
+	public double getGlobalX() {
+		return locationX;
+	}
+
+	@Override
+	public double getGlobalY() {
+		return locationY;
+	}
+
+	@Override
+	public double getGlobalZ() {
+		return locationZ;
+	}
+
+	@Override
+	public boolean touches(GameObject object) {
+		// nothing
+		return false;
+	}
+
+}

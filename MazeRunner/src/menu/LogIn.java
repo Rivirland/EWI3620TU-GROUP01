@@ -32,7 +32,7 @@ public class LogIn {
 //		Teken.textDraw(drawable, gl, "Z@idm@n The G@me", 300f / 1920f * screenWidth, 830f / 1080f * screenHeight, 90);
 		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
 				&& (350f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 450f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Log In", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Log In", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "Log In", 750f / 1920f * screenWidth, 680f / 1080f * screenHeight, 60);
 		}
@@ -40,14 +40,14 @@ public class LogIn {
 		// ik beweeg over de tweede knop => deze licht rood op
 		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
 				&& (500f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 600f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Log out", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Log out", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "Log out", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60);
 		}
 		// ik beweeg over de derde knop => deze licht rood op
 		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
 				&& (650f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 750f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Create Account", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Create Account", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "Create Account", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
 		}

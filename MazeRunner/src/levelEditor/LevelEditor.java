@@ -135,8 +135,8 @@ public class LevelEditor {
 		loadTextures(gl);
 		modelviewer = new LevelEditorModelViewer(screenWidth, screenHeight, (90f / 1920f * screenWidth),
 				(90f / 1080f * screenHeight), (589f / 1920f * screenWidth), (860f / 1080f * screenHeight));
-		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (775) / 1920f * screenWidth, (90f - 40f) / 1080f
-				* screenHeight, 1880 / 1920f * screenWidth, 1050 / 1080f * screenHeight);
+		worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight, (830f / 1920) * screenWidth, (90f/1080)
+				* screenHeight, 1830f / 1920 * screenWidth, 990f / 1080 * screenHeight);
 	
 		// worldviewer = new LevelEditorWorldViewer(screenWidth, screenHeight,
 		// screenWidth/2, screenHeight/2, screenWidth, screenHeight);
@@ -180,8 +180,6 @@ public class LevelEditor {
 					948f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			Teken.textDrawMetKleur(drawable, gl, (location[0] + ", " + location[1] + ", " + location[2]),
 					622f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-//			Teken.textDrawMetKleur(drawable, gl, "DAK", 356f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
-//			Teken.textDrawMetKleur(drawable, gl, "ITEM", 489f / 1920f * screenWidth, 890f / 1080f * screenHeight, 30, 1f, 1f, 1f);
 			drawGrid(gl, 830f / 1920f * screenWidth, 90f / 1080f * screenHeight, 1830f / 1920f * screenWidth,
 					990f / 1080f * screenHeight, gridcolumns, gridrows);
 			drawGridInhoud(drawable, gl);
@@ -381,7 +379,7 @@ public class LevelEditor {
 		gl.glVertex2f(293f / 1920f * screenWidth, 964f / 1080f * screenHeight);
 		gl.glEnd();
 
-		// button3
+		// button3		
 		if (drawMode == 3)
 			tekenButtonMetKleur(gl, roofbxmin, roofbymin, roofbxmax, roofbymax, 0.76f, 0.76f, 0.76f);
 		else
@@ -448,6 +446,7 @@ public class LevelEditor {
 		gl.glVertex2f(458f / 1600f * screenWidth, 753f / 900f * screenHeight);
 		gl.glVertex2f(458f / 1600f * screenWidth, 763f / 900f * screenHeight);
 		gl.glEnd();
+		
 		// zwart onder de buttons
 		gl.glColor3f(0f, 0f, 0f);
 		rechthoek(gl, 90f / 1920f * screenWidth, 90f / 1080f * screenHeight, 589f / 1920f * screenWidth,
@@ -851,7 +850,6 @@ public class LevelEditor {
 							System.out.println("Aantal rijen: " + gridrows);
 							wereld = veranderMatrixGrootte2(wereld);
 							textures = veranderMatrixGrootte2(textures);
-							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
 						// plusknop boven
@@ -874,7 +872,6 @@ public class LevelEditor {
 							for (int item = 0; item != items.size(); item++) {
 								items.get(item)[1] -= 7d;
 							}
-							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
 						// plusknop onder
@@ -900,7 +897,6 @@ public class LevelEditor {
 							for (int item = 0; item != items.size(); item++) {
 								items.get(item)[2] -= 7d;
 							}
-							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY()
 							&& me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
@@ -924,7 +920,6 @@ public class LevelEditor {
 							System.out.println("Aantal kolommen: " + gridcolumns);
 							wereld = veranderMatrixGrootte(wereld);
 							textures = veranderMatrixGrootte(textures);
-							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY()
 							&& me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
@@ -1013,10 +1008,8 @@ public class LevelEditor {
 					}
 				} else {
 					// gridklik
-					if ((drawMode != ITEM && (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5
-							&& screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5)) ||
-						(drawMode == ITEM && (xmin < me.getX() && me.getX() < xmax
-								&& screenHeight - ymax < me.getY() && me.getY() < screenHeight - ymin))){
+					if (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5
+							&& screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5) {
 						float gridklikx = me.getX();
 						float gridkliky = screenHeight - me.getY();
 						gridklik = true;
@@ -1478,15 +1471,6 @@ public class LevelEditor {
 		} else
 			return false;
 	}
-	
-	public void deleteItemsNotInGrid(int gridrows, int gridcolumns){
-		for (int item = 0; item != items.size(); item++) {
-			if (items.get(item)[1] < 0 || gridrows*7+0.5 < items.get(item)[2] || items.get(item)[2] < 0 || gridcolumns*7+0.5 < items.get(item)[1]){
-				items.remove(item);
-				item--;
-			}
-		}
-	}
 
 	public int[][] veranderMatrixGrootte(int[][] matrix) {
 		int[][] res = new int[2 * gridrows + 1][2 * gridcolumns + 1];
@@ -1612,8 +1596,6 @@ public class LevelEditor {
 		for (int rij = 1; rij < wereld.length - 1; rij = rij + 2) {
 			for (int kolom = 1; kolom < wereld[0].length - 1; kolom = kolom + 2) {
 				if (textures[rij][kolom] == 129) {
-					// TODO: onderstaande moet veranderen in een daktexture,
-					// geldt dit nog?
 					Teken.plaatsTexture(gl, xmin + (kolom / 2) * distance, ymax - rij / 2 * distance, xmin + (kolom / 2 + 1)
 							* distance, ymax - (rij / 2 + 1) * distance, 7);
 				}

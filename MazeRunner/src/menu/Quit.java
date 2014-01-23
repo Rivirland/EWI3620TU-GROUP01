@@ -35,14 +35,14 @@ public class Quit {
 		// ik beweeg over de tweede knop => deze licht rood op
 		if ((750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth)
 				&& (500f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 600f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "Yes", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "Yes", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "Yes", 750f / 1920f * screenWidth, 530f / 1080f * screenHeight, 60);
 		}
 		// ik beweeg over de derde knop => deze licht rood op
 		if (750f / 1920f * screenWidth < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < 1170f / 1920f * screenWidth
 				&& (650f / 1080f * screenHeight < MouseInfo.getPointerInfo().getLocation().getY() && MouseInfo.getPointerInfo().getLocation().getY() < 750f / 1080f * screenHeight)) {
-			Teken.textDrawMetKleur(drawable, gl, "No", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 1f, 0f, 0f);
+			Teken.textDrawMetKleur(drawable, gl, "No", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60, 0.4f, 0.75f, 1f);
 		} else {
 			Teken.textDraw(gl, "No", 750f / 1920f * screenWidth, 380f / 1080f * screenHeight, 60);
 		}
