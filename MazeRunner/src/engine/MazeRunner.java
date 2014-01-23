@@ -286,9 +286,9 @@ public class MazeRunner {
 			Minimap.displayMinimap(gl);
 		}
 
-		if (player.playerStateInt == 2) {
-			Reticle.display(gl);
-		}
+//		if (player.playerStateInt == 2) {
+//			Reticle.display(gl);
+//		}
 
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());

@@ -510,15 +510,15 @@ public class Portal {
 //			MazeRunner.setEventMessage("hcurrent: " + mazeList.get(mazeID).mazeY + " hconnected: " + mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY + "connectedmazeID"
 //					+ portalList.get(num).getConnectedlevelID());
 
-			gl.glPushMatrix();
-			gl.glTranslated(this.toportal.getX(), this.toportal.getY(), this.toportal.getZ());
-			gl.glRotated(90 * facingdirection, 0, 1, 0);
-			gl.glTranslated(-this.x, -this.y, -this.z);
-			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
+//			gl.glPushMatrix();
+//			gl.glTranslated(this.toportal.getX(), this.toportal.getY(), this.toportal.getZ());
+//			gl.glRotated(90 * facingdirection, 0, 1, 0);
+//			gl.glTranslated(-this.x, -this.y, -this.z);
+//			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
 			// gl.glRotated(90, 0, 1, 0);
 			// gl.glTranslated(xtransform, ytransform, ztransform);
-			glut.glutSolidCube(1);
-			gl.glPopMatrix();
+//			glut.glutSolidCube(1);
+//			gl.glPopMatrix();
 
 			// gl.glPushMatrix();
 			//
