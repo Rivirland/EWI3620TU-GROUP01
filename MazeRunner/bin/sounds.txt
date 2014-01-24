@@ -2,3 +2,5 @@ crash
 Gunfire
 noBullets
 reload
+heli_short
+footstep

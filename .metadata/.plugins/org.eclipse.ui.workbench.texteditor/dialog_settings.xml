@@ -1,52 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="305" key="DIALOG_WIDTH"/>
-		<item value="599" key="DIALOG_Y_ORIGIN"/>
-		<item value="825" key="DIALOG_X_ORIGIN"/>
-		<item value="442" key="DIALOG_HEIGHT"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="257" key="DIALOG_WIDTH"/>
+		<item value="362" key="DIALOG_Y_ORIGIN"/>
+		<item value="380" key="DIALOG_HEIGHT"/>
+		<item value="981" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-<<<<<<< HEAD
-		<item value="stencilborder" key="selection"/>
+		<item value="keyReleased" key="selection"/>
 		<list key="findhistory">
-			<item value="stencilborder"/>
+			<item value="keyReleased"/>
+			<item value="display"/>
+			<item value="update("/>
+			<item value="5"/>
+			<item value="// gridklik"/>
+			<item value="grid knoppen"/>
 			<item value="displayportal"/>
-			<item value="inact"/>
-			<item value="ITEM"/>
-			<item value="worldviewer"/>
-			<item value="toString"/>
-			<item value="score +="/>
-			<item value="loadob"/>
+			<item value="stencilborder"/>
 		</list>
 		<list key="replacehistory">
-=======
-		<item value="eagle" key="selection"/>
-		<list key="findhistory">
-			<item value="eagle"/>
-			<item value="model"/>
-			<item value="gl"/>
-			<item value="loadTe"/>
-			<item value="loadT"/>
-			<item value="loadTE"/>
-			<item value="1080"/>
-			<item value="1920"/>
-		</list>
-		<list key="replacehistory">
-			<item value="900"/>
-			<item value="1600"/>
 			<item value="1"/>
-			<item value="2"/>
-			<item value="Double"/>
-			<item value=" me"/>
-			<item value="me"/>
->>>>>>> da89e7a48eca804b654a93e2b8ce0618089b7ef2
 		</list>
 	</section>
 </section>

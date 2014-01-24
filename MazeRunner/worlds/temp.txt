@@ -2,3 +2,4 @@
 0.0,50.0,0.0,psstart
 0.0,40.0,60.0,psplatform
 30.0,0.0,150.0,psend
+10.0,10.0,10.0,psplatform
