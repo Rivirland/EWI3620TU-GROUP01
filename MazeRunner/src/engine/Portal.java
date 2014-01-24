@@ -149,8 +149,9 @@ public class Portal {
 
 	public void stencilborder(GL gl) {
 
-		// gl.glColor3d(1, 1, 1);
+		gl.glColor3d(1, 1, 1);
 		gl.glClearColor(1, 1, 1, 0);
+		ChangeGL.GLtoTexturedItem(gl);
 
 		gl.glPushMatrix();
 		gl.glTranslated(this.x, (this.y), this.z);
@@ -269,7 +270,7 @@ public class Portal {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		// gl.glClear(GL.GL)
 
-		Skybox.displaySkybox(gl,(portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection() ));
+		Skybox.displaySkybox(gl, (portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection()));
 
 		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),
 				portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
@@ -293,12 +294,12 @@ public class Portal {
 					}
 				}
 				if (check) {
-					portalList.get(i).displayPortal(glut, gl);
+					portalList.get(i).stencilborder( gl);
 				}
 			}
 		} else {
 			for (int i = 0; i < portalList.size(); i++) {
-				portalList.get(i).displayPortal(glut, gl);
+				portalList.get(i).stencilborder( gl);
 			}
 		}
 	}
@@ -500,26 +501,31 @@ public class Portal {
 			// double y = this.toportal.getY() + this.dy;
 			// double z = this.toportal.getZ() + this.dz;
 
-			int facingdirection = this.facingdirection - toportal.getFacingdirection()+2;
+			int facingdirection = this.facingdirection - toportal.getFacingdirection() + 2;
 
 			double xtransform = Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) - Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
-					+ toportal.getX()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX;
+					+ toportal.getX() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX;
 			double ytransform = player.getLocationY() - this.y + toportal.getY() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY;
 			double ztransform = Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) + Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
-					+ toportal.getZ()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ;
+					+ toportal.getZ() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ;
 
-//			MazeRunner.setEventMessage("hcurrent: " + mazeList.get(mazeID).mazeY + " hconnected: " + mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY + "connectedmazeID"
-//					+ portalList.get(num).getConnectedlevelID());
+			// MazeRunner.setEventMessage("hcurrent: " +
+			// mazeList.get(mazeID).mazeY + " hconnected: " +
+			// mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY +
+			// "connectedmazeID"
+			// + portalList.get(num).getConnectedlevelID());
 
-//			gl.glPushMatrix();
-//			gl.glTranslated(this.toportal.getX(), this.toportal.getY(), this.toportal.getZ());
-//			gl.glRotated(90 * facingdirection, 0, 1, 0);
-//			gl.glTranslated(-this.x, -this.y, -this.z);
-//			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
+			// gl.glPushMatrix();
+			// gl.glTranslated(this.toportal.getX(), this.toportal.getY(),
+			// this.toportal.getZ());
+			// gl.glRotated(90 * facingdirection, 0, 1, 0);
+			// gl.glTranslated(-this.x, -this.y, -this.z);
+			// gl.glTranslated(player.getLocationX(), player.getLocationY(),
+			// player.getLocationZ());
 			// gl.glRotated(90, 0, 1, 0);
 			// gl.glTranslated(xtransform, ytransform, ztransform);
-//			glut.glutSolidCube(1);
-//			gl.glPopMatrix();
+			// glut.glutSolidCube(1);
+			// gl.glPopMatrix();
 
 			// gl.glPushMatrix();
 			//
@@ -548,7 +554,7 @@ public class Portal {
 			portalcamera.setLocationZ(ztransform);
 			portalcamera.setHorAngle(player.getHorAngle());
 			portalcamera.setVerAngle(player.getVerAngle());
-			portalcamera.calculateVRP(facingdirection+2);
+			portalcamera.calculateVRP(facingdirection + 2);
 			// portalcamera.calculateVRP(facingdirection);
 
 		}

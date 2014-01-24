@@ -44,7 +44,7 @@ public class LevelEditorWorld {
 			double lz = Double.parseDouble(st.nextToken());
 			String name = st.nextToken();
 
-			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] { lx, ly, lz }, currentdir + "\\levels\\" + name	+ ".txt"));
+			lijst.levels.add(LevelEditorLevel.readLevel(name, new double[] { lx, ly, lz }, currentdir + "\\levels\\" + name + ".txt"));
 
 			System.out.println(name + " added to list of levels");
 		}
@@ -52,25 +52,21 @@ public class LevelEditorWorld {
 		return lijst;
 	}
 
-	public void drawLevelList(GLAutoDrawable drawable, GL gl, float xmin, float ymin, float xmax, float ymax, float screenWidth,
-			float screenHeight, int selectedLevel) {
+	public void drawLevelList(GLAutoDrawable drawable, GL gl, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight, int selectedLevel) {
 		// System.out.println(MouseInfo.getPointerInfo().getLocation().getX());
 		// Teken.tekenButton(gl, xmin, ymin, xmax, ymax);
 		for (int i = levels.size() - 1; i > -1; i--) {
 			// lijst
 			if (selectedLevel == i) {
-				Teken.tekenButtonMetKleur(gl, xmin, ymax - (ymax - ymin) * (i + 1) / 20, xmax, ymax - (ymax - ymin) * i / 20,
-						0.76f, 0.76f, 0.76f);
+				Teken.tekenButtonMetKleur(gl, xmin, ymax - (ymax - ymin) * (i + 1) / 20, xmax, ymax - (ymax - ymin) * i / 20, 0.76f, 0.76f, 0.76f);
 				gl.glColor3f(0.16f, 0.16f, 0.16f);
-				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f
-						* screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20) - 10f / 1080f
-						* screenHeight);
+				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f * screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20)
+						- 10f / 1080f * screenHeight);
 			} else {
 				Teken.tekenButton(gl, xmin, ymax - ((ymax - ymin) * (i + 1) / 20), xmax, ymax - ((ymax - ymin) * i / 20));
 				gl.glColor3f(0.76f, 0.76f, 0.76f);
-				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f
-						* screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20) - 10f / 1080f
-						* screenHeight);
+				Teken.kruis(gl, xmax - 24f / 1920f * screenWidth, ymax - ((ymax - ymin) * (i + 1) / 20) + 10f / 1080f * screenHeight, xmax - 10f / 1920f * screenWidth, ymax - ((ymax - ymin) * i / 20)
+						- 10f / 1080f * screenHeight);
 			}
 			String levelName = levels.get(i).getName();
 			if (levelName.length() > 6) {
@@ -80,20 +76,16 @@ public class LevelEditorWorld {
 
 			// popup menu
 			if (xmin < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < xmax) {
-				if (screenHeight - (ymax - (ymax - ymin) * i / 20) < MouseInfo.getPointerInfo().getLocation().getY() - 30f
-						&& MouseInfo.getPointerInfo().getLocation().getY() - 30f < screenHeight
-								- (ymax - (ymax - ymin) * (i + 1) / 20)) {
+				if (screenHeight - (ymax - (ymax - ymin) * i / 20) < MouseInfo.getPointerInfo().getLocation().getY()
+						&& MouseInfo.getPointerInfo().getLocation().getY() < screenHeight - (ymax - (ymax - ymin) * (i + 1) / 20)) {
 					popup = true;
 				}
 			}
 			if (popup) {
-				if (xmin < MouseInfo.getPointerInfo().getLocation().getX()
-						&& MouseInfo.getPointerInfo().getLocation().getX() < xmax + 41f / 1920f * screenWidth) {
-					if (screenHeight - (ymax - (ymax - ymin) * i / 20) < MouseInfo.getPointerInfo().getLocation().getY() - 30f
-							&& MouseInfo.getPointerInfo().getLocation().getY() - 30f < screenHeight
-									- (ymax - (ymax - ymin) * (i + 1) / 20)) {
-						Teken.tekenButtonMetKleur(gl, xmax, ymax - (ymax - ymin) * (i + 1) / 20,
-								xmax + 34f / 1920f * screenWidth, ymax - (ymax - ymin) * i / 20, 0.3f, 0.3f, 0.8f);
+				if (xmin < MouseInfo.getPointerInfo().getLocation().getX() && MouseInfo.getPointerInfo().getLocation().getX() < xmax + 41f / 1920f * screenWidth) {
+					if (screenHeight - (ymax - (ymax - ymin) * i / 20) < MouseInfo.getPointerInfo().getLocation().getY()
+							&& MouseInfo.getPointerInfo().getLocation().getY() < screenHeight - (ymax - (ymax - ymin) * (i + 1) / 20)) {
+						Teken.tekenButtonMetKleur(gl, xmax, ymax - (ymax - ymin) * (i + 1) / 20, xmax + 34f / 1920f * screenWidth, ymax - (ymax - ymin) * i / 20, 0.3f, 0.3f, 0.8f);
 					}
 				} else {
 					popup = false;
@@ -104,8 +96,7 @@ public class LevelEditorWorld {
 	}
 
 	public void addLevel() {
-		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor
-				.defaultMatrix(), new ArrayList<double[]>()));
+		levels.add(new LevelEditorLevel(LevelEditor.defaultLocation(), "nieuw", LevelEditor.defaultMatrix(), LevelEditor.defaultMatrix(), new ArrayList<double[]>()));
 	}
 
 	public String saveAs() throws FileNotFoundException {
@@ -170,9 +161,9 @@ public class LevelEditorWorld {
 			LevelEditorLevel l = LevelEditorLevel.readLevel(name, loc, filename);
 			levels.set(i, l);
 		}
-		if (nrOfStartingPoints() !=1){
+		if (nrOfStartingPoints() != 1) {
 			LevelEditor.setErrMsg("You need to have exactly one starting point!");
-		} else if (nrOfExits() < 1){
+		} else if (nrOfExits() < 1) {
 			LevelEditor.setErrMsg("You need to have at least one exit!");
 		}
 	}
@@ -211,8 +202,8 @@ public class LevelEditorWorld {
 			if (xmin < x && x < xmax) {
 				if (ymax - ((ymax - ymin) * (i + 1) / 20) < y && y < ymax - (ymax - ymin) * i / 20) {
 					selectedLevel = i;
-					LevelEditorWorldViewer.panX=0;
-					LevelEditorWorldViewer.panY=0;
+					LevelEditorWorldViewer.panX = 0;
+					LevelEditorWorldViewer.panY = 0;
 				}
 			}
 		}
@@ -220,8 +211,7 @@ public class LevelEditorWorld {
 	}
 
 	// save level As
-	public void mouseReleased2(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth,
-			float screenHeight) throws FileNotFoundException {
+	public void mouseReleased2(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight) throws FileNotFoundException {
 		for (int i = 0; i < levels.size(); i++) {
 			if (xmax < x && x < xmax + 34f / 1920f * screenWidth) {
 				if (ymax - ((ymax - ymin) * (i + 1) / 20) < y && y < ymax - (ymax - ymin) * i / 20) {
@@ -235,8 +225,7 @@ public class LevelEditorWorld {
 	}
 
 	// remove level
-	public boolean mouseReleased3(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth,
-			float screenHeight) {
+	public boolean mouseReleased3(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight) {
 		boolean remove = false;
 		for (int i = 0; i < levels.size(); i++) {
 			if (xmax - 24f / 1920f * screenWidth < x && x < xmax) {
@@ -251,8 +240,7 @@ public class LevelEditorWorld {
 	}
 
 	// open level
-	public boolean mousePressed(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth,
-			float screenHeight) throws FileNotFoundException {
+	public boolean mousePressed(float x, float y, float xmin, float ymin, float xmax, float ymax, float screenWidth, float screenHeight) throws FileNotFoundException {
 		boolean open = false;
 		for (int i = 0; i < levels.size(); i++) {
 			if (xmin < x && x < xmax - 24f / 1920f * screenWidth) {
@@ -290,9 +278,9 @@ public class LevelEditorWorld {
 	}
 
 	public String saveAsTemp() throws FileNotFoundException {
-		String filename="temp";
+		String filename = "temp";
 		refreshLevels();
-		if (LevelEditor.getErrMsg().equals("")){
+		if (LevelEditor.getErrMsg().equals("")) {
 			if (nrOfStartingPoints() == 1) {
 				if (nrOfExits() > 0) {
 					String currentdir = System.getProperty("user.dir");
@@ -309,10 +297,10 @@ public class LevelEditorWorld {
 					}
 					bestand.close();
 				}
-			} else{
+			} else {
 				LevelEditor.setErrMsg("You need to have exactly one starting point!");
 			}
-		} else{
+		} else {
 			LevelEditor.setErrMsg("You need to have at least one exit!");
 		}
 		return "temp";

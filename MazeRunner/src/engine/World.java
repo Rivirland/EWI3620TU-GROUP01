@@ -16,6 +16,7 @@ public class World {
 	// The amount of mazes.
 	private static int aantal;
 	private String naam;
+	public static int mazesWithPortals;
 	public static double minGlobalY;
 	public static int startingBullets, startingTraps;
 	private int[] orderedMazes;
@@ -23,6 +24,7 @@ public class World {
 	
 	// The constructor.
 	public World(String string) {
+		mazesWithPortals = 0;
 		World.mazelist = new ArrayList<Maze>();
 		this.aantal = 0;
 		minGlobalY = Double.MAX_VALUE;
@@ -127,6 +129,9 @@ public class World {
 				}
 				Maze maze = new Maze(m, i, x, y, z);
 				World.voegToe(maze);
+				if(maze.hasPortals){
+					mazesWithPortals++;
+				}
 				i++;
 			}
 		} catch (IOException e) {
