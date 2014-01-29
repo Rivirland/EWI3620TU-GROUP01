@@ -63,7 +63,7 @@ public class Main extends Frame implements GLEventListener, MouseListener, KeyLi
 	final static byte DELETEGAME = 9;
 	final static byte LOADLEVEL = 10;
 
-	final boolean fullscreenboolean = true;
+	final boolean fullscreenboolean = false;
 
 	boolean mousemode = false; // a parameter to correctly change when the
 								// mousecursor should appear

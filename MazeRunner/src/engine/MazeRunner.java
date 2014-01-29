@@ -309,6 +309,8 @@ public class MazeRunner {
 			}
 		}
 
+		
+		
 		// Display all the visible objects of MazeRunner.
 		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
 			it.next().display(gl);
