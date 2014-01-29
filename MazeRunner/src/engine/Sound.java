@@ -15,7 +15,7 @@ import java.util.Map;
 public class Sound implements Runnable{
 	
 	public static Map<String, Sound> sounds = new HashMap<String, Sound>();
-	private AudioClip clip;
+	public AudioClip clip;
 	
 	public Sound(String filename){
 		try{

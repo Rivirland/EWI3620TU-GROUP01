@@ -37,6 +37,7 @@ public class UserInput extends Control implements Runnable {
 	// fields for mouselook, uit het boek Developing games in Java door David
 	// Brackeen
 
+	public Thread thread;
 	private Robot robot;
 	private Point mouseLocation;
 	private Point centerLocation;
@@ -47,6 +48,7 @@ public class UserInput extends Control implements Runnable {
 	private boolean mouselookMode = true;
 	private boolean flyMode = true;
 	private Cursor cursor;
+	public static boolean soundplaying = false;
 
 	// private boolean relativeMouseMode; // to turn this mode (mouselook) off
 	// or
@@ -56,6 +58,7 @@ public class UserInput extends Control implements Runnable {
 
 	private boolean mousechange = false;
 	private boolean startedinput = false;
+	public static Sound footstep;
 	// private Cursor invisibleCursor;
 
 	Cursor invisibleCursor;
@@ -263,7 +266,70 @@ public class UserInput extends Control implements Runnable {
 		if (event.getKeyCode() == KeyEvent.VK_L) {
 			// hierin switch voor full screen
 		}
-
+		if (event.getKeyCode() == KeyEvent.VK_W) {
+			if (MazeRunner.player.playerStateInt != 4){
+			if (MazeRunner.player.playerStateInt != 5) {
+				if (!soundplaying){
+					try {
+			            footstep = new Sound("/footstep.wav");
+			            footstep.clip.play();
+			        }
+			        catch(Exception e) {}
+					soundplaying = true;
+				}
+			} else {
+				
+			}
+			}
+		}
+		else if(event.getKeyCode() == KeyEvent.VK_A) {
+			if (MazeRunner.player.playerStateInt != 4){
+			if (MazeRunner.player.playerStateInt != 5) {
+				if (!soundplaying){
+					try {
+			            footstep = new Sound("/footstep.wav");
+			            footstep.clip.play();
+			        }
+			        catch(Exception e) {}
+					soundplaying = true;
+				}
+			} else {
+				
+			}
+			}
+		}
+		else if(event.getKeyCode() == KeyEvent.VK_S) {
+			if (MazeRunner.player.playerStateInt != 4){
+			if (MazeRunner.player.playerStateInt != 5) {
+				if (!soundplaying){
+					try {
+			            footstep = new Sound("/footstep.wav");
+			            footstep.clip.play();
+			        }
+			        catch(Exception e) {}
+					soundplaying = true;
+				}
+			} else {
+				
+			}
+			}
+		}
+		else if(event.getKeyCode() == KeyEvent.VK_D) {
+			if (MazeRunner.player.playerStateInt != 4){
+			if (MazeRunner.player.playerStateInt != 5) {
+				if (!soundplaying){
+					try {
+			            footstep = new Sound("/footstep.wav");
+			            footstep.clip.play();
+			        }
+			        catch(Exception e) {}
+					soundplaying = true;
+				}
+			} else {
+				
+			}
+			}
+		}
 	}
 
 	public void keyReleased(KeyEvent event) {
@@ -272,12 +338,15 @@ public class UserInput extends Control implements Runnable {
 		}
 		if (event.getKeyCode() == KeyEvent.VK_A) {
 			left = false;
+
 		}
 		if (event.getKeyCode() == KeyEvent.VK_S) {
 			back = false;
+			
 		}
 		if (event.getKeyCode() == KeyEvent.VK_D) {
 			right = false;
+			
 		}
 		if (event.getKeyCode() == KeyEvent.VK_Z) {
 			if (MazeRunner.player.playerStateInt != 5) {
@@ -295,6 +364,18 @@ public class UserInput extends Control implements Runnable {
 		}
 		if (event.getKeyCode() == KeyEvent.VK_TAB) {
 			tab = true;
+		}
+		if (!back && !right && !forward && !left) {
+			//if (MazeRunner.player.playerStateInt !=5){
+			soundplaying = false;
+			try{footstep.clip.stop();} catch(Exception e){}
+			//} else {};
+		}
+		if (MazeRunner.level.getCurrentMaze(MazeRunner.player) == -1){
+			if (MazeRunner.player.playerStateInt !=5 && MazeRunner.player.playerStateInt !=4){
+			soundplaying = false;
+			try{footstep.clip.stop();} catch(Exception e){}
+			} else {};
 		}
 	}
 

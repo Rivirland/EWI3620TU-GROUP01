@@ -16,13 +16,11 @@ public class Portal {
 	private double x;
 	private double y;
 	private double z;
-	// public int portalID;
-	// public int portalConnectionID;
+	
+	
 	private double border = 0.2;
 
-	private static int[][] portalconnectionlist;
-	// private int[] connectedportals;
-
+	//two dimensional array that stores which portals are connected with which
 	public static int mazeID;
 
 	private int connectedmazeID;
@@ -41,19 +39,13 @@ public class Portal {
 	private static float hoogte = 5;
 	private int facingdirection;
 
-	// een waarde {0,... 3} de portal bevindt zich altijd in het xz vlak,
-	// loodrecht op het grondvlak
-	// 0 = positieve x richting, 1 = positieve z richting enz....
-
 	private GLU glu = new GLU();
 	private static GLUT glut = new GLUT();
 
 	private Portal toportal;
 	private boolean connected;
-	// afstand tussen portal en de speler, nodig voor het berekenen van de
-	// camera positie
+	// distance of the portal to the player
 	private float dx, dy, dz;
-	// private float playerhorAngle, playerverAngle;
 
 	boolean teleportation;
 
@@ -69,17 +61,6 @@ public class Portal {
 		this.portalcamera = new Camera(0, 0, 0, facingdirection * -90, 0);
 	}
 
-	// public Portal(float x, float y, float z, int facingdirection, int ID, int
-	// cID) {
-	// this.x = x;
-	// this.y = y;
-	// this.z = z;
-	// this.facingdirection = facingdirection % 4; // als hoger dan 3 dan komt
-	// // het toch goed
-	// this.setisConnected(false);
-	// this.portalID = ID;
-	// this.portalConnectionID = cID;
-	// }
 
 	/**
 	 * to calculate the corresponing worlds each portal is linked to, so that
@@ -96,26 +77,24 @@ public class Portal {
 		}
 	}
 
-	/**
-	 * Portals vinden voor het level waar de player nu in zit, dit werkt omdat
-	 * de levels in zelfde sequentie worden geladen als de portals
-	 */
+/**
+ * The method that is activated from mazerunner to display the portals, from here all the functions for Portal when playing the game are being called
+ * @param gl
+ */
 	public static void activePortaldisplay(GL gl) {
-		// gl.glLoadIdentity();
-
 		// finding the activeportals, portals are identified with an integer
 		// number
 		Portal.mazeID = MazeRunner.level.getCurrentMaze(MazeRunner.player);
 		Portal.portalList = MazeRunner.portalList;
 		Portal.mazeList = World.mazelist;
-		// MazeRunner.setEventMessage("mazeID "+mazeID);
-
-		// to calculate the corresponing worlds each portal is linked to
+		
+		// to calculate the corresponding worlds each portal is linked to
 		if (!run) {
 			privatemazeID();
 			run = true;
 		}
-
+		
+		//finding the activeportals through which maze(level) the player is in
 		if (mazeID != -1 && portalList.size() > 0) {
 			activep = new int[amountmazep];
 			for (int i = 0; i < amountmazep; i++) {
@@ -138,19 +117,23 @@ public class Portal {
 				stencil(gl, portalList.get(activep[i]), activep[i]);
 			}
 
-			// TODO tijdelijk om 1 keer stencil te testen
-			// stencil(gl, portalList.get(activep[0]), 0);
 
 		} else {
+			// if mazeID =-1 then the player is not in a level and all the portals are inactive
 			displayInactivePortals(gl, portalList);
 		}
 
 	}
 
+	/**
+	 * Here the inactivePortal is being drawn, and the border of the active Portal
+	 * @param gl
+	 */
 	public void stencilborder(GL gl) {
 
-		// gl.glColor3d(1, 1, 1);
+		gl.glColor3d(1, 1, 1);
 		gl.glClearColor(1, 1, 1, 0);
+		ChangeGL.GLtoTexturedItem(gl);
 
 		gl.glPushMatrix();
 		gl.glTranslated(this.x, (this.y), this.z);
@@ -171,7 +154,15 @@ public class Portal {
 		gl.glPopMatrix();
 
 	}
-
+	
+	
+/**
+ * Here the stencilbuffer is being used to be able to only draw what's at the other side of the portal
+ * through the portal itself
+ * @param gl
+ * @param p Current active Portal being used
+ * @param num, which of the portals are being processed right now. 2 Portals each Frame
+ */
 	public static void stencil(GL gl, Portal p, int num) {
 
 		GLUT glut = new GLUT();
@@ -231,7 +222,10 @@ public class Portal {
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		// displayInactivePortals(gl, MazeRunner.portalList);
 	}
-
+	/**
+	 * Here the polygon is being drawn to define to clip what's at the connected portal with the borders of the activePortal
+	 * @param gl
+	 */
 	public void stencilDisplay(GL gl) {
 
 		gl.glPushMatrix();
@@ -248,40 +242,36 @@ public class Portal {
 
 	}
 
+	/**
+	 * Here everything is drawn that is seen through a Portal at it's connected Portal
+	 * @param gl
+	 * @param portalcamera
+	 * @param num
+	 */
 	public static void portalView(GL gl, Camera portalcamera, int num) {
 
 		GLU glu = new GLU();
 		GLUT glut = new GLUT();
 		gl.glViewport(0, 0, MazeRunner.getScreenWidth(), MazeRunner.getScreenHeight());
 
-		// glu.gluLookAt(portalcamera.getLocationX(),
-		// portalcamera.getLocationY(), portalcamera.getLocationZ(),
-		// portalcamera.getVrpX(), portalcamera.getVrpY(),
-		// portalcamera.getVrpZ(), portalcamera.getVuvX(),
-		// portalcamera.getVuvY(), portalcamera.getVuvZ());
-		// method to only use use gl clear only once each portal flow
-		// if (num>pcounter){
-		// gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-		// pcounter = num +1;
-		// }else {
-		// pcounter = -1;
-		// }
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		// gl.glClear(GL.GL)
 
-		Skybox.displaySkybox(gl,(portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection() ));
+		Skybox.displaySkybox(gl, (portalList.get(num).facingdirection - portalList.get(num).toportal.getFacingdirection()));
 
 		glu.gluLookAt(portalcamera.getLocationX(), portalcamera.getLocationY(), portalcamera.getLocationZ(), portalcamera.getVrpX(), portalcamera.getVrpY(), portalcamera.getVrpZ(),
 				portalcamera.getVuvX(), portalcamera.getVuvY(), portalcamera.getVuvZ());
 
 		// Here only the maze should be shown that the portalview leads to...
 		mazeList.get(portalList.get(num).getConnectedlevelID()).display(gl);
-		// MazeRunner.setEventMessage("portalnum: "+num+"level to be drawn:"+portalList.get(num).getConnectedlevelID());
 
-		// MazeRunner.visibleIterator(gl);
-		// gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 	}
 
+	/**
+	 * To display all inactive Portals
+	 * @param gl
+	 * @param portalList
+	 */
 	public static void displayInactivePortals(GL gl, ArrayList<Portal> portalList) {
 		GLUT glut = new GLUT();
 		if (mazeID != -1) {
@@ -293,49 +283,47 @@ public class Portal {
 					}
 				}
 				if (check) {
-					portalList.get(i).displayPortal(glut, gl);
+					portalList.get(i).stencilborder( gl);
 				}
 			}
 		} else {
 			for (int i = 0; i < portalList.size(); i++) {
-				portalList.get(i).displayPortal(glut, gl);
+				portalList.get(i).stencilborder( gl);
 			}
 		}
 	}
 
+/**
+ * When the world is intialized, here the Portals are connected to each other
+ * @param mazes
+ */
 	public static void connectPortals(int[] mazes) {
 		if (MazeRunner.portalList.size() > 0) {
-			// portalconnectionlist = new
-			// int[MazeRunner.portalList.size()][amountmazep-1];
 			for (int i = 0; i < mazes.length - 1; i++) {
 				portalConnection(MazeRunner.portalList.get(i * 2 + 1), MazeRunner.portalList.get((i + 1) * 2));
 				System.out.println("Connecting portal " + (i * 2 + 1) + " with portal " + (i + 1) * 2);
-				// for (int j=0; j<amountmazep; j++){
-
-				// }
 			}
 			portalConnection(MazeRunner.portalList.get(mazes.length * 2 - 1), MazeRunner.portalList.get(0));
 			System.out.println("Connecting portal" + (mazes.length * 2 - 1) + " with portal " + 0);
 		}
 	}
-
+	/**
+	 * With toteleport, the Player is teleported from one Portal to it's connected Portal
+	 * @param player
+	 * @param teleportation
+	 */
 	public void toteleport(Player player, boolean teleportation) {
 		if (teleportation && player.canTeleport) {
+			// canteleport checks if The player is allowed to teleport, he's dead, and moves back to the starting position
 			player.canTeleport = false;
 
 			player.setLocationX(toportal.getX());
 			player.setLocationY(toportal.getY() + 2.5);
 			player.setLocationZ(toportal.getZ());
 			player.setLocationY(player.getLocationY());
-			// player.setLocationY(toportal.getY());
-
-			// de kijkrichting wordt het verschil in hoek tussen de twee
-			// portalen + de huidige kijkrichting
-
-			// verschil in facing direction
-			// facingdirection - toportal.getFacingdirection() *90
 
 			player.setHorAngle(player.getHorAngle() + (facingdirection - toportal.getFacingdirection()) * 90);
+			// teleportation boolean checks if The player is allowed to teleport, not allowed when he is already being teleported
 			teleportation = false;
 		}
 	}
@@ -344,8 +332,14 @@ public class Portal {
 	// portalID = i;
 	// }
 
-	// deze functie moet voor een bepaalde portal in klasse MazeRunner, methode
-	// updatemovement
+/**
+ * Checks if the player from one frame to the other moves in the range of a Portal from one side to another,
+ * then toteleport is called
+ * @param player
+ * @param previousX
+ * @param previousY
+ * @param previousZ
+ */
 	public void checkteleportation(Player player, float previousX, float previousY, float previousZ) {
 
 		boolean teleportation = false;
@@ -372,68 +366,21 @@ public class Portal {
 					if (playerx > this.x - range && playerx < this.x + range) {
 						if (previousZ < z && playerz > z || previousZ > z && playerz < z) {
 							teleportation = true;
-							// System.out.println(teleportation);
 						}
 					}
-					// kijken of bij van z< z van portal naar z > z van portal
-					// is
-					// gegaan terwijl x binnen de boundary is
 
 				}
 			}
 		}
-		// hier wordt toteleport aangeroepen na elke check, als teleportation
-		// true is wordt de speler naar de coordinaten van de toportal gestuurd
+		//Here toteleport is called, after every check, if teleportation is true, then the player is send to the
+		// coordinates of toportal
 		toteleport(player, teleportation);
 
 	}
 
-	public void displayPortal(GLUT glut, GL gl) {
-		// gl.glColor4d(1, 1, 1, 1);
-
-		gl.glPushMatrix();
-
-		gl.glClearColor(0, 0, 0, 0);
-		gl.glTranslated(this.x, (this.y), this.z);
-
-		// lineOnScreen(gl, this.x, (float) (this.y+0.5*hoogte), this.z,
-		// this.x+5, (float) (this.y+0.5*hoogte), this.z);
-
-		gl.glRotatef(facingdirection * 90, 0, 1, 0);
-		// gl.glColor3f(1, 1, 1);
-
-		gl.glColor4d(1, 1, 1, 1);
-
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		gl.glDisable(GL.GL_CULL_FACE);
-		gl.glBegin(GL.GL_QUADS);
-
-		gl.glVertex3d(0, 0, -breedte * 0.5);
-		gl.glVertex3d(0, hoogte, -breedte * 0.5);
-		gl.glVertex3d(0, hoogte, breedte * 0.5);
-		gl.glVertex3d(0, 0, breedte * 0.5);
-
-		gl.glEnd();
-		gl.glPopMatrix();
-
-		/*
-		 * gl.glPushMatrix(); gl.glRotatef(facingdirection*90, 0, 1, 0);
-		 * gl.glBegin(GL.GL_LINES); gl.glVertex3f(this.x, (float)
-		 * (this.y+0.5*hoogte), this.z); gl.glVertex3f(this.x+5, (float)
-		 * (this.y+0.5*hoogte), this.z); gl.glEnd(); gl.glPopMatrix();
-		 */
-		gl.glPushMatrix();
-		gl.glColor3f(1, 1, 1);
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		// gl.glCullFace(GL.GL_BACK);
-		gl.glEnable(GL.GL_CULL_FACE);
-		gl.glColor4d(0, 0, 0, 0);
-		gl.glPopMatrix();
-
-		// gl.glLoadIdentity();
-
-	}
-
+/**
+ * String representation of a portal
+ */
 	public String toString() {
 		return "Portal at x=" + x + " y=" + y + " z=" + z + " Connected to: "// p2.toString()
 		;
@@ -459,134 +406,65 @@ public class Portal {
 		this.toportal = p;
 	}
 
+	/**
+	 * Connects two Portals to one another, in this version there is no check implemented to check if the portals to
+	 * be connected are the same, this should be there though
+	 * @param p1
+	 * @param p2
+	 */
 	public static void portalConnection(Portal p1, Portal p2) {
-		// if (!Equals(p1, p2)) {
+	
 		p1.setconnectedTo(p2);
 		p2.setconnectedTo(p1);
-		// System.out.println("Connected portal: " + p1.portalID +
-		// " and portal: " + p2.portalID);
+
 		p1.setisConnected(true);
 		p2.setisConnected(true);
 
-		// p1.}
-		// } else {
-		// System.out.println("Connected portals cannot be the same portal, dummiexD \n No PortalConnection is made");
-
+		
 	}
 
+	/**
+	 * Calculates the distance of the portal to the player and stores it in the Portal
+	 * @param player
+	 */
 	public void calcPortaltoPlayer(Player player) {
-
 		this.dx = (float) (player.getLocationX() - this.x);
-		// TODO testmodus, y moet weer aan
 		this.dy = (float) (player.getLocationY() - this.y);
 		this.dz = (float) (player.getLocationZ() - this.z);
 
-		// System.out.println("x "+dx+"y "+dy+"z "+dz);
-		// this.playerhorAngle = (float) player.getHorAngle();
-		// this.playerverAngle = (float) player.getVerAngle();
 	}
 
-	// make vector between positions of playerobject and portal object
-
+/**
+ * Updates the camera position of where the camera at the connected Portal should be relative to the distance of
+ * the player to the portal
+ * @param glut
+ * @param gl
+ * @param player
+ * @param num
+ */
 	public void updateCamera(GLUT glut, GL gl, Player player, int num) {
 		if (connected) {
-			// de camera die wordt vertoont op p1 staat op evengrote omgekeerde
-			// afstand van de facing direction van portal p2 als de speler tot
-			// portal p1
-			// de camera staat gericht in dezelfde facing direction als de
-			// facing direction van p2
 
-			// double x = this.toportal.getX() + this.dx;
-			// double y = this.toportal.getY() + this.dy;
-			// double z = this.toportal.getZ() + this.dz;
 
-			int facingdirection = this.facingdirection - toportal.getFacingdirection()+2;
+			int facingdirection = this.facingdirection - toportal.getFacingdirection() + 2;
 
 			double xtransform = Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) - Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
-					+ toportal.getX()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX;
+					+ toportal.getX() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeX;
 			double ytransform = player.getLocationY() - this.y + toportal.getY() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY;
 			double ztransform = Math.sin(Math.toRadians(90 * facingdirection)) * (player.getLocationX() - this.x) + Math.cos(Math.toRadians(90 * facingdirection)) * (player.getLocationZ() - this.z)
-					+ toportal.getZ()- mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ;
-
-//			MazeRunner.setEventMessage("hcurrent: " + mazeList.get(mazeID).mazeY + " hconnected: " + mazeList.get(portalList.get(num).getConnectedlevelID()).mazeY + "connectedmazeID"
-//					+ portalList.get(num).getConnectedlevelID());
-
-//			gl.glPushMatrix();
-//			gl.glTranslated(this.toportal.getX(), this.toportal.getY(), this.toportal.getZ());
-//			gl.glRotated(90 * facingdirection, 0, 1, 0);
-//			gl.glTranslated(-this.x, -this.y, -this.z);
-//			gl.glTranslated(player.getLocationX(), player.getLocationY(), player.getLocationZ());
-			// gl.glRotated(90, 0, 1, 0);
-			// gl.glTranslated(xtransform, ytransform, ztransform);
-//			glut.glutSolidCube(1);
-//			gl.glPopMatrix();
-
-			// gl.glPushMatrix();
-			//
-			//
-			// //TODO: x en z moeten keer de facingdirection 90 graden draaien
-			// (clockwise)
-			// // de translatie moet geflipt worden op de facing direction van
-			// de
-			// // portal
-			//
-			// // juiste coordinaat = geflipte coordinaat - portal coordinaat
-			//
-			// gl.glRotatef(facingdirection * -90, 0, 1, 0);
-			// gl.glTranslated(x, y, z);
-			// // System.out.println("x "+x+"y "+y+"z "+z);
-			//
-			// // voor nu is een wirecube gebruikt om de camera te representeren
-			//
-			// glut.glutSolidCube(2);
-			// gl.glPopMatrix();
-			// // Teken.lineOnScreen(gl, x, z, this.toportal.getX(),
-			// this.toportal.getZ());
+					+ toportal.getZ() - mazeList.get(portalList.get(num).getConnectedlevelID()).mazeZ;
 
 			portalcamera.setLocationX(xtransform);
 			portalcamera.setLocationY(ytransform);
 			portalcamera.setLocationZ(ztransform);
 			portalcamera.setHorAngle(player.getHorAngle());
 			portalcamera.setVerAngle(player.getVerAngle());
-			portalcamera.calculateVRP(facingdirection+2);
-			// portalcamera.calculateVRP(facingdirection);
+			portalcamera.calculateVRP(facingdirection + 2);
 
 		}
 
 	}
 
-	public static void displayCamera(Camera portalcamera) {
-
-	}
-
-	// create new camera with the same distance and direction as the camera at
-	// p1, but this distance and
-	// direction at p2, the opposite way of the normal(the facingdirection) of
-	// p2
-
-	// get information of current camera
-
-	// Camera camera1= Camera.get
-
-	// map the new camera on the windowview, and clip the camera on the
-	// boundary's of the surface of p1
-
-	// make it so that if the camera at p1 moves or changes direction, this
-	// movement is replicated by
-	// p2
-
-	public static void Connection(Portal p1) {
-		// a new camera is made with the same distance and direction from portal
-		// (1) connected to,
-		// as the camera at the other portal (portal 2) (see sketch) this
-		// position is constantly changed when the
-		// the camera moves
-		// if the player is transported to the other place, the other camera
-		// becomes the current camera
-		// that is only clipped on the window, the camera that was the current
-		// camera before is clipped
-		// on portal 2
-	}
 
 	public boolean getisConnected() {
 		return connected;

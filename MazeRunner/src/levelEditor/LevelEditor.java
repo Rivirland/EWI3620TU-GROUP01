@@ -850,6 +850,7 @@ public class LevelEditor {
 							System.out.println("Aantal rijen: " + gridrows);
 							wereld = veranderMatrixGrootte2(wereld);
 							textures = veranderMatrixGrootte2(textures);
+							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
 						// plusknop boven
@@ -872,6 +873,7 @@ public class LevelEditor {
 							for (int item = 0; item != items.size(); item++) {
 								items.get(item)[1] -= 7d;
 							}
+							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1330f + 8f) / 1920f * screenWidth < me.getX() && me.getX() < (1330f + 28f) / 1920f * screenWidth) {
 						// plusknop onder
@@ -897,6 +899,7 @@ public class LevelEditor {
 							for (int item = 0; item != items.size(); item++) {
 								items.get(item)[2] -= 7d;
 							}
+							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY()
 							&& me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
@@ -920,6 +923,7 @@ public class LevelEditor {
 							System.out.println("Aantal kolommen: " + gridcolumns);
 							wereld = veranderMatrixGrootte(wereld);
 							textures = veranderMatrixGrootte(textures);
+							deleteItemsNotInGrid(gridcolumns, gridrows);
 						}
 					} else if ((1f - (540f - 28f) / 1080f) * screenHeight > me.getY()
 							&& me.getY() > (1f - (540f - 8f) / 1080f) * screenHeight) {
@@ -1008,8 +1012,10 @@ public class LevelEditor {
 					}
 				} else {
 					// gridklik
-					if (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5
-							&& screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5) {
+					if ((drawMode != ITEM && (xmin - distance / 5 < me.getX() && me.getX() < xmax + distance / 5
+							&& screenHeight - ymax - distance / 5 < me.getY() && me.getY() < screenHeight - ymin + distance / 5)) ||
+						(drawMode == ITEM && (xmin < me.getX() && me.getX() < xmax
+								&& screenHeight - ymax < me.getY() && me.getY() < screenHeight - ymin))){
 						float gridklikx = me.getX();
 						float gridkliky = screenHeight - me.getY();
 						gridklik = true;
@@ -1916,6 +1922,15 @@ public class LevelEditor {
 
 	public static void setErrMsgTime(long errMsgTime) {
 		LevelEditor.errMsgTime = errMsgTime;
+	}
+	
+	public void deleteItemsNotInGrid(int gridrows, int gridcolumns){
+		for (int item = 0; item != items.size(); item++) {
+			if (items.get(item)[1] < 0 || gridrows*7+0.5 < items.get(item)[2] || items.get(item)[2] < 0 || gridcolumns*7+0.5 < items.get(item)[1]){
+				items.remove(item);
+				item--;
+			}
+		}
 	}
 
 }

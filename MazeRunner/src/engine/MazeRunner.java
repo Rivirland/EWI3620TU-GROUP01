@@ -278,15 +278,27 @@ public class MazeRunner {
 		updateCamera();
 		updatePlayingTime();
 		updateLighting(gl);
+		
+		if (MazeRunner.player.playerStateInt == 5){
+			if (!UserInput.soundplaying){
+				try {
+					UserInput.footstep = new Sound("/heli_short.wav");
+					UserInput.footstep.clip.play();
+					UserInput.footstep.clip.loop();
+		        }
+		        catch(Exception e) {}
+				UserInput.soundplaying = true;
+			}
+		}
 
 		Skybox.displaySkybox(gl);
-		if (player.getControl().minimap && player.playerStateInt != 4) {
+		if (player.getControl().minimap && player.playerStateInt != 4 && World.mazesWithPortals == 0) {
 			Minimap.displayMinimap(gl);
 		}
 
-		// if (player.playerStateInt == 2) {
-		// Reticle.display(gl);
-		// }
+		if (player.playerStateInt == 2 && World.mazesWithPortals == 0) {
+			Reticle.display(gl);
+		}
 
 		gl.glLoadIdentity();
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(), camera.getVuvZ());
